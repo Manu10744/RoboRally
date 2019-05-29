@@ -1,6 +1,6 @@
 ### Known Issues
 
-### Version [0.0.0]
+## Version [0.0.0]
 
 ### New Features
 
