@@ -1,4 +1,4 @@
-package ModelView;
+package ModelServer;
 
 /**
  * There can be created different maps in Roborally.

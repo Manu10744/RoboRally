@@ -1,4 +1,4 @@
-package ModelView;
+package ModelServer;
 
 /**
  * This class implements the game tiles. <br>
