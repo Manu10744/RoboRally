@@ -1,0 +1,1 @@
+ModelView and mvvmFX: ViewModel enables a presentation separation (keeps the view separate from the model).

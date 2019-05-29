@@ -1,0 +1,1 @@
+View and mvvmFX: View contains controller-classes without logic (according to a better overview related fxml files in this project are stored under RoboRally\recources\fxml). Its purpose is to establish a connection to the ViewModel. 
