@@ -1,4 +1,4 @@
-package ModelServer;
+package src.modelserver.game;
 
 /**
  * This class is responsible for handling the Cards in the game.

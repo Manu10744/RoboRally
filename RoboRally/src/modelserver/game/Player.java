@@ -1,4 +1,4 @@
-package ModelClient;
+package src.modelserver.game;
 
 /**
  * Each player will have most of the important attributes handled in an array.
