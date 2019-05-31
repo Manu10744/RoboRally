@@ -1,4 +1,4 @@
-package ModelServer;
+package src.utils.instructions;
 
 /**
  * //TODO add a suiting description.

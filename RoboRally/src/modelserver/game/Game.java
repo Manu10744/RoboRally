@@ -1,4 +1,4 @@
-package ModelServer;
+package src.modelserver.game;
 
 /**
  * This class handles the Game itself. <br>

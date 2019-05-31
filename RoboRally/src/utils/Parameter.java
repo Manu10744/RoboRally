@@ -1,4 +1,4 @@
-package ModelServer;
+package src.utils;
 
 /**
  * In this class all the Parameters that will occur in the diffenrent classes will show up. <br>

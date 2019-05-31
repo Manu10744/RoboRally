@@ -1,1 +1,0 @@
-This folder contains all project fxml files

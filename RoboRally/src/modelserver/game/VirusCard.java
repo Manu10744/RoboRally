@@ -1,9 +1,9 @@
-package ModelServer;
+package src.modelserver.game;
 
 /**
  * This class defines a kind of damage.
  *
  * @author Vincent Tafferner
  */
-public class TrojanHorseCard extends DamageCard {
+public class VirusCard extends DamageCard {
 }
