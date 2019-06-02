@@ -7,4 +7,23 @@ package src.modelserver.game;
  * @author Vincent Tafferner
  */
 abstract class Card {
+
+    String cardName;
+    int cardAmount;
+
+    /**
+     * This method simply returns the name of the card.
+     * @return cardName
+     */
+    public String getCardName() {
+        return cardName;
+    }
+
+    /**
+     * This method simply returns how many cards there are of a certain type.
+     * @return cardAmount
+     */
+    public int getCardAmount() {
+        return cardAmount;
+    }
 }
