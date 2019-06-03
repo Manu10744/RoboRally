@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
@@ -10,15 +10,19 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 /**
  * This class reads a JSON File which contains the Map that is built in 'Tiled'. It saves the map into an ArrayList
  * (JSON-Arrays work like Java-ArrayLists) which will be used in the class Map to calculate distances etc.
  *
  * @author Mia
  */
+/* TODO remove this comment when class is working - until then disabled to enable testing other classes without interference
 public class JSONMapReader extends Exception {
 
     private ArrayList map;
+
+ */
     /**
      First a FileReader is initialised which gets the name of JSON-File containing the map.
      As FileReader throws an exception it is initalised within a try-catch block.
@@ -34,6 +38,7 @@ public class JSONMapReader extends Exception {
      * This is the getter for the ArrayList Map. The map is called upon by the @link MapController Class.
      * @return value is the map we have converted from the JSON-Tiled-Document
      */
+    /* TODO remove this comment when class is working - until then disabled to enable testing other classes without interference
     public ArrayList<Object> getMap(){
         return this.map;
     }
@@ -71,4 +76,4 @@ public class JSONMapReader extends Exception {
 
 
 }
-
+*/
