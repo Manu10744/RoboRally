@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 
 /**
  * Spam cards are the simplest form of damage a player can receive. <br>

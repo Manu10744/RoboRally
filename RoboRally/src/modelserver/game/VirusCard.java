@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 
 /**
  * This class defines a kind of damage.

@@ -1,8 +1,8 @@
-package src.modelserver.game;
+package modelserver.game;
 
 import java.util.ArrayList;
-import src.modelserver.game.Card;
-import src.modelserver.game.ProgrammingCard;
+import modelserver.game.Card;
+import modelserver.game.ProgrammingCard;
 
 /**
  * This class is responsible for handling the Cards in the game.

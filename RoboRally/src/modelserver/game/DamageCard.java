@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 
 
 public class DamageCard extends Card {

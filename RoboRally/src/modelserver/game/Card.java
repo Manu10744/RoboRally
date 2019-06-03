@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 
 /**
  * This class defines what a card shall be in the game. <br>
