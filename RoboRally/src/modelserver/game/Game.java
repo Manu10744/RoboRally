@@ -1,26 +1,39 @@
-package src.modelserver.game;
+package modelserver.game;
 
-import src.modelserver.game.Player;
+import modelserver.Server;
+import modelserver.game.Player;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-
 /**
  * This class handles the Game itself. <br>
  * It starts it and keeps track of the players.
  *
+ * @author Ivan Dovecar
  * @author Vincent Tafferner
  * @author Jessica Gerlach
  */
 public class Game {
     private ArrayList<Player> players;
     private ArrayList<Player> activePlayers;
+    private Server server;
+    private boolean isFinished;
+
+
+    public Game(Server server) {
+        this.server = server;
+        isFinished = false;
+    }
 
     /**
      * This method starts a game
+     * @author Ivan Dovecar
      */
-    public void startGame() {
+    public void startGame(ArrayList<Player> players) {
+        //Create Players:
+        this.players = new ArrayList<>(players);
+        activePlayers = new ArrayList<>(this.players);
 
+        System.out.println("Game has started");
     }
 
     /**
@@ -59,5 +72,4 @@ public class Game {
     public ArrayList<Player> getActivePlayers() {
         return this.activePlayers;
     }
-
 }
