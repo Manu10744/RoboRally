@@ -1,15 +1,16 @@
-package src.modelserver.game;
+package modelserver.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import src.modelserver.game.Card;
 
 /**
  * Each player will have most of the important attributes handled in an array.
  *
+ * @author Ivan Dovecar
  * @author Vincent Tafferner
  * @author Jessica Gerlach
  */
-public class Player {
+public class Player implements Serializable {
 
     private String name;
     private int age;
@@ -18,13 +19,20 @@ public class Player {
     private ArrayList<Card> deckDiscard;
     private ArrayList<Card> deckDraw;
 
+    /**
+     * Player constructor
+     */
+    public Player(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 
     /**
      * Get the name of a player
      * @return name The name of the player
      */
     public String getName() {
-        return this.name;
+        return name;
     }
 
     /**
