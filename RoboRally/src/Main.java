@@ -3,6 +3,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
+import modelclient.Client;
+import modelserver.Server;
 import java.io.*;
 
 
@@ -11,6 +13,8 @@ import java.io.*;
  * It will start all the other necessary classes.
  *
  * @author Vincent Tafferner
+ * @author Manuel
+ * @author Ivan Dovecar
  */
 public class Main extends Application {
 
@@ -23,7 +27,8 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/Chat.fxml"));
-            AnchorPane chat = (AnchorPane) loader.load();
+            AnchorPane chat;
+            chat = loader.load();
 
             Scene scene = new Scene(chat);
             primaryStage.setScene(scene);
@@ -36,5 +41,14 @@ public class Main extends Application {
     public static void main(String[] args) {
 
         launch(args);
+
+        /* TODO Start server automatically if not running
+        Server server = new Server();
+        try {
+            server.start(primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+*/
     }
 }
