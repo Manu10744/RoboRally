@@ -1,4 +1,4 @@
-package src.utils.instructions;
+package utils.instructions;
 
 public class ServerGameInstruction {
 }

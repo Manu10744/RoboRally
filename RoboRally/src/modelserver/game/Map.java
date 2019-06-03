@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 import src.modelserver.game.Tile;
 
 import java.util.ArrayList;

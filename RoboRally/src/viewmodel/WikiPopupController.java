@@ -1,4 +1,4 @@
-package src.viewmodel;
+package viewmodel;
 
 public class WikiPopupController {
 }

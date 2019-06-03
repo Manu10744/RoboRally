@@ -13,7 +13,7 @@ import java.io.*;
  * It will start all the other necessary classes.
  *
  * @author Vincent Tafferner
- * @author Manuel
+ * @author Manuel Neumayer
  * @author Ivan Dovecar
  */
 public class Main extends Application {

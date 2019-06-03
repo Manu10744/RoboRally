@@ -1,4 +1,4 @@
-package src.modelserver.game;
+package modelserver.game;
 
 /**
  * This class implements the robots which are the playing figures in the game.
