@@ -1,7 +1,5 @@
 ### Known Issues
 * Chat - implement button actions
-* Chat - preset dummy-server IP+Port
-* Chat - activate text fields in proper order
 * Instructions - distribution from 'Instructions' to specific instruction classes 
 * Chat - complete chat related Javadoc
 * Chat - tooltip is not working
@@ -14,6 +12,8 @@
 
 ### Changes
 * Main runs server and client by parallel run (Ivan)
+* Chat - preset dummy-server IP+Port (Ivan)
+* Chat - activate text fields in proper order (Ivan)
 
 ### Bugfixes
 

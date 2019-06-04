@@ -19,26 +19,26 @@
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
                   </Button>
-                  <TextField fx:id="fieldServer" prefHeight="30.0" prefWidth="220.0" promptText="Server IP / Port">
+                  <TextField fx:id="fieldServer" prefHeight="30.0" prefWidth="220.0" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
                      <HBox.margin>
                         <Insets bottom="20.0" right="20.0" top="20.0" />
                      </HBox.margin>
                   </TextField>
                </children>
             </HBox>
-            <TextField fx:id="fieldName" prefHeight="30.0" prefWidth="300.0" promptText="Your Name ">
+            <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="300.0" promptText="Enter name...">
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" />
                </VBox.margin>
             </TextField>
             <VBox prefHeight="918.0" prefWidth="340.0">
                <children>
-                  <TextArea fx:id="chatOutput" editable="false" prefHeight="646.0" prefWidth="300.0">
+                  <TextArea fx:id="chatOutput" editable="false" mouseTransparent="true" focusTraversable="false" prefHeight="646.0" prefWidth="300.0" promptText="Send a message ...">
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                      </VBox.margin>
                   </TextArea>
-                  <TextArea fx:id="chatInput" prefHeight="200.0" prefWidth="300.0" promptText="Send a message ...">
+                  <TextArea fx:id="chatInput" disable="true" prefHeight="200.0" prefWidth="300.0" promptText="submit (press enter) word wrap (shift+enter) leave chat enter 'bye'" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                      </VBox.margin>
