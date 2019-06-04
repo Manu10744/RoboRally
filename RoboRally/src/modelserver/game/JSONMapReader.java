@@ -1,16 +1,7 @@
 package modelserver.game;
 
-/*
-import org.json.JSONObject;
-import org.json.JSONArray;
 
-import javax.swing.text.html.parser.Parser;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
@@ -19,12 +10,12 @@ import java.util.Iterator;
  *
  * @author Mia
  */
-/* TODO remove this comment when class is working - until then disabled to enable testing other classes without interference
-public class JSONMapReader extends Exception {
+// TODO remove this comment when class is working - until then disabled to enable testing other classes without interference
+public class JSONMapReader {
 
     private ArrayList map;
 
- */
+ /*
     /**
      First a FileReader is initialised which gets the name of JSON-File containing the map.
      As FileReader throws an exception it is initalised within a try-catch block.
@@ -75,7 +66,7 @@ public class JSONMapReader extends Exception {
         catch(Exception e)
         {e.printStackTrace();}
     }
-
+  */
 
 }
-     */
+
