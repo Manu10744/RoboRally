@@ -36,6 +36,7 @@ public class Client {
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
     private BooleanProperty gameInitialized;
+    private BooleanProperty gameJoined;
     private BooleanProperty gameStarted;
     private static final Logger logger = Logger.getLogger( Client.class.getName() );
 
@@ -50,6 +51,7 @@ public class Client {
         //GAME:
         otherActivePlayers = new SimpleListProperty<>(FXCollections.observableArrayList());
         gameInitialized = new SimpleBooleanProperty(false);
+        gameJoined = new SimpleBooleanProperty(false);
         gameStarted = new SimpleBooleanProperty(false);
     }
 
@@ -230,6 +232,10 @@ public class Client {
         return gameInitialized;
     }
 
+    public BooleanProperty gameJoinedProperty() {
+        return gameJoined;
+    }
+
     public BooleanProperty gameStartedProperty() {
         return gameStarted;
     }
@@ -241,6 +247,7 @@ public class Client {
     public ListProperty<String> activeClientsProperty() {
         return activeClients;
     }
+
 
     /**
      * Inner class to define ReaderTask with Server
@@ -333,8 +340,7 @@ public class Client {
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                                 //Add other player if name is different to this client
-                                if(!content.equals(name))
-                                    addOtherPlayer(content);
+                                if(!content.equals(name)) addOtherPlayer(content);
                             });
                             break;
                         }

@@ -216,13 +216,15 @@ public class ChatController implements Initializable {
             fieldName.requestFocus();
         }));
 
-        //Enable chatInput after name setting is finished
+        //Enable chatInput and buttons after name setting is finished
         nameSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
             chatInput.disableProperty().set(false);
             chatInput.requestFocus();
             chatInput.selectEnd();
             chatOutput.textProperty().bind(clientChatOutputProperty());
-            buttonInit.disableProperty().bind(gameInitializedProperty());
+            buttonInit.disableProperty().set(false);
+            buttonJoin.disableProperty().set(false);
+            buttonStart.disableProperty().set(false);
         }));
 
         //NAMEINPUT: Avoid spaces in names and limit maximum namesize
@@ -268,6 +270,25 @@ public class ChatController implements Initializable {
 
     private BooleanProperty gameInitializedProperty() {
         return client.gameInitializedProperty();
+    }
+
+    private BooleanProperty gameJoinedProperty() { return  client.gameJoinedProperty(); }
+
+    private BooleanProperty gameStartedProperty() { return  client.gameStartedProperty(); }
+
+    @FXML
+    private void setButtonInit(){
+        messageProperty().setValue(formatChatMessage("init"));
+    }
+
+    @FXML
+    private void setButtonJoin(){
+        messageProperty().setValue(formatChatMessage("join 18")); //TODO remove preset age and complete function
+    }
+
+    @FXML
+    private void setButtonStart(){
+        messageProperty().setValue(formatChatMessage("start"));
     }
 
     /**

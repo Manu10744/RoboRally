@@ -33,7 +33,7 @@
             </TextField>
             <VBox prefHeight="918.0" prefWidth="340.0">
                <children>
-                  <TextArea fx:id="chatOutput" editable="false" mouseTransparent="true" focusTraversable="false" prefHeight="646.0" prefWidth="300.0" promptText="Send a message ...">
+                  <TextArea fx:id="chatOutput" editable="false" mouseTransparent="true" focusTraversable="false" prefHeight="646.0" prefWidth="300.0" promptText="Send a message ..." wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                      </VBox.margin>
@@ -47,17 +47,17 @@
             </VBox>
             <HBox prefHeight="60.0" prefWidth="300.0">
                <children>
-                  <Button fx:id="buttonInit" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Init">
+                  <Button fx:id="buttonInit" disable="true" mnemonicParsing="false" onAction="#setButtonInit" prefHeight="30.0" prefWidth="90.0" text="Init">
                      <HBox.margin>
                         <Insets right="7.5" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="buttonJoin" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Join">
+                  <Button fx:id="buttonJoin" disable="true" mnemonicParsing="false" onAction="#setButtonJoin" prefHeight="30.0" prefWidth="90.0" text="Join">
                      <HBox.margin>
                         <Insets left="7.5" right="7.5" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="buttonStart" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Start">
+                  <Button fx:id="buttonStart" disable="true" mnemonicParsing="false" onAction="#setButtonStart" prefHeight="30.0" prefWidth="90.0" text="Start">
                      <HBox.margin>
                         <Insets left="7.5" />
                      </HBox.margin>
