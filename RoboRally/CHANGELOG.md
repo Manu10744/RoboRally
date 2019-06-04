@@ -11,7 +11,9 @@
 ### New Features
 * Implemented Chat - Server, Client, Instructions aso. (Ivan)
 * Player registration, game-init, -join with age and -start works (Ivan)
+
 ### Changes
+* Main runs server and client by parallel run (Ivan)
 
 ### Bugfixes
 
