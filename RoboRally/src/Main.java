@@ -26,11 +26,11 @@ public class Main extends Application {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/Chat.fxml"));
-            AnchorPane chat;
-            chat = loader.load();
+            loader.setLocation(Main.class.getResource("view/StageView.fxml"));
+            AnchorPane stageView;
+            stageView = loader.load();
 
-            Scene scene = new Scene(chat);
+            Scene scene = new Scene(stageView);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
