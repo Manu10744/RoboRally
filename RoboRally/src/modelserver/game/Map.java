@@ -1,5 +1,5 @@
 package modelserver.game;
-import src.modelserver.game.Tile;
+import modelserver.game.Tile;
 
 import java.util.ArrayList;
 
