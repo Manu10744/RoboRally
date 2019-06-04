@@ -36,11 +36,12 @@ public class Server extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        logger.info("Check if server is running...");
 
-        logger.info("Starting Server...");
-
-        //  Open socket for incoming connections
+        //  Open socket for incoming connections, if socket already exists start aborts
         ServerSocket serverSocket = new ServerSocket(9998);
+        logger.info("Negative, starting server... \n" +
+                         "      Run Main again to start Client");
         serverIsRunning = true;
 
         connectedClients = new ArrayList<>();
@@ -50,7 +51,6 @@ public class Server extends Application {
             logger.info("Waiting for new client...");
             //New client connects: (accept() waits for new client)
             Socket clientSocket = serverSocket.accept();
-
             logger.info("Client connected from: " + clientSocket.getInetAddress().getHostAddress());
 
             //ServerReaderTask that reads incoming messages from clients -> Every client has its own Task/Thread
@@ -305,4 +305,3 @@ public class Server extends Application {
         }
     }
 }
-

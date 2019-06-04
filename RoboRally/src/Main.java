@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import modelclient.Client;
 import modelserver.Server;
 import java.io.*;
+import java.util.logging.Logger;
 
 
 /**
@@ -19,11 +20,21 @@ import java.io.*;
 public class Main extends Application {
 
     Stage primaryStage;
+    private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
+        // runs server
+        Server server = new Server();
+        try {
+            server.start(primaryStage);
+        } catch (Exception e) {
+            logger.info("Positive, switching to client mode and activating GUI...");
+        }
+
+        // loads GUI
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/StageView.fxml"));
@@ -39,16 +50,6 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) {
-
         launch(args);
-
-        /* TODO Start server automatically if not running
-        Server server = new Server();
-        try {
-            server.start(primaryStage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-*/
     }
 }

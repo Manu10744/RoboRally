@@ -1,5 +1,6 @@
 package modelclient;
 
+import java.util.logging.Logger;
 import viewmodel.ChatController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -36,6 +37,7 @@ public class Client {
     private ListProperty<OtherPlayer> otherActivePlayers;
     private BooleanProperty gameInitialized;
     private BooleanProperty gameStarted;
+    private static final Logger logger = Logger.getLogger( Client.class.getName() );
 
 
     public Client(String name, String serverIP, int serverPort) {
@@ -58,7 +60,7 @@ public class Client {
      * @return connection Success: True, connection Failed: False
      */
     public boolean connect() {
-        System.out.println("Starting client...");
+        logger.info("Starting client...");
 
         try {
             //Create socket to connect to server at serverIP:serverPort
@@ -77,14 +79,14 @@ public class Client {
             waitingForAnswer = true;
             while(waitingForAnswer) {
                 //WAIT FOR ANSWER FROM SERVER, waitingForAnswer is changed by ClientReaderTask once finished
-                System.out.println("WAITING..");
+                logger.info("WAITING...");
                 if (waitingForAnswer) try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            System.out.println("Connected to Server");
+            logger.info("Connected to server");
 
             return nameSuccess; //gets set by ClientReaderTask
         } catch(IOException exp) {
