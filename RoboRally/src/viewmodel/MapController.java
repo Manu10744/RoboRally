@@ -26,6 +26,10 @@ public class MapController {
     @FXML
     private ImageView robotGreen;
 
+    /**
+     * This method controls robotlaser in activation phase
+     */
+    public void robotLaser() {
 
-
+    }
 }
