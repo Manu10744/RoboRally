@@ -13,7 +13,7 @@ import java.util.ArrayList;
 // TODO remove this comment when class is working - until then disabled to enable testing other classes without interference
 public class JSONMapReader {
 
-    private ArrayList map;
+    private ArrayList mapLevel2;
 
  /*
     /**
