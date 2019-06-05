@@ -1,11 +1,11 @@
 package modelserver.game;
 
 /**
- * This class implements the MoveOne card.
+ * This class implements the MoveI card.
  *
  * @author Vincent Tafferner
  */
-public class MoveOne extends ProgrammingCard {
+public class MoveI extends ProgrammingCard {
 
     /**
      * This will move the robot one tile in the direction he is facing.

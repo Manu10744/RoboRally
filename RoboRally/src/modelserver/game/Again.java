@@ -1,11 +1,11 @@
 package modelserver.game;
 
 /**
- * This class implements the MoveAgain card.
+ * This class implements the Again card.
  *
  * @author Vincent Tafferner
  */
-public class MoveAgain extends ProgrammingCard {
+public class Again extends ProgrammingCard {
 
     /**
      * This move will repeat the move that was performed in the previous register. <br>

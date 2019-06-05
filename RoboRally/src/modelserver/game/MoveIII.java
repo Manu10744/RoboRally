@@ -1,14 +1,14 @@
 package modelserver.game;
 
 /**
- * This class implements the MoveTwo card.
+ * This class implements the MoveIII card.
  *
  * @author Vincent Tafferner
  */
-public class MoveTwo extends ProgrammingCard {
+public class MoveIII extends ProgrammingCard {
 
     /**
-     * This will move the robot two tiles in the direction he is facing. <br>
+     * This will move the robot three tiles in the direction he is facing. <br>
      * It is important, that he moves one tile at a time so he cant jump over holes or walls.
      */
     @Override

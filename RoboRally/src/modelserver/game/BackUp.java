@@ -1,11 +1,11 @@
 package modelserver.game;
 
 /**
- * This class implements the MoveBack card.
+ * This class implements the Backup card.
  *
  * @author Vincent Tafferner
  */
-public class MoveBack extends ProgrammingCard {
+public class BackUp extends ProgrammingCard {
 
     /**
      * This move will make the robot take one step back. <br>
