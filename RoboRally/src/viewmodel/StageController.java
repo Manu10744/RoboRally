@@ -5,14 +5,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-/**
- * The Class StageController contains all different views (
- * @link ChatController,
- * @link MapController,
- * @link OpponentMapController
- * @link PlayerMatController
- *
- * */
 public class StageController {
 
     //Todo Javadoc
@@ -23,7 +15,7 @@ public class StageController {
     @FXML
     AnchorPane board;
     @FXML
-    VBox board;
+    VBox boardElements;
     @FXML
     AnchorPane opponentMat;
     @FXML
