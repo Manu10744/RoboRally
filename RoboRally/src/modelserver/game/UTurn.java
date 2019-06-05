@@ -1,11 +1,11 @@
 package modelserver.game;
 
 /**
- * This class implements the TurnU card.
+ * This class implements the UTurn card.
  *
  * @author Vincent Tafferner
  */
-public class TurnU extends ProgrammingCard {
+public class UTurn extends ProgrammingCard {
 
     /**
      * This will make the robot perform a 180.
