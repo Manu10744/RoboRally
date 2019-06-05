@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="stageView" prefHeight="1046.0" prefWidth="1860.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
+<AnchorPane fx:id="stage" prefHeight="1046.0" prefWidth="1860.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
    <children>
       <HBox fx:id="chatBoardBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
          <children>
             <VBox fx:id="board" prefHeight="1006.0" prefWidth="1502.0">
                <children>
-                  <AnchorPane prefHeight="100.0" prefWidth="1500.0">
+                  <AnchorPane fx:id="opponentMat" prefHeight="100.0" prefWidth="1500.0">
                      <children>
                         <HBox fx:id="player1Register" layoutX="20.0" layoutY="20.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: blue;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -117,14 +117,14 @@
                         </HBox>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="anchorPaneMap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1500.0">
+                  <AnchorPane fx:id="map" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1500.0">
                      <children>
                         <TilePane fx:id="tilePane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="666.0" prefTileHeight="0.0" prefTileWidth="0.0" prefWidth="1500.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
                   
                   
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="1500.0">
+                  <AnchorPane fx:id="playerMat" prefHeight="200.0" prefWidth="1500.0">
                      <children>
                         <HBox fx:id="playerIcons" layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: blue;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
@@ -178,7 +178,7 @@
                      </VBox.margin>
                   </AnchorPane>
                </children></VBox>
-            <fx:include source="Chat.fxml" />
+            <fx:include fx:id="chat" source="Chat.fxml" />
          </children>
       </HBox>
    </children>
