@@ -1,7 +1,7 @@
 ### Known Issues
-* Chat - complete chat related Javadoc
+* Chat - complete chat related Javadoc is still missing
 * Chat - tooltip is not working
-* Chat - join button submits dummy age until join function (incl JoinView) isn't implemented
+* Chat - join button submits dummy age until join function (incl. JoinView) isn't implemented
 
 ## Version [0.1.0]
 
@@ -17,11 +17,12 @@
 
 ### Bugfixes
 
-
 ## Version [0.0.0]
 
 ### New Features
-
+* Basic project structure added (Team)
+* Views and corresponding Controllers added (Manu, Anna-Maria)
+* Game Images added (Vincent, Verena)
 ### Changes
 
 ### Bugfixes

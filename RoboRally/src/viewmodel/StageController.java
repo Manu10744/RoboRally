@@ -13,18 +13,18 @@ public class StageController {
     HBox chatBoardBox;
 
     @FXML
-    AnchorPane boardView;
+    AnchorPane board;
     @FXML
     VBox boardElements;
     @FXML
-    AnchorPane opponentPlayerMat;
+    AnchorPane opponentMat;
     @FXML
-    AnchorPane mapView;
+    AnchorPane map;
     @FXML
     AnchorPane playerMat;
 
     @FXML
-    AnchorPane chatView;
+    AnchorPane chat;
 
 
 }

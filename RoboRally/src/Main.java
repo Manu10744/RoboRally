@@ -3,7 +3,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import modelclient.Client;
 import modelserver.Server;
 import java.io.*;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
-        // runs server
+        // Run the server
         Server server = new Server();
         try {
             server.start(primaryStage);
@@ -34,15 +33,18 @@ public class Main extends Application {
             logger.info("Positive, switching to client mode and activating GUI...");
         }
 
-        // loads GUI
+        // Load the GUI
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/StageView.fxml"));
+            // Load view for primaryStage
+            loader.setLocation(Main.class.getResource("view/Stage.fxml"));
             AnchorPane stageView;
             stageView = loader.load();
 
+            // Set scene
             Scene scene = new Scene(stageView);
             primaryStage.setScene(scene);
+            // Show primaryStage
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
