@@ -5,14 +5,14 @@ package modelserver.game;
  *
  * @author Vincent Tafferner
  */
-public class TrojanHorseCard extends DamageCard {
+public class Worm extends DamageCard {
 
-    String cardName = "TrojanHorseCard";
-    int cardAmount = 12;
+    String cardName = "Worm";
+    int cardAmount = 6;
 
     /**
      * This is the method that activates the effect of a damage card. <br>
-     * In this case you have to take two SpamCards and play the top card of your programming deck.
+     * In this case the robot has to reboot.
      */
     @Override
     public void activateDamage() {

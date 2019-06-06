@@ -94,10 +94,16 @@ public class Instructions implements Serializable {
      */
     public enum ClientToServerInstructionType {
         // CHAT
-        CHECK_NAME, SEND_MESSAGE, SEND_PRIVATE_MESSAGE, BYE,
+
+        CHECK_NAME, // MOVED ->  ClientChatInstruction
+        SEND_MESSAGE, // MOVED -> ClientChatInstruction
+        SEND_PRIVATE_MESSAGE, // MOVED -> ClientChatInstruction
+        BYE, // MOVED -> ClientChatInstruction
 
         // GAME
-        INIT_GAME, JOIN_GAME, START_GAME
+        INIT_GAME, // ENTFÄLLT
+        JOIN_GAME, // ENTFÄLLT
+        START_GAME // ENTFÄLLT
     }
 
     /**
@@ -105,15 +111,26 @@ public class Instructions implements Serializable {
      */
     public enum ServerToClientInstructionType {
         // CHAT
-        NAME_INVALID, NAME_SUCCESS,
-        CLIENT_JOINED, CLIENT_REGISTER, CLIENT_WELCOME,
-        NEW_MESSAGE,
-        CLIENT_LEAVES,
-        KILL_CLIENT,
+        NAME_INVALID, // MOVED -> ServerChatInstruction
+        NAME_SUCCESS, // MOVED -> ServerChatInstruction
+        CLIENT_JOINED, // MOVED -> ServerChatInstruction
+        CLIENT_REGISTER, // MOVED -> ServerChatInstruction
+        CLIENT_WELCOME, // MOVED -> ServerChatInstruction
+        NEW_MESSAGE, // MOVED -> ServerChatInstruction
+        CLIENT_LEAVES, // MOVED -> ServerChatInstruction
+        KILL_CLIENT, // UNSICHER OB FUSION MIT CLIENT_LEAVES, FALLS OK BITTE MACHEN,
+                     // VORERST VERSCHOBEN IN ServerChatInstruction
 
         // GAME
-        GAME_INIT, GAME_INIT_FAIL1,
-        GAME_JOIN, GAME_JOIN_FAIL1, GAME_JOIN_FAIL2, GAME_JOIN_FAIL3,
-        GAME_START, GAME_START_FAIL1, GAME_START_FAIL2, GAME_START_FAIL3,
+        GAME_INIT, // ENTFÄLLT
+        GAME_INIT_FAIL1, // ENTFÄLLT
+        GAME_JOIN, // ENTFÄLLT
+        GAME_JOIN_FAIL1, // ENTFÄLLT
+        GAME_JOIN_FAIL2, // UNSICHER
+        GAME_JOIN_FAIL3, // UNSICHER
+        GAME_START, // ENTFÄLLT
+        GAME_START_FAIL1, // ENTFÄLLT, STARTET AUTOMATISCH
+        GAME_START_FAIL2, // ENTFÄLLT
+        GAME_START_FAIL3, // ENTFÄLLT, GAME IST IMMER INITIALIZED
     }
 }

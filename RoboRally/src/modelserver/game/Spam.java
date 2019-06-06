@@ -6,9 +6,9 @@ package modelserver.game;
  *
  * @author Vincent Tafferner
  */
-public class SpamCard extends DamageCard {
+public class Spam extends DamageCard {
 
-    String cardName = "SpamCard";
+    String cardName = "Spam";
     int cardAmount = 36;
 
     /**
