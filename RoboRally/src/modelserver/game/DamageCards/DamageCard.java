@@ -1,5 +1,7 @@
-package modelserver.game;
+package modelserver.game.DamageCards;
 
+
+import modelserver.game.Card;
 
 public class DamageCard extends Card {
 

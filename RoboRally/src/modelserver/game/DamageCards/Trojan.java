@@ -1,4 +1,4 @@
-package modelserver.game;
+package modelserver.game.DamageCards;
 
 /**
  * This class defines a kind of damage.

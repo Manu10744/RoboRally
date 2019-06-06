@@ -1,4 +1,4 @@
-package modelserver.game;
+package modelserver.game.ProgrammingCards;
 
 /**
  * This class implements the PowerUp card.

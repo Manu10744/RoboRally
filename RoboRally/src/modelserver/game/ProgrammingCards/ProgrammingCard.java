@@ -1,4 +1,6 @@
-package modelserver.game;
+package modelserver.game.ProgrammingCards;
+
+import modelserver.game.Card;
 
 /**
  * This class defines a programming card.

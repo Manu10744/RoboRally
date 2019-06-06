@@ -6,7 +6,7 @@ package modelserver.game;
  *
  * @author Vincent Tafferner
  */
-abstract class Card {
+public abstract class Card {
 
     String cardName;
     int cardAmount;
