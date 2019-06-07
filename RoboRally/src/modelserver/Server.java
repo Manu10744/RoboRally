@@ -269,7 +269,7 @@ public class Server extends Application {
                                 client.writer.writeObject(new Instructions(CLIENT_LEAVES, content)); //Typsicherheit durch Instructions
                                 client.writer.flush();
                             }
-                            writer.writeObject(new Instructions(KILL_CLIENT, ""));
+                            writer.writeObject(new Instructions(KILL_CLIENT, "")); //Todo: Integrate in sayBye() -> saves instruction we do not actually need
                             writer.flush();
 
                             //Use stream to remove client from serverlist: (Maybe there is a more efficient way?)

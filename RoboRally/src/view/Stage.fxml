@@ -11,7 +11,7 @@
    <children>
       <HBox fx:id="chatBoardBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
          <children>
-            <VBox fx:id="board" prefHeight="1006.0" prefWidth="1502.0">
+            <VBox fx:id="boardView" prefHeight="1006.0" prefWidth="1502.0">
                <children>
                   <AnchorPane fx:id="opponentMat" prefHeight="100.0" prefWidth="1500.0">
                      <children>

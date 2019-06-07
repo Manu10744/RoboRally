@@ -1,4 +1,4 @@
 package utils.instructions;
 
-public class ClientGameInstruction {
+public class ClientGameInstruction extends src.utils.instructions.ClientInstruction {
 }

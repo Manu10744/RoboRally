@@ -1,5 +1,7 @@
 package utils.json;
 
+import javafx.beans.property.IntegerProperty;
+
 /**
  * This class is the wrapper class for the body of the JSON messages according to the
  * protocol.
@@ -14,26 +16,26 @@ public class MessageBody {
     private boolean isAI;
 
     // For Player-Server communication before the game
-    private int playerID;
+    private Integer playerID;
     private String name;
-    private int figure;
-    private boolean ready;
+    private Integer figure;
+    private Boolean ready;
 
     // For messages
     private String message;
-    private int to;
-    private int from;
-    private boolean isPrivate;
+    private Integer to;
+    private Integer from;
+    private Boolean isPrivate;
 
     // For error messages
     private String error;
 
     // For playing cards
     private String card;
-    private int phase;
-    private int x;
-    private int y;
-    private int register;
+    private Integer phase;
+    private Integer x;
+    private Integer y;
+    private Integer register;
     private String direction;
 
 
