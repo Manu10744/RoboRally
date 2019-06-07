@@ -14,9 +14,12 @@ import utils.json.JSONMessage;
 
 public class JSONDecoder {
 
+    public static JSONMessage deserializeJSON(String json) {
+        Gson gson = new Gson();
+        // Map the received message to the JSONMessage class
+        JSONMessage messageObj = gson.fromJson(json, JSONMessage.class);
 
-    public static JSONMessage deserializeJSON(String JSONmessage) {
- return null;
+        return messageObj;
 
     }
 

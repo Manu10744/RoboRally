@@ -12,6 +12,24 @@ import utils.json.MessageBody;
  */
 public class JSONEncoder {
 
+    public String serializeJSON(JSONMessage messageObj) {
+        Gson gson = new Gson();
+        // Convert the object into a JSON String
+        String json = gson.toJson(messageObj);
+
+        return json;
+    }
+
+
+
+
+
+
+
+
+
+
+
     // JSON Message No.2 according to the protocol PDF
     // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.
     public static void main(String[] args) {
