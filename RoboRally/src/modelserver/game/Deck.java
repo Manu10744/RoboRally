@@ -1,8 +1,6 @@
 package modelserver.game;
 
 import java.util.ArrayList;
-import modelserver.game.Card;
-import modelserver.game.ProgrammingCard;
 
 /**
  * This class is responsible for handling the Cards in the game.

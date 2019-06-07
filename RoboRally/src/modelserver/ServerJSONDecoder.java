@@ -3,8 +3,8 @@ package modelserver;
 import com.google.gson.*;
 
 /**
- * This class is responsible for translating JSON messages, which were received by a client,
- * into their java representation. It makes use of the Gson library.
+ * This class is responsible for the deserialization (JSON -> Java) of JSON messages which were received by a client.
+ * It makes use of the Gson library.
  *
  * @author Manuel Neumayer
  */
