@@ -1,24 +1,27 @@
-package modelclient;
+package utils.json;
 
 import com.google.gson.*;
 import utils.instructions.Instructions;
 import utils.json.JSONMessage;
 
 /**
- * This class is responsible for the deserialization (JSON -> Java) of JSON messages which were received by the server.
+ * This class is responsible for the deserialization (JSON -> Java) of JSON-Messages.
  * It makes use of the Gson library.
  *
  * @author Manuel Neumayer
+ * @author Mia
  */
 
-public class ClientJSONDecoder {
+public class JSONDecoder {
 
-    public static JSONMessage deserializeJSON() {
+
+    public static JSONMessage deserializeJSON(String JSONmessage) {
+ return null;
 
     }
 
     public static Instructions getInstructionByMessageType(){
-
+return null;
     }
 
 

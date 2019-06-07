@@ -1,17 +1,16 @@
-package modelclient;
+package utils.json;
 
 import com.google.gson.*;
 import utils.json.JSONMessage;
 import utils.json.MessageBody;
 
 /**
- * This class is responsible for the serialization (Java to JSON) of java objects in order
- * to create a JSON message that can be sent to the server.
+ * This class is responsible for the serialization (Java to JSON) of java objects
  * It makes use of the Gson library.
  *
  * @author Manuel Neumayer
  */
-public class ClientJSONEncoder {
+public class JSONEncoder {
 
     // JSON Message No.2 according to the protocol PDF
     // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.
