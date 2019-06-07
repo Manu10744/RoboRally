@@ -1,6 +1,7 @@
 package modelclient;
 
 import com.google.gson.*;
+import utils.instructions.Instructions;
 import utils.json.JSONMessage;
 
 /**
@@ -11,6 +12,23 @@ import utils.json.JSONMessage;
  */
 
 public class ClientJSONDecoder {
+
+    public static JSONMessage deserializeJSON() {
+
+    }
+
+    public static Instructions getInstructionByMessageType(){
+
+    }
+
+
+
+
+
+
+
+
+
 
     // JSON Message No.2 according to the protocol PDF
     // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.

@@ -19,10 +19,12 @@ public class ClientJSONEncoder {
         // Create a new Gson object
         Gson gson = new Gson();
         // Create the messageBody for the message
-        MessageBody body = new MessageBody("Version 0.1");
+        MessageBody body = new MessageBody();
         // Create the message
         JSONMessage message = new JSONMessage("HelloClient", body);
         String json = gson.toJson(message);
+
+
         // Test if it worked
         System.out.println(json);
     }

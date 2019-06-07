@@ -88,7 +88,9 @@ public class Server extends Application {
 
                 //READER:
                 ObjectInputStream reader = new ObjectInputStream(clientSocket.getInputStream());
+
                 Instructions instruction;
+
                 while((instruction = (Instructions) reader.readObject()) != null) {
                     Instructions.ClientToServerInstructionType clientToServerInstructionType = instruction.getClientToServerInstructionType();
                     String content = instruction.getContent();
