@@ -19,12 +19,17 @@ public class Instruction implements Serializable {
         WELCOME, // Client gets a player ID from the server
         RECEIVED_CHAT, //Server distributes message to all
         RECEIVED_PRIVATE_CHAT, // Server distributes private message to the appropriate player
+
         ERROR, // Server informs client that a transmission error occurred
+        NAME_INVALID, // Will be part of meesage type "error", message body contains name_invalid -> new method call
 
         //ClientChatInstructions
         HELLO_SERVER, //Client sends group name, protocol-vs and KI-on/off to Server
         SEND_CHAT, //Client sends public message to all, the value of "to" of the JSON-message must be -1
         SEND_PRIVATE_CHAT, //Clients sends private message to another player via the server
+        CLIENT_LEAVES, // Client informs Server if clients leaves the game
+        BYE, // Client leaves game and informs server thereof
+
 
         //ClientGameInstruction
         PLAYER_VALUES, //Client sends player-name and player figure is sent to server
@@ -36,8 +41,6 @@ public class Instruction implements Serializable {
         CARDS_SELECTED, //Client informs client that a card has been put in the register
         SELECTION_FINISHED, // Client informs server that a player has filled his or her full register
         PLAYER_SHOOTING, //For animation purposes (?)
-        CLIENT_LEAVES, // Client informs Server if clients leaved the game
-
 
         //ServerGameInstruction
         PLAYER_ADDED, //Server confirms player_name and player_figure
@@ -150,10 +153,10 @@ public class Instruction implements Serializable {
     public enum ClientToServerInstructionType {
         // CHAT
 
-        CHECK_NAME, // MOVED ->  ClientChatInstruction
-        SEND_MESSAGE, // MOVED -> ClientChatInstruction
-        SEND_PRIVATE_MESSAGE, // MOVED -> ClientChatInstruction
-        BYE, // MOVED -> ClientChatInstruction
+        CHECK_NAME, // Ersetzt, player_added
+        SEND_MESSAGE, // Ersetzt, send_chat
+        SEND_PRIVATE_MESSAGE, // Ersetr, send_private_chat
+        BYE, // Entfällt
 
         // GAME
         INIT_GAME, // ENTFÄLLT
@@ -166,15 +169,15 @@ public class Instruction implements Serializable {
      */
     public enum ServerToClientInstructionType {
         // CHAT
-        NAME_INVALID, // MOVED -> ServerChatInstruction
-        NAME_SUCCESS, // MOVED -> ServerChatInstruction
-        CLIENT_JOINED, // MOVED -> ServerChatInstruction
-        CLIENT_REGISTER, // MOVED -> ServerChatInstruction
-        CLIENT_WELCOME, // MOVED -> ServerChatInstruction
-        NEW_MESSAGE, // MOVED -> ServerChatInstruction
+        NAME_INVALID, // ?
+        NAME_SUCCESS, // Ersetzt, name_added
+        CLIENT_JOINED, // Ersetzt, welcome
+        CLIENT_REGISTER, // Ersetzt, player_added
+        CLIENT_WELCOME, // Ersetzt,  welcome
+        NEW_MESSAGE, // Ersetzt, receive_chat
+        BYE,
         CLIENT_LEAVES, // MOVED -> ServerChatInstruction
-        KILL_CLIENT, // UNSICHER OB FUSION MIT CLIENT_LEAVES, FALLS OK BITTE MACHEN,
-                     // VORERST VERSCHOBEN IN ServerChatInstruction
+        KILL_CLIENT, // Removed,  will be merged with client_leaves
 
         // GAME
         GAME_INIT, // ENTFÄLLT
