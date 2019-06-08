@@ -6,7 +6,9 @@ package utils.instructions;
  *
  * {@link ServerChatInstructionType} The instructions represented as enum value.<br>
  */
-public class ServerChatInstruction {
+public class ServerChatInstruction extends Instruction {
+
+    private  ServerChatInstruction serverChatInstruction;
 
     public enum ServerChatInstructionType {
         NAME_INVALID,
@@ -18,4 +20,9 @@ public class ServerChatInstruction {
         CLIENT_LEAVES,
         KILL_CLIENT
     }
+
+    public ServerChatInstruction getServerChatInstruction(){
+        return this.serverChatInstruction;
+    }
+
 }

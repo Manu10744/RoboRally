@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import modelserver.game.Game;
 import modelserver.game.Player;
-import utils.instructions.Instructions;
+import utils.instructions.Instruction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static utils.instructions.Instructions.ServerToClientInstructionType.*;
+import static utils.instructions.Instruction.ServerToClientInstructionType.*;
 
 /**
  * This class implements the server. <br>
@@ -88,11 +88,10 @@ public class Server extends Application {
 
                 //READER:
                 ObjectInputStream reader = new ObjectInputStream(clientSocket.getInputStream());
+                Instruction instruction;
 
-                Instructions instruction;
-
-                while((instruction = (Instructions) reader.readObject()) != null) {
-                    Instructions.ClientToServerInstructionType clientToServerInstructionType = instruction.getClientToServerInstructionType();
+                while((instruction = (Instruction) reader.readObject()) != null) {
+                    Instruction.ClientToServerInstructionType clientToServerInstructionType = instruction.getClientToServerInstructionType();
                     String content = instruction.getContent();
 
                     switch (clientToServerInstructionType) {
@@ -103,7 +102,7 @@ public class Server extends Application {
                                 if (client.name.equals(content)) {
                                     logger.info("Client " + content + " refused (name already exists)");
 
-                                    writer.writeObject(new Instructions(NAME_INVALID, ""));
+                                    writer.writeObject(new Instruction(NAME_INVALID, ""));
                                     writer.flush();
                                     success = false;
                                     break;
@@ -116,24 +115,24 @@ public class Server extends Application {
                                 connectedClients.add(new ClientWrapper(clientSocket, content, writer));
 
                                 // TODO check if the following three lines are necessary
-                                writer.writeObject(new Instructions(NAME_SUCCESS, ""));
+                                writer.writeObject(new Instruction(NAME_SUCCESS, ""));
                                 writer.flush();
 
                                 //Send message to all already active clients
                                 for (ClientWrapper client : connectedClients) {
                                     if(!client.socket.equals(clientSocket)) {
-                                        client.writer.writeObject(new Instructions(CLIENT_JOINED, content));
+                                        client.writer.writeObject(new Instruction(CLIENT_JOINED, content));
                                         client.writer.flush();
 
                                     } else { //New Client receives different message:
-                                        client.writer.writeObject(new Instructions(CLIENT_WELCOME, content));
+                                        client.writer.writeObject(new Instruction(CLIENT_WELCOME, content));
                                         client.writer.flush();
                                     }
                                 }
                                 //Register all current activeClients at new Client
                                 for(ClientWrapper client : connectedClients) {
                                     if (!client.socket.equals(clientSocket)) {
-                                        writer.writeObject(new Instructions(CLIENT_REGISTER, client.name));
+                                        writer.writeObject(new Instruction(CLIENT_REGISTER, client.name));
                                         writer.flush();
                                     }
                                 }
@@ -147,7 +146,7 @@ public class Server extends Application {
                                     findFirst().get().name;
                             //Send message to all clients:
                             for(ClientWrapper client : connectedClients) {
-                                client.writer.writeObject(new Instructions(NEW_MESSAGE,
+                                client.writer.writeObject(new Instruction(NEW_MESSAGE,
                                         clientName + ": " + content));
                                 client.writer.flush();
                             }
@@ -160,12 +159,12 @@ public class Server extends Application {
                                     findFirst().get().name;
                             for(ClientWrapper client : connectedClients){
                                 if(instruction.getAddressedClient().equals(client.name)){
-                                    client.writer.writeObject(new Instructions(NEW_MESSAGE,
+                                    client.writer.writeObject(new Instruction(NEW_MESSAGE,
                                             sendingClientName + ": (private) " + content));
                                     client.writer.flush();
                                 }
                                 if(sendingClientName.equals(client.name)){
-                                    client.writer.writeObject(new Instructions(NEW_MESSAGE,
+                                    client.writer.writeObject(new Instruction(NEW_MESSAGE,
                                             sendingClientName + ": @" + instruction.getAddressedClient() + " (private) " + content));
                                     client.writer.flush();
                                 }
@@ -177,7 +176,7 @@ public class Server extends Application {
                             if (!gameIsInitialized) {
                                 logger.info("Client " + content + " initialized a new game");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_INIT, content));
+                                    client.writer.writeObject(new Instruction(GAME_INIT, content));
                                     client.writer.flush();
                                 }
                                 //Initializes a new Game
@@ -186,7 +185,7 @@ public class Server extends Application {
                             } else {
                                 logger.info("Client " + content + " tried to initialize a game although it is already initialized");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_INIT_FAIL1, content));
+                                    client.writer.writeObject(new Instruction(GAME_INIT_FAIL1, content));
                                     client.writer.flush();
                                 }
                                 break;
@@ -198,25 +197,25 @@ public class Server extends Application {
                             if (!gameIsInitialized) {
                                 logger.info("Client " + content + " can't join a not initialized game");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_JOIN_FAIL1, content));
+                                    client.writer.writeObject(new Instruction(GAME_JOIN_FAIL1, content));
                                     client.writer.flush();
                                 }
                             } else if (players.size() == 4) {
                                 logger.info("Client " + content + " can't join the Game, because maximum player number reached");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_JOIN_FAIL2, content));
+                                    client.writer.writeObject(new Instruction(GAME_JOIN_FAIL2, content));
                                     client.writer.flush();
                                 }
                             } else if (gameIsRunning) {
                                 logger.info("Client " + content + " can't join an already running game");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_JOIN_FAIL3, content));
+                                    client.writer.writeObject(new Instruction(GAME_JOIN_FAIL3, content));
                                     client.writer.flush();
                                 }
                             } else {
                                 logger.info(content + " joined the game");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_JOIN, content));
+                                    client.writer.writeObject(new Instruction(GAME_JOIN, content));
                                     client.writer.flush();
                                 }
                                 //Get PlayerName
@@ -236,7 +235,7 @@ public class Server extends Application {
                                 if (players.size() >= 2) {
                                     logger.info("Client " + content + " started the game");
                                     for (ClientWrapper client : connectedClients) {
-                                        client.writer.writeObject(new Instructions(GAME_START, content));
+                                        client.writer.writeObject(new Instruction(GAME_START, content));
                                         client.writer.flush();
                                     }
                                     //Starts a new game with in players so far registered clients
@@ -246,19 +245,19 @@ public class Server extends Application {
                             } else if (gameIsInitialized) {
                                 logger.info(content + " can't start. At least one other player must join the game");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_START_FAIL1, content));
+                                    client.writer.writeObject(new Instruction(GAME_START_FAIL1, content));
                                     client.writer.flush();
                                 }
                             } else if (gameIsRunning) {
                                 logger.info(content + " can't start an already running game");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_START_FAIL2, content));
+                                    client.writer.writeObject(new Instruction(GAME_START_FAIL2, content));
                                     client.writer.flush();
                                 }
                             } else {
                                 logger.info(content + " can't start. No game is initialized");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instructions(GAME_START_FAIL3, content));
+                                    client.writer.writeObject(new Instruction(GAME_START_FAIL3, content));
                                     client.writer.flush();
                                 }
                             }
@@ -268,10 +267,10 @@ public class Server extends Application {
                             logger.info("Client " + content + " left the room");
                             //Send message to all clients:
                             for(ClientWrapper client : connectedClients) {
-                                client.writer.writeObject(new Instructions(CLIENT_LEAVES, content)); //Typsicherheit durch Instructions
+                                client.writer.writeObject(new Instruction(CLIENT_LEAVES, content)); //Typsicherheit durch Instruction
                                 client.writer.flush();
                             }
-                            writer.writeObject(new Instructions(KILL_CLIENT, "")); //Todo: Integrate in sayBye() -> saves instruction we do not actually need
+                            writer.writeObject(new Instruction(KILL_CLIENT, "")); //Todo: Integrate in sayBye() -> saves instruction we do not actually need
                             writer.flush();
 
                             //Use stream to remove client from serverlist: (Maybe there is a more efficient way?)

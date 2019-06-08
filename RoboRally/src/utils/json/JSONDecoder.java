@@ -1,7 +1,7 @@
 package utils.json;
 
 import com.google.gson.*;
-import utils.instructions.Instructions;
+import utils.instructions.*;
 import utils.json.JSONMessage;
 
 /**
@@ -23,8 +23,36 @@ public class JSONDecoder {
 
     }
 
-    public static Instructions getInstructionByMessageType(){
-return null;
+    public static ServerChatInstruction.ServerChatInstructionType getInstructionByMessageType(JSONMessage message){
+        switch (message.getMessageType()){
+            case "HelloClient": return ServerChatInstruction.ServerChatInstructionType.CLIENT_WELCOME;
+        }
+        return null; //error?
+    }
+
+   /* public static ClientChatInstruction.ClientChatInstructionType getInstructionByMessageType(JSONMessage message){
+        ServerChatInstruction.ServerChatInstructionType instruction;
+
+        switch (message.getMessageType()){
+            case "HelloServer": return ClientChatInstruction.ClientChatInstructionType.CHECK_NAME; //correct instructions missing
+        }
+        return null;
+    }
+
+    public static ServerGameInstruction.ServerGameInstructionType getInstructionByMessageType(JSONMessage message){
+        ServerChatInstruction.ServerChatInstructionType instruction;
+
+        switch (message.getMessageType()){
+            case "HelloClient": instruction = ServerChatInstruction.ServerChatInstructionType.CLIENT_WELCOME;;
+        }
+        return instruction;
+    }
+
+    public static ClientGameInstruction.ClientGameInstructionType getInstructionByMessageType(JSONMessage message){
+
+        switch (message.getMessageType()){
+            case "HelloClient": return ServerGameInstruction.ServerGameInstructionType;
+        }
     }
 
 
@@ -52,4 +80,6 @@ return null;
         System.out.println(message.getMessageBody().getProtocol());
 
     }
+
+    */
 }

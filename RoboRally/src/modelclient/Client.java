@@ -1,13 +1,11 @@
 package modelclient;
 
 import java.util.logging.Logger;
-import viewmodel.ChatController;
-import javafx.application.Application;
+
+import utils.instructions.Instruction;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.stage.Stage;
-import utils.instructions.Instructions;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -75,7 +73,7 @@ public class Client {
 
             //Send ChatInstruction "Check_Name" to server with client name
             writer = new ObjectOutputStream(socket.getOutputStream());
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.CHECK_NAME, name) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.CHECK_NAME, name) );
             writer.flush(); // ist nötig, damit was geschickt wird
 
             waitingForAnswer = true;
@@ -105,7 +103,7 @@ public class Client {
      */
     public void sendMessage(String message)  {
         try {
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.SEND_MESSAGE, message) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_MESSAGE, message) );
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -122,7 +120,7 @@ public class Client {
      */
     public void sendPrivateMessage(String message, String addressedClient)  {
         try {
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.SEND_PRIVATE_MESSAGE, message, addressedClient) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_PRIVATE_MESSAGE, message, addressedClient) );
             writer.flush();
         } catch (IOException exp) {
             //TODO
@@ -135,7 +133,7 @@ public class Client {
      */
     public void init() {
         try {
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.INIT_GAME, name));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.INIT_GAME, name));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -149,7 +147,7 @@ public class Client {
      */
     public void join(String name, int age) {
         try {
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.JOIN_GAME, name, age));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.JOIN_GAME, name, age));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -163,7 +161,7 @@ public class Client {
      */
     public void start() {
         try {
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.START_GAME, name));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.START_GAME, name));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -175,7 +173,7 @@ public class Client {
      */
     public void sayBye() {
         try {
-            writer.writeObject( new Instructions(Instructions.ClientToServerInstructionType.BYE, name) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.BYE, name) );
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -266,9 +264,9 @@ public class Client {
                 //Reads input stream from server
                 ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
-                Instructions chatInstruction;
-                while ((chatInstruction = (Instructions) reader.readObject()) != null) {
-                    Instructions.ServerToClientInstructionType serverToClientInstructionType = chatInstruction.getServerToClientInstructionType();
+                Instruction chatInstruction;
+                while ((chatInstruction = (Instruction) reader.readObject()) != null) {
+                    Instruction.ServerToClientInstructionType serverToClientInstructionType = chatInstruction.getServerToClientInstructionType();
                     String content = chatInstruction.getContent();
 
                     switch (serverToClientInstructionType) {
@@ -292,7 +290,7 @@ public class Client {
                             break;
                         }
                         case CLIENT_JOINED: {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                                 addActiveClient(name);
@@ -300,7 +298,7 @@ public class Client {
                             break;
                         }
                         case CLIENT_WELCOME: {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(finalChatInstruction.getAddendum(serverToClientInstructionType) + content);
                                 activeClients.add(content);
@@ -308,7 +306,7 @@ public class Client {
                             break;
                         }
                         case CLIENT_LEAVES: {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                                 removeActiveClient(content);
@@ -328,7 +326,7 @@ public class Client {
                             break;
                         }
                         case GAME_INIT: {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                                 gameInitialized.set(true);
@@ -336,16 +334,15 @@ public class Client {
                             break;
                         }
                         case GAME_JOIN: {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                //Add other player if name is different to this client
                                 if(!content.equals(name)) addOtherPlayer(content);
                             });
                             break;
                         }
                         case GAME_START: {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                                 gameStarted.set(true);
@@ -356,7 +353,7 @@ public class Client {
                         case GAME_INIT_FAIL1:
                         case GAME_JOIN_FAIL1: case GAME_JOIN_FAIL2: case GAME_JOIN_FAIL3:
                         case GAME_START_FAIL1: case GAME_START_FAIL2: case GAME_START_FAIL3:    {
-                            Instructions finalChatInstruction = chatInstruction;
+                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                             });

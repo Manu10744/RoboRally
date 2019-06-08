@@ -7,7 +7,62 @@ import java.io.Serializable;
  *
  * @author Ivan Dovecar
  */
-public class Instructions implements Serializable {
+public class Instruction implements Serializable {
+
+    public Instruction(){
+
+    }
+
+    public enum InstructionType{
+        // ServerChatInstructions
+        HELLO_CLIENT, //Server sends Protocol-vs to Client
+        WELCOME, // Client gets a player ID from the server
+        RECEIVED_CHAT, //Server distributes message to all
+        RECEIVED_PRIVATE_CHAT, // Server distributes private message to the appropriate player
+        ERROR, // Server informs client that a transmission error occurred
+
+        //ClientChatInstructions
+        HELLO_SERVER, //Client sends group name, protocol-vs and KI-on/off to Server
+        SEND_CHAT, //Client sends public message to all, the value of "to" of the JSON-message must be -1
+        SEND_PRIVATE_CHAT, //Clients sends private message to another player via the server
+
+        //ClientGameInstruction
+        PLAYER_VALUES, //Client sends player-name and player figure is sent to server
+        SET_STATUS, // Client signals to server if player is ready
+        PLAY_CARD, // Player plays a card
+        SET_STARTING_POINT, // Player chooses starting point and informs server of her or his choice
+        SELECT_CARDS, /* Player selects cards, each selected card is sent to the srever after five have been chosen.
+                        If a register is emptied the card value is 'null'*/
+        CARDS_SELECTED, //Client informs client that a card has been put in the register
+        SELECTION_FINISHED, // Client informs server that a player has filled his or her full register
+        PLAYER_SHOOTING, //For animation purposes (?)
+        CLIENT_LEAVES, // Client informs Server if clients leaved the game
+
+
+        //ServerGameInstruction
+        PLAYER_ADDED, //Server confirms player_name and player_figure
+        PLAYER_STATUS, // Server informs all other players of the status of the new player
+        GAME_STARTED, // Server sends maps to clients
+        CARD_PLAYED, // Server notifies all other players of the played card
+        CURRENT_PLAYER, // Server informs all of the player that is to move
+        ACTIVE_PHASE, // Server informs all about the current game phase
+        STARTING_POINT_TAKEN, // Server confirms starting point and informs other players of it
+        YOUR_CARDS, // Server informs player of her or his hand
+        NOT_YOUR_CARD, // Server informs other players of the number of cards another has
+        SHUFFLE_CODING, // If not enough cards are on the discarded pile it ha sto be reshuffled
+        TIMER_STARTED, // Server starts timer if someone has a full register
+        TIMER_ENDED, // Server informs all clients that time for choosing programming cards has run out; player IDs of too slow players is saved
+        CARDS_YOU_GOT_NOW, // Server fills empty registers after time ran out
+        CURRENT_CARDS, // Server informs all palyers of the cards in the current register
+        MOVEMENT, // Server informs other players of a move made (just walking, no turning)
+        DRAW_DAMAGE, // Server informs player of damage suffered in round; the damage will be handed out in fixed bundles, no individual damage is given
+        REBOOT, // Server informs all player if another one has to reboot
+        PLAYER_TURNING, // Server informs all clients if a player turns (left, right)
+        ENERGY, // Server informs client of new energy level and its reason for changing
+        CHECKPOINT_REACHED, // Server informs all palyers if a player reached a checkpoint
+        GAME_FINISHED // Server informs palyers if a player has won
+
+    }
 
     private ClientToServerInstructionType clientToServerInstructionType;
     private ServerToClientInstructionType serverToClientInstructionType;
@@ -15,23 +70,23 @@ public class Instructions implements Serializable {
     private String addressedClient;
     private int age;
 
-    public Instructions(ClientToServerInstructionType clientToServerInstructionType, String content) {
+    public Instruction(ClientToServerInstructionType clientToServerInstructionType, String content) {
         this.clientToServerInstructionType = clientToServerInstructionType;
         this.content = content;
     }
 
-    public Instructions(ServerToClientInstructionType serverToClientInstructionType, String content) {
+    public Instruction(ServerToClientInstructionType serverToClientInstructionType, String content) {
         this.serverToClientInstructionType = serverToClientInstructionType;
         this.content = content;
     }
 
-    public Instructions(ClientToServerInstructionType clientToServerInstructionType, String content, String addressedClient) {
+    public Instruction(ClientToServerInstructionType clientToServerInstructionType, String content, String addressedClient) {
         this.clientToServerInstructionType = clientToServerInstructionType;
         this.content = content;
         this.addressedClient = addressedClient;
     }
 
-    public Instructions(ClientToServerInstructionType clientToServerInstructionType, String content, int age) {
+    public Instruction(ClientToServerInstructionType clientToServerInstructionType, String content, int age) {
         this.clientToServerInstructionType = clientToServerInstructionType;
         this.content = content;
         this.age = age;
