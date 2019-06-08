@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="stage" prefHeight="1046.0" prefWidth="1860.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
+<AnchorPane fx:id="stage" minHeight="700.0" minWidth="900.0" pickOnBounds="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
    <children>
       <HBox fx:id="chatBoardBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
          <children>

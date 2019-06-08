@@ -6,16 +6,23 @@ package utils.instructions;
  *
  * {@link ServerChatInstructionType} The instructions represented as enum value.<br>
  */
-public class ServerChatInstruction {
+public class ServerChatInstruction extends Instruction {
+
+    private  ServerChatInstruction serverChatInstruction;
 
     public enum ServerChatInstructionType {
-        NAME_INVALID,
-        NAME_SUCCESS,
-        CLIENT_JOINED,
-        CLIENT_REGISTER,
-        CLIENT_WELCOME,
-        NEW_MESSAGE,
-        CLIENT_LEAVES,
-        KILL_CLIENT
+        // ServerChatInstructions
+        HELLO_CLIENT, //Server sends Protocol-vs to Client
+        WELCOME, // Client gets a player ID from the server
+        RECEIVED_CHAT, //Server distributes message to all
+        RECEIVED_PRIVATE_CHAT, // Server distributes private message to the appropriate player
+
+        ERROR, // Server informs client that a transmission error occurred
+        NAME_INVALID, // Will be part of meesage type "error", message body contains name_invalid -> new method call
     }
+
+    public ServerChatInstruction getServerChatInstruction(){
+        return this.serverChatInstruction;
+    }
+
 }

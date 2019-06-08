@@ -1,7 +1,7 @@
 package utils.json;
 
 import com.google.gson.*;
-import utils.instructions.Instructions;
+import utils.instructions.*;
 import utils.json.JSONMessage;
 
 /**
@@ -23,21 +23,7 @@ public class JSONDecoder {
 
     }
 
-    public static Instructions getInstructionByMessageType(){
-return null;
-    }
 
-
-
-
-
-
-
-
-
-
-    // JSON Message No.2 according to the protocol PDF
-    // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.
     public static void main(String[] args) {
         // Create a new Gson object
         Gson gson = new Gson();
@@ -52,4 +38,6 @@ return null;
         System.out.println(message.getMessageBody().getProtocol());
 
     }
+
+
 }
