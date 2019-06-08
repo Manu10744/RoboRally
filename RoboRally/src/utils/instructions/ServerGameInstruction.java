@@ -1,6 +1,9 @@
 package utils.instructions;
 
-public class ServerGameInstruction {
+public class ServerGameInstruction extends Instruction {
+
+    private ServerGameInstructionType type;
+    private String content;
 
     public enum ServerGameInstructionType {
         //ServerGameInstruction
@@ -24,6 +27,17 @@ public class ServerGameInstruction {
         PLAYER_TURNING, // Server informs all clients if a player turns (left, right)
         ENERGY, // Server informs client of new energy level and its reason for changing
         CHECKPOINT_REACHED, // Server informs all palyers if a player reached a checkpoint
-        GAME_FINISHED // Server informs palyers if a player has won
+        GAME_FINISHED, // Server informs palyers if a player has won
+        PLAYER_SHOOTING, //For animation purposes (?)
+    }
+
+    // Constructor for a ServerGameInstruction
+    public ServerGameInstruction(ServerGameInstructionType type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+    public ServerGameInstructionType getServerGameInstructionType() {
+        return this.type;
     }
 }

@@ -8,7 +8,8 @@ package utils.instructions;
  */
 public class ServerChatInstruction extends Instruction {
 
-    private  ServerChatInstruction serverChatInstruction;
+    private ServerChatInstructionType type;
+    private String content;
 
     public enum ServerChatInstructionType {
         // ServerChatInstructions
@@ -21,8 +22,13 @@ public class ServerChatInstruction extends Instruction {
         NAME_INVALID, // Will be part of meesage type "error", message body contains name_invalid -> new method call
     }
 
-    public ServerChatInstruction getServerChatInstruction(){
-        return this.serverChatInstruction;
+    // Constructor for a ServerChatInstruction
+    public ServerChatInstruction(ServerChatInstructionType type, String content) {
+        this.type = type;
+        this.content = content;
     }
 
+    public ServerChatInstructionType getType() {
+        return this.type;
+    }
 }

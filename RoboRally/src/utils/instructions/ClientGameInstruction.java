@@ -1,6 +1,9 @@
 package utils.instructions;
 
-public class ClientGameInstruction extends src.utils.instructions.ClientInstruction {
+public class ClientGameInstruction extends Instruction {
+
+    private ClientGameInstructionType type;
+    private String content;
 
     public enum ClientGameInstructionType {
         //ClientGameInstruction
@@ -12,6 +15,16 @@ public class ClientGameInstruction extends src.utils.instructions.ClientInstruct
                         If a register is emptied the card value is 'null'*/
         CARDS_SELECTED, //Client informs client that a card has been put in the register
         SELECTION_FINISHED, // Client informs server that a player has filled his or her full register
-        PLAYER_SHOOTING, //For animation purposes (?)
+
+    }
+
+    // Constructor for a ClientGameInstruction
+    public ClientGameInstruction(ClientGameInstructionType type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+    public ClientGameInstructionType getClientGameInstructionType() {
+        return this.type;
     }
 }

@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import modelserver.game.Game;
 import modelserver.game.Player;
 import utils.instructions.Instruction;
+import utils.json.JSONDecoder;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

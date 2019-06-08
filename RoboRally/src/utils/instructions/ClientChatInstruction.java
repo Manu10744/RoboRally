@@ -6,7 +6,10 @@ package utils.instructions;
  *
  * {@link ClientChatInstructionType} The instructions represented as enum value.<br>
  */
-public class ClientChatInstruction {
+public class ClientChatInstruction extends Instruction {
+
+    private ClientChatInstructionType type;
+    private String content;
 
     public enum ClientChatInstructionType {
         //ClientChatInstructions
@@ -15,5 +18,15 @@ public class ClientChatInstruction {
         SEND_PRIVATE_CHAT, //Clients sends private message to another player via the server
         CLIENT_LEAVES, // Client informs Server if clients leaves the game
         BYE, // Client leaves game and informs server thereof
+    }
+
+    // Constructor for a ClientChatInstruction
+    public ClientChatInstruction(ClientChatInstructionType type, String content) {
+        this.type = type;
+        this.content = content;
+    }
+
+    public ClientChatInstructionType getClientChatInstructionType() {
+        return this.type;
     }
 }

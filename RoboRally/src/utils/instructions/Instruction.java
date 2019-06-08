@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class Instruction implements Serializable {
 
-    public Instruction(){
+    public Instruction() {
 
     }
 
@@ -63,7 +63,6 @@ public class Instruction implements Serializable {
         ENERGY, // Server informs client of new energy level and its reason for changing
         CHECKPOINT_REACHED, // Server informs all palyers if a player reached a checkpoint
         GAME_FINISHED // Server informs palyers if a player has won
-
     }
 
     private ClientToServerInstructionType clientToServerInstructionType;
