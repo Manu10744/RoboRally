@@ -30,7 +30,6 @@ public class Instruction implements Serializable {
         CLIENT_LEAVES, // Client informs Server if clients leaves the game
         BYE, // Client leaves game and informs server thereof
 
-
         //ClientGameInstruction
         PLAYER_VALUES, //Client sends player-name and player figure is sent to server
         SET_STATUS, // Client signals to server if player is ready

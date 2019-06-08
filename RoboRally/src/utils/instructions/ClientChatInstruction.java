@@ -9,9 +9,11 @@ package utils.instructions;
 public class ClientChatInstruction {
 
     public enum ClientChatInstructionType {
-        CHECK_NAME,
-        SEND_MESSAGE,
-        SEND_PRIVATE_MESSAGE,
-        BYE,
+        //ClientChatInstructions
+        HELLO_SERVER, //Client sends group name, protocol-vs and KI-on/off to Server
+        SEND_CHAT, //Client sends public message to all, the value of "to" of the JSON-message must be -1
+        SEND_PRIVATE_CHAT, //Clients sends private message to another player via the server
+        CLIENT_LEAVES, // Client informs Server if clients leaves the game
+        BYE, // Client leaves game and informs server thereof
     }
 }

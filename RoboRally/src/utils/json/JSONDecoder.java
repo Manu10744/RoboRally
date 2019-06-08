@@ -23,49 +23,7 @@ public class JSONDecoder {
 
     }
 
-    public static ServerChatInstruction.ServerChatInstructionType getInstructionByMessageType(JSONMessage message){
-        switch (message.getMessageType()){
-            case "HelloClient": return ServerChatInstruction.ServerChatInstructionType.CLIENT_WELCOME;
-        }
-        return null; //error?
-    }
 
-   /* public static ClientChatInstruction.ClientChatInstructionType getInstructionByMessageType(JSONMessage message){
-        ServerChatInstruction.ServerChatInstructionType instruction;
-
-        switch (message.getMessageType()){
-            case "HelloServer": return ClientChatInstruction.ClientChatInstructionType.CHECK_NAME; //correct instructions missing
-        }
-        return null;
-    }
-
-    public static ServerGameInstruction.ServerGameInstructionType getInstructionByMessageType(JSONMessage message){
-        ServerChatInstruction.ServerChatInstructionType instruction;
-
-        switch (message.getMessageType()){
-            case "HelloClient": instruction = ServerChatInstruction.ServerChatInstructionType.CLIENT_WELCOME;;
-        }
-        return instruction;
-    }
-
-    public static ClientGameInstruction.ClientGameInstructionType getInstructionByMessageType(JSONMessage message){
-
-        switch (message.getMessageType()){
-            case "HelloClient": return ServerGameInstruction.ServerGameInstructionType;
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-    // JSON Message No.2 according to the protocol PDF
-    // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.
     public static void main(String[] args) {
         // Create a new Gson object
         Gson gson = new Gson();
@@ -81,5 +39,5 @@ public class JSONDecoder {
 
     }
 
-    */
+
 }
