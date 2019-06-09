@@ -118,7 +118,7 @@ public class Instruction implements Serializable {
         switch (serverToClientInstructionType) {
             case CLIENT_JOINED:
                 return " joined the room";
-            case WELCOME:
+            case CLIENT_WELCOME:
                 return "Welcome ";
             case GAME_INIT:
                 return " initialized a new game\nYou wanna play? Join the Game!";
