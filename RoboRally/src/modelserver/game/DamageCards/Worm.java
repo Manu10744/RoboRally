@@ -1,4 +1,5 @@
 package modelserver.game.DamageCards;
+import static utils.Parameter.WORM_CARDS_AMOUNT;
 
 /**
  * This class defines a kind of damage.
@@ -8,7 +9,7 @@ package modelserver.game.DamageCards;
 public class Worm extends DamageCard {
 
     String cardName = "Worm";
-    int cardAmount = 6;
+    int cardAmount = WORM_CARDS_AMOUNT;
 
     /**
      * This is the method that activates the effect of a damage card. <br>

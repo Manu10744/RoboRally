@@ -1,4 +1,5 @@
 package modelserver.game.DamageCards;
+import static utils.Parameter.SPAM_CARDS_AMOUNT;
 
 
 import modelserver.game.Card;

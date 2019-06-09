@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static utils.Parameter.*;
 import static utils.instructions.Instruction.ServerToClientInstructionType.*;
 
 /**
@@ -40,7 +41,7 @@ public class Server extends Application {
         logger.info("Check if server is running...");
 
         //  Open socket for incoming connections, if socket already exists start aborts
-        ServerSocket serverSocket = new ServerSocket(9998);
+        ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
         logger.info("Negative, starting server... \n" +
                          "      Run Main again to start Client");
         serverIsRunning = true;
@@ -201,7 +202,7 @@ public class Server extends Application {
                                     client.writer.writeObject(new Instruction(GAME_JOIN_FAIL1, content));
                                     client.writer.flush();
                                 }
-                            } else if (players.size() == 4) {
+                            } else if (players.size() == MAX_PLAYERSIZE) {
                                 logger.info("Client " + content + " can't join the Game, because maximum player number reached");
                                 for (ClientWrapper client : connectedClients) {
                                     client.writer.writeObject(new Instruction(GAME_JOIN_FAIL2, content));
@@ -233,7 +234,7 @@ public class Server extends Application {
                             //Starts game and transfers player-names to game, if initialized and the minimum player-number
                             //of two is reached
                             if (gameIsInitialized && !gameIsRunning) {
-                                if (players.size() >= 2) {
+                                if (players.size() >= MIN_PLAYERSIZE) {
                                     logger.info("Client " + content + " started the game");
                                     for (ClientWrapper client : connectedClients) {
                                         client.writer.writeObject(new Instruction(GAME_START, content));

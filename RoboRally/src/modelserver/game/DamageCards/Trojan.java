@@ -1,5 +1,7 @@
 package modelserver.game.DamageCards;
 
+import static utils.Parameter.TROJAN_CARDS_AMOUNT;
+
 /**
  * This class defines a kind of damage.
  *
@@ -8,7 +10,7 @@ package modelserver.game.DamageCards;
 public class Trojan extends DamageCard {
 
     String cardName = "Trojan";
-    int cardAmount = 12;
+    int cardAmount = TROJAN_CARDS_AMOUNT;
 
     /**
      * This is the method that activates the effect of a damage card. <br>

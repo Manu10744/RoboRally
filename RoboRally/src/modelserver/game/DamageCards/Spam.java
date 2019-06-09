@@ -1,4 +1,6 @@
 package modelserver.game.DamageCards;
+import static utils.Parameter.SPAM_CARDS_AMOUNT;
+
 
 /**
  * Spam cards are the simplest form of damage a player can receive. <br>
@@ -9,7 +11,7 @@ package modelserver.game.DamageCards;
 public class Spam extends DamageCard {
 
     String cardName = "Spam";
-    int cardAmount = 36;
+    int cardAmount = SPAM_CARDS_AMOUNT;
 
     /**
      * This is the method that activates the effect of a damage card. <br>

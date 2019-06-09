@@ -1,4 +1,4 @@
 package utils.instructions;
 
-public class ClientInstruction {
+public class ClientInstruction extends Instruction {
 }
