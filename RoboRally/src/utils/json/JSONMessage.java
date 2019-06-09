@@ -12,6 +12,7 @@ public class JSONMessage {
     private String messageType;
     private MessageBody messageBody;
 
+
     // Constructor for a JSON message
     public JSONMessage(String messageType, MessageBody messageBody) {
     this.messageType = messageType;
