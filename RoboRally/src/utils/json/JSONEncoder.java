@@ -12,7 +12,7 @@ import utils.json.MessageBody;
  */
 public class JSONEncoder {
 
-    public String serializeJSON(JSONMessage messageObj) {
+    public static String serializeJSON(JSONMessage messageObj) {
         Gson gson = new Gson();
         // Convert the object into a JSON String
         String json = gson.toJson(messageObj);

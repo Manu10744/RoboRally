@@ -123,8 +123,8 @@ public class MessageBody {
         return isPrivate;
     }
 
-    public void setPrivate(Boolean aPrivate) {
-        isPrivate = aPrivate;
+    public void setPrivate(Boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
     public String getError() {
