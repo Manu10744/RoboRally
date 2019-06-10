@@ -40,7 +40,7 @@ public class Main extends Application {
     }
 
     /**
-     * This class implements Runnable and thereby enables the server to start in an own thread.<br>
+     * Class ServerStarterTask implements Runnable and thereby enables the server to start in an own thread.<br>
      *
      * @author Ivan Dovecar
      */
@@ -58,6 +58,12 @@ public class Main extends Application {
         }
     }
 
+    /**
+     * Class GUIStarterTask implements Runnable and thereby enables the GUI to start in an own thread.<br>
+     * As an result multiple GUIs can be loaded simultaneously for developing and testing reasons.
+     *
+     * @author Ivan Dovecar
+     */
     public class GUIStarterTask implements Runnable {
 
         @Override
