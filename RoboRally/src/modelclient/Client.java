@@ -40,6 +40,7 @@ public class Client {
 
 
     public Client(String name, String serverIP, int serverPort) {
+        logger.info("Starting registration process...");
         this.name = name;
         this.serverIP = serverIP;
         this.serverPort = serverPort;
@@ -60,7 +61,6 @@ public class Client {
      * @return connection Success: True, connection Failed: False
      */
     public boolean connect() {
-        logger.info("Starting client...");
 
         try {
             //Create socket to connect to server at serverIP:serverPort
@@ -79,14 +79,14 @@ public class Client {
             waitingForAnswer = true;
             while(waitingForAnswer) {
                 //WAIT FOR ANSWER FROM SERVER, waitingForAnswer is changed by ClientReaderTask once finished
-                logger.info("WAITING...");
+                logger.info("Waiting...");
                 if (waitingForAnswer) try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            logger.info("Connected to server");
+            logger.info("Registration process finished");
 
             return nameSuccess; //gets set by ClientReaderTask
         } catch(IOException exp) {

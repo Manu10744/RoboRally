@@ -338,8 +338,8 @@ public class ChatController implements Initializable {
     private void showTooltip (Stage owner, Control control, Tooltip tooltip) {
         Point2D p = control.localToScene(0.0, 0.0);
         tooltip.show(owner,
-                p.getX() + control.getScene().getX() + control.getScene().getWindow().getX(),
-                p.getY() + control.getScene().getY() + control.getScene().getWindow().getY() + control.getHeight());
+                p.getX(),
+                p.getY() );
     }
 
     /**

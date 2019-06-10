@@ -30,7 +30,6 @@ public class Server extends Application {
 
     private ArrayList<ClientWrapper> connectedClients;
     private ArrayList<Player> players = new ArrayList<>();
-    public boolean serverIsRunning = false;
     private boolean gameIsInitialized = false;
     private boolean gameIsRunning = false;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
@@ -38,13 +37,10 @@ public class Server extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        logger.info("Check if server is running...");
+        logger.info("Starting server...");
 
         //  Open socket for incoming connections, if socket already exists start aborts
         ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
-        logger.info("Negative, starting server... \n" +
-                         "      Run Main again to start Client");
-        serverIsRunning = true;
 
         connectedClients = new ArrayList<>();
         boolean isAcceptingNewClients = true;

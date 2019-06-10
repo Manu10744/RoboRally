@@ -10,7 +10,7 @@
 * Player registration, game-init, -join with age and -start works - *(Ivan)*
 
 ### Changes
-* Main - runs server and client by parallel run - *(Ivan)*
+* Main - runs server and client parallel *(Ivan)*
 * Chat - preset dummy-server IP+Port *(Ivan)*
 * Chat - activate text fields in proper order - *(Ivan)*
 * Chat - implement button actions - *(Ivan)*
@@ -23,6 +23,7 @@
 * Basic project structure added - *(Team)*
 * Views and corresponding Controllers added - *(Manu, Anna-Maria)*
 * Game Images added - *(Vincent, Verena)*
+
 ### Changes
 
 ### Bugfixes

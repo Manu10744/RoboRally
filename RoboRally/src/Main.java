@@ -18,22 +18,17 @@ import java.util.logging.Logger;
  */
 public class Main extends Application {
 
-    Stage primaryStage;
+
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
     @Override
     public void start(Stage primaryStage) {
 
+        // Run server in an own Thread
+        Thread server = new Thread(new ServerStarterTask());
+        server.start();
 
-        // Run the server
-        Server server = new Server();
-        try {
-            server.start(primaryStage);
-        } catch (Exception e) {
-            logger.info("Positive, switching to client mode and activating GUI...");
-        }
-
-        // Load the GUI
+        // Load GUI
         try {
             FXMLLoader loader = new FXMLLoader();
             // Load view for primaryStage
@@ -44,10 +39,30 @@ public class Main extends Application {
             // Set scene
             Scene scene = new Scene(stageView);
             primaryStage.setScene(scene);
+
             // Show primaryStage
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * This class implements Runnable and thereby enables the server to start in an own thread.<br>
+     *
+     * @author Ivan Dovecar
+     */
+    public class ServerStarterTask implements Runnable {
+        Stage primaryStage;
+
+        @Override
+        public void run() {
+            Server server = new Server();
+            try {
+                server.start(primaryStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
