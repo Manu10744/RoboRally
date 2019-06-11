@@ -1,5 +1,4 @@
 ### Known Issues
-* Chat - complete chat related Javadoc is still missing
 * Chat - tooltip is not working
 
 ## Version [0.1.1]

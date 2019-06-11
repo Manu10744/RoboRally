@@ -1,14 +1,9 @@
 package viewmodel;
 
-import javafx.fxml.Initializable;
 import modelclient.Client;
 import utils.Parameter;
-
+import javafx.fxml.Initializable;
 import javafx.beans.property.*;
-import com.sun.tools.javac.Main;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WritableValue;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -16,29 +11,21 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-
-
-import javafx.fxml.FXML;
-
-
 import java.awt.*;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Pattern;
+import javafx.fxml.FXML;
 
 
 /**
- * This class has full control over the chat view. It is responsible for
- * providing the ability to connect to a server, chat with other clients and
- * to initialize, join and start a game. Moreover, the controller can open
- * the game wiki when needed.
+ * This class has full control over the chat view. It is responsible for providing the ability to connect to a server,
+ * chat with other clients and to signal ready status to the server which starts a game when every client is ready.
+ * Moreover, the controller can open the game wiki when needed.
  *
  * @author Ivan Dovecar
  */
@@ -73,7 +60,12 @@ public class ChatController implements Initializable {
     private StringProperty message;
     private StringProperty clientChatOutput;
 
-
+    /**
+     * Initialize supervises all chat elements for action, checks user input on syntax failures and controls the
+     * elements' visibility.
+     *
+     * @author Ivan Dovecar
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         serverAddress = new SimpleStringProperty();
@@ -267,9 +259,8 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Check if IP String is a valid IP Address
-     * @param IP
-     * @return
+     * Check if IP String is a valid IP Address and contains IP and Port
+     *
      * @author Ivan Dovecar
      */
     private boolean checkIPString (String IP){
@@ -308,6 +299,7 @@ public class ChatController implements Initializable {
      * @param owner
      * @param control
      * @param tooltip
+     *
      * @author Ivan Dovecar
      */
     private void showTooltip (Stage owner, Control control, Tooltip tooltip) {
@@ -319,6 +311,7 @@ public class ChatController implements Initializable {
 
     /**
      * Shows an alert and informs about unknown Server or invalid Name.
+     *
      * @author Ivan Dovecar
      */
 
@@ -343,9 +336,10 @@ public class ChatController implements Initializable {
     }
 
     /**
-     * Formats the chat message, removing all \n at the end of a message
+     * Formats the chat message, removing all \n at the end of a message.
      * @param chatAreaText plain chatAreaText
      * @return formatted String
+     *
      * @author Ivan Dovecar
      */
     private String formatChatMessage(String chatAreaText) {
