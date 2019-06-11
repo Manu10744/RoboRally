@@ -33,13 +33,12 @@ public class Client {
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
-    private BooleanProperty gameInitialized;
-    private BooleanProperty gameJoined;
-    private BooleanProperty gameStarted;
+    private BooleanProperty gameReady;
     private static final Logger logger = Logger.getLogger( Client.class.getName() );
 
 
     public Client(String name, String serverIP, int serverPort) {
+        logger.info("Starting registration process...");
         this.name = name;
         this.serverIP = serverIP;
         this.serverPort = serverPort;
@@ -48,9 +47,7 @@ public class Client {
 
         //GAME:
         otherActivePlayers = new SimpleListProperty<>(FXCollections.observableArrayList());
-        gameInitialized = new SimpleBooleanProperty(false);
-        gameJoined = new SimpleBooleanProperty(false);
-        gameStarted = new SimpleBooleanProperty(false);
+        gameReady = new SimpleBooleanProperty(false);
     }
 
 
@@ -60,7 +57,6 @@ public class Client {
      * @return connection Success: True, connection Failed: False
      */
     public boolean connect() {
-        logger.info("Starting client...");
 
         try {
             //Create socket to connect to server at serverIP:serverPort
@@ -71,22 +67,23 @@ public class Client {
             Thread readerThread = new Thread(readerTask);
             readerThread.start();
 
-            //Send ChatInstruction "Check_Name" to server with client name
+            //Send ChatInstruction "PLAYER_VALUES" to server with client name and player figure
+            //TODO add player figure
             writer = new ObjectOutputStream(socket.getOutputStream());
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.CHECK_NAME, name) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.PLAYER_VALUES, name) );
             writer.flush(); // ist nötig, damit was geschickt wird
 
             waitingForAnswer = true;
             while(waitingForAnswer) {
                 //WAIT FOR ANSWER FROM SERVER, waitingForAnswer is changed by ClientReaderTask once finished
-                logger.info("WAITING...");
+                logger.info("Waiting...");
                 if (waitingForAnswer) try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            logger.info("Connected to server");
+            logger.info("Registration process finished");
 
             return nameSuccess; //gets set by ClientReaderTask
         } catch(IOException exp) {
@@ -103,7 +100,7 @@ public class Client {
      */
     public void sendMessage(String message)  {
         try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_MESSAGE, message) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_CHAT, message) );
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -120,7 +117,7 @@ public class Client {
      */
     public void sendPrivateMessage(String message, String addressedClient)  {
         try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_PRIVATE_MESSAGE, message, addressedClient) );
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_PRIVATE_CHAT, message, addressedClient) );
             writer.flush();
         } catch (IOException exp) {
             //TODO
@@ -128,26 +125,18 @@ public class Client {
         }
     }
 
-    /** This method is responsible for initializing a game. It is triggered by
-     * clicking on the {link buttonInit} button.
-     */
-    public void init() {
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.INIT_GAME, name));
-            writer.flush();
-        } catch (IOException exp) {
-            exp.printStackTrace();
-        }
-    }
-
+    //TODO This part has to be adapted to RoboRally needs - should handle the ChooseRobot part
 
     /**
-     * This method is responsible for joining a game. It is triggered by
-     * clicking on the {link buttonJoin} button.
+     * This method is responsible for submitting player values to the server. It is triggered by
+     * clicking on the chosen robot image during registration process which represents the player figure.
+     * It submits the players' name along with the selected robot (player figure).
+     *
+     * @author Ivan Dovecar
      */
-    public void join(String name, int age) {
+    public void join(String name, String robot) { //TODO check how player figure is submitted Sring Int aso
         try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.JOIN_GAME, name, age));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.PLAYER_VALUES, name, robot));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -155,13 +144,16 @@ public class Client {
     }
 
     /**
-     * This method is responsible for starting a game. It is triggered by
-     * clicking on the {link buttonStart} button. <b>Note:</b> A game can
-     * only be started when at least 2 players have joined.
+     * This method is responsible for setting the gamer status on ready or not ready.
+     * It is triggered by clicking on the ready button below the chat.
+     *
+     * <b>Note:</b> A game starts automatically when all players (at least 2 players) are ready.
+     *
+     * @author Ivan Dovecar
      */
-    public void start() {
+    public void ready() {
         try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.START_GAME, name));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SET_STATUS, name));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -226,16 +218,8 @@ public class Client {
         return name;
     }
 
-    public BooleanProperty gameInitializedProperty() {
-        return gameInitialized;
-    }
-
-    public BooleanProperty gameJoinedProperty() {
-        return gameJoined;
-    }
-
-    public BooleanProperty gameStartedProperty() {
-        return gameStarted;
+    public BooleanProperty gameReadyProperty() {
+        return gameReady;
     }
 
     public OtherPlayer getOtherPlayerByName(String name) {
@@ -269,96 +253,270 @@ public class Client {
                     Instruction.ServerToClientInstructionType serverToClientInstructionType = chatInstruction.getServerToClientInstructionType();
                     String content = chatInstruction.getContent();
 
+                    /*
+                    Platform.runLater(() -> ...) is necessary, because only the JavaFX Thread can manipulate the UI
+                    and when a message is received, the UI is immediately updated. This way, the task is switched to the
+                    JAVA FX Thread (not the current ClientReaderTask-Thread - that's my explanation at least)
+                     */
+
                     switch (serverToClientInstructionType) {
-                        case NAME_INVALID: {
-                            waitingForAnswer = false;
-                            nameSuccess = false;
-                            break;
-                        }
-                        case NAME_SUCCESS: {
-                            waitingForAnswer = false;
-                            nameSuccess = true;
-                            break;
-                        }
-                        case NEW_MESSAGE: {
-                            /*
-                            Platform.runLater(() -> ...) is necessary, because only the JavaFX Thread can manipulate the UI
-                            and when a message is received, the UI is immediately updated. This way, the task is switched to the
-                            JAVA FX Thread (not the current ClientReaderTask-Thread - that's my explanation at least)
-                             */
-                            Platform.runLater(() -> receiveMessage(content)); //Otherwise error because not JavaFX Thread
-                            break;
-                        }
-                        case CLIENT_JOINED: {
-                            Instruction finalChatInstruction = chatInstruction;
+
+                        /** This part handles S2C chat instructions*/
+
+                        //Server sends protocol version to client
+                        case HELLO_CLIENT: {
                             Platform.runLater(() -> {
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                addActiveClient(name);
+                                //TODO write code here
                             });
                             break;
                         }
-                        case CLIENT_WELCOME: {
+
+                        // Client gets a player ID from the server
+                        case WELCOME: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(finalChatInstruction.getAddendum(serverToClientInstructionType) + content);
-                                activeClients.add(content);
+                                addActiveClient(name);
+                                //TODO check: activeClients.add(content);
                             });
                             break;
                         }
+
+                        //Server distributes message to all
+                        case RECEIVED_CHAT: {
+                            Platform.runLater(() -> receiveMessage(content));
+                            break;
+                        }
+
+                        // Server distributes private message to the appropriate player
+                        case RECEIVED_PRIVATE_CHAT: {
+                            Platform.runLater(() -> {
+                                //TODO write code here (look up exisiting method: sendPrivateMessage)
+                            });
+                            break;
+                        }
+
+                        // Server informs client that a transmission error occurred
+                        case ERROR: {
+                            Platform.runLater(() -> {
+                                //TODO write code here and integrate case NAME_INVALID (see code below), message body contains name_invalid -> new method call
+                                /*
+                                   case NAME_INVALID: {
+                                        waitingForAnswer = false;
+                                        nameSuccess = false;
+                                        break
+                                        }
+                                 */
+                            });
+                            break;
+                        }
+
+                        // Server informs client that a game has already started
+                        case PLAYER_STATUS_FAIL: {
+                            Instruction finalChatInstruction = chatInstruction;
+                            Platform.runLater(() -> {
+                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
+                            });
+                            break;
+                        }
+
+                        // Server removes client from active clients and closes socket
                         case CLIENT_LEAVES: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
                                 removeActiveClient(content);
                             });
-                            break;
-                        }
-                        case CLIENT_REGISTER: {
-                            Platform.runLater(() -> {
-                                activeClients.add(content);
-                            });
-                            break;
-                        }
-                        case KILL_CLIENT: {
                             writer.close();
                             socket.close();
                             Platform.exit();
                             break;
                         }
-                        case GAME_INIT: {
-                            Instruction finalChatInstruction = chatInstruction;
+
+
+                        /** This part handles S2C game instructions*/
+
+                        //Server confirms player_name and player_figure
+                        case PLAYER_ADDED: {
+                                waitingForAnswer = false;
+                                nameSuccess = true;
                             Platform.runLater(() -> {
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                gameInitialized.set(true);
+                                activeClients.add(content);
                             });
                             break;
                         }
-                        case GAME_JOIN: {
+
+                        //Server informs all other players of the status of the new player
+                        case PLAYER_STATUS: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
+                                //TODO This part has to be edited to enable ongoing status changing
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                if(!content.equals(name)) addOtherPlayer(content);
+                                gameReady.set(true);
                             });
                             break;
                         }
-                        case GAME_START: {
-                            Instruction finalChatInstruction = chatInstruction;
+
+                        //Server sends maps to clients
+                        case GAME_STARTED: {
                             Platform.runLater(() -> {
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                gameStarted.set(true);
+                                //TODO write code here
                             });
                             break;
                         }
-                        // FAIL CASES
-                        case GAME_INIT_FAIL1:
-                        case GAME_JOIN_FAIL1: case GAME_JOIN_FAIL2: case GAME_JOIN_FAIL3:
-                        case GAME_START_FAIL1: case GAME_START_FAIL2: case GAME_START_FAIL3:    {
-                            Instruction finalChatInstruction = chatInstruction;
+
+                        //Server notifies all other players of the played card
+                        case CARD_PLAYED: {
                             Platform.runLater(() -> {
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
+                                //TODO write code here
                             });
                             break;
                         }
+
+                        //Server informs all of the player that is to move
+                        case CURRENT_PLAYER: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs all about the current game phase
+                        case ACTIVE_PHASE: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server confirms starting point and informs other players of it
+                        case STARTING_POINT_TAKEN: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs player of her or his hand
+                        case YOUR_CARDS: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs other players of the number of cards another has
+                        case NOT_YOUR_CARD: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //If not enough cards are on the draw pile, discarded pile has to be reshuffled
+                        case SHUFFLE_CODING: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server starts timer as soon as someone has a full register
+                        case TIMER_STARTED: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        // Server informs all clients that time for choosing programming cards has run out; player IDs of too slow players are saved
+                        case TIMER_ENDED: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server fills empty registers after timer ended
+                        case CARDS_YOU_GOT_NOW: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs all players of the cards in the current register
+                        case CURRENT_CARDS: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs other players of a move made (just moving, not turning)
+                        case PLAYER_MOVING: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs all clients if a player turns (left, right)
+                        case PLAYER_TURNING: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //For animation purposes (?)
+                        case PLAYER_SHOOTING: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs player of damage suffered in round; the damage will be handed out in fixed bundles, no individual damage is given
+                        case DRAW_DAMAGE: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs all player if another one has to reboot
+                        case REBOOT: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs client of new energy level and its reason for changing
+                        case ENERGY: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs all players if a player reached a checkpoint
+                        case CHECKPOINT_REACHED: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
+                        //Server informs players if a player has won
+                        case GAME_FINISHED: {
+                            Platform.runLater(() -> {
+                                //TODO write code here
+                            });
+                            break;
+                        }
+
                     }
                 }
             } catch (SocketException exp) {
