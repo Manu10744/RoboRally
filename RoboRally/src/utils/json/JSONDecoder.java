@@ -124,21 +124,21 @@ public class JSONDecoder {
             case "CurrentCards":
                 instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CURRENT_CARDS, null);
                 return instruction;
-            case "Movement":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.MOVEMENT, null);
+            case "PlayerMoving":
+                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_MOVING, null);
+                return instruction;
+            case "PlayerTurning":
+                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_TURNING, null);
+            return instruction;
+            case "PlayerShooting":
+                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_SHOOTING, null);
                 return instruction;
             case "DrawDamage":
                 instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.DRAW_DAMAGE, null);
                 return instruction;
-            case "PlayerShooting":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_SHOOTING, null);
-                return instruction;
             case "Reboot":
                 instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.REBOOT, null);
                 return  instruction;
-            case "PlayerTurning":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_TURNING, null);
-                return instruction;
             case "Energy":
                 instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.ENERGY, null);
                 return instruction;
