@@ -14,6 +14,7 @@
 * Chat - preset dummy-server IP+Port *(Ivan)*
 * Chat - activate text fields in proper order - *(Ivan)*
 * Chat - implement button actions - *(Ivan)*
+* No longer needed code related to Start, Init and Join is removed and replaced by Ready which controls player status *(Ivan)*
 
 ### Bugfixes
 

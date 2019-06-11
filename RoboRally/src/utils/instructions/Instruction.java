@@ -120,26 +120,13 @@ public class Instruction implements Serializable {
                 return " joined the room";
             case CLIENT_WELCOME:
                 return "Welcome ";
-            case GAME_INIT:
-                return " initialized a new game\nYou wanna play? Join the Game!";
-            case GAME_INIT_FAIL1:
-                return " can't initialize. A game is already initialized";
-            case GAME_JOIN:
-                return " joins the game";
-            case GAME_JOIN_FAIL1:
-                return " can't join. No game has been initialized";
             case GAME_JOIN_FAIL2:
                 return " can't join. Maximum number of players already joined the game";
             case GAME_JOIN_FAIL3:
                 return " can't join. The game already started";
-            case GAME_START:
-                return " started the game";
-            case GAME_START_FAIL1:
-                return " can't start the game. At least one other player must join";
-            case GAME_START_FAIL2:
-                return " can't start an already running game";
-            case GAME_START_FAIL3:
-                return " can't start a not initialized game";
+            //TODO adapt text according to status (ready / not ready)
+            case PLAYER_STATUS:
+                return " PLAYER_STATUS text has to be edited";
             case CLIENT_LEAVES:
                 return " left the room";
         }
@@ -160,9 +147,7 @@ public class Instruction implements Serializable {
         BYE, // Client leaves game and informs server thereof
 
         // GAME
-        INIT_GAME, // ENTFÄLLT
-        JOIN_GAME, // ENTFÄLLT
-        START_GAME, // ENTFÄLLT
+
         PLAYER_VALUES, //Client sends player-name and player figure is sent to server
         SET_STATUS, // Client signals to server if player is ready
         PLAY_CARD, // Player plays a card
@@ -194,16 +179,14 @@ public class Instruction implements Serializable {
         NAME_INVALID, // Will be part of message type "error", message body contains name_invalid -> new method call
 
         // GAME
-        GAME_INIT, // ENTFÄLLT
-        GAME_INIT_FAIL1, // ENTFÄLLT
-        GAME_JOIN, // ENTFÄLLT
-        GAME_JOIN_FAIL1, // ENTFÄLLT
+
+
+
+
         GAME_JOIN_FAIL2, // UNSICHER
         GAME_JOIN_FAIL3, // UNSICHER
-        GAME_START, // ENTFÄLLT
-        GAME_START_FAIL1, // ENTFÄLLT, STARTET AUTOMATISCH
-        GAME_START_FAIL2, // ENTFÄLLT
-        GAME_START_FAIL3, // ENTFÄLLT, GAME IST IMMER INITIALIZED
+
+
 
         PLAYER_ADDED, //Server confirms player_name and player_figure
         PLAYER_STATUS, // Server informs all other players of the status of the new player

@@ -55,11 +55,7 @@ public class ChatController implements Initializable {
     @FXML
     private Button buttonWiki;
     @FXML
-    private Button buttonInit;
-    @FXML
-    private Button buttonJoin;
-    @FXML
-    private Button buttonStart;
+    private Button buttonReady;
 
     private Client client;
     private String serverIP;
@@ -133,13 +129,8 @@ public class ChatController implements Initializable {
                 return;
             }
             String firstPart = partsOfMessage[0];
-            if (newValue.equals("init")) {
-                client.init();
-            } else if (firstPart.equals("join")) {
-                int age = Integer.parseInt(partsOfMessage[1]);
-                client.join(name.get(), age);
-            } else if (newValue.equals("start")) {
-                client.start();
+            if (newValue.equals("ready")) {
+                client.ready();
             } else if (newValue.equals("bye")) {
                 client.sayBye();
             } else if (firstPart.charAt(0) == '@') {
@@ -222,9 +213,7 @@ public class ChatController implements Initializable {
             chatInput.requestFocus();
             chatInput.selectEnd();
             chatOutput.textProperty().bind(clientChatOutputProperty());
-            buttonInit.disableProperty().set(false);
-            buttonJoin.disableProperty().set(false);
-            buttonStart.disableProperty().set(false);
+            buttonReady.disableProperty().set(false);
         }));
 
         //NAMEINPUT: Avoid spaces in names and limit maximum namesize
@@ -268,27 +257,11 @@ public class ChatController implements Initializable {
         return clientChatOutput;
     }
 
-    private BooleanProperty gameInitializedProperty() {
-        return client.gameInitializedProperty();
-    }
-
-    private BooleanProperty gameJoinedProperty() { return  client.gameJoinedProperty(); }
-
-    private BooleanProperty gameStartedProperty() { return  client.gameStartedProperty(); }
+    private BooleanProperty gameReadyProperty() { return  client.gameReadyProperty(); }
 
     @FXML
-    private void setButtonInit(){
-        messageProperty().setValue(formatChatMessage("init"));
-    }
-
-    @FXML
-    private void setButtonJoin(){
-        messageProperty().setValue(formatChatMessage("join 18")); //TODO remove preset age and complete function
-    }
-
-    @FXML
-    private void setButtonStart(){
-        messageProperty().setValue(formatChatMessage("start"));
+    private void setButtonReady(){
+        messageProperty().setValue(formatChatMessage("ready"));
     }
 
     /**

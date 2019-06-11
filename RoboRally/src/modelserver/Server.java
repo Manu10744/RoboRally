@@ -169,36 +169,11 @@ public class Server extends Application {
                             }
                             break;
                         }
-                        case INIT_GAME: {
-                            //Initializes a new game and prevents the initialisation of a second
-                            if (!gameIsInitialized) {
-                                logger.info("Client " + content + " initialized a new game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_INIT, content));
-                                    client.writer.flush();
-                                }
-                                //Initializes a new Game
-                                gameIsInitialized = true;
-                                break;
-                            } else {
-                                logger.info("Client " + content + " tried to initialize a game although it is already initialized");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_INIT_FAIL1, content));
-                                    client.writer.flush();
-                                }
-                                break;
-                            }
-                        }
-                        case JOIN_GAME: {
+                        // TODO JOIN_GAME is no longer existing adapt to ... maybe SET_STATUS is suitable
+                        case SET_STATUS: {
                             //Enables clients to join the players-list, if game is initialized but not running and
                             //maximum players-number of four is not reached
-                            if (!gameIsInitialized) {
-                                logger.info("Client " + content + " can't join a not initialized game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_JOIN_FAIL1, content));
-                                    client.writer.flush();
-                                }
-                            } else if (players.size() == MAX_PLAYERSIZE) {
+                            if (players.size() == MAX_PLAYERSIZE) {
                                 logger.info("Client " + content + " can't join the Game, because maximum player number reached");
                                 for (ClientWrapper client : connectedClients) {
                                     client.writer.writeObject(new Instruction(GAME_JOIN_FAIL2, content));
@@ -212,51 +187,12 @@ public class Server extends Application {
                                 }
                             } else {
                                 logger.info(content + " joined the game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_JOIN, content));
-                                    client.writer.flush();
-                                }
                                 //Get PlayerName
                                 for (ClientWrapper client : connectedClients) {
                                     if(client.socket.equals(clientSocket)) {
                                         players.add(new Player(client.name, instruction.getAge()));
                                         break;
                                     }
-                                }
-                            }
-                            break;
-                        }
-                        case START_GAME: {
-                            //Starts game and transfers player-names to game, if initialized and the minimum player-number
-                            //of two is reached
-                            if (gameIsInitialized && !gameIsRunning) {
-                                if (players.size() >= MIN_PLAYERSIZE) {
-                                    logger.info("Client " + content + " started the game");
-                                    for (ClientWrapper client : connectedClients) {
-                                        client.writer.writeObject(new Instruction(GAME_START, content));
-                                        client.writer.flush();
-                                    }
-                                    //Starts a new game with in players so far registered clients
-                                    startGame();
-                                    break;
-                                }
-                            } else if (gameIsInitialized) {
-                                logger.info(content + " can't start. At least one other player must join the game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_START_FAIL1, content));
-                                    client.writer.flush();
-                                }
-                            } else if (gameIsRunning) {
-                                logger.info(content + " can't start an already running game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_START_FAIL2, content));
-                                    client.writer.flush();
-                                }
-                            } else {
-                                logger.info(content + " can't start. No game is initialized");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(GAME_START_FAIL3, content));
-                                    client.writer.flush();
                                 }
                             }
                             break;

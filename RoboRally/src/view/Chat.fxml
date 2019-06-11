@@ -47,19 +47,9 @@
             </VBox>
             <HBox prefHeight="60.0" prefWidth="300.0">
                <children>
-                  <Button fx:id="buttonInit" disable="true" mnemonicParsing="false" onAction="#setButtonInit" prefHeight="30.0" prefWidth="90.0" text="Init">
-                     <HBox.margin>
-                        <Insets right="7.5" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="buttonJoin" disable="true" mnemonicParsing="false" onAction="#setButtonJoin" prefHeight="30.0" prefWidth="90.0" text="Join">
+                  <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" onAction="#setButtonReady" prefHeight="30.0" prefWidth="300.0" text="Ready">
                      <HBox.margin>
                         <Insets left="7.5" right="7.5" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="buttonStart" disable="true" mnemonicParsing="false" onAction="#setButtonStart" prefHeight="30.0" prefWidth="90.0" text="Start">
-                     <HBox.margin>
-                        <Insets left="7.5" />
                      </HBox.margin>
                   </Button>
                </children>

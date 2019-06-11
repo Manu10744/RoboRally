@@ -33,9 +33,7 @@ public class Client {
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
-    private BooleanProperty gameInitialized;
-    private BooleanProperty gameJoined;
-    private BooleanProperty gameStarted;
+    private BooleanProperty gameReady;
     private static final Logger logger = Logger.getLogger( Client.class.getName() );
 
 
@@ -49,9 +47,7 @@ public class Client {
 
         //GAME:
         otherActivePlayers = new SimpleListProperty<>(FXCollections.observableArrayList());
-        gameInitialized = new SimpleBooleanProperty(false);
-        gameJoined = new SimpleBooleanProperty(false);
-        gameStarted = new SimpleBooleanProperty(false);
+        gameReady = new SimpleBooleanProperty(false);
     }
 
 
@@ -128,26 +124,18 @@ public class Client {
         }
     }
 
-    /** This method is responsible for initializing a game. It is triggered by
-     * clicking on the {link buttonInit} button.
-     */
-    public void init() {
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.INIT_GAME, name));
-            writer.flush();
-        } catch (IOException exp) {
-            exp.printStackTrace();
-        }
-    }
-
+    //TODO This part has to be adapted to RoboRally needs - should handle the ChooseRobot part
 
     /**
-     * This method is responsible for joining a game. It is triggered by
-     * clicking on the {link buttonJoin} button.
+     * This method is responsible for submitting player values to the server. It is triggered by
+     * clicking on the chosen robot image during registration process which represents the player figure.
+     * It submits the players' name along with the selected robot (player figure).
+     *
+     * @author Ivan Dovecar
      */
-    public void join(String name, int age) {
+    public void join(String name, String robot) { //TODO check how player figure is submitted Sring Int aso
         try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.JOIN_GAME, name, age));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.PLAYER_VALUES, name, robot));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -155,13 +143,16 @@ public class Client {
     }
 
     /**
-     * This method is responsible for starting a game. It is triggered by
-     * clicking on the {link buttonStart} button. <b>Note:</b> A game can
-     * only be started when at least 2 players have joined.
+     * This method is responsible for setting the gamer status on ready or not ready.
+     * It is triggered by clicking on the ready button below the chat.
+     *
+     * <b>Note:</b> A game starts automatically when all players (at least 2 players) are ready.
+     *
+     * @author Ivan Dovecar
      */
-    public void start() {
+    public void ready() {
         try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.START_GAME, name));
+            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SET_STATUS, name));
             writer.flush();
         } catch (IOException exp) {
             exp.printStackTrace();
@@ -226,16 +217,8 @@ public class Client {
         return name;
     }
 
-    public BooleanProperty gameInitializedProperty() {
-        return gameInitialized;
-    }
-
-    public BooleanProperty gameJoinedProperty() {
-        return gameJoined;
-    }
-
-    public BooleanProperty gameStartedProperty() {
-        return gameStarted;
+    public BooleanProperty gameReadyProperty() {
+        return gameReady;
     }
 
     public OtherPlayer getOtherPlayerByName(String name) {
@@ -325,34 +308,18 @@ public class Client {
                             Platform.exit();
                             break;
                         }
-                        case GAME_INIT: {
+
+                        //TODO This part has to be edited to show all player statuses
+                        case PLAYER_STATUS: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                gameInitialized.set(true);
-                            });
-                            break;
-                        }
-                        case GAME_JOIN: {
-                            Instruction finalChatInstruction = chatInstruction;
-                            Platform.runLater(() -> {
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                if(!content.equals(name)) addOtherPlayer(content);
-                            });
-                            break;
-                        }
-                        case GAME_START: {
-                            Instruction finalChatInstruction = chatInstruction;
-                            Platform.runLater(() -> {
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
-                                gameStarted.set(true);
+                                gameReady.set(true);
                             });
                             break;
                         }
                         // FAIL CASES
-                        case GAME_INIT_FAIL1:
-                        case GAME_JOIN_FAIL1: case GAME_JOIN_FAIL2: case GAME_JOIN_FAIL3:
-                        case GAME_START_FAIL1: case GAME_START_FAIL2: case GAME_START_FAIL3:    {
+                         case GAME_JOIN_FAIL2: case GAME_JOIN_FAIL3: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
