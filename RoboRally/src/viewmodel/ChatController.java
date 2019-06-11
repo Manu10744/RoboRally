@@ -257,8 +257,10 @@ public class ChatController implements Initializable {
         return clientChatOutput;
     }
 
+    //TODO This Property will control a.o. status traffic light in GUI
     private BooleanProperty gameReadyProperty() { return  client.gameReadyProperty(); }
 
+    //TODO Check if needed
     @FXML
     private void setButtonReady(){
         messageProperty().setValue(formatChatMessage("ready"));

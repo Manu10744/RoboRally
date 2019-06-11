@@ -309,7 +309,7 @@ public class Client {
                             break;
                         }
 
-                        //TODO This part has to be edited to show all player statuses
+                        //TODO This part has to be edited to show all player statuses and enables ongoing changing status
                         case PLAYER_STATUS: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
