@@ -78,7 +78,7 @@ public class Client {
                 //WAIT FOR ANSWER FROM SERVER, waitingForAnswer is changed by ClientReaderTask once finished
                 logger.info("Waiting...");
                 if (waitingForAnswer) try {
-                    Thread.sleep(2000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
