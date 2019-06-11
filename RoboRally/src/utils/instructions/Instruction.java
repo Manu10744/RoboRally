@@ -15,6 +15,9 @@ public class Instruction implements Serializable {
     private String content;
     private String addressedClient;
 
+    //Constructor without arguments is needed
+    public Instruction (){}
+
     public Instruction(ClientToServerInstructionType clientToServerInstructionType, String content) {
         this.clientToServerInstructionType = clientToServerInstructionType;
         this.content = content;
