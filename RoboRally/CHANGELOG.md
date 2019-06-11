@@ -1,7 +1,6 @@
 ### Known Issues
 * Chat - complete chat related Javadoc is still missing
 * Chat - tooltip is not working
-* Chat - join button submits dummy age until join function (incl. JoinView) isn't implemented
 
 ## Version [0.1.0]
 
