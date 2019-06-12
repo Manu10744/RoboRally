@@ -114,6 +114,7 @@ public class ChatController implements Initializable {
             }
         });
 
+        /* Needs to be adapated as clients are appearantly no longer adressed by
         //MESSAGEINPUT: addListener waits for Message
         message.addListener((observableValue, oldValue, newValue) -> {
             String[] partsOfMessage = newValue.split("\\s+");
@@ -127,7 +128,7 @@ public class ChatController implements Initializable {
                 client.sayBye();
             } else if (firstPart.charAt(0) == '@') {
                 if (firstPart.length() > 1) {
-                    String addressedClient = firstPart.substring(1);
+                    int addressedClient = Integer.parseInt(firstPart.substring(1));
                     for (String otherClient : client.activeClientsProperty()) {
                         if (addressedClient.equals(otherClient)) {
                             client.sendPrivateMessage(message.get().substring(firstPart.length()), addressedClient);
@@ -139,6 +140,8 @@ public class ChatController implements Initializable {
                 client.sendMessage(message.get());
             }
         });
+
+         */
 
         //SERVERINPUT: Set Enter-Event
         fieldServer.setOnKeyPressed(event -> {

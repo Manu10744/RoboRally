@@ -1,15 +1,23 @@
 package modelclient;
 
+import java.io.*;
 import java.util.logging.Logger;
 
+import modelserver.Server;
+import modelserver.game.Player;
+import utils.Parameter;
+import utils.instructions.ClientInstruction;
 import utils.instructions.Instruction;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import utils.instructions.ServerInstruction;
+import utils.json.JSONDecoder;
+import utils.json.JSONEncoder;
+import utils.json.JSONMessage;
+import utils.json.MessageBody;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import javax.print.attribute.standard.MediaSize;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -25,7 +33,7 @@ public class Client {
     private Socket socket;
     private String serverIP;
     private int serverPort;
-    private ObjectOutputStream writer;
+    private PrintWriter writer;
 
     private boolean waitingForAnswer;
     private boolean nameSuccess;
@@ -67,10 +75,12 @@ public class Client {
             Thread readerThread = new Thread(readerTask);
             readerThread.start();
 
-            //Send ChatInstruction "PLAYER_VALUES" to server with client name and player figure
-            //TODO add player figure
-            writer = new ObjectOutputStream(socket.getOutputStream());
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.PLAYER_VALUES, name) );
+            //Send ChatInstruction "Check_Name" to server with client name
+            writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            MessageBody messageBody = new MessageBody();
+            messageBody.setProtocol("Version 0.1");
+            JSONMessage jsonMessage = new JSONMessage("HELLO_CLIENT", messageBody);
+            writer.write(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush(); // ist nötig, damit was geschickt wird
 
             waitingForAnswer = true;
@@ -97,32 +107,38 @@ public class Client {
      * The server is going to process the messages based on whether it is
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
+     * @author Mia
      */
-    public void sendMessage(String message)  {
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_CHAT, message) );
-            writer.flush();
-        } catch (IOException exp) {
-            exp.printStackTrace();
-        }
+    public void sendMessage(String message) {
+        MessageBody messageBody = new MessageBody(); //The message body is the main corpus in which we sent the information; It is filled via setters
+        messageBody.setMessage(message);
+        messageBody.setTo(Parameter.PUBLIC_MESSAGE_VALUE); //message is sent to all
+
+        JSONMessage jsonMessage = new JSONMessage("ReceivedChat", messageBody);
+
+        writer.write(JSONEncoder.serializeJSON(jsonMessage));
+        writer.flush();
+
     }
+
 
     /**
      * This method is responsible for sending private messages to the server.
      * The server is going to process the messages based on whether it is
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
-     * @param message
-     * @param addressedClient
+     * @param message that is to be sent
+     * @param playerID of the Player who receives private message
+     * @author Mia
      */
-    public void sendPrivateMessage(String message, String addressedClient)  {
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SEND_PRIVATE_CHAT, message, addressedClient) );
-            writer.flush();
-        } catch (IOException exp) {
-            //TODO
-            exp.printStackTrace();
-        }
+    public void sendPrivateMessage(String message, int playerID)  {
+            MessageBody messageBody = new MessageBody();
+            messageBody.setMessage(message);
+            messageBody.setTo(playerID);
+            JSONMessage jsonMessage = new JSONMessage("RECEIVED_PRIVATE_CHAT",messageBody);
+
+            writer.write(JSONEncoder.serializeJSON(jsonMessage));
+
     }
 
     //TODO This part has to be adapted to RoboRally needs - should handle the ChooseRobot part
@@ -132,15 +148,17 @@ public class Client {
      * clicking on the chosen robot image during registration process which represents the player figure.
      * It submits the players' name along with the selected robot (player figure).
      *
-     * @author Ivan Dovecar
+     * @author Ivan Dovecar, Mia
      */
-    public void join(String name, String robot) { //TODO check how player figure is submitted Sring Int aso
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.PLAYER_VALUES, name, robot));
+    public void join(String name, int robot) { //TODO check how player figure is submitted Sring Int aso
+            MessageBody messageBody = new MessageBody();
+            messageBody.setName(name);
+            messageBody.setFigure(robot);
+            JSONMessage jsonMessage = new JSONMessage("PLAYER_VALUES",messageBody);
+
+            writer.write(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
-        } catch (IOException exp) {
-            exp.printStackTrace();
-        }
+
     }
 
     /**
@@ -152,25 +170,9 @@ public class Client {
      * @author Ivan Dovecar
      */
     public void ready() {
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.SET_STATUS, name));
-            writer.flush();
-        } catch (IOException exp) {
-            exp.printStackTrace();
-        }
+
     }
 
-    /**
-     * Sends "BYE" to the server and thereby quits the connection
-     */
-    public void sayBye() {
-        try {
-            writer.writeObject( new Instruction(Instruction.ClientToServerInstructionType.BYE, name) );
-            writer.flush();
-        } catch (IOException exp) {
-            exp.printStackTrace();
-        }
-    }
 
     /**
      * Receive message from clients
@@ -182,26 +184,27 @@ public class Client {
         chatHistory.setValue(newHistory);
     }
 
-    private void addOtherPlayer(String name) {
-        otherActivePlayers.add(new OtherPlayer(name));
+
+    private void addOtherPlayer(int playerID) {
+        otherActivePlayers.add(new OtherPlayer(playerID));
     }
 
     /**
      * Adds an client to activeClients
-     * @param name of joining client
+     * @param playerID of joining client
      */
-    private void addActiveClient(String name) {
-        activeClients.add(name);
+    private void addActiveClient(int playerID) {
+        activeClients.add(playerID, null);
     }
 
     /**
      * Remove client from list
      * @param name Name of leaving client
      */
-    private void removeActiveClient(String name) {
+    private void removeActiveClient(Player name) {
         activeClients.remove(name);
         for(int i = 0; i < otherActivePlayers.size(); i++) {
-            if(otherActivePlayers.get(i).name.equals(name)) {
+            if(otherActivePlayers.get(i).getName().equals(name)) {
                 otherActivePlayers.remove(name);
                 break;
             }
@@ -242,24 +245,31 @@ public class Client {
             this.socket = socket;
         }
 
+        /**
+         The String input of the BufferedReader is in JSON-Format. In order to get the content of it we format it (deserialize it) into a JSONMessage.
+         The type of the JSONMessage is equal to the instruction we are getting from the server (serverInstruction). Its ServerInstructionType then is used to differentiate
+         between different  cases like we would normally do with instructions themselves.
+         The body of the message then contains various content. For more info check out the attributes of the
+         @link MessageBody class.
+         @author Ivan, Manu, Mia
+         */
         @Override
         public void run() {
             try {
                 //Reads input stream from server
-                ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String jsonString;
 
-                Instruction chatInstruction;
-                while ((chatInstruction = (Instruction) reader.readObject()) != null) {
-                    Instruction.ServerToClientInstructionType serverToClientInstructionType = chatInstruction.getServerToClientInstructionType();
-                    String content = chatInstruction.getContent();
 
-                    /*
-                    Platform.runLater(() -> ...) is necessary, because only the JavaFX Thread can manipulate the UI
-                    and when a message is received, the UI is immediately updated. This way, the task is switched to the
-                    JAVA FX Thread (not the current ClientReaderTask-Thread - that's my explanation at least)
-                     */
+                while ((jsonString = reader.readLine()) != null) {
+                    JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
+                    MessageBody messageBody = new MessageBody();
+                    //here we get the instruction from the jsonMessage
+                    ServerInstruction serverInstruction = JSONDecoder.getServerInstructionByMessageType(jsonMessage);
+                    //here we get the enum (ServerInstructionType) from the instruction above
+                    ServerInstruction.ServerInstructionType serverInstructionType = serverInstruction.getServerInstructionType();
 
-                    switch (serverToClientInstructionType) {
+                    switch (serverInstructionType) {
 
                         /** This part handles S2C chat instructions*/
 
@@ -272,11 +282,16 @@ public class Client {
                         }
 
                         // Client gets a player ID from the server
+                        /**
+                         * A new Player is added to
+                         */
                         case WELCOME: {
-                            Instruction finalChatInstruction = chatInstruction;
+                            OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());
+                            otherActivePlayers.add(otherActivePlayers.size(), newPlayer);
+                            messageBody.setPlayerID((otherActivePlayers.size()));
                             Platform.runLater(() -> {
-                                receiveMessage(finalChatInstruction.getAddendum(serverToClientInstructionType) + content);
-                                addActiveClient(name);
+                                receiveMessage("THis is your ID: " + messageBody.getPlayerID());
+                                addActiveClient(messageBody.getPlayerID());
                                 //TODO check: activeClients.add(content);
                             });
                             break;
@@ -284,7 +299,7 @@ public class Client {
 
                         //Server distributes message to all
                         case RECEIVED_CHAT: {
-                            Platform.runLater(() -> receiveMessage(content));
+                            Platform.runLater(() -> receiveMessage(messageBody.getMessage()));
                             break;
                         }
 
@@ -311,8 +326,11 @@ public class Client {
                             break;
                         }
 
+                         /* Commented because no corresponding protocol defined yet
                         // Server informs client that a game has already started
-                        case PLAYER_STATUS_FAIL: {
+
+
+                       case PLAYER_STATUS_FAIL: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
@@ -332,7 +350,7 @@ public class Client {
                             Platform.exit();
                             break;
                         }
-
+*/
 
                         /** This part handles S2C game instructions*/
 
@@ -341,17 +359,16 @@ public class Client {
                                 waitingForAnswer = false;
                                 nameSuccess = true;
                             Platform.runLater(() -> {
-                                activeClients.add(content);
+                                activeClients.add(messageBody.getPlayerID(), messageBody.getName());
                             });
                             break;
                         }
 
                         //Server informs all other players of the status of the new player
                         case PLAYER_STATUS: {
-                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 //TODO This part has to be edited to enable ongoing status changing
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
+                                receiveMessage(messageBody.getMessage());
                                 gameReady.set(true);
                             });
                             break;
@@ -454,7 +471,7 @@ public class Client {
                         }
 
                         //Server informs other players of a move made (just moving, not turning)
-                        case PLAYER_MOVING: {
+                        case MOVEMENT: {
                             Platform.runLater(() -> {
                                 //TODO write code here
                             });
@@ -522,7 +539,7 @@ public class Client {
             } catch (SocketException exp) {
                 if (exp.getMessage().contains("Socket closed"))
                     System.out.println("Disconnected");
-            } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            } catch (IOException | ClassCastException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -533,9 +550,10 @@ public class Client {
 
     public class OtherPlayer {
         StringProperty name;
+        IntegerProperty playerID;
 
-        OtherPlayer(String name) {
-            this.name = new SimpleStringProperty(name);
+        OtherPlayer(int playerID) {
+            this.playerID = new SimpleIntegerProperty(playerID);
         }
 
         public String getName() { return name.get();}

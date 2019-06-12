@@ -1,6 +1,9 @@
 package utils.json;
 
 import com.google.gson.*;
+import modelserver.Server;
+import utils.instructions.ClientInstruction;
+import utils.instructions.ServerInstruction;
 import utils.json.JSONMessage;
 import utils.json.MessageBody;
 
@@ -19,6 +22,8 @@ public class JSONEncoder {
 
         return json;
     }
+
+
 
 
 

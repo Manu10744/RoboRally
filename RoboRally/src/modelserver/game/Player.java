@@ -13,18 +13,19 @@ import java.util.ArrayList;
 public class Player implements Serializable {
 
     private String name;
-    private int age;
+    private int playerID;
     private Card[] cardHand;
     private Card[] cardRegister;
     private ArrayList<Card> deckDiscard;
     private ArrayList<Card> deckDraw;
 
+
     /**
      * Player constructor
      */
-    public Player(String name, int age) {
+    public Player(String name, int playerID) {
         this.name = name;
-        this.age = age;
+        this.playerID = playerID;
     }
 
     /**
@@ -39,8 +40,8 @@ public class Player implements Serializable {
      * Get the age of a player
      * @return age The age of a player
      */
-    public int getAge() {
-        return age;
+    public int getPlayerID() {
+        return this.playerID;
     }
 
     /**
