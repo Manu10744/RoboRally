@@ -15,6 +15,7 @@
 * Getting instructions by messageType of JSON objects is now working - *(Manu, Mia)*
 * Fixed Robot names - *(Vincent)*
 ### Bugfixes
+* Fixed trouble with socket creation and thus Server - Client connection by restoration of original server port parameter *(Ivan)*
 
 
 ## Version [0.1.0]
