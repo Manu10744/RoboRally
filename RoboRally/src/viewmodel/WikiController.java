@@ -1,22 +1,24 @@
 package viewmodel;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.IOException;
-import java.lang.Exception;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 public class WikiController extends Application {
+
     private Stage rootStage;
     @FXML
     private AnchorPane wiki;
@@ -57,19 +59,38 @@ public class WikiController extends Application {
         }
     }
 
+    @FXML
+    public void buttonClicked(ActionEvent event)throws IOException {
 
-    public void cardsClicked()  {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(WikiController.class.getResource("/view/CardsWiki.fxml"));
-            AnchorPane cardsWiki = loader.load();
-            Scene scene = new Scene(cardsWiki);
+        Stage rootStage;
+        Parent root;
+
+        if (event.getSource() == buttonCards) {
+            rootStage = (Stage) buttonCards.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/view/CardsWiki.fxml"));
+            Scene scene = new Scene(root);
             rootStage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
+            rootStage.show();
+        }
+        if (event.getSource() == buttonRobots) {
+            rootStage = (Stage) buttonRobots.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/view/RobotsWiki.fxml"));
+            Scene scene = new Scene(root);
+            rootStage.setScene(scene);
+            rootStage.show();
+        }
+        if (event.getSource() == buttonRules) {
+            rootStage = (Stage) buttonRules.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/view/WikiRules.fxml"));
+            Scene scene = new Scene(root);
+            rootStage.setScene(scene);
+            rootStage.show();
         }
     }
 
+    public void initialize(URL url, ResourceBundle rb){
+
+    }
 
     public static void main(String[] args) {
         launch(args);
