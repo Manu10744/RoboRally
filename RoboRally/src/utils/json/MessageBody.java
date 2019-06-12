@@ -1,7 +1,5 @@
 package utils.json;
 
-import javafx.beans.property.IntegerProperty;
-
 /**
  * This class is the wrapper class for the body of the JSON messages according to the
  * protocol.
@@ -9,7 +7,6 @@ import javafx.beans.property.IntegerProperty;
  * @author Manuel Neumayer
  */
 public class MessageBody {
-
 
     // For Connection Setups
     private String protocol;
@@ -20,7 +17,7 @@ public class MessageBody {
     private Integer playerID;
     private String name;
     private Integer figure;
-    private Boolean ready;
+    private Boolean isReady;
 
     // For messages
     private String message;
@@ -38,6 +35,7 @@ public class MessageBody {
     private Integer y;
     private Integer register;
     private String direction;
+
 
     public String getProtocol() {
         return protocol;
@@ -88,11 +86,11 @@ public class MessageBody {
     }
 
     public Boolean getReady() {
-        return ready;
+        return isReady;
     }
 
-    public void setReady(Boolean ready) {
-        this.ready = ready;
+    public void setReady(Boolean isReady) {
+        this.isReady = isReady;
     }
 
     public String getMessage() {

@@ -6,6 +6,7 @@
 
 ### New Features
 * First wiki draft created - *(Verena, Jessie)*
+* Switching between wiki tabs is now possible - *(Verena)*
 
 ### Changes
 * Main - runs server and client parallel (with two GUIs ATM -> developer mode) - *(Ivan)*
@@ -14,9 +15,9 @@
 * JSON Deserializing and Serializing is now working - *(Manu)*
 * Getting instructions by messageType of JSON objects is now working - *(Manu, Mia)*
 * Fixed Robot names - *(Vincent)*
+
 ### Bugfixes
 * Fixed trouble with socket creation and thus Server - Client connection by restoration of original server port parameter *(Ivan)*
-
 
 ## Version [0.1.0]
 

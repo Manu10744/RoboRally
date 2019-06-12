@@ -90,14 +90,16 @@ public class Server extends Application {
 
                 //READER:
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String jsonString;
 
-                while((jsonString = reader.readLine()) != null) {
+                String jsonString;
+                while ((jsonString = reader.readLine()) != null) {
+                    // Deserialize the received JSON String into a JSON object
                     JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
                     String content = jsonMessage.getMessageBody().getMessage();
-                    //here we get the instruction from the json-message sent
+
+                    // Here we get the instruction from the received JSON Object
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
-                    //here we get its instructiontype (enum)
+                    // Here we get its instruction type (enum)
                     ClientInstruction.ClientInstructionType clientInstructionType = clientInstruction.getClientInstructionType();
 
                     switch (clientInstructionType) {
@@ -106,7 +108,10 @@ public class Server extends Application {
                         case CHECK_NAME: {
                     switch (clientToServerInstructionType) {
 
-                        /** This part handles C2S chat instructions*/
+
+                        *//////////////////////////////////////////////
+                        /*  This part handles C2S CHAT instructions  */
+                        ///////////////////////////////////////////////
 
                         //Client sends group name, protocol-vs and KI-on/off to Server
                         case HELLO_SERVER: {
@@ -120,13 +125,14 @@ public class Server extends Application {
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
                             //Send message to all clients:
-                            for(ClientWrapper client : connectedClients) {
+                            for (ClientWrapper client : connectedClients) {
                                 MessageBody messageBody = new MessageBody();
-                                messageBody.setName(clientName);
+                                // TODO: messageBody.setFrom() <- playerID of sending client!
                                 messageBody.setMessage(content);
-                                jsonMessage = new JSONMessage("RECEIVED_CHAT",
-                                        messageBody);
-                                client.writer.write(JSONEncoder.serializeJSON(jsonMessage));
+                                messageBody.setPrivate(false);
+                                jsonMessage = new JSONMessage("ReceivedChat", messageBody);
+
+                                client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                 client.writer.flush();
                             }
                             break;
@@ -138,20 +144,20 @@ public class Server extends Application {
                             String sendingClientName = connectedClients.stream().
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
-                            for(ClientWrapper client : connectedClients){
-                                if(jsonMessage.getMessageBody().getTo().equals(client.getPlayerID())){
+                            for (ClientWrapper client : connectedClients){
+                                if (jsonMessage.getMessageBody().getTo().equals(client.getPlayerID())) {
 
                                     MessageBody messageBody = new MessageBody();
                                     messageBody.setMessage(content);
-                                    messageBody.setPlayerID(client.getPlayerID());
+                                    // TODO: messageBody.setFrom() <- playerID of sending client!
                                     messageBody.setPrivate(true);
 
-                                    jsonMessage = new JSONMessage("RECEIVED_CHAT", messageBody);
-                                    client.writer.write(JSONEncoder.serializeJSON(jsonMessage));
+                                    jsonMessage = new JSONMessage("ReceivedChat", messageBody);
+                                    client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                     client.writer.flush();
                                 }
-                                if(sendingClientName.equals(client.name)){
-                                    client.writer.write(JSONEncoder.serializeJSON(jsonMessage) + ": @" + client.name + " (private) " + content);
+                                if (sendingClientName.equals(client.name)){
+                                    client.writer.println(JSONEncoder.serializeJSON(jsonMessage) + ": @" + client.name + " (private) " + content);
                                     client.writer.flush();
                                 }
                             }
@@ -159,13 +165,13 @@ public class Server extends Application {
                         }
 
 
-                            /* no protocol for this flag yet
+                            /* (!) NO PROTOCOL FOR THIS FLAG YET (!)
                              //Client leaves game and informs server thereof
                         case BYE: {
                             logger.info("Client " + content + " left the room");
                             //Send message to all clients:
                             for(ClientWrapper client : connectedClients) {
-                                client.writer.write(new Instruction(CLIENT_LEAVES, content));
+                                client.writer.println(new Instruction(CLIENT_LEAVES, content));
                                 client.writer.flush();
                             }
                             writer.write(new Instruction(CLIENT_LEAVES, ""));
@@ -178,10 +184,11 @@ public class Server extends Application {
                             writer.close();
                             break;
                         }
-
                              */
 
-                        /** This part handles C2S game instructions*/
+                        ///////////////////////////////////////////////
+                        /*  This part handles C2S GAME instructions  */
+                        ///////////////////////////////////////////////
 
                         //Client sends player-name and player figure to server, where availability is checked and if so player is registered
                         case PLAYER_VALUES: {
@@ -192,14 +199,14 @@ public class Server extends Application {
                                 if (client.name.equals(content)) {
                                     logger.info("Client " + content + " refused (name already exists)");
 
-                                    writer.write(String.valueOf(new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR))); // Todo hier fehlen die ebcoder methoden
+                                    writer.println(String.valueOf(new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR))); // Todo hier fehlen die ebcoder methoden
                                     writer.flush();
                                     success = false;
                                     break;
                                 }
                             }
 
-                             /* no protocol for check name yet
+                             /* (!) NO PROTOCOL FOR CHECK NAME YET (!)
                             if (success) {
                                 logger.info("Client " + content + " successfully registered");
 
@@ -317,6 +324,8 @@ public class Server extends Application {
                         case SELECTION_FINISHED: {
                             //TODO write code here
                         }
+
+                        // For animation purposes
 
                     }
                 }

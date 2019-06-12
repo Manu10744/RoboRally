@@ -8,7 +8,7 @@ import utils.json.JSONMessage;
 import utils.json.MessageBody;
 
 /**
- * This class is responsible for the serialization (Java to JSON) of java objects
+ * This class is responsible for the serialization (Java to JSON) of java objects.<br>
  * It makes use of the Gson library.
  *
  * @author Manuel Neumayer

@@ -7,7 +7,7 @@ import utils.instructions.*;
 import utils.instructions.ServerGameInstruction;
 
 /**
- * This class is responsible for the deserialization (JSON -> Java) of JSON-Messages.
+ * This class is responsible for the deserialization (JSON -> Java) of JSON-Messages.<br>
  * It makes use of the Gson library.
  *
  * @author Manuel Neumayer
@@ -161,9 +161,8 @@ public class JSONDecoder {
                 return serverInstruction;
 
             default:
-                serverInstruction = null;
+                return null;
         }
-        return serverInstruction;
 
     }
 

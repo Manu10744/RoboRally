@@ -75,12 +75,13 @@ public class Client {
             Thread readerThread = new Thread(readerTask);
             readerThread.start();
 
-            //Send ChatInstruction "Check_Name" to server with client name
+            // Inform the server about the clients protocol version
             writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+
             MessageBody messageBody = new MessageBody();
-            messageBody.setProtocol("Version 0.1");
-            JSONMessage jsonMessage = new JSONMessage("HELLO_CLIENT", messageBody);
-            writer.write(JSONEncoder.serializeJSON(jsonMessage));
+            messageBody.setProtocol("Version 0.1"); // <- Ist das wirklich so richtig?
+            JSONMessage jsonMessage = new JSONMessage("HelloServer", messageBody);
+            writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush(); // ist nötig, damit was geschickt wird
 
             waitingForAnswer = true;
@@ -114,9 +115,9 @@ public class Client {
         messageBody.setMessage(message);
         messageBody.setTo(Parameter.PUBLIC_MESSAGE_VALUE); //message is sent to all
 
-        JSONMessage jsonMessage = new JSONMessage("ReceivedChat", messageBody);
+        JSONMessage jsonMessage = new JSONMessage("SendChat", messageBody);
 
-        writer.write(JSONEncoder.serializeJSON(jsonMessage));
+        writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
 
     }
@@ -135,9 +136,10 @@ public class Client {
             MessageBody messageBody = new MessageBody();
             messageBody.setMessage(message);
             messageBody.setTo(playerID);
-            JSONMessage jsonMessage = new JSONMessage("RECEIVED_PRIVATE_CHAT",messageBody);
+            JSONMessage jsonMessage = new JSONMessage("SendChat", messageBody);
 
-            writer.write(JSONEncoder.serializeJSON(jsonMessage));
+            writer.println(JSONEncoder.serializeJSON(jsonMessage));
+            writer.flush();
 
     }
 
@@ -154,9 +156,9 @@ public class Client {
             MessageBody messageBody = new MessageBody();
             messageBody.setName(name);
             messageBody.setFigure(robot);
-            JSONMessage jsonMessage = new JSONMessage("PLAYER_VALUES",messageBody);
+            JSONMessage jsonMessage = new JSONMessage("PlayerValues", messageBody);
 
-            writer.write(JSONEncoder.serializeJSON(jsonMessage));
+            writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
 
     }
@@ -258,20 +260,25 @@ public class Client {
             try {
                 //Reads input stream from server
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+
                 String jsonString;
-
-
                 while ((jsonString = reader.readLine()) != null) {
+                    // Deserialize the received JSON String into a JSON object
                     JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
-                    MessageBody messageBody = new MessageBody();
-                    //here we get the instruction from the jsonMessage
+
+                    // Save the JSON object's message body
+                    MessageBody messageBody = jsonMessage.getMessageBody();
+
+                    // Here we get the instruction from the received JSON Object
                     ServerInstruction serverInstruction = JSONDecoder.getServerInstructionByMessageType(jsonMessage);
-                    //here we get the enum (ServerInstructionType) from the instruction above
+                    // Here we get the enum (ServerInstructionType) from the instruction above
                     ServerInstruction.ServerInstructionType serverInstructionType = serverInstruction.getServerInstructionType();
 
                     switch (serverInstructionType) {
-
-                        /** This part handles S2C chat instructions*/
+                        ////////////////////////////////////////////////
+                        /*  This part handles S2C CHAT instructions   */
+                        ////////////////////////////////////////////////
 
                         //Server sends protocol version to client
                         case HELLO_CLIENT: {
@@ -282,7 +289,7 @@ public class Client {
                         }
 
                         // Client gets a player ID from the server
-                        /**
+                        /*
                          * A new Player is added to
                          */
                         case WELCOME: {
@@ -350,9 +357,11 @@ public class Client {
                             Platform.exit();
                             break;
                         }
-*/
+                        */
 
-                        /** This part handles S2C game instructions*/
+                        ////////////////////////////////////////////////
+                        /*  This part handles S2C game instructions   */
+                        ////////////////////////////////////////////////
 
                         //Server confirms player_name and player_figure
                         case PLAYER_ADDED: {

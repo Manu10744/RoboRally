@@ -1,7 +1,6 @@
 package utils.instructions;
 
 import modelclient.Client;
-import utils.json.MessageBody;
 
 public class ClientInstruction extends Instruction {
     ClientInstructionType clientInstructionType;
