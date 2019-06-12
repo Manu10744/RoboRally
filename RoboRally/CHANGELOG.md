@@ -20,6 +20,7 @@
 ## Version [0.1.0]
 
 ### New Features
+* Added Programming and Damage Cards - *(Vincent)*
 * Implemented Chat - Server, Client, Instructions aso. - *(Ivan)*
 * Player registration, game-init, -join with age and -start works - *(Ivan)*
 
