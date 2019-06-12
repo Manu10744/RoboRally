@@ -12,15 +12,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.CardsWikiController">
+<AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.WikiController">
    <children>
-      <ScrollPane hbarPolicy="NEVER" prefViewportHeight="600.0" prefViewportWidth="800.0" prefWidth="800.0" vvalue="1.0">
+      <ScrollPane hbarPolicy="NEVER" prefViewportHeight="600.0" prefViewportWidth="800.0" prefWidth="800.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="800.0">
                <children>
                   <VBox prefWidth="145.0">
                      <children>
-                        <HBox prefHeight="30.0" prefWidth="150.0">
+                        <HBox prefHeight="30.0" prefWidth="145.0">
                            <children>
                               <Button mnemonicParsing="false" text="Cards" />
                               <Button mnemonicParsing="false" text="Robots" />
@@ -36,12 +36,12 @@
                            </font>
                         </Label>
                         <ImageView fitHeight="100.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../resources/images/cards/move1-blue100x100.png" />
-                           </image>
                            <VBox.margin>
                               <Insets bottom="5.0" left="20.0" top="5.0" />
                            </VBox.margin>
+                           <image>
+                              <Image url="@../../resources/images/cards/move1-blue100x100.png" />
+                           </image>
                         </ImageView>
                         <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <viewport>
