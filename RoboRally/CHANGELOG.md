@@ -1,15 +1,19 @@
 ### Known Issues
 * Chat - tooltip is not working
+* Sending and Receiving of JSON Strings still needs to be implemented for every instruction
 
 ## Version [0.1.1]
 
 ### New Features
+* First wiki draft created - *(Verena, Jessie)*
 
 ### Changes
 * Main - runs server and client parallel (with two GUIs ATM -> developer mode) - *(Ivan)*
 * No longer needed code related to Start, Init and Join is removed and replaced by Ready which controls player status - *(Ivan)*
 * Existing Server and Client instructions are adapted to new RoboRally instructions (in Server- and Client-classes), not yet implemented instructions are now created in Server- and Client-classes (ATM most without function) - *(Ivan)*
-
+* JSON Deserializing and Serializing is now working - *(Manu)*
+* Getting instructions by messageType of JSON objects is now working - *(Manu, Mia)*
+* Fixed Robot names - *(Vincent)*
 ### Bugfixes
 
 
