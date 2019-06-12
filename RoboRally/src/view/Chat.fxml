@@ -33,7 +33,7 @@
             </TextField>
             <VBox prefHeight="918.0" prefWidth="340.0">
                <children>
-                  <TextArea fx:id="chatOutput" editable="false" mouseTransparent="true" focusTraversable="false" prefHeight="646.0" prefWidth="300.0" promptText="Send a message ..." wrapText="true">
+                  <TextArea fx:id="chatOutput" editable="false" focusTraversable="false" mouseTransparent="true" prefHeight="646.0" prefWidth="300.0" promptText="Send a message ..." wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                      </VBox.margin>
