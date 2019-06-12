@@ -15,6 +15,10 @@ public class ServerInstruction {
         this.content = content;
     }
 
+    public ServerInstructionType getServerInstructionType(){
+        return serverInstructionType;
+    }
+
     public enum ServerInstructionType{
         // ServerChatInstructions
         HELLO_CLIENT, //Server sends Protocol-vs to Client

@@ -4,11 +4,10 @@ import modelclient.Client;
 import utils.json.MessageBody;
 
 public class ClientInstruction extends Instruction {
-    ClientInstructionType clientInstruction;
-    MessageBody content;
+    ClientInstructionType clientInstructionType;
 
-    public ClientInstruction (ClientInstructionType clientInstruction){
-        this.clientInstruction = clientInstruction;
+    public ClientInstruction(ClientInstructionType clientInstructionType){
+        this.clientInstructionType = clientInstructionType;
     }
 
     public enum ClientInstructionType {
@@ -28,5 +27,9 @@ public class ClientInstruction extends Instruction {
         CARDS_SELECTED, //Client informs client that a card has been put in the register
         SELECTION_FINISHED, // Client informs server that a player has filled his or her full register
         PLAYER_SHOOTING, //For animation purposes (?)
+    }
+
+    public ClientInstructionType getClientInstructionType() {
+        return clientInstructionType;
     }
 }

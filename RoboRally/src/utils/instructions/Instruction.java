@@ -10,9 +10,7 @@ import java.io.Serializable;
  */
 public class Instruction implements Serializable {
 
-    public Instruction() {
 
-    }
 
     // Übersicht (für Ivan)
     public enum InstructionType{
@@ -43,11 +41,6 @@ public class Instruction implements Serializable {
         this.addressedClient = addressedClient;
     }
 
-    public Instruction(ClientToServerInstructionType clientToServerInstructionType, String content, int age) {
-        this.clientToServerInstructionType = clientToServerInstructionType;
-        this.content = content;
-        this.age = age;
-    }
 
     public ClientToServerInstructionType getClientToServerInstructionType() {
         return clientToServerInstructionType;

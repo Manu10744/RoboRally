@@ -17,6 +17,7 @@ import utils.json.JSONEncoder;
 import utils.json.JSONMessage;
 import utils.json.MessageBody;
 
+import javax.print.attribute.standard.MediaSize;
 import java.net.Socket;
 import java.net.SocketException;
 
@@ -184,23 +185,23 @@ public class Client {
     }
 
 
-    private void addOtherPlayer(String name, int playerID) {
-        otherActivePlayers.add(new OtherPlayer(name, playerID));
+    private void addOtherPlayer(int playerID) {
+        otherActivePlayers.add(new OtherPlayer(playerID));
     }
 
     /**
      * Adds an client to activeClients
-     * @param name of joining client
+     * @param playerID of joining client
      */
-    private void addActiveClient(String name) {
-        activeClients.add(name);
+    private void addActiveClient(int playerID) {
+        activeClients.add(playerID, null);
     }
 
     /**
      * Remove client from list
      * @param name Name of leaving client
      */
-    private void removeActiveClient(String name) {
+    private void removeActiveClient(Player name) {
         activeClients.remove(name);
         for(int i = 0; i < otherActivePlayers.size(); i++) {
             if(otherActivePlayers.get(i).getName().equals(name)) {
@@ -244,18 +245,31 @@ public class Client {
             this.socket = socket;
         }
 
+        /**
+         The String input of the BufferedReader is in JSON-Format. In order to get the content of it we format it (deserialize it) into a JSONMessage.
+         The type of the JSONMessage is equal to the instruction we are getting from the server (serverInstruction). Its ServerInstructionType then is used to differentiate
+         between different  cases like we would normally do with instructions themselves.
+         The body of the message then contains various content. For more info check out the attributes of the
+         @link MessageBody class.
+         @author Ivan, Manu, Mia
+         */
         @Override
         public void run() {
             try {
                 //Reads input stream from server
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String jsonString;
 
-                String readerContent;
-                while ((readerContent = reader.readLine()) != null) {
-                    JSONMessage jsonMessage = JSONDecoder.deserializeJSON(readerContent);
+
+                while ((jsonString = reader.readLine()) != null) {
+                    JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
+                    MessageBody messageBody = new MessageBody();
+                    //here we get the instruction from the jsonMessage
                     ServerInstruction serverInstruction = JSONDecoder.getServerInstructionByMessageType(jsonMessage);
+                    //here we get the enum (ServerInstructionType) from the instruction above
+                    ServerInstruction.ServerInstructionType serverInstructionType = serverInstruction.getServerInstructionType();
 
-                    switch (serverInstruction) {
+                    switch (serverInstructionType) {
 
                         /** This part handles S2C chat instructions*/
 
@@ -268,11 +282,16 @@ public class Client {
                         }
 
                         // Client gets a player ID from the server
+                        /**
+                         * A new Player is added to
+                         */
                         case WELCOME: {
-                            Instruction finalChatInstruction = chatInstruction;
+                            OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());
+                            otherActivePlayers.add(otherActivePlayers.size(), newPlayer);
+                            messageBody.setPlayerID((otherActivePlayers.size()));
                             Platform.runLater(() -> {
-                                receiveMessage(finalChatInstruction.getAddendum(serverToClientInstructionType) + content);
-                                addActiveClient(name);
+                                receiveMessage("THis is your ID: " + messageBody.getPlayerID());
+                                addActiveClient(messageBody.getPlayerID());
                                 //TODO check: activeClients.add(content);
                             });
                             break;
@@ -280,7 +299,7 @@ public class Client {
 
                         //Server distributes message to all
                         case RECEIVED_CHAT: {
-                            Platform.runLater(() -> receiveMessage(content));
+                            Platform.runLater(() -> receiveMessage(messageBody.getMessage()));
                             break;
                         }
 
@@ -307,8 +326,11 @@ public class Client {
                             break;
                         }
 
+                         /* Commented because no corresponding protocol defined yet
                         // Server informs client that a game has already started
-                        case PLAYER_STATUS_FAIL: {
+
+
+                       case PLAYER_STATUS_FAIL: {
                             Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
@@ -328,7 +350,7 @@ public class Client {
                             Platform.exit();
                             break;
                         }
-
+*/
 
                         /** This part handles S2C game instructions*/
 
@@ -337,17 +359,16 @@ public class Client {
                                 waitingForAnswer = false;
                                 nameSuccess = true;
                             Platform.runLater(() -> {
-                                activeClients.add(content);
+                                activeClients.add(messageBody.getPlayerID(), messageBody.getName());
                             });
                             break;
                         }
 
                         //Server informs all other players of the status of the new player
                         case PLAYER_STATUS: {
-                            Instruction finalChatInstruction = chatInstruction;
                             Platform.runLater(() -> {
                                 //TODO This part has to be edited to enable ongoing status changing
-                                receiveMessage(content + finalChatInstruction.getAddendum(serverToClientInstructionType));
+                                receiveMessage(messageBody.getMessage());
                                 gameReady.set(true);
                             });
                             break;
@@ -518,7 +539,7 @@ public class Client {
             } catch (SocketException exp) {
                 if (exp.getMessage().contains("Socket closed"))
                     System.out.println("Disconnected");
-            } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            } catch (IOException | ClassCastException e) {
                 e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -531,9 +552,8 @@ public class Client {
         StringProperty name;
         IntegerProperty playerID;
 
-        OtherPlayer(String name, int playerID) {
+        OtherPlayer(int playerID) {
             this.playerID = new SimpleIntegerProperty(playerID);
-            this.name = new SimpleStringProperty(name);
         }
 
         public String getName() { return name.get();}

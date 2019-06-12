@@ -22,7 +22,7 @@ public class Parameter {
     public static final int WORM_CARDS_AMOUNT = 6;
 
     //Server
-    public static final int SERVER_PORT = 9998;
+    public static final int SERVER_PORT = 9999;
 
     //Game
     public  static final int MAX_PLAYERSIZE = 6;

@@ -94,10 +94,13 @@ public class Server extends Application {
 
                 while((jsonString = reader.readLine()) != null) {
                     JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
-                    String content;
+                    String content = jsonMessage.getMessageBody().getMessage();
+                    //here we get the instruction from the json-message sent
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
+                    //here we get its instructiontype (enum)
+                    ClientInstruction.ClientInstructionType clientInstructionType = clientInstruction.getClientInstructionType();
 
-                    switch (clientInstruction) {
+                    switch (clientInstructionType) {
                         //Check if name is already used, if not, register client
                         /*
                         case CHECK_NAME: {
@@ -118,8 +121,12 @@ public class Server extends Application {
                                     findFirst().get().name;
                             //Send message to all clients:
                             for(ClientWrapper client : connectedClients) {
-                                client.writer.write(new Instruction(RECEIVED_CHAT,
-                                        clientName + ": " + content));
+                                MessageBody messageBody = new MessageBody();
+                                messageBody.setName(clientName);
+                                messageBody.setMessage(content);
+                                jsonMessage = new JSONMessage("RECEIVED_CHAT",
+                                        messageBody);
+                                client.writer.write(JSONEncoder.serializeJSON(jsonMessage));
                                 client.writer.flush();
                             }
                             break;
@@ -132,30 +139,36 @@ public class Server extends Application {
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
                             for(ClientWrapper client : connectedClients){
-                                if(instruction.getAddressedClient().equals(client.name)){
-                                    client.writer.writeObject(new Instruction(RECEIVED_CHAT,
-                                            sendingClientName + ": (private) " + content));
+                                if(jsonMessage.getMessageBody().getTo().equals(client.getPlayerID())){
+
+                                    MessageBody messageBody = new MessageBody();
+                                    messageBody.setMessage(content);
+                                    messageBody.setPlayerID(client.getPlayerID());
+                                    messageBody.setPrivate(true);
+
+                                    jsonMessage = new JSONMessage("RECEIVED_CHAT", messageBody);
+                                    client.writer.write(JSONEncoder.serializeJSON(jsonMessage));
                                     client.writer.flush();
                                 }
                                 if(sendingClientName.equals(client.name)){
-                                    client.writer.writeObject(new Instruction(RECEIVED_CHAT,
-                                            sendingClientName + ": @" + instruction.getAddressedClient() + " (private) " + content));
+                                    client.writer.write(JSONEncoder.serializeJSON(jsonMessage) + ": @" + client.name + " (private) " + content);
                                     client.writer.flush();
                                 }
                             }
                             break;
                         }
 
-                        //Client leaves game and informs server thereof
+
+                            /* no protocol for this flag yet
+                             //Client leaves game and informs server thereof
                         case BYE: {
                             logger.info("Client " + content + " left the room");
                             //Send message to all clients:
                             for(ClientWrapper client : connectedClients) {
-                                client.writer.writeObject(new Instruction(CLIENT_LEAVES, content));
+                                client.writer.write(new Instruction(CLIENT_LEAVES, content));
                                 client.writer.flush();
                             }
-                            // TODO check if needed
-                            writer.writeObject(new Instruction(CLIENT_LEAVES, ""));
+                            writer.write(new Instruction(CLIENT_LEAVES, ""));
                             writer.flush();
 
                             //Use stream to remove client from serverlist: (Maybe there is a more efficient way?)
@@ -165,6 +178,8 @@ public class Server extends Application {
                             writer.close();
                             break;
                         }
+
+                             */
 
                         /** This part handles C2S game instructions*/
 
@@ -183,11 +198,14 @@ public class Server extends Application {
                                     break;
                                 }
                             }
+
+                             /* no protocol for check name yet
                             if (success) {
                                 logger.info("Client " + content + " successfully registered");
 
                                 //Add new Client to list connected clients
                                 connectedClients.add(new ClientWrapper(clientSocket, content, writer));
+
 
                                 // TODO check if the following three lines are necessary
                                 writer.write(new Instruction(NAME_SUCCESS, ""));
@@ -214,33 +232,12 @@ public class Server extends Application {
                                 }
                             }
                             break;
-                        }
 
-                         */
-                        case HELLO_SERVER: {
+                              */
 
                         }
 
-                        case RECEIVED_CHAT: {
-                            //Stream to get client's name (because atm only the socket is known)
-                            String clientName = connectedClients.stream().
-                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
-                                    findFirst().get().name; //Todo eigentlich id
-                            //Send message to all clients:
-                            for(ClientWrapper client : connectedClients) {
-                                MessageBody messageBody = new MessageBody();
-                                messageBody.setMessage(message);
-                                messageBody.setTo(playerID);
-                                String messageType = JSONEncoder.turnServerInstructionTypeToString(ServerInstruction.ServerInstructionType.RECEIVED_PRIVATE_CHAT);
-                                JSONMessage jsonMessage = new JSONMessage(messageType,messageBody);
-
-                                writer.write(JSONEncoder.serializeJSON(jsonMessage));
-                                client.writer.write(new Instruction(NEW_MESSAGE,
-                                        clientName + ": " + content));
-                                client.writer.flush();
-                            }
-                            break;
-                        }
+                        /* Ivan, this is yours! :-) Good luck!
                         case RECEIVED_PRIVATE_CHAT: {
                             //Stream to get client's name
                             String sendingClientName = connectedClients.stream().
@@ -292,6 +289,8 @@ public class Server extends Application {
                             break;
                         }
 
+                         */
+
 
                         //Player plays a card
                         case PLAY_CARD: {
@@ -324,7 +323,7 @@ public class Server extends Application {
             } catch (SocketException exp) {
                 if (exp.getMessage().contains("Socket closed"))
                     logger.info("Client at " + clientSocket.getInetAddress().getHostAddress() + " disconnected.");
-            } catch (IOException | ClassNotFoundException | ClassCastException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -337,11 +336,16 @@ public class Server extends Application {
         Socket socket;
         String name;
         PrintWriter writer;
+        int playerID;
 
         private ClientWrapper(Socket socket, String name, PrintWriter writer) {
             this.socket = socket;
             this.name = name;
             this.writer = writer;
+        }
+
+        public int getPlayerID(){
+            return  this.playerID;
         }
     }
 }
