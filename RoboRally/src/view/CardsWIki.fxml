@@ -23,8 +23,8 @@
                         <HBox prefHeight="30.0" prefWidth="145.0">
                            <children>
                               <Button mnemonicParsing="false" text="Cards" />
-                              <Button mnemonicParsing="false" text="Robots" />
-                              <Button mnemonicParsing="false" text="Rules" />
+                              <Button fx:id="buttonRobots" mnemonicParsing="false" onAction="#buttonClicked" text="Robots" />
+                              <Button fx:id="buttonRules" mnemonicParsing="false" onAction="#buttonClicked" text="Rules" />
                            </children>
                         </HBox>
                         <Label maxHeight="30.0" prefHeight="30.0" text="Programming Cards">

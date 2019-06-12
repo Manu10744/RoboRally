@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.WikiController">
+   <children>
+      <Button fx:id="buttonCards" layoutX="5.0" layoutY="6.0" mnemonicParsing="false" onAction="#buttonClicked" text="cards" />
+      <Button fx:id="buttonRules" layoutX="119.0" layoutY="6.0" mnemonicParsing="false" onAction="#buttonClicked" text="rules" />
+      <Button fx:id="buttonRobots" layoutX="62.0" layoutY="6.0" mnemonicParsing="false" onAction="#buttonClicked" text="robots" />
+      <ScrollPane layoutX="3.0" layoutY="37.0" prefHeight="557.0" prefWidth="787.0">
+         <content>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="180.0" text="most important rules to come...." />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

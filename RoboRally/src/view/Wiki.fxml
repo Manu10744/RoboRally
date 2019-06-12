@@ -2,12 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="wiki" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.WikiController">
-      <VBox fx:id="vBox" layoutX="14.0" layoutY="14.0" prefHeight="368.0" prefWidth="160.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
-            <Button fx:id="buttonCards" mnemonicParsing="false" onAction="#cardsClicked" prefHeight="50.0" prefWidth="100.0" text="Cards" />
-            <Button fx:id="buttonRobots" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Robots" />
-            <Button fx:id="buttonRules" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Rules" />
-      </VBox>
+         <Button fx:id="buttonRules" layoutX="470.0" layoutY="280.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="50.0" prefWidth="100.0" text="Rules" />
+         <Button fx:id="buttonRobots" layoutX="362.0" layoutY="280.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="50.0" prefWidth="100.0" text="Robots" />
+         <Button fx:id="buttonCards" layoutX="254.0" layoutY="280.0" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="50.0" prefWidth="100.0" text="Cards" />
 </AnchorPane>
