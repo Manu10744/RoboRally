@@ -24,134 +24,147 @@ public class JSONDecoder {
         return messageObj;
     }
 
-    public static Instruction getInstructionByMessageType(JSONMessage jsonMessage) {
+    public static ClientInstruction getClientInstructionByMessageType(JSONMessage jsonMessage) {
         // Declare a instruction and initialize it depending on the message type
-        Instruction instruction;
+        ClientInstruction clientInstruction;
 
         switch (jsonMessage.getMessageType()) {
-            case "HelloClient":
-                instruction = new ServerChatInstruction(Instruction.ServerToClientInstructionType.HELLO_CLIENT, null);
-                return instruction;
+
             case "HelloServer":
-                instruction = new ClientChatInstruction(Instruction.ClientToServerInstructionType.HELLO_SERVER, null);
-                return instruction;
-            case "Welcome":
-                instruction = new ServerChatInstruction(Instruction.ServerToClientInstructionType.WELCOME, null);
-                return instruction;
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.HELLO_SERVER);
+                return clientInstruction;
             case "PlayerValues":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.PLAYER_VALUES, null);
-                return instruction;
-            case "PlayerAdded":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_ADDED, null);
-                return instruction;
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.PLAYER_VALUES);
+                return clientInstruction;
             case "SetStatus":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.SET_STATUS, null);
-                return instruction;
-            case "PlayerStatus":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_STATUS, null);
-                return instruction;
-            case "GameStarted":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.GAME_STARTED, null);
-                return instruction;
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SET_STATUS);
+                return clientInstruction;
             case "SendChat":
                 // Is public message
                 if (jsonMessage.getMessageBody().getTo() == -1) {
-                    instruction = new ClientChatInstruction(Instruction.ClientToServerInstructionType.SEND_CHAT, null);
-                    return instruction;
+                    clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SEND_CHAT);
+                    return clientInstruction;
                 } else {
                     // Is private message
-                    instruction = new ClientChatInstruction(Instruction.ClientToServerInstructionType.SEND_PRIVATE_CHAT, null);
-                    return instruction;
+                    clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SEND_PRIVATE_CHAT);
+                    return clientInstruction;
                 }
-            case "ReceivedChat":
-                // Is public message
-                if (jsonMessage.getMessageBody().getPrivate() == false){
-                    instruction = new ServerChatInstruction(Instruction.ServerToClientInstructionType.RECEIVED_CHAT, null);
-                return instruction;
-                } else {
-                    // Is private message
-                    instruction = new ServerChatInstruction(Instruction.ServerToClientInstructionType.RECEIVED_PRIVATE_CHAT, null);
-                    return instruction;
-                }
-            case "Error":
-                    instruction = new ServerChatInstruction(Instruction.ServerToClientInstructionType.ERROR, jsonMessage.getMessageBody().getError());
-                return  instruction;
             case "PlayCard":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.PLAY_CARD, null);
-                return instruction;
-            case "CardPlayed":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CARD_PLAYED, null);
-                return instruction;
-            case "CurrentPlayer":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CURRENT_PLAYER, null);
-                return instruction;
-            case "ActivePhase":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.ACTIVE_PHASE, null);
-                return instruction;
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.PLAY_CARD);
+                return clientInstruction;
             case "SetStartingPoint":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.SET_STARTING_POINT, null);
-                return instruction;
-            case "StartingPointTaken":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.STARTING_POINT_TAKEN, null);
-                return  instruction;
-            case "YourCards":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.YOUR_CARDS, null);
-                return instruction;
-            case "NotYourCards":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.NOT_YOUR_CARD, null);
-                return instruction;
-            case "ShuffleCoding":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.SHUFFLE_CODING, null);
-                return instruction;
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SET_STARTING_POINT);
+                return clientInstruction;
             case "SelectCard":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.SELECT_CARDS, null);
-                return instruction;
-            case"CardSelected":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.CARDS_SELECTED, null);
-                return instruction;
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SELECT_CARDS);
+                return clientInstruction;
+            case "CardSelected":
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.CARDS_SELECTED);
+                return clientInstruction;
             case "SelectionFinished":
-                instruction = new ClientGameInstruction(Instruction.ClientToServerInstructionType.SELECTION_FINISHED, null);
-                return instruction;
-            case "TimerStarted":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.TIMER_STARTED, null);
-                return instruction;
-            case "TimerEnded":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.TIMER_ENDED, null);
-                return instruction;
-            case "CardsYouGotNow":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CARDS_YOU_GOT_NOW, null);
-                return  instruction;
-            case "CurrentCards":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CURRENT_CARDS, null);
-                return instruction;
-            case "Movement":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.MOVEMENT, null);
-                return instruction;
-            case "PlayerTurning":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_TURNING, null);
-            return instruction;
-            case "PlayerShooting":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_SHOOTING, null);
-                return instruction;
-            case "DrawDamage":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.DRAW_DAMAGE, null);
-                return instruction;
-            case "Reboot":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.REBOOT, null);
-                return  instruction;
-            case "Energy":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.ENERGY, null);
-                return instruction;
-            case "CheckPointReached":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CHECKPOINT_REACHED, null);
-                return  instruction;
-            case "GameFinished":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.GAME_FINISHED, null);
-                return instruction;
-
+                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SELECTION_FINISHED);
+                return clientInstruction;
             default:
                 return null;
         }
+    }
+
+
+    public static ServerInstruction getServerInstructionByMessageType(JSONMessage jsonMessage) {
+       ServerInstruction serverInstruction;
+
+        switch (jsonMessage.getMessageType()) {
+            case "HelloClient":
+                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.HELLO_CLIENT);
+                return serverInstruction;
+            case "Welcome":
+                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.WELCOME);
+                return serverInstruction;
+            case "PlayerStatus":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_STATUS);
+                return  serverInstruction;
+            case "GameStarted":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.GAME_STARTED);
+                return serverInstruction;
+            case "ReceivedChat":
+                // Is public message
+                if (jsonMessage.getMessageBody().getPrivate() == false) {
+                    serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.RECEIVED_CHAT);
+                    return serverInstruction;
+                } else {
+                    // Is private message
+                    serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.RECEIVED_PRIVATE_CHAT);
+                    return serverInstruction;
+                }
+            case "Error":
+                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR);
+                return serverInstruction;
+            case "StartingPointTaken":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.STARTING_POINT_TAKEN);
+                return serverInstruction;
+            case "YourCards":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.YOUR_CARDS);
+                return serverInstruction;
+            case "NotYourCards":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.NOT_YOUR_CARD);
+                return serverInstruction;
+            case "ShuffleCoding":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.SHUFFLE_CODING);
+                return serverInstruction;
+            case "CardPlayed":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CARD_PLAYED);
+                return serverInstruction;
+            case "CurrentPlayer":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CURRENT_PLAYER);
+                return serverInstruction;
+            case "ActivePhase":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.ACTIVE_PHASE);
+                return serverInstruction;
+            case "Energy":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.ENERGY);
+                return serverInstruction;
+            case "CheckPointReached":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CHECKPOINT_REACHED);
+                return serverInstruction;
+            case "GameFinished":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.GAME_FINISHED);
+                return serverInstruction;
+            case "PlayerAdded":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_ADDED);
+                return serverInstruction;
+            case "TimerStarted":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.TIMER_STARTED);
+                return serverInstruction;
+            case "TimerEnded":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.TIMER_ENDED);
+                return serverInstruction;
+            case "CardsYouGotNow":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CARDS_YOU_GOT_NOW);
+                return serverInstruction;
+            case "CurrentCards":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CURRENT_CARDS);
+                return serverInstruction;
+            case "Movement":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.MOVEMENT);
+                return serverInstruction;
+            case "DrawDamage":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.DRAW_DAMAGE);
+                return serverInstruction;
+            case "PlayerShooting":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_SHOOTING);
+                return serverInstruction;
+            case "Reboot":
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.REBOOT);
+                return serverInstruction;
+            case "PlayerTurning":
+                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_TURNING);
+                return serverInstruction;
+
+            default:
+                serverInstruction = null;
+        }
+        return serverInstruction;
+
     }
 
 

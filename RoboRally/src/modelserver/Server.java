@@ -4,12 +4,15 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import modelserver.game.Game;
 import modelserver.game.Player;
+import utils.instructions.ClientInstruction;
 import utils.instructions.Instruction;
+import utils.instructions.ServerInstruction;
 import utils.json.JSONDecoder;
+import utils.json.JSONEncoder;
+import utils.json.JSONMessage;
+import utils.json.MessageBody;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -18,6 +21,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static utils.Parameter.*;
+import static utils.instructions.Instruction.ClientToServerInstructionType.*;
 import static utils.instructions.Instruction.ServerToClientInstructionType.*;
 
 /**
@@ -82,16 +86,21 @@ public class Server extends Application {
         public void run() {
             try {
                 //WRITER:
-                ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());
+                PrintWriter writer = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
                 //READER:
-                ObjectInputStream reader = new ObjectInputStream(clientSocket.getInputStream());
-                Instruction instruction;
+                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                String jsonString;
 
-                while((instruction = (Instruction) reader.readObject()) != null) {
-                    Instruction.ClientToServerInstructionType clientToServerInstructionType = instruction.getClientToServerInstructionType();
-                    String content = instruction.getContent();
+                while((jsonString = reader.readLine()) != null) {
+                    JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
+                    String content;
+                    ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
 
+                    switch (clientInstruction) {
+                        //Check if name is already used, if not, register client
+                        /*
+                        case CHECK_NAME: {
                     switch (clientToServerInstructionType) {
 
                         /** This part handles C2S chat instructions*/
@@ -109,7 +118,7 @@ public class Server extends Application {
                                     findFirst().get().name;
                             //Send message to all clients:
                             for(ClientWrapper client : connectedClients) {
-                                client.writer.writeObject(new Instruction(RECEIVED_CHAT,
+                                client.writer.write(new Instruction(RECEIVED_CHAT,
                                         clientName + ": " + content));
                                 client.writer.flush();
                             }
@@ -164,10 +173,11 @@ public class Server extends Application {
                             //TODO modify code according to RoboRally needs
                             boolean success = true;
                             for (ClientWrapper client : connectedClients) {
+                                content = jsonMessage.getMessageBody().getName();
                                 if (client.name.equals(content)) {
                                     logger.info("Client " + content + " refused (name already exists)");
 
-                                    writer.writeObject(new Instruction(ERROR, ""));
+                                    writer.write(String.valueOf(new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR))); // Todo hier fehlen die ebcoder methoden
                                     writer.flush();
                                     success = false;
                                     break;
@@ -179,14 +189,18 @@ public class Server extends Application {
                                 //Add new Client to list connected clients
                                 connectedClients.add(new ClientWrapper(clientSocket, content, writer));
 
-                                //Inform client about successful registration
-                                writer.writeObject(new Instruction(PLAYER_ADDED, ""));
+                                // TODO check if the following three lines are necessary
+                                writer.write(new Instruction(NAME_SUCCESS, ""));
                                 writer.flush();
 
                                 //Send message to all already active clients
                                 for (ClientWrapper client : connectedClients) {
                                     if(!client.socket.equals(clientSocket)) {
-                                        client.writer.writeObject(new Instruction(WELCOME, content));
+                                        client.writer.write(new Instruction(CLIENT_JOINED, content));
+                                        client.writer.flush();
+
+                                    } else { //New Client receives different message:
+                                        client.writer.write(new Instruction(CLIENT_WELCOME, content));
                                         client.writer.flush();
                                     }
                                 }
@@ -194,7 +208,7 @@ public class Server extends Application {
                                 //Register all current activeClients at new Client
                                 for(ClientWrapper client : connectedClients) {
                                     if (!client.socket.equals(clientSocket)) {
-                                        writer.writeObject(new Instruction(PLAYER_ADDED, client.name));
+                                        writer.write(new Instruction(CLIENT_REGISTER, client.name));
                                         writer.flush();
                                     }
                                 }
@@ -202,9 +216,52 @@ public class Server extends Application {
                             break;
                         }
 
-                        //Client signals to server if player is ready
+                         */
+                        case HELLO_SERVER: {
+
+                        }
+
+                        case RECEIVED_CHAT: {
+                            //Stream to get client's name (because atm only the socket is known)
+                            String clientName = connectedClients.stream().
+                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
+                                    findFirst().get().name; //Todo eigentlich id
+                            //Send message to all clients:
+                            for(ClientWrapper client : connectedClients) {
+                                MessageBody messageBody = new MessageBody();
+                                messageBody.setMessage(message);
+                                messageBody.setTo(playerID);
+                                String messageType = JSONEncoder.turnServerInstructionTypeToString(ServerInstruction.ServerInstructionType.RECEIVED_PRIVATE_CHAT);
+                                JSONMessage jsonMessage = new JSONMessage(messageType,messageBody);
+
+                                writer.write(JSONEncoder.serializeJSON(jsonMessage));
+                                client.writer.write(new Instruction(NEW_MESSAGE,
+                                        clientName + ": " + content));
+                                client.writer.flush();
+                            }
+                            break;
+                        }
+                        case RECEIVED_PRIVATE_CHAT: {
+                            //Stream to get client's name
+                            String sendingClientName = connectedClients.stream().
+                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
+                                    findFirst().get().name;
+                            for(ClientWrapper client : connectedClients){
+                                if(instruction.getAddressedClient().equals(client.name)){
+                                    client.writer.write(new Instruction(NEW_MESSAGE,
+                                            sendingClientName + ": (private) " + content));
+                                    client.writer.flush();
+                                }
+                                if(sendingClientName.equals(client.name)){
+                                    client.writer.write(new Instruction(NEW_MESSAGE,
+                                            sendingClientName + ": @" + instruction.getAddressedClient() + " (private) " + content));
+                                    client.writer.flush();
+                                }
+                            }
+                            break;
+                        }
+                        // TODO JOIN_GAME is no longer existing adapt to ... maybe SET_STATUS is suitable
                         case SET_STATUS: {
-                            //TODO modify code according to RoboRally needs
                             //Enables clients to join the players-list, if game is initialized but not running and
                             //maximum players-number of four is not reached
 
@@ -212,7 +269,13 @@ public class Server extends Application {
                             if (gameIsRunning) {
                                 logger.info("Client " + content + " can't set status to ready, game is already running");
                                 for (ClientWrapper client : connectedClients) {
-                                    client.writer.writeObject(new Instruction(PLAYER_STATUS_FAIL, content));
+                                    client.writer.write(new Instruction(GAME_JOIN_FAIL2, content));
+                                    client.writer.flush();
+                                }
+                            } else if (gameIsRunning) {
+                                logger.info("Client " + content + " can't join an already running game");
+                                for (ClientWrapper client : connectedClients) {
+                                    client.writer.write(new Instruction(GAME_JOIN_FAIL3, content));
                                     client.writer.flush();
                                 }
                             } else {
@@ -228,6 +291,7 @@ public class Server extends Application {
                             }
                             break;
                         }
+
 
                         //Player plays a card
                         case PLAY_CARD: {
@@ -272,9 +336,9 @@ public class Server extends Application {
     private class ClientWrapper {
         Socket socket;
         String name;
-        ObjectOutputStream writer;
+        PrintWriter writer;
 
-        private ClientWrapper(Socket socket, String name, ObjectOutputStream writer) {
+        private ClientWrapper(Socket socket, String name, PrintWriter writer) {
             this.socket = socket;
             this.name = name;
             this.writer = writer;

@@ -13,6 +13,7 @@ public class Parameter {
     // Chat
     public static final String INVALID_CLIENTNAME = "INVALID####";
     public static final int MAX_NAMESIZE = 15;
+    public static final int PUBLIC_MESSAGE_VALUE = -1;
 
     //Cards
     public static final int SPAM_CARDS_AMOUNT = 36;
