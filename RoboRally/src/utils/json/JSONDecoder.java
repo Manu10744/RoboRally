@@ -124,8 +124,8 @@ public class JSONDecoder {
             case "CurrentCards":
                 instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.CURRENT_CARDS, null);
                 return instruction;
-            case "PlayerMoving":
-                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_MOVING, null);
+            case "Movement":
+                instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.MOVEMENT, null);
                 return instruction;
             case "PlayerTurning":
                 instruction = new ServerGameInstruction(Instruction.ServerToClientInstructionType.PLAYER_TURNING, null);

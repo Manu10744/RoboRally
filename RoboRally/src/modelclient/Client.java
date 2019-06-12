@@ -454,7 +454,7 @@ public class Client {
                         }
 
                         //Server informs other players of a move made (just moving, not turning)
-                        case PLAYER_MOVING: {
+                        case MOVEMENT: {
                             Platform.runLater(() -> {
                                 //TODO write code here
                             });

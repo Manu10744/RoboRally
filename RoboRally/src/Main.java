@@ -32,7 +32,7 @@ public class Main extends Application {
 
             // Load GUI in an own Thread
             // TODO At the moment two GUIs start at the same time (developer mode) - change i to one or delete for loop when project is finished
-            for(int i = 0; i < 2; i++) {
+            for(int i = 0; i < 3; i++) {
                 Thread gui = new Thread(new GUIStarterTask());
                 gui.start();
             }

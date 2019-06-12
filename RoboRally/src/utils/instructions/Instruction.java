@@ -127,7 +127,7 @@ public class Instruction implements Serializable {
         TIMER_ENDED, //Server informs all clients that time for choosing programming cards has run out; player IDs of too slow players are saved
         CARDS_YOU_GOT_NOW, //Server fills empty registers after timer ended
         CURRENT_CARDS, //Server informs all players of the cards in the current register
-        PLAYER_MOVING, //Server informs other players of a move made (just moving, not turning)
+        MOVEMENT, //Server informs other players of a move made (just moving, not turning)
         PLAYER_TURNING, //Server informs all clients if a player turns (left, right)
         PLAYER_SHOOTING, //For animation purposes (?)
         DRAW_DAMAGE, //Server informs player of damage suffered in round; the damage will be handed out in fixed bundles, no individual damage is given

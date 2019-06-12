@@ -120,8 +120,8 @@
                   <AnchorPane fx:id="map" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1500.0">
                      <children>
                         <TilePane fx:id="tilePane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="666.0" prefTileHeight="0.0" prefTileWidth="0.0" prefWidth="1500.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
-                  
-                  
+
+
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="playerMat" prefHeight="200.0" prefWidth="1500.0">
