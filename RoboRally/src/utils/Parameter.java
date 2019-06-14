@@ -36,6 +36,9 @@ public class Parameter {
     //Server
     public static final int SERVER_PORT = 9998;
 
+    //GUI
+    public static final int GUIS_TO_START = 2;
+
     //Game
     public  static final int MAX_PLAYERSIZE = 6;
     public static final int MIN_PLAYERSIZE = 2;
