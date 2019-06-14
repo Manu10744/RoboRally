@@ -18,6 +18,9 @@
 
 ### Bugfixes
 * Fixed trouble with socket creation and thus Server - Client connection by restoration of original server port parameter *(Ivan)*
+* Issue with running server thread after application was closed and thereby blocking server port for successful 
+application restart is solved by setting server threat to daemon. As a positive side effect server now  automatically terminates its own
+ thread after last non-daemon thread (here GUI) is gone by closing last GUI window *(Ivan)*
 
 ## Version [0.1.0]
 
