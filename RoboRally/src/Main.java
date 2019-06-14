@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import modelserver.Server;
 import java.io.*;
 import java.util.logging.Logger;
+import utils.Parameter;
 
 
 /**
@@ -25,18 +26,18 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        /* Run server in an own Thread, by setting server thread to daemon and clients not, it terminates its thread
+           after last client (GUI) thread is gone (closing GUI) */
+        Thread server = new Thread(new ServerStarterTask());
+        server.setDaemon(true);
+        server.start();
 
-            // Run server in an own Thread
-            Thread server = new Thread(new ServerStarterTask());
-            server.start();
-
-            // Load GUI in an own Thread
-            // TODO At the moment two GUIs start at the same time (developer mode) - change i to one or delete for loop when project is finished
-            for(int i = 0; i < 3; i++) {
-                Thread gui = new Thread(new GUIStarterTask());
-                gui.start();
-            }
-
+        // Load GUI in an own Thread
+        // TODO At the moment two GUIs start at the same time (developer mode) - change parameter to one or delete for loop when project is finished
+        for(int i = 0; i < Parameter.GUIS_TO_START; i++) {
+            Thread gui = new Thread(new GUIStarterTask());
+            gui.start();
+        }
     }
 
     /**
