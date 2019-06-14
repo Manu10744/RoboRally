@@ -9,7 +9,9 @@ import static utils.Parameter.TROJAN_CARDS_AMOUNT;
  */
 public class Trojan extends DamageCard {
 
-    String cardName = "Trojan";
+    public Trojan() {
+        cardName = "Trojan";
+    }
     int cardAmount = TROJAN_CARDS_AMOUNT;
 
     /**

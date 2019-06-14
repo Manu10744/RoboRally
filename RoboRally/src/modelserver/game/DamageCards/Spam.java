@@ -10,8 +10,11 @@ import static utils.Parameter.SPAM_CARDS_AMOUNT;
  */
 public class Spam extends DamageCard {
 
-    String cardName = "Spam";
     int cardAmount = SPAM_CARDS_AMOUNT;
+
+    public Spam() {
+        cardName = "Spam";
+    }
 
     /**
      * This is the method that activates the effect of a damage card. <br>

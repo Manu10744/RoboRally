@@ -7,6 +7,10 @@ package modelserver.game.ProgrammingCards;
  */
 public class PowerUp extends ProgrammingCard {
 
+    public PowerUp() {
+        cardName = "PowerUp";
+    }
+
     /**
      * Even though the name suggests a move, in this case the robot will activate a powerup instead of moving <br>
      * around on the map.

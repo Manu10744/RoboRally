@@ -8,7 +8,9 @@ import static utils.Parameter.VIRUS_CARDS_AMOUNT;
  */
 public class Virus extends DamageCard {
 
-    String cardName = "Virus";
+    public Virus() {
+        cardName = "Virus";
+    }
     int cardAmount = VIRUS_CARDS_AMOUNT;
 
     /**

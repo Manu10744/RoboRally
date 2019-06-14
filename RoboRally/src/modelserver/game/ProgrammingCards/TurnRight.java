@@ -7,6 +7,10 @@ package modelserver.game.ProgrammingCards;
  */
 public class TurnRight extends ProgrammingCard {
 
+    public TurnRight() {
+        cardName = "TurnRight";
+    }
+
     /**
      * This will make the robot turn 90 degrees to the right.
      */

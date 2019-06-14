@@ -7,6 +7,10 @@ package modelserver.game.ProgrammingCards;
  */
 public class BackUp extends ProgrammingCard {
 
+    public BackUp() {
+        cardName = "BackUp";
+    }
+
     /**
      * This move will make the robot take one step back. <br>
      * It is important, that the robot still faces the same direction.

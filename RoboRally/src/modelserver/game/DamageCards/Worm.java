@@ -8,7 +8,10 @@ import static utils.Parameter.WORM_CARDS_AMOUNT;
  */
 public class Worm extends DamageCard {
 
-    String cardName = "Worm";
+    public Worm() {
+        cardName = "Worm";
+    }
+
     int cardAmount = WORM_CARDS_AMOUNT;
 
     /**

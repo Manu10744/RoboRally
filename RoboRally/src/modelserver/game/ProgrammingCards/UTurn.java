@@ -7,6 +7,10 @@ package modelserver.game.ProgrammingCards;
  */
 public class UTurn extends ProgrammingCard {
 
+    public UTurn() {
+        cardName = "UTurn";
+    }
+
     /**
      * This will make the robot perform a 180.
      */

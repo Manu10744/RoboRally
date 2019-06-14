@@ -1,6 +1,12 @@
 package modelserver.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
+import modelserver.game.DamageCards.DamageCard;
+import modelserver.game.DamageCards.Spam;
+import modelserver.game.ProgrammingCards.*;
+import static utils.Parameter.*;
 
 /**
  * This class is responsible for handling the Cards in the game.
@@ -10,47 +16,149 @@ import java.util.ArrayList;
  */
 abstract class Deck {
 
-    private int deckSpam;
-    private int deckVirus;
-    private int deckWorm;
-    private int trojanHorse;
-    private ArrayList<Card> deckDiscard;
-    private ArrayList<Card> deckDraw;
+    private static ArrayList<Card> deckDraw;
+    private static ArrayList<Card> deckDiscard;
+    private static ArrayList<Card> deckHand;
+    private static ArrayList<Card> deckRegister;
 
+    private static ArrayList<Card> deckSpam;
+    private static ArrayList<Card> deckVirus;
+    private static ArrayList<Card> deckWorm;
+    private static ArrayList<Card> trojanHorse;
+
+    private static Card topCard;
 
     /**
-     * This method initializes the deck of the programming cards
+     * This method initializes the deck of the programming cards.
      */
-    public void initializeDeck() {
+    public static void initializeDeckDraw() {
 
+        ArrayList<Card> deckDraw = new ArrayList<Card>();
+
+        // Add MoveI cards to the deck. The default value is 5.
+        for (int i = 0; i < MOVEI_CARDS_AMOUNT; i++) {
+            deckDraw.add(new MoveI());
+        }
+
+        // Add MoveII cards to the deck. The default value is 3.
+        for (int i = 0; i < MOVEII_CARDS_AMOUNT; i++) {
+            deckDraw.add(new MoveII());
+        }
+
+        // Add TurnRight cards to the deck. The default value is 3.
+        for (int i = 0; i < TURNRIGHT_CARDS_AMOUNT; i++) {
+            deckDraw.add( new TurnRight());
+        }
+
+        // Add TurnLeft cards to the deck. The default value is 3.
+        for (int i = 0; i < TURNLEFT_CARDS_AMOUNT; i++) {
+            deckDraw.add(new TurnLeft());
+        }
+
+        // Add Again cards to the deck. The default value is 2.
+        for (int i = 0; i < AGAIN_CARDS_AMOUNT; i++) {
+            deckDraw.add(new Again());
+        }
+
+        // Add UTurn cards to the deck. The default value is 1.
+        for (int i = 0; i < UTURN_CARDS_AMOUNT; i++) {
+            deckDraw.add(new UTurn());
+        }
+
+        // Add BackUp cards to the deck. The default value is 1.
+        for (int i = 0; i < BACKUP_CARDS_AMOUNT; i++) {
+            deckDraw.add(new BackUp());
+        }
+
+        // Add PowerUp cards to the deck. The default value is 1.
+        for (int i = 0; i < POWERUP_CARDS_AMOUNT; i++) {
+            deckDraw.add(new PowerUp());
+        }
+
+        // Add MoveIII cards to the deck. The default value is 1.
+        for (int i = 0; i < MOVEIII_CARDS_AMOUNT; i++) {
+            deckDraw.add(new MoveIII());
+        }
     }
 
     /**
-     * This method shuffles the deck
+     * This method shuffles the deck.
      */
-    public void shuffleDeck() {
-
+    public static void shuffleDeck(ArrayList<Card> Deck) {
+        Collections.shuffle(Deck);
     }
 
     /**
-     * This method is used for drawing cards from the deck
+     * This method is used for drawing cards from the deck. <br>
+     * It draws Cards until the maximum amount of allowed hand cards is reached.
      */
-    public void drawCard() {
-
+    public static void drawCard() {
+        for (int i = 0; i < HAND_CARDS_AMOUNT; i++) {
+            deckHand.add(getTopCard(deckDraw));
+            removeTopCard(deckDraw);
+        }
     }
 
     /**
-     * This method is used for discarding cards from the deck
+     * This method knows the top card of any deck.
      */
-    public void discardCard() {
-
+    public static Card getTopCard(ArrayList<Card> Deck) {
+        topCard = Deck.get(0);
+        return topCard;
     }
 
     /**
-     * This method is used for discarding damage cards from the deck
+     * This method removes the Top Card of a deck.
      */
-    public void discardDamageCard() {
-
+    public static void removeTopCard(ArrayList<Card> Deck) {
+        Deck.remove(0);
     }
 
+    /**
+     * This method clears a Deck. For example you could clear the deckDiscard after you've added it to the deckDraw.
+     */
+    public static void clearDeck(ArrayList<Card> Deck) {
+        Deck.clear();
+    }
+
+    /**
+     * This method is needed, if the deckDraw gets to small.
+     */
+    public static void addDiscardToDraw() {
+        deckDraw.addAll(deckDiscard);
+        clearDeck(deckDiscard);
+    }
+
+    /**
+     * This method is used to add the deckHand to the deckDiscard.
+     */
+    public static void discardHand() {
+        deckDiscard.addAll(deckHand);
+        clearDeck(deckHand);
+    }
+
+    /**
+     * This method can check if a Deck has Cards left in it.
+     */
+    public static boolean deckEmpty(ArrayList<Card> Deck){
+        if (Deck.isEmpty()) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * This method draws a Damage Card and adds it to the deckDiscard.
+     * //TODO UNFINISHED.  BE ABLE TO CHOOSE DIFFERENT CARDS. BE ABLE TO TAKE ONE SPAM AND ONE VIRUS FOR EXAMPLE?
+     */
+    public static void drawDamageCard(ArrayList<Card> DamageDeck, ArrayList<Card> DiscardDeck, Card DamageCard){
+        //TODO A SMART IF IS NEEDED THAT CHECKS; IF THERE ARE REMAINING CARDS IN A DECK.
+        if (deckEmpty(DamageDeck) == false) {
+            deckDiscard.add(new DamageCard());
+            removeTopCard(DamageDeck);
+        }else {
+            // TODO
+        }
+    }
 }
