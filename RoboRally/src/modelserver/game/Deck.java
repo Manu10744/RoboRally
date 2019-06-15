@@ -1,5 +1,6 @@
 package modelserver.game;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,7 +10,7 @@ import modelserver.game.ProgrammingCards.*;
 import static utils.Parameter.*;
 
 /**
- * This class is responsible for handling the Cards in the game.
+ * This class is responsible for handling the Decks in the game.
  *
  * @author Vincent Tafferner
  * @author Jessica Gerlach
@@ -100,6 +101,25 @@ abstract class Deck {
     }
 
     /**
+     * This method can add a Card from the deckHand to the deckRegister.
+     */
+    public static void addRegister(){
+        if (deckRegister.size() >= REGISTER_CARDS_AMOUNT) {
+            System.out.println("Aua!"); // TODO: ADD REAL STATEMENT HERE.
+        }else {
+            deckRegister.add(new MoveI()); // TODO: THE METHOD SHOULD TAKE A SPECIFIC CARD CHOSEN BY THE USER.
+            deckHand.remove(0);
+        }
+    }
+
+    /**
+     * This method clears the deckRegister after they have been played.
+     */
+    public static void clearRegister(){
+        clearDeck(deckRegister);
+    }
+
+    /**
      * This method knows the top card of any deck.
      */
     public static Card getTopCard(ArrayList<Card> Deck) {
@@ -132,7 +152,7 @@ abstract class Deck {
     /**
      * This method is used to add the deckHand to the deckDiscard.
      */
-    public static void discardHand() {
+    public static void addHandToDiscard() {
         deckDiscard.addAll(deckHand);
         clearDeck(deckHand);
     }
@@ -150,15 +170,14 @@ abstract class Deck {
 
     /**
      * This method draws a Damage Card and adds it to the deckDiscard.
-     * //TODO UNFINISHED.  BE ABLE TO CHOOSE DIFFERENT CARDS. BE ABLE TO TAKE ONE SPAM AND ONE VIRUS FOR EXAMPLE?
+     * TODO: UNFINISHED.  BE ABLE TO CHOOSE DIFFERENT CARDS. BE ABLE TO TAKE ONE SPAM AND ONE VIRUS FOR EXAMPLE?
      */
     public static void drawDamageCard(ArrayList<Card> DamageDeck, ArrayList<Card> DiscardDeck, Card DamageCard){
-        //TODO A SMART IF IS NEEDED THAT CHECKS; IF THERE ARE REMAINING CARDS IN A DECK.
         if (deckEmpty(DamageDeck) == false) {
             deckDiscard.add(new DamageCard());
             removeTopCard(DamageDeck);
         }else {
-            // TODO
+            // TODO:
         }
     }
 }

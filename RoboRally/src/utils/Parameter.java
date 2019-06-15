@@ -31,6 +31,7 @@ public class Parameter {
     public static final int POWERUP_CARDS_AMOUNT = 1;
 
     public static final int HAND_CARDS_AMOUNT = 9;
+    public static final int REGISTER_CARDS_AMOUNT = 5;
 
 
     //Server

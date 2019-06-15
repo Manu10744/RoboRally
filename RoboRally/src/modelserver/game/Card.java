@@ -8,8 +8,12 @@ package modelserver.game;
  */
 public abstract class Card {
 
-    public String cardName;
     public int cardAmount;
+    public String cardName;
+
+    public Card(){
+        cardName = "Card";
+    }
 
     /**
      * This method simply returns the name of the card.
