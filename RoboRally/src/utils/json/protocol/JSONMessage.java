@@ -1,4 +1,6 @@
-package utils.json;
+package utils.json.protocol;
+
+import java.util.Objects;
 
 /**
  * This class is the wrapper class for all JSON messages of the protocol. It both
@@ -10,21 +12,19 @@ package utils.json;
  */
 public class JSONMessage {
     private String messageType;
-    private MessageBody messageBody;
+    private Object messageBody;
 
-
-    // Constructor for a JSON message
-    public JSONMessage(String messageType, MessageBody messageBody) {
-    this.messageType = messageType;
-    this.messageBody = messageBody;
-}
-
+    public JSONMessage(String messageType, Object messageBody) {
+        this.messageType = messageType;
+        this.messageBody = messageBody;
+    }
 
     public String getMessageType() {
         return messageType;
     }
 
-    public MessageBody getMessageBody() {
+    public Object getMessageBody() {
         return messageBody;
     }
+
 }

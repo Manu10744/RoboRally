@@ -1,18 +1,14 @@
 package utils.instructions;
 
-import utils.json.MessageBody;
-
-public class ServerInstruction {
+public class ServerInstruction extends Instruction {
     ServerInstructionType serverInstructionType;
-    MessageBody content;
 
     public ServerInstruction (ServerInstructionType serverInstructionType){
         this.serverInstructionType = serverInstructionType;
     }
 
-    public ServerInstruction (ServerInstructionType serverInstructionType, MessageBody content){
+    public ServerInstruction (ServerInstructionType serverInstructionType, Object content){
         this.serverInstructionType = serverInstructionType;
-        this.content = content;
     }
 
     public ServerInstructionType getServerInstructionType(){

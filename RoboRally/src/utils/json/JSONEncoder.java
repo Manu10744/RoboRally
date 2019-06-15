@@ -1,11 +1,7 @@
 package utils.json;
 
 import com.google.gson.*;
-import modelserver.Server;
-import utils.instructions.ClientInstruction;
-import utils.instructions.ServerInstruction;
-import utils.json.JSONMessage;
-import utils.json.MessageBody;
+import utils.json.protocol.*;
 
 /**
  * This class is responsible for the serialization (Java to JSON) of java objects.<br>
@@ -18,9 +14,9 @@ public class JSONEncoder {
     public static String serializeJSON(JSONMessage messageObj) {
         Gson gson = new Gson();
         // Convert the object into a JSON String
-        String json = gson.toJson(messageObj);
+        String jsonString = gson.toJson(messageObj);
 
-        return json;
+        return jsonString;
     }
 
 
@@ -40,14 +36,9 @@ public class JSONEncoder {
     public static void main(String[] args) {
         // Create a new Gson object
         Gson gson = new Gson();
-        // Create the messageBody for the message
-        MessageBody body = new MessageBody();
-        // Create the message
-        JSONMessage message = new JSONMessage("HelloClient", body);
-        String json = gson.toJson(message);
-
-
-        // Test if it worked
+        JSONMessage message = new JSONMessage("HelloClient", new HelloClientBody("Version 1.0"));
+        String json = JSONEncoder.serializeJSON(message);
         System.out.println(json);
+
     }
 }

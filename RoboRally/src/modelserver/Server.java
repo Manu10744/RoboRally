@@ -2,15 +2,14 @@ package modelserver;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import modelserver.game.Card;
 import modelserver.game.Game;
 import modelserver.game.Player;
 import utils.instructions.ClientInstruction;
-import utils.instructions.Instruction;
 import utils.instructions.ServerInstruction;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
-import utils.json.JSONMessage;
-import utils.json.MessageBody;
+import utils.json.protocol.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -18,11 +17,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static utils.Parameter.*;
-import static utils.instructions.Instruction.ClientToServerInstructionType.*;
-import static utils.instructions.Instruction.ServerToClientInstructionType.*;
 
 /**
  * This class implements the server. <br>
@@ -34,6 +30,7 @@ public class Server extends Application {
 
     private ArrayList<ClientWrapper> connectedClients;
     private ArrayList<Player> players = new ArrayList<>();
+    private String protocolVersion = "Version 0.1";
     private boolean gameIsInitialized = false;
     private boolean gameIsRunning = false;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
@@ -95,7 +92,6 @@ public class Server extends Application {
                 while ((jsonString = reader.readLine()) != null) {
                     // Deserialize the received JSON String into a JSON object
                     JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
-                    String content = jsonMessage.getMessageBody().getMessage();
 
                     // Here we get the instruction from the received JSON Object
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
@@ -115,23 +111,25 @@ public class Server extends Application {
 
                         //Client sends group name, protocol-vs and KI-on/off to Server
                         case HELLO_SERVER: {
+                            HelloServerBody messageBody = (HelloServerBody) jsonMessage.getMessageBody();
+
                             //TODO write code here
                         }
 
                         //Client sends public message to all, the value of "to" of the JSON-message must be -1
                         case SEND_CHAT: {
+                            SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
+
                             //Stream to get client's name (because atm only the socket is known)
                             String clientName = connectedClients.stream().
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
+
                             //Send message to all clients:
                             for (ClientWrapper client : connectedClients) {
-                                MessageBody messageBody = new MessageBody();
-                                // TODO: messageBody.setFrom() <- playerID of sending client!
-                                messageBody.setMessage(content);
-                                messageBody.setPrivate(false);
-                                jsonMessage = new JSONMessage("ReceivedChat", messageBody);
-
+                                String content = messageBody.getMessage();
+                                int senderID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).findFirst().get().playerID;
+                                jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, false));
                                 client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                 client.writer.flush();
                             }
@@ -140,19 +138,18 @@ public class Server extends Application {
 
                         //Clients sends private message to another player via the server
                         case SEND_PRIVATE_CHAT: {
+                            SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
+
                             //Stream to get client's name
                             String sendingClientName = connectedClients.stream().
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
-                            for (ClientWrapper client : connectedClients){
-                                if (jsonMessage.getMessageBody().getTo().equals(client.getPlayerID())) {
+                            int senderID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).findFirst().get().playerID;
 
-                                    MessageBody messageBody = new MessageBody();
-                                    messageBody.setMessage(content);
-                                    // TODO: messageBody.setFrom() <- playerID of sending client!
-                                    messageBody.setPrivate(true);
-
-                                    jsonMessage = new JSONMessage("ReceivedChat", messageBody);
+                            for (ClientWrapper client : connectedClients) {
+                                String content = messageBody.getMessage();
+                                if (messageBody.getTo() == client.getPlayerID()) {
+                                    jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, true));
                                     client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                     client.writer.flush();
                                 }
@@ -192,10 +189,12 @@ public class Server extends Application {
 
                         //Client sends player-name and player figure to server, where availability is checked and if so player is registered
                         case PLAYER_VALUES: {
+                            PlayerValuesBody messageBody = (PlayerValuesBody) jsonMessage.getMessageBody();
+
                             //TODO modify code according to RoboRally needs
                             boolean success = true;
                             for (ClientWrapper client : connectedClients) {
-                                content = jsonMessage.getMessageBody().getName();
+                                String content = messageBody.getName();
                                 if (client.name.equals(content)) {
                                     logger.info("Client " + content + " refused (name already exists)");
 
@@ -301,27 +300,36 @@ public class Server extends Application {
 
                         //Player plays a card
                         case PLAY_CARD: {
+                            PlayCardBody messageBody = (PlayCardBody) jsonMessage.getMessageBody();
+
                             //TODO write code here
                         }
 
                         //Player chooses starting point and informs server of her or his choice
                         case SET_STARTING_POINT: {
+                            SetStartingPointBody messageBody = (SetStartingPointBody) jsonMessage.getMessageBody();
+
                             //TODO write code here
                         }
 
                         /*Player selects cards, each selected card is sent to the server after five have been chosen.
                         If a register is emptied the card value is 'null'*/
-                        case SELECT_CARDS: {
+                        case SELECT_CARD: {
+                            SelectCardBody messageBody = (SelectCardBody) jsonMessage.getMessageBody();
+
                             //TODO write code here
                         }
 
                         //Client informs client that a card has been put in the register
-                        case CARDS_SELECTED: {
+                        case CARD_SELECTED: {
+                            CardSelectedBody messageBody = (CardSelectedBody) jsonMessage.getMessageBody();
+
                             //TODO write code here
                         }
 
                         //Client informs server that a player has filled his or her full register
                         case SELECTION_FINISHED: {
+                            SelectionFinishedBody messageBody = (SelectionFinishedBody) jsonMessage.getMessageBody();
                             //TODO write code here
                         }
 

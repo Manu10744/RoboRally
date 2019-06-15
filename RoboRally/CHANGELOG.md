@@ -1,6 +1,8 @@
 ### Known Issues
 * Chat - tooltip is not working
 * Sending and Receiving of JSON Strings still needs to be implemented for every instruction
+* Deserialization of protocol messages 'YourCards', 'TimerEnded', 'CardsYouGotNow', 'CurrentCards' and 'DrawDamage' not
+  not possible yet.
 
 ## Version [0.1.1]
 
@@ -15,6 +17,8 @@
 * JSON Deserializing and Serializing is now working - *(Manu)*
 * Getting instructions by messageType of JSON objects is now working - *(Manu, Mia)*
 * Fixed Robot names - *(Vincent)*
+* Completely restructured and enhanced JSON<->Java protocol communication system by customizing Gson deserialization: 
+  Added class for each protocol message and customized Gson so it parses messageBody smart and easy. - *(Manu)*
 
 ### Bugfixes
 * Fixed trouble with socket creation and thus Server - Client connection by restoration of original server port parameter *(Ivan)*
