@@ -103,7 +103,7 @@
                            <children>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/bluecvb-straight-top.png" />
+                                    <Image url="@../resources/images/mapelements/bluecvb-straight-top.png" />
                                  </image>
                                  <VBox.margin>
                                     <Insets left="-5.0" />
@@ -114,7 +114,7 @@
                                     <Insets left="-5.0" top="5.0" />
                                  </VBox.margin>
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/greencvb-straight-top.png" />
+                                    <Image url="@../resources/images/mapelements/greencvb-straight-top.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -122,41 +122,17 @@
                                     <Insets top="30.0" />
                                  </VBox.margin>
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/pushpanel-24-top.png" />
+                                    <Image url="@../resources/images/mapelements/pushpanel-24-top.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/gear-red.png" />
+                                    <Image url="@../resources/images/mapelements/gear-red.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/laser-onebeam-start-left.png" />
-                                 </image>
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../../resources/images/mapelements/energyspace-top-bottom.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../../resources/images/mapelements/victory-1.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../resources/images/mapelements/bluecvb-curved-bottom-right.png" />
+                                    <Image url="@../resources/images/mapelements/laser-onebeam-start-left.png" />
                                  </image>
                                  <VBox.margin>
                                     <Insets top="10.0" />
@@ -167,7 +143,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/pit.png" />
+                                    <Image url="@../resources/images/mapelements/energyspace-top-bottom.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -175,7 +151,23 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/wall-two-bottom-left.png" />
+                                    <Image url="@../resources/images/mapelements/victory-1.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/mapelements/bluecvb-curved-sharp-bottom-right.png" />
+                                 </image>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </ImageView>
+                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <image>
+                                    <Image url="@../resources/images/mapelements/pit.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -183,7 +175,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/priority-antenna.png" />
+                                    <Image url="@../resources/images/mapelements/wall-two-bottom-left.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -191,7 +183,15 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                                  <image>
-                                    <Image url="@../../resources/images/mapelements/reboot.png" />
+                                    <Image url="@../resources/images/mapelements/priority-antenna.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <image>
+                                    <Image url="@../resources/images/mapelements/reboot.png" />
                                  </image>
                               </ImageView>
                            </children>
