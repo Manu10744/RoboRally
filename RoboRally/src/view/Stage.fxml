@@ -1,60 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.stage.Screen?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
 
-<!-- Stage contains board and chat and it size automatically adapts to the users' setup -->
-<GridPane fx:id="stage"
-          prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}"
-          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="viewmodel.StageController">
+<AnchorPane fx:id="stage" minHeight="700.0" minWidth="900.0" pickOnBounds="false" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
+   <children>
+      <HBox fx:id="chatBoardBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <VBox fx:id="boardView" prefHeight="1006.0" prefWidth="1502.0">
+               <children>
+                  <AnchorPane fx:id="opponentMat" prefHeight="100.0" prefWidth="1500.0">
+                     <children>
+                        <HBox fx:id="player1Register" layoutX="20.0" layoutY="20.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: blue;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="player1Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1Reg3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1Reg4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player2Register" layoutX="312.0" layoutY="20.0" prefHeight="70.0" prefWidth="300.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="player2Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2Reg3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2Reg4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player3Register" layoutX="604.0" layoutY="20.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="600.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="player3Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3Reg3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3Reg4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player4Register" layoutX="896.0" layoutY="20.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: yellow;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="player4Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4Reg3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4Reg4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player5Register" layoutX="1188.0" layoutY="20.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: orange;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="1200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="player5Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5Reg3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5Reg4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player1Updates" layoutX="14.0" layoutY="40.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <ImageView fx:id="player1TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1PermUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1PermUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player1PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player2Updates" layoutX="312.0" layoutY="45.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: purple;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <ImageView fx:id="player2TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2PermUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2PermUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player2PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player3Updates" layoutX="604.0" layoutY="34.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: grey;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="600.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <ImageView fx:id="player3TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3PermUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3PermUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player3PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player4Updates" layoutX="896.0" layoutY="26.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: pink;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="900.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <ImageView fx:id="player4TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4PermUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4PermUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player4PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="player5Updates" layoutX="1188.0" layoutY="32.0" prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: brown;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                           <children>
+                              <ImageView fx:id="player5TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5PermUdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5PermUdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="player5PermUdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="map" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1500.0">
+                     <children>
+                        <TilePane fx:id="tilePane" nodeOrientation="LEFT_TO_RIGHT" prefHeight="666.0" prefTileHeight="0.0" prefTileWidth="0.0" prefWidth="1500.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0" />
 
-   <!-- Determine screen resolution -->
-   <fx:define>
-      <Screen fx:factory="getPrimary" fx:id="screen"/>
-   </fx:define>
 
-   <columnConstraints>
-      <ColumnConstraints  hgrow="ALWAYS" minWidth="0.0" percentWidth="80.0"/> <!-- Board -->
-      <ColumnConstraints  hgrow="ALWAYS" minWidth="0.0" percentWidth="20.0"/> <!-- Chat -->
-   </columnConstraints>
-
-   <rowConstraints>
-      <RowConstraints vgrow="ALWAYS" minHeight="0.0" percentHeight="100.0"/>
-   </rowConstraints>
-
-   <!-- Board -->
-   <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0">
-
-      <columnConstraints>
-         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="100.0"/>
-      </columnConstraints>
-
-      <rowConstraints>
-         <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="10.0"/> <!-- OpponentMat -->
-         <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="70.0"/> <!-- Map -->
-         <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="20.0"/> <!-- PlayerMat -->
-      </rowConstraints>
-
-      <!-- TODO StartScreen -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
-
-      <!-- TODO ChooseRobot -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
-
-      <!-- OpponentMat -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>
-
-      <!-- Map -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="true"/>
-
-      <!-- PlayerMat -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="playerMat" source="PlayerMat.fxml" visible="true"/>
-   </GridPane>
-
-   <!-- Chat -->
-   <fx:include GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chat" source="Chat.fxml" />
-
-</GridPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="playerMat" prefHeight="200.0" prefWidth="1500.0">
+                     <children>
+                        <HBox fx:id="playerIcons" layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: blue;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="ownRobotIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon6" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="playerDrawDiscardCards" layoutX="202.0" layoutY="75.0" prefHeight="100.0" prefWidth="800.0" style="-fx-background-color: purple;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="emptyIcon0" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon01" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon02" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon03" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon04" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon05" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon06" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon07" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="playerUpdates" layoutX="268.0" layoutY="50.0" prefHeight="100.0" prefWidth="700.0" style="-fx-background-color: orange;" AnchorPane.leftAnchor="800.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="permaUpdate1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="permaUpdate2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="permaUpdate3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon00" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="tempUpdate1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="tempUpdate2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="tempUpdate3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                        <HBox fx:id="playerRegister" layoutX="502.0" layoutY="120.0" prefHeight="100.0" prefWidth="700.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="800.0" AnchorPane.rightAnchor="0.0">
+                           <children>
+                              <ImageView fx:id="register1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="register2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="register3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="register4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="register5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon20" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="emptyIcon21" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </AnchorPane>
+               </children></VBox>
+            <fx:include fx:id="chat" source="Chat.fxml" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

@@ -1,7 +1,7 @@
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import modelserver.Server;
@@ -76,14 +76,11 @@ public class Main extends Application {
                 FXMLLoader loader = new FXMLLoader();
                 // Load view for primaryStage
                 loader.setLocation(Main.class.getResource("view/Stage.fxml"));
-
-                GridPane stageView;
+                AnchorPane stageView;
                 stageView = loader.load();
 
                 // Set scene
                 Scene scene = new Scene(stageView);
-
-                primaryStage.setTitle("RoboRally");
                 primaryStage.setScene(scene);
 
                 // Show primaryStage
