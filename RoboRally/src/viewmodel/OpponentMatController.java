@@ -1,11 +1,12 @@
 package viewmodel;
 
 import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.image.ImageView;
 
 /**
- * This class has full control over the opponentmat view.
+ * This class has full control over the opponentMat view.
  * It is responsible for showing the cards in the register of each player,
  * the update cards of each player and the icons of the players.
  *
@@ -14,6 +15,8 @@ import javafx.scene.layout.HBox;
 
 public class OpponentMatController {
 
+    @FXML
+    private GridPane opponentMat;
     @FXML
     private HBox player1Register;
     @FXML
