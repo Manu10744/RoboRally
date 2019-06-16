@@ -1,30 +1,29 @@
 package viewmodel;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
 
 public class StageController {
 
-    //Todo Javadoc
+/**
+ * This controller class is responsible for the board and the chat.
+ * GridPane 'stage' adapts automatically to the users' screen setup.
+ * Stage GUI and its elements are fully responsive.
+ * It loads furthermore the initial start screen and the select robot screen.
+ *
+ * @author Ivan Dovecar
+ */
 
     @FXML
-    HBox chatBoardBox;
-
+    GridPane stage;
     @FXML
-    AnchorPane board;
+    GridPane startScreen;
     @FXML
-    VBox boardElements;
+    GridPane opponentMat;
     @FXML
-    AnchorPane opponentMat;
+    GridPane map;
     @FXML
-    AnchorPane map;
+    GridPane playerMat;
     @FXML
-    AnchorPane playerMat;
-
-    @FXML
-    AnchorPane chat;
-
-
+    GridPane chat;
 }
