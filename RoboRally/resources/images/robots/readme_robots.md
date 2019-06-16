@@ -1,1 +1,0 @@
-This folder contains all project robot images

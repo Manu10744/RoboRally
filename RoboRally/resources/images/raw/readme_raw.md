@@ -1,1 +1,0 @@
-This folder contains all project images for further processing
