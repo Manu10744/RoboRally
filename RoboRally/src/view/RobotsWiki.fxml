@@ -37,7 +37,7 @@
                         <Insets left="20.0" top="25.0" />
                      </VBox.margin>
                      <image>
-                        <Image url="@../../resources/images/robots/Twonky.PNG" />
+                        <Image url="@../resources/images/others/twonky-wiki-100x100.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -45,7 +45,7 @@
                         <Insets left="20.0" top="70.0" />
                      </VBox.margin>
                      <image>
-                        <Image url="@../../resources/images/robots/HammerBot.PNG" />
+                        <Image url="@../resources/images/others/hammerBot-wiki-100x100.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -53,7 +53,7 @@
                         <Insets left="20.0" top="70.0" />
                      </VBox.margin>
                      <image>
-                        <Image url="@../../resources/images/robots/Spinbot.PNG" />
+                        <Image url="@../resources/images/others/spinBot-wiki-100x100.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -61,7 +61,7 @@
                         <Insets left="20.0" top="70.0" />
                      </VBox.margin>
                      <image>
-                        <Image url="@../../resources/images/robots/HulkX90.PNG" />
+                        <Image url="@../resources/images/others/hulkX90-wiki-100x100.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -69,7 +69,7 @@
                         <Insets left="20.0" top="70.0" />
                      </VBox.margin>
                      <image>
-                        <Image url="@../../resources/images/robots/SmashBot.PNG" />
+                        <Image url="@../resources/images/others/smashBot-wiki-100x100.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -77,7 +77,7 @@
                         <Insets left="20.0" top="70.0" />
                      </VBox.margin>
                      <image>
-                        <Image url="@../../resources/images/robots/ZoomBot.PNG" />
+                        <Image url="@../resources/images/others/zoomBot-wiki-100x100.png" />
                      </image>
                   </ImageView>
                </children>

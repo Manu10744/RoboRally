@@ -1,5 +1,7 @@
 package viewmodel;
 
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.TilePane;
 import modelclient.Client;
 import utils.Parameter;
 import javafx.fxml.Initializable;
