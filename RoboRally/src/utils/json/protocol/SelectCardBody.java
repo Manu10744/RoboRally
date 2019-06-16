@@ -1,15 +1,23 @@
 package utils.json.protocol;
 
+import com.google.gson.annotations.Expose;
+import modelserver.game.Card;
+
+/** This is the wrapper class for the message body of the 'SelectCard' protocol JSON message.
+ * @author Manuel Neumayer
+ */
 public class SelectCardBody {
-    private String card;
+    @Expose
+    private Card card;
+    @Expose
     private int register;
 
-    public SelectCardBody(String card, int register) {
+    public SelectCardBody(Card card, int register) {
         this.card = card;
         this.register = register;
     }
 
-    public String getCard() {
+    public Card getCard() {
         return card;
     }
 

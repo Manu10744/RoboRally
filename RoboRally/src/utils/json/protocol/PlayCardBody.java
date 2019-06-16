@@ -1,13 +1,20 @@
 package utils.json.protocol;
 
-public class PlayCardBody {
-    private String card;
+import com.google.gson.annotations.Expose;
+import modelserver.game.Card;
 
-    public PlayCardBody(String card) {
+/** This is the wrapper class for the message body of the 'PlayCard' protocol JSON message.
+ * @author Manuel Neumayer
+ */
+public class PlayCardBody {
+    @Expose
+    private Card card;
+
+    public PlayCardBody(Card card) {
         this.card = card;
     }
 
-    public String getCard() {
+    public Card getCard() {
         return card;
     }
 }

@@ -9,16 +9,17 @@
 ### New Features
 * First wiki draft created - *(Verena, Jessie)*
 * Switching between wiki tabs is now possible - *(Verena)*
+* Added Gson @Expose tags which make excluding fields from deserialization and serialization possible - *(Manu)*
 
 ### Changes
 * Main - runs server and client parallel (with two GUIs ATM -> developer mode) - *(Ivan)*
 * No longer needed code related to Start, Init and Join is removed and replaced by Ready which controls player status - *(Ivan)*
 * Existing Server and Client instructions are adapted to new RoboRally instructions (in Server- and Client-classes), not yet implemented instructions are now created in Server- and Client-classes (ATM most without function) - *(Ivan)*
-* JSON Deserializing and Serializing is now working - *(Manu)*
 * Getting instructions by messageType of JSON objects is now working - *(Manu, Mia)*
 * Fixed Robot names - *(Vincent)*
-* Completely restructured and enhanced JSON<->Java protocol communication system by customizing Gson deserialization: 
-  Added class for each protocol message and customized Gson so it parses messageBody smart and easy. - *(Manu)*
+* Added class for each protocol message - *(Manu)*
+* Completely restructured and enhanced JSON<->Java protocol communication system by customizing Gson deserialization and serialization.
+  Gson parses messages now smart and easy. - *(Manu)*
 
 ### Bugfixes
 * Fixed trouble with socket creation and thus Server - Client connection by restoration of original server port parameter *(Ivan)*

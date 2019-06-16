@@ -1,5 +1,8 @@
 package modelserver.game;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * This class defines what a card shall be in the game. <br>
  * There are more specific cards defined in the classes that inherit from Card.
@@ -9,6 +12,8 @@ package modelserver.game;
 public abstract class Card {
 
     public int cardAmount;
+
+    @Expose @SerializedName("card")
     public String cardName;
 
     public Card(){
