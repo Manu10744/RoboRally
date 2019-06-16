@@ -9,6 +9,8 @@
 ### New Features
 * First wiki draft created - *(Verena, Jessie)*
 * Switching between wiki tabs is now possible - *(Verena)*
+* GUI adapts automatically to users' screen setup - *(Ivan)*
+* GUI was completely refactored to enable fully responsiveness - *(Ivan)*
 
 ### Changes
 * Main - runs server and client parallel (with two GUIs ATM -> developer mode) - *(Ivan)*
