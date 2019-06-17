@@ -54,7 +54,7 @@ public class JSONDecoder {
         ClientInstruction clientInstruction;
 
         switch (jsonMessage.getMessageType()) {
-            case "HelloServerBody":
+            case "HelloServer":
                 clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.HELLO_SERVER);
                 return clientInstruction;
             case "PlayerValues":
