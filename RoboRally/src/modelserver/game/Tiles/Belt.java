@@ -8,7 +8,7 @@ public class Belt extends Tile {
 
     public Belt (String color){
         super();
-        this.tileType = "Belt";
+        this.tileType = Parameter.BELT_NAME;
         if(color.equals(Parameter.GREEN_BELT)){this.speed = Parameter.GREEN_BELT_SPEED;}
         else if(color.equals(Parameter.BLUE_BELT)){this.speed = Parameter.BLUE_BELT_SPEED;}
     }

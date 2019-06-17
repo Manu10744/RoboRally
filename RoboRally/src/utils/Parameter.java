@@ -41,9 +41,10 @@ public class Parameter {
     public static final int GUIS_TO_START = 2;
 
     //Game
+        //amount of players
     public  static final int MAX_PLAYERSIZE = 6;
     public static final int MIN_PLAYERSIZE = 2;
-
+        //Register numbers
     public static final int REGISTER_ONE = 1;
     public static final int REGISTER_TWO = 2;
     public static final int REGISTER_THREE = 3;
@@ -54,8 +55,8 @@ public class Parameter {
        //Orientation
     public static final String ORIENTATION_RIGHT = "right";
     public static final String ORIENTATION_LEFT = "left";
-    public static final String ORIENTATION_DOWN = "down";
-    public static final String ORIENTATION_UP = "up";
+    public static final String ORIENTATION_BOTTOM = "down";
+    public static final String ORIENTATION_TOP = "up";
 
         //Count number for amount of lasers
     public static final int LASER_ONE = 1;
@@ -70,17 +71,37 @@ public class Parameter {
     public static final int CHECKPOINT_FIVE = 5;
     public static final int CHECKPOINT_SIX = 6;
 
-         //Gear color
+    //names
+    public static String ANTENNA_NAME = "Antenna";
+    public static String BELT_NAME = "Belt";
+    public static String CHECKPOINT_NAME = "CheckPoint";
+    public static String EMPTY_NAME = "Empty";
+    public static String ENERGYSPACE_NAME = "EnergySpace";
+    public static String GEAR_NAME = "Gear";
+    public static String LASER_NAME = "Laser";
+    public static String PIT_NAME = "Pit";
+    public static String PUSHPANEL_NAME = "PushPanel";
+    public static String ROTATINGBELT_NAME = "RotatingBelt";
+    public static String STARTPOINT_NAME = "StartPoint";
+    public static String WALL_NAME = "Wall";
+
+
+    //Gear color
     public static final String RED_GEAR = "red";
     public static final String GREEN_GEAR = "green";
 
-        //Belt
+    //Belt
             // color
     public static final String GREEN_BELT = "green";
     public static final String BLUE_BELT = "blue";
             // speed
     public static final int GREEN_BELT_SPEED = 1;
     public static final int BLUE_BELT_SPEED = 2;
+
+    //Wall
+        //amaonut of walls
+    public static final int ONE_WALL = 1;
+    public static final int TWO_WALLS = 2;
 
     //ArrayElements
     public static int FIRST_ELEMENT_POS = 0;
