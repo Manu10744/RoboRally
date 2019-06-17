@@ -24,6 +24,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 
@@ -65,6 +66,7 @@ public class ChatController implements Initializable {
     private boolean joinPopupIsOpen;
     private StringProperty message;
     private StringProperty clientChatOutput;
+    private static final Logger logger = Logger.getLogger( ChatController.class.getName() );
 
     /**
      * Initialize supervises all chat elements for action, checks user input on syntax failures and controls the
@@ -73,6 +75,8 @@ public class ChatController implements Initializable {
      * @author Ivan Dovecar
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        logger.info("Initialize");
 
         serverAddress = new SimpleStringProperty();
         serverSettingFinished = new SimpleBooleanProperty(false);
@@ -92,6 +96,7 @@ public class ChatController implements Initializable {
 
         //SERVERINPUT: addListener waits for IP and port
         serverAddress.addListener(((observableValue, oldValue, newValue) -> {
+            logger.info("serverAddress addlistener");
             serverIP = serverAddress.get().split("\\:")[0];
             serverPort = Integer.parseInt(serverAddress.get().split("\\:")[1]);
             try {
@@ -103,12 +108,14 @@ public class ChatController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            client = new Client(serverIP, serverPort);
+            client.connect();
         }));
 
         //NAMEINPUT: addListener waits for name
         name.addListener((observableValue, oldValue, newValue) -> {
             if (!newValue.equals(utils.Parameter.INVALID_CLIENTNAME)) {
-                client = new Client(name.get(), serverIP, serverPort);
+       //TODO         client = new Client(name.get(), serverIP, serverPort);
                 if (client.connect()) { //Connection successfull
                     nameSettingFinished.set(true);
 

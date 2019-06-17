@@ -1,8 +1,16 @@
 package utils.json.protocol;
 
+import com.google.gson.annotations.Expose;
+
+/** This is the wrapper class for the message body of the 'PlayerAdded' protocol JSON message.
+ * @author Manuel Neumayer
+ */
 public class PlayerAddedBody {
+    @Expose
     private int playerID;
+    @Expose
     private String name;
+    @Expose
     private int figure;
 
     public PlayerAddedBody(int playerID, String name, int figure) {

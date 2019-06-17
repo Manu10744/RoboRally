@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
@@ -83,6 +84,7 @@ public class Main extends Application {
                 // Set scene
                 Scene scene = new Scene(stageView);
 
+                primaryStage.getIcons().add(new Image("/resources/images/others/robotIcon.png"));
                 primaryStage.setTitle("RoboRally");
                 primaryStage.setScene(scene);
 
