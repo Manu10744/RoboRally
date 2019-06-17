@@ -1,7 +1,5 @@
 package utils.instructions;
 
-import modelclient.Client;
-
 public class ClientInstruction extends Instruction {
     ClientInstructionType clientInstructionType;
 
@@ -9,7 +7,11 @@ public class ClientInstruction extends Instruction {
         this.clientInstructionType = clientInstructionType;
     }
 
-    public enum ClientInstructionType {
+    public ClientInstructionType getClientInstructionType(){
+        return clientInstructionType;
+    }
+
+    public enum ClientInstructionType{
         //ClientChatInstructions
         HELLO_SERVER, //Client sends group name, protocol-vs and KI-on/off to Server
         SEND_CHAT, //Client sends public message to all, the value of "to" of the JSON-message must be -1
@@ -25,9 +27,5 @@ public class ClientInstruction extends Instruction {
                         If a register is emptied the card value is 'null'*/
         CARD_SELECTED, //Client informs client that a card has been put in the register
         SELECTION_FINISHED, // Client informs server that a player has filled his or her full register
-    }
-
-    public ClientInstructionType getClientInstructionType() {
-        return clientInstructionType;
     }
 }

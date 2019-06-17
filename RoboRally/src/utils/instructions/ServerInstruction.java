@@ -7,10 +7,6 @@ public class ServerInstruction extends Instruction {
         this.serverInstructionType = serverInstructionType;
     }
 
-    public ServerInstruction (ServerInstructionType serverInstructionType, Object content){
-        this.serverInstructionType = serverInstructionType;
-    }
-
     public ServerInstructionType getServerInstructionType(){
         return serverInstructionType;
     }
@@ -24,8 +20,6 @@ public class ServerInstruction extends Instruction {
 
         ERROR, // Server informs client that a transmission error occurred
         NAME_INVALID, // Will be part of meesage type "error", message body contains name_invalid -> new method call
-
-
 
         //ServerGameInstruction
         PLAYER_ADDED, //Server confirms player_name and player_figure
@@ -51,5 +45,4 @@ public class ServerInstruction extends Instruction {
         CHECKPOINT_REACHED, // Server informs all palyers if a player reached a checkpoint
         GAME_FINISHED // Server informs palyers if a player has won
     }
-
 }
