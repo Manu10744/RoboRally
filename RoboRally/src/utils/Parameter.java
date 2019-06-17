@@ -43,4 +43,43 @@ public class Parameter {
     //Game
     public  static final int MAX_PLAYERSIZE = 6;
     public static final int MIN_PLAYERSIZE = 2;
+
+    public static final int REGISTER_ONE = 1;
+    public static final int REGISTER_TWO = 2;
+    public static final int REGISTER_THREE = 3;
+    public static final int REGISTER_FOUR = 4;
+    public static final int REGISTER_FIVE = 5;
+
+    //Tiles
+       //Orientation
+    public static final String ORIENTATION_RIGHT = "right";
+    public static final String ORIENTATION_LEFT = "left";
+    public static final String ORIENTATION_DOWN = "down";
+    public static final String ORIENTATION_UP = "up";
+
+        //Count number for amount of lasers
+    public static final int LASER_ONE = 1;
+    public static final int LASER_TWO = 2;
+    public static final int LASER_THREE = 3;
+
+        //Count number for checkpoint (victory) labels
+    public static final int CHECKPOINT_ONE = 1;
+    public static final int CHECKPOINT_TWO = 2;
+    public static final int CHECKPOINT_THREE = 3;
+    public static final int CHECKPOINT_FOUR = 4;
+    public static final int CHECKPOINT_FIVE = 5;
+    public static final int CHECKPOINT_SIX = 6;
+
+         //Gear color
+    public static final String RED_GEAR = "red";
+    public static final String GREEN_GEAR = "green";
+
+        //Belt
+            // color
+    public static final String GREEN_BELT = "green";
+    public static final String BLUE_BELT = "blue";
+            // speed
+    public static final int GREEN_BELT_SPEED = 1;
+    public static final int BLUE_BELT_SPEED = 2;
+
 }
