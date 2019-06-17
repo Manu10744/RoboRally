@@ -7,6 +7,14 @@
 ## Version [0.1.1]
 
 ### New Features
+* Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
+### Changes
+
+### Bugfixes
+
+## Version [0.1.0]
+
+### New Features
 * First wiki draft created - *(Verena, Jessie)*
 * Switching between wiki tabs is now possible - *(Verena)*
 * GUI adapts automatically to users' screen setup - *(Ivan)*
@@ -30,7 +38,7 @@ application restart is solved by setting server threat to daemon. As a positive 
 * Client BufferReader issue was adjusted by StringBuilder, otherwise readLine submits incomplete input to JSONDecoder which leeds to error. It's based on the behavior of readLine which ends a string by the first newline mark, so everytime an input occurs only a "{" was handed
 to the JSONDecoder
 
-## Version [0.1.0]
+## Version [0.0.1]
 
 ### New Features
 * Added Programming and Damage Cards - *(Vincent)*
