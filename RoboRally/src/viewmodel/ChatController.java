@@ -4,8 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.TilePane;
 import modelclient.Client;
 import utils.Parameter;
 import javafx.fxml.Initializable;
@@ -58,12 +56,15 @@ public class ChatController implements Initializable {
     private Stage primaryStage;
     private String tempString;
 
-    private StringProperty name;
     private StringProperty serverAddress;
+    private StringProperty name;
+    private IntegerProperty figure;
+
     private BooleanProperty serverSettingFinished;
     private BooleanProperty nameSettingFinished;
-    private boolean wikiWindowIsOpen;
-    private boolean joinPopupIsOpen;
+    private BooleanProperty figureSettingFinished;
+    private BooleanProperty playerSettingFinished;
+
     private StringProperty message;
     private StringProperty clientChatOutput;
     private static final Logger logger = Logger.getLogger( ChatController.class.getName() );
@@ -76,13 +77,14 @@ public class ChatController implements Initializable {
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        logger.info("Initialize");
-
         serverAddress = new SimpleStringProperty();
         serverSettingFinished = new SimpleBooleanProperty(false);
         name = new SimpleStringProperty();
-        message = new SimpleStringProperty();
         nameSettingFinished = new SimpleBooleanProperty(false);
+        figure = new SimpleIntegerProperty();
+        figureSettingFinished = new SimpleBooleanProperty(false);
+
+        message = new SimpleStringProperty();
         clientChatOutput = new SimpleStringProperty();
 
 
@@ -109,22 +111,19 @@ public class ChatController implements Initializable {
                 e.printStackTrace();
             }
             client = new Client(serverIP, serverPort);
-            client.connect();
+            client.connectClient();
         }));
 
         //NAMEINPUT: addListener waits for name
         name.addListener((observableValue, oldValue, newValue) -> {
             if (!newValue.equals(utils.Parameter.INVALID_CLIENTNAME)) {
-       //TODO         client = new Client(name.get(), serverIP, serverPort);
-                if (client.connect()) { //Connection successfull
-                    nameSettingFinished.set(true);
-
-                    clientChatOutput.bind(client.chatHistoryProperty()); // hier wird der Text durchgegeben
-                } else {    //Connection not successfull due to name conflict
-                    showInvalidNameAlert();
-                    name.setValue(Parameter.INVALID_CLIENTNAME);
-                }
+                nameSettingFinished.set(true);
+                clientChatOutput.bind(client.chatHistoryProperty()); // hier wird der Text durchgegeben
+            } else {
+                showInvalidNameAlert();
+                name.setValue(Parameter.INVALID_CLIENTNAME);
             }
+            client.connectPlayer();
         });
 
         /* Needs to be adapated as clients are appearantly no longer adressed by
@@ -213,6 +212,7 @@ public class ChatController implements Initializable {
             fieldServer.disableProperty().set(true);
             fieldName.disableProperty().set(false);
             fieldName.requestFocus();
+            //TODO enable visibility choose robot / disable visibility start
         }));
 
         //Enable chatInput and buttons after name setting is finished

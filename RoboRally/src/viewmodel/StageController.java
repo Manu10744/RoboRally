@@ -19,6 +19,8 @@ public class StageController {
     @FXML
     GridPane startScreen;
     @FXML
+    GridPane chooseRobot;
+    @FXML
     GridPane opponentMat;
     @FXML
     GridPane map;

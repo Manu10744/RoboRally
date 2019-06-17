@@ -31,7 +31,7 @@ public class Server extends Application {
     private ArrayList<ClientWrapper> connectedClients;
     private ArrayList<Player> players = new ArrayList<>();
     private String protocolVersion = "Version 0.1";
-    private boolean gameIsInitialized = false;
+    private int counterPlayerID = 1;
     private boolean gameIsRunning = false;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
@@ -73,6 +73,7 @@ public class Server extends Application {
 
         private Socket clientSocket;
         private Server server;
+        JSONMessage jsonMessage;
 
         ServerReaderTask(Socket clientSocket, Server server) {
             this.clientSocket = clientSocket;
@@ -89,32 +90,24 @@ public class Server extends Application {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                 //Server submits protocol version to client
-            //    boolean waitingForHelloServer = true;
-
-                logger.info("S2C protocol version start");
-            //    while(waitingForHelloServer) {
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                JSONMessage jsonMessage = new JSONMessage("HelloClient", new HelloClientBody(protocolVersion));
-                    writer.println(JSONEncoder.serializeJSON(jsonMessage));
-                    logger.info("HelloClient sends: "+JSONEncoder.serializeJSON(jsonMessage));
-                    writer.flush();
-            //    }
-            //    logger.info("S2C protocol version submitted and C2S response received");
+                jsonMessage = new JSONMessage("HelloClient", new HelloClientBody(protocolVersion));
+                writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                writer.flush();
 
 
                 String jsonString;
                 while ((jsonString = reader.readLine()) != null) {
                     // Deserialize the received JSON String into a JSON object
-             //TODO       JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
+                    jsonMessage = JSONDecoder.deserializeJSON(jsonString);
+                    logger.info("JSONDcoder done: "+jsonString+jsonMessage);
 
                     // Here we get the instruction from the received JSON Object
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
+                    logger.info("clientInstruction: "+clientInstruction);
+
                     // Here we get its instruction type (enum)
                     ClientInstruction.ClientInstructionType clientInstructionType = clientInstruction.getClientInstructionType();
+                    logger.info("clientInstructionType: "+clientInstructionType);
 
                     switch (clientInstructionType) {
                         //Check if name is already used, if not, register client
@@ -129,10 +122,23 @@ public class Server extends Application {
 
                         //Client sends group name, protocol-vs and KI-on/off to Server
                         case HELLO_SERVER: {
+                            logger.info("CASE HELLO SERVER successfully entered");
                             HelloServerBody messageBody = (HelloServerBody) jsonMessage.getMessageBody();
-                            logger.info("CASE HELLO SERVER");
-                  //TODO          waitingForHelloServer = false;
-                            //TODO write code here
+
+                            if (messageBody.getProtocol().equals(protocolVersion)){
+                                logger.info("Protocol version test succeeded");
+
+                                jsonMessage = new JSONMessage("Welcome", new WelcomeBody(counterPlayerID));
+                                writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                writer.flush();
+
+                                //counter is adjusted for next registration process
+                                counterPlayerID++;
+                            }else {
+                                logger.info("Protocol version test failed");
+                                clientSocket.close();
+                                logger.info("Server connection terminated");
+                            }
                         }
 
                         //Client sends public message to all, the value of "to" of the JSON-message must be -1
@@ -208,6 +214,7 @@ public class Server extends Application {
 
                         //Client sends player-name and player figure to server, where availability is checked and if so player is registered
                         case PLAYER_VALUES: {
+                            logger.info("CASE PLAYER VALUES entered successfully");
                             PlayerValuesBody messageBody = (PlayerValuesBody) jsonMessage.getMessageBody();
 
                             //TODO modify code according to RoboRally needs

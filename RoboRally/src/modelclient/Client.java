@@ -3,10 +3,7 @@ package modelclient;
 import java.io.*;
 import java.util.logging.Logger;
 
-import modelserver.game.Card;
-import modelserver.game.Game;
 import modelserver.game.Player;
-import utils.Parameter;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -16,7 +13,6 @@ import utils.json.JSONEncoder;
 import utils.json.protocol.*;
 
 import java.net.Socket;
-import java.net.SocketException;
 
 /**
  * This class implements the clients. <br>
@@ -25,31 +21,30 @@ import java.net.SocketException;
  * @author Ivan Dovecar
  */
 public class Client {
-
     private String name;
+    private int figure;
     private Socket socket;
     private String serverIP;
     private int serverPort;
     private PrintWriter writer;
 
-    private boolean waitingForAnswer;
+    private boolean waitingForHelloClient;
     private boolean nameSuccess;
 
     private String protocolVersion = "Version 0.1";
+    private String group = "AstreineBarsche";
+
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
     private BooleanProperty gameReady;
     private static final Logger logger = Logger.getLogger( Client.class.getName() );
 
-//TODO     public Client(String name, String serverIP, int serverPort) {
+    //TODO     public Client(String name, String serverIP, int serverPort) {
     public Client(String serverIP, int serverPort) {
         logger.info("Starting registration process...");
         this.serverIP = serverIP;
         this.serverPort = serverPort;
-
-
-
 
         chatHistory = new SimpleStringProperty("");
         activeClients = new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -65,9 +60,7 @@ public class Client {
      * It uses the {link fieldServer} to get the IP and Port.
      * @return connection Success: True, connection Failed: False
      */
-    public boolean connect() {
-        logger.info("client connect");
-
+    public boolean connectClient() {
         try {
             //Create socket to connect to server at serverIP:serverPort
             socket = new Socket(serverIP, serverPort);
@@ -77,33 +70,37 @@ public class Client {
             Thread readerThread = new Thread(readerTask);
             readerThread.start();
 
-            waitingForAnswer = true;
-            while(waitingForAnswer) {
-                //WAIT FOR ANSWER FROM SERVER, waitingForAnswer is changed by ClientReaderTask once finished
+            //waiting for server response - waitingForHelloClient is changed by ClientReaderTask
+            waitingForHelloClient = true;
+            while(waitingForHelloClient) {
                 logger.info("Waiting...");
-                if (waitingForAnswer) try {
+                if (waitingForHelloClient) try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            // Inform the server about the clients protocol version
+            // Inform the server about group, AI and the clients protocol version
             writer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
-            logger.info("Preparing transmission of client protocol version");
-            JSONMessage jsonMessage = new JSONMessage("HelloServer", new HelloServerBody("TESTGRUPPE", false, this.protocolVersion));
+            JSONMessage jsonMessage = new JSONMessage("HelloServer", new HelloServerBody(group, false, protocolVersion));
             writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
-            logger.info("Protocol version submitted");
 
-
-            logger.info("Registration process finished");
-
-            return nameSuccess; //gets set by ClientReaderTask
+           // TODO return nameSuccess; //gets set by ClientReaderTask
         } catch(IOException exp) {
             exp.printStackTrace();
         }
         return false;
+    }
+
+    public void connectPlayer() {
+        //TODO Player control has to be controlled via "chooseRobot" PRESET ROBOT NO.1!!!!!!!
+        logger.info("Submit player values (DUMMY FIGURE 1 PRESET ATM)");
+        JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, 1));
+        writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        writer.flush();
+        logger.info("Submitted player values");
     }
 
     /**
@@ -188,8 +185,8 @@ public class Client {
      * Adds an client to activeClients
      * @param playerID of joining client
      */
-    private void addActiveClient(int playerID) {
-        activeClients.add(playerID, null);
+    private void addActiveClient(String playerID) {
+        activeClients.add(playerID);
     }
 
     /**
@@ -198,12 +195,14 @@ public class Client {
      */
     private void removeActiveClient(Player name) {
         activeClients.remove(name);
+/*
         for(int i = 0; i < otherActivePlayers.size(); i++) {
             if(otherActivePlayers.get(i).getName().equals(name)) {
                 otherActivePlayers.remove(name);
                 break;
             }
         }
+ */
     }
 
 
@@ -212,21 +211,15 @@ public class Client {
 
     public ListProperty<OtherPlayer> otherActivePlayers() { return otherActivePlayers; }
 
-    public String getName() {
-        return name;
+    public String getName() { return name; }
+
+    public BooleanProperty gameReadyProperty() { return gameReady; }
+
+    public OtherPlayer getOtherPlayerByName(int playerID) {
+        return (OtherPlayer) otherActivePlayers.stream();
     }
 
-    public BooleanProperty gameReadyProperty() {
-        return gameReady;
-    }
-
-    public OtherPlayer getOtherPlayerByName(String name) {
-        return otherActivePlayers.stream().filter(otherPlayer -> otherPlayer.name.get().equals(name)).findFirst().get();
-    }
-
-    public ListProperty<String> activeClientsProperty() {
-        return activeClients;
-    }
+    public ListProperty<String> activeClientsProperty() { return activeClients; }
 
 
     /**
@@ -235,6 +228,9 @@ public class Client {
     private class ClientReaderTask extends Thread {
 
         private Socket socket; //This Client's socket
+        private int playerID;
+        private String name;
+        private int figure;
 
         ClientReaderTask(Socket socket) {
             this.socket = socket;
@@ -251,88 +247,74 @@ public class Client {
          */
         @Override
         public void run() {
-            logger.info("client run");
             try {
 
-                boolean isRunning = true;
-                while (isRunning) {
+                //Reads input stream from server
+                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-                    //Reads input stream from server
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    StringBuilder jsonString = new StringBuilder();
-                    String line;
+                String jsonString;
+                while ((jsonString = reader.readLine()) != null) {
+                    try {
+                        // Deserialize the received JSON String into a JSON object
+                        JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString.toString());
+                        logger.info("JSONMessage: " + jsonMessage);
 
-                    while ((line = reader.readLine()) != null) {
-                        logger.info("whileLoop");
-                        jsonString.append(line + "\n");
-                        logger.info("String contains: " + jsonString.toString());
+                        // Here we get the instruction from the received JSON Object
+                        ServerInstruction serverInstruction = JSONDecoder.getServerInstructionByMessageType(jsonMessage);
+                        logger.info("ServerInstruction: " + serverInstruction);
 
-                        try {
+                        // Here we get the enum (ServerInstructionType) from the instruction above
+                        ServerInstruction.ServerInstructionType serverInstructionType = serverInstruction.getServerInstructionType();
+                        logger.info("ServerInstructionType: " + serverInstructionType);
 
-                            logger.info("after whileLoop");
-                            // Deserialize the received JSON String into a JSON object
+                        switch (serverInstructionType) {
 
-                            JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString.toString());
-                            logger.info("after decoder");
+                            ////////////////////////////////////////////////
+                            /*  This part handles S2C CHAT instructions   */
+                            ////////////////////////////////////////////////
 
-                            // Here we get the instruction from the received JSON Object
-                            ServerInstruction serverInstruction = JSONDecoder.getServerInstructionByMessageType(jsonMessage);
-                            // Here we get the enum (ServerInstructionType) from the instruction above
-                            ServerInstruction.ServerInstructionType serverInstructionType = serverInstruction.getServerInstructionType();
+                            //Server sends protocol version to client
+                            case HELLO_CLIENT: {
+                                logger.info("CASE HELLO_CLIENT successfully entered");
+                                HelloClientBody messageBody = (HelloClientBody) jsonMessage.getMessageBody();
+                                logger.info("Server has protocol " + messageBody.getProtocol());
+                                waitingForHelloClient = false;
+                                break;
+                            }
 
-                            switch (serverInstructionType) {
-                                ////////////////////////////////////////////////
-                                /*  This part handles S2C CHAT instructions   */
-                                ////////////////////////////////////////////////
+                            // Client gets a unique player ID from the server
+                            case WELCOME: {
+                                logger.info("CASE WELCOME successfully entered");
+                                WelcomeBody messageBody = (WelcomeBody) jsonMessage.getMessageBody();
+                                logger.info("PlayerID: " + messageBody.getPlayerID());
 
-                                //Server sends protocol version to client
-                                case HELLO_CLIENT: {
-                                    HelloClientBody messageBody = (HelloClientBody) jsonMessage.getMessageBody();
-                                    logger.info("CASE HELLO_CLIENT successfully entered");
-                                    waitingForAnswer = false;
-                                    break;
-                                }
+                                playerID = messageBody.getPlayerID();
 
-                                // Client gets a player ID from the server
-                                /*
-                                 * A new Player is added to
-                                 */
-                                case WELCOME: {
-                                    WelcomeBody messageBody = (WelcomeBody) jsonMessage.getMessageBody();
+                                break;
+                            }
 
-                                    OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());
-                                    otherActivePlayers.add(otherActivePlayers.size(), newPlayer);
-                                    // messageBody.setPlayerID((otherActivePlayers.size()));
-                                    Platform.runLater(() -> {
-                                        receiveMessage("THis is your ID: " + messageBody.getPlayerID());
-                                        addActiveClient(messageBody.getPlayerID());
-                                        //TODO check: activeClients.add(content);
-                                    });
-                                    break;
-                                }
+                            //Server distributes message to all
+                            case RECEIVED_CHAT: {
+                                ReceivedChatBody messageBody = (ReceivedChatBody) jsonMessage.getMessageBody();
+                                Platform.runLater(() -> receiveMessage(messageBody.getMessage()));
+                                break;
+                            }
 
-                                //Server distributes message to all
-                                case RECEIVED_CHAT: {
-                                    ReceivedChatBody messageBody = (ReceivedChatBody) jsonMessage.getMessageBody();
-                                    Platform.runLater(() -> receiveMessage(messageBody.getMessage()));
-                                    break;
-                                }
+                            // Server distributes private message to the appropriate player
+                            case RECEIVED_PRIVATE_CHAT: {
+                                ReceivedChatBody messageBody = (ReceivedChatBody) jsonMessage.getMessageBody();
+                                Platform.runLater(() -> {
+                                    //TODO write code here (look up exisiting method: sendPrivateMessage)
+                                });
+                                break;
+                            }
 
-                                // Server distributes private message to the appropriate player
-                                case RECEIVED_PRIVATE_CHAT: {
-                                    ReceivedChatBody messageBody = (ReceivedChatBody) jsonMessage.getMessageBody();
-                                    Platform.runLater(() -> {
-                                        //TODO write code here (look up exisiting method: sendPrivateMessage)
-                                    });
-                                    break;
-                                }
+                            // Server informs client that a transmission error occurred
+                            case ERROR: {
+                                ErrorBody messageBody = (ErrorBody) jsonMessage.getMessageBody();
 
-                                // Server informs client that a transmission error occurred
-                                case ERROR: {
-                                    ErrorBody messageBody = (ErrorBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here and integrate case NAME_INVALID (see code below), message body contains name_invalid -> new method call
+                                Platform.runLater(() -> {
+                                    //TODO write code here and integrate case NAME_INVALID (see code below), message body contains name_invalid -> new method call
                                 /*
                                    case NAME_INVALID: {
                                         waitingForAnswer = false;
@@ -340,9 +322,9 @@ public class Client {
                                         break
                                         }
                                  */
-                                    });
-                                    break;
-                                }
+                                });
+                                break;
+                            }
                                 /* Commented because no corresponding protocol defined yet
                                 // Server informs client that a game has already started
 
@@ -369,240 +351,240 @@ public class Client {
                                 }
                                 */
 
-                                ////////////////////////////////////////////////
-                                /*  This part handles S2C game instructions   */
-                                ////////////////////////////////////////////////
+                            ////////////////////////////////////////////////
+                            /*  This part handles S2C game instructions   */
+                            ////////////////////////////////////////////////
 
-                                //Server confirms player_name and player_figure
-                                case PLAYER_ADDED: {
-                                    PlayerAddedBody messageBody = (PlayerAddedBody) jsonMessage.getMessageBody();
-
-                                    waitingForAnswer = false;
-                                    nameSuccess = true;
-                                    Platform.runLater(() -> {
-                                        activeClients.add(messageBody.getPlayerID(), messageBody.getName());
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all other players of the status of the new player
-                                case PLAYER_STATUS: {
-                                    PlayerStatusBody messageBody = (PlayerStatusBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO This part has to be edited to enable ongoing status changing
-                                        // receiveMessage(messageBody.getMessage());
-                                        gameReady.set(true);
-                                    });
-                                    break;
-                                }
-
-                                //Server sends maps to clients
-                                case GAME_STARTED: {
-                                    // GameStartedBody messageBody = (GameStartedBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server notifies all other players of the played card
-                                case CARD_PLAYED: {
-                                    CardPlayedBody messageBody = (CardPlayedBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all of the player that is to move
-                                case CURRENT_PLAYER: {
-                                    CurrentPlayerBody messageBody = (CurrentPlayerBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all about the current game phase
-                                case ACTIVE_PHASE: {
-                                    ActivePhaseBody messageBody = (ActivePhaseBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server confirms starting point and informs other players of it
-                                case STARTING_POINT_TAKEN: {
-                                    StartingPointTakenBody messageBody = (StartingPointTakenBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs player of her or his hand
-                                case YOUR_CARDS: {
-                                    YourCardsBody messageBody = (YourCardsBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs other players of the number of cards another has
-                                case NOT_YOUR_CARD: {
-                                    NotYourCardsBody messageBody = (NotYourCardsBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //If not enough cards are on the draw pile, discarded pile has to be reshuffled
-                                case SHUFFLE_CODING: {
-                                    ShuffleCodingBody messageBody = (ShuffleCodingBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server starts timer as soon as someone has a full register
-                                case TIMER_STARTED: {
-                                    TimerStartedBody messageBody = (TimerStartedBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                // Server informs all clients that time for choosing programming cards has run out; player IDs of too slow players are saved
-                                case TIMER_ENDED: {
-                                    TimerEndedBody messageBody = (TimerEndedBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server fills empty registers after timer ended
-                                case CARDS_YOU_GOT_NOW: {
-                                    CardsYouGotNowBody messageBody = (CardsYouGotNowBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all players of the cards in the current register
-                                case CURRENT_CARDS: {
-                                    CurrentCardsBody messageBody = (CurrentCardsBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs other players of a move made (just moving, not turning)
-                                case MOVEMENT: {
-                                    MovementBody messageBody = (MovementBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all clients if a player turns (left, right)
-                                case PLAYER_TURNING: {
-                                    PlayerTurningBody messageBody = (PlayerTurningBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //For animation purposes (?)
-                                case PLAYER_SHOOTING: {
-                                    PlayerShootingBody messageBody = (PlayerShootingBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs player of damage suffered in round; the damage will be handed out in fixed bundles, no individual damage is given
-                                case DRAW_DAMAGE: {
-                                    DrawDamageBody messageBody = (DrawDamageBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all player if another one has to reboot
-                                case REBOOT: {
-                                    RebootBody messageBody = (RebootBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs client of new energy level and its reason for changing
-                                case ENERGY: {
-                                    EnergyBody messageBody = (EnergyBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs all players if a player reached a checkpoint
-                                case CHECKPOINT_REACHED: {
-                                    CheckPointReachedBody messageBody = (CheckPointReachedBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
-
-                                //Server informs players if a player has won
-                                case GAME_FINISHED: {
-                                    GameFinishedBody messageBody = (GameFinishedBody) jsonMessage.getMessageBody();
-
-                                    Platform.runLater(() -> {
-                                        //TODO write code here
-                                    });
-                                    break;
-                                }
+                            //Server confirms player_name and player_figure
+                            case PLAYER_ADDED: {
+                                PlayerAddedBody messageBody = (PlayerAddedBody) jsonMessage.getMessageBody();
+                                nameSuccess = true;
+                                Platform.runLater(() -> {
+                                    activeClients.add(messageBody.getPlayerID(), messageBody.getName());
+                                    OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());
+                                    otherActivePlayers.add(otherActivePlayers.size(), newPlayer);
+                                });
+                                break;
                             }
-                        } catch (Exception e) {
-                            // No need to handle this exception because it is forced
+
+                            //Server informs all other players of the status of the new player
+                            case PLAYER_STATUS: {
+                                PlayerStatusBody messageBody = (PlayerStatusBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO This part has to be edited to enable ongoing status changing
+                                    // receiveMessage(messageBody.getMessage());
+                                    gameReady.set(true);
+                                });
+                                break;
+                            }
+
+                            //Server sends maps to clients
+                            case GAME_STARTED: {
+                                // GameStartedBody messageBody = (GameStartedBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server notifies all other players of the played card
+                            case CARD_PLAYED: {
+                                CardPlayedBody messageBody = (CardPlayedBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs all of the player that is to move
+                            case CURRENT_PLAYER: {
+                                CurrentPlayerBody messageBody = (CurrentPlayerBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs all about the current game phase
+                            case ACTIVE_PHASE: {
+                                ActivePhaseBody messageBody = (ActivePhaseBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server confirms starting point and informs other players of it
+                            case STARTING_POINT_TAKEN: {
+                                StartingPointTakenBody messageBody = (StartingPointTakenBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs player of her or his hand
+                            case YOUR_CARDS: {
+                                YourCardsBody messageBody = (YourCardsBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs other players of the number of cards another has
+                            case NOT_YOUR_CARD: {
+                                NotYourCardsBody messageBody = (NotYourCardsBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //If not enough cards are on the draw pile, discarded pile has to be reshuffled
+                            case SHUFFLE_CODING: {
+                                ShuffleCodingBody messageBody = (ShuffleCodingBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server starts timer as soon as someone has a full register
+                            case TIMER_STARTED: {
+                                TimerStartedBody messageBody = (TimerStartedBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            // Server informs all clients that time for choosing programming cards has run out; player IDs of too slow players are saved
+                            case TIMER_ENDED: {
+                                TimerEndedBody messageBody = (TimerEndedBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server fills empty registers after timer ended
+                            case CARDS_YOU_GOT_NOW: {
+                                CardsYouGotNowBody messageBody = (CardsYouGotNowBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs all players of the cards in the current register
+                            case CURRENT_CARDS: {
+                                CurrentCardsBody messageBody = (CurrentCardsBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs other players of a move made (just moving, not turning)
+                            case MOVEMENT: {
+                                MovementBody messageBody = (MovementBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs all clients if a player turns (left, right)
+                            case PLAYER_TURNING: {
+                                PlayerTurningBody messageBody = (PlayerTurningBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //For animation purposes (?)
+                            case PLAYER_SHOOTING: {
+                                PlayerShootingBody messageBody = (PlayerShootingBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs player of damage suffered in round; the damage will be handed out in fixed bundles, no individual damage is given
+                            case DRAW_DAMAGE: {
+                                DrawDamageBody messageBody = (DrawDamageBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs all player if another one has to reboot
+                            case REBOOT: {
+                                RebootBody messageBody = (RebootBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs client of new energy level and its reason for changing
+                            case ENERGY: {
+                                EnergyBody messageBody = (EnergyBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs all players if a player reached a checkpoint
+                            case CHECK_POINT_REACHED: {
+                                CheckPointReachedBody messageBody = (CheckPointReachedBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
+
+                            //Server informs players if a player has won
+                            case GAME_FINISHED: {
+                                GameFinishedBody messageBody = (GameFinishedBody) jsonMessage.getMessageBody();
+
+                                Platform.runLater(() -> {
+                                    //TODO write code here
+                                });
+                                break;
+                            }
                         }
+                    } catch (Exception e) {
+                        // No need to handle this exception because it is forced
                     }
                 }
-            }catch (Exception e) {
+
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -610,13 +592,13 @@ public class Client {
 
 
     public class OtherPlayer {
-        StringProperty name;
+      //  StringProperty name;
         IntegerProperty playerID;
 
         OtherPlayer(int playerID) {
             this.playerID = new SimpleIntegerProperty(playerID);
         }
 
-        public String getName() { return name.get();}
+      //  public String getName() { return name.get();}
     }
 }

@@ -4,7 +4,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
 
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0"/>
