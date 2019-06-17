@@ -1,8 +1,16 @@
 package utils.json.protocol;
 
+import com.google.gson.annotations.Expose;
+
+/** This is the wrapper class for the message body of the 'HelloServer' protocol JSON message.
+ * @author Manuel Neumayer
+ */
 public class HelloServerBody {
+    @Expose
     private String group;
+    @Expose
     private boolean isAI;
+    @Expose
     private String protocol;
 
     public HelloServerBody(String group, boolean isAI, String protocol) {

@@ -1,10 +1,18 @@
 package utils.json.protocol;
 
-public class CardPlayedBody {
-    private int playerID;
-    private String card;
+import com.google.gson.annotations.Expose;
+import modelserver.game.Card;
 
-    public CardPlayedBody(int playerID, String card) {
+/** This is the wrapper class for the message body of the 'CardPlayed' protocol JSON message.
+ * @author Manuel Neumayer
+ */
+public class CardPlayedBody {
+    @Expose
+    private int playerID;
+    @Expose
+    private Card card;
+
+    public CardPlayedBody(int playerID, Card card) {
         this.playerID = playerID;
         this.card = card;
     }
@@ -13,7 +21,7 @@ public class CardPlayedBody {
         return playerID;
     }
 
-    public String getCard() {
+    public Card getCard() {
         return card;
     }
 }

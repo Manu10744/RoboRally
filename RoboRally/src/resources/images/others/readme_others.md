@@ -1,0 +1,1 @@
+This folder contains all project images which do not fit in other image folders

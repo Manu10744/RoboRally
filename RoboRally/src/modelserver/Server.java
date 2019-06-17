@@ -88,10 +88,28 @@ public class Server extends Application {
                 //READER:
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+                //Server submits protocol version to client
+            //    boolean waitingForHelloServer = true;
+
+                logger.info("S2C protocol version start");
+            //    while(waitingForHelloServer) {
+                try {
+                    sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                JSONMessage jsonMessage = new JSONMessage("HelloClient", new HelloClientBody(protocolVersion));
+                    writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                    logger.info("HelloClient sends: "+JSONEncoder.serializeJSON(jsonMessage));
+                    writer.flush();
+            //    }
+            //    logger.info("S2C protocol version submitted and C2S response received");
+
+
                 String jsonString;
                 while ((jsonString = reader.readLine()) != null) {
                     // Deserialize the received JSON String into a JSON object
-                    JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
+             //TODO       JSONMessage jsonMessage = JSONDecoder.deserializeJSON(jsonString);
 
                     // Here we get the instruction from the received JSON Object
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
@@ -112,7 +130,8 @@ public class Server extends Application {
                         //Client sends group name, protocol-vs and KI-on/off to Server
                         case HELLO_SERVER: {
                             HelloServerBody messageBody = (HelloServerBody) jsonMessage.getMessageBody();
-
+                            logger.info("CASE HELLO SERVER");
+                  //TODO          waitingForHelloServer = false;
                             //TODO write code here
                         }
 
