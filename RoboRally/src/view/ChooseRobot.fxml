@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
 
-<GridPane fx:id="chooseRobot" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="chooseRobot" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.StageController">
 
 <columnConstraints>
     <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0"/>

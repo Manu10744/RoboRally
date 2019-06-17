@@ -12,8 +12,9 @@ import java.util.ArrayList;
  */
 public class Player implements Serializable {
 
-    private String name;
     private int playerID;
+    private String name;
+    private int figure;
     private Card[] cardHand;
     private Card[] cardRegister;
     private ArrayList<Card> deckDiscard;
@@ -23,25 +24,34 @@ public class Player implements Serializable {
     /**
      * Player constructor
      */
-    public Player(String name, int playerID) {
-        this.name = name;
+    public Player(int playerID, String name, int figure) {
         this.playerID = playerID;
+        this.name = name;
+        this.figure = figure;
+    }
+
+    /**
+     * Get the playerID of a player
+     * @return ID of the player
+     */
+    public int getPlayerID() {
+        return this.playerID;
     }
 
     /**
      * Get the name of a player
-     * @return name The name of the player
+     * @return name of the player
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Get the age of a player
-     * @return age The age of a player
+     * Get the chosen robot of a player
+     * @return robot of the player
      */
-    public int getPlayerID() {
-        return this.playerID;
+    public int getRobot() {
+        return this.figure;
     }
 
     /**
