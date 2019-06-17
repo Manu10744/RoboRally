@@ -1,5 +1,6 @@
 package viewmodel;
 
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,8 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class WikiController extends Application {
@@ -38,6 +37,7 @@ public class WikiController extends Application {
     private ImageView imageRobots;
     @FXML
     private ImageView imageRules;
+
 
 
     @Override
@@ -67,14 +67,14 @@ public class WikiController extends Application {
 
         if (event.getSource() == buttonCards) {
             rootStage = (Stage) buttonCards.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/view/CardsWiki.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/view/WikiCards.fxml"));
             Scene scene = new Scene(root);
             rootStage.setScene(scene);
             rootStage.show();
         }
         if (event.getSource() == buttonRobots) {
             rootStage = (Stage) buttonRobots.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/view/RobotsWiki.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/view/WikiRobots.fxml"));
             Scene scene = new Scene(root);
             rootStage.setScene(scene);
             rootStage.show();
@@ -88,11 +88,9 @@ public class WikiController extends Application {
         }
     }
 
-    public void initialize(URL url, ResourceBundle rb){
 
-    }
 
     public static void main(String[] args) {
-        launch(args);
-    }
+       launch(args);
+   }
 }
