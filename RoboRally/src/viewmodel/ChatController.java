@@ -1,5 +1,9 @@
 package viewmodel;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import modelclient.Client;
@@ -262,11 +266,13 @@ public class ChatController implements Initializable {
     }
 
     //TODO This Property will control a.o. status traffic light in GUI
-    private BooleanProperty gameReadyProperty() { return  client.gameReadyProperty(); }
+    private BooleanProperty gameReadyProperty() {
+        return client.gameReadyProperty();
+    }
 
     //TODO Check if needed
     @FXML
-    private void setButtonReady(){
+    private void setButtonReady() {
         messageProperty().setValue(formatChatMessage("ready"));
     }
 
@@ -275,7 +281,7 @@ public class ChatController implements Initializable {
      *
      * @author Ivan Dovecar
      */
-    private boolean checkIPString (String IP){
+    private boolean checkIPString(String IP) {
         if (!IP.contains(":")) {
             return false;
         } else {
@@ -308,17 +314,17 @@ public class ChatController implements Initializable {
 
     /**
      * Shows a Tooltip under any specified FX Control
+     *
      * @param owner
      * @param control
      * @param tooltip
-     *
      * @author Ivan Dovecar
      */
-    private void showTooltip (Stage owner, Control control, Tooltip tooltip) {
+    private void showTooltip(Stage owner, Control control, Tooltip tooltip) {
         Point2D p = control.localToScene(0.0, 0.0);
         tooltip.show(owner,
                 p.getX(),
-                p.getY() );
+                p.getY());
     }
 
     /**
@@ -328,7 +334,6 @@ public class ChatController implements Initializable {
      */
 
     // TODO Check if still necessary, after tooltip works.
-
     private static void showInvalidServerAddressAlert() {
         Toolkit.getDefaultToolkit().beep();
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -349,25 +354,42 @@ public class ChatController implements Initializable {
 
     /**
      * Formats the chat message, removing all \n at the end of a message.
+     *
      * @param chatAreaText plain chatAreaText
      * @return formatted String
-     *
      * @author Ivan Dovecar
      */
     private String formatChatMessage(String chatAreaText) {
         String result = chatAreaText;
         //Delete all wordwraps at the end of a message
         final int escape_char_length = 1;
-        if(result.length() > escape_char_length) {
+        if (result.length() > escape_char_length) {
 
             while (result.substring(result.length() - escape_char_length).equals("\n")) {
 
                 result = result.substring(0, result.length() - escape_char_length);
-                if(result.length() - escape_char_length < 0) {
+                if (result.length() - escape_char_length < 0) {
                     break;
                 }
             }
         }
         return result;
+    }
+
+    @FXML
+    void openWiki(ActionEvent event) throws IOException{
+        Stage rootStage;
+        Parent root1;
+
+        if (event.getSource() == buttonWiki) {
+
+            root1 = FXMLLoader.load(getClass().getResource("/view/Wiki.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.setTitle("WikiRoboRally");
+            stage.show();
+
+        }
+
     }
 }

@@ -46,7 +46,7 @@ public class Main extends Application {
      *
      * @author Ivan Dovecar
      */
-    public class ServerStarterTask implements Runnable {
+   public class ServerStarterTask implements Runnable {
         Stage primaryStage;
 
         @Override
