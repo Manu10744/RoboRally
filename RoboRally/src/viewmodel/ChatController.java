@@ -58,11 +58,11 @@ public class ChatController implements Initializable {
 
     private StringProperty serverAddress;
     private StringProperty name;
-    private IntegerProperty robot;
+    private IntegerProperty figure;
 
     private BooleanProperty serverSettingFinished;
     private BooleanProperty nameSettingFinished;
-    private BooleanProperty robotSettingFinished;
+    private BooleanProperty figureSettingFinished;
     private BooleanProperty playerSettingFinished;
 
     private StringProperty message;
@@ -81,8 +81,8 @@ public class ChatController implements Initializable {
         serverSettingFinished = new SimpleBooleanProperty(false);
         name = new SimpleStringProperty();
         nameSettingFinished = new SimpleBooleanProperty(false);
-        robot = new SimpleIntegerProperty();
-        robotSettingFinished = new SimpleBooleanProperty(false);
+        figure = new SimpleIntegerProperty();
+        figureSettingFinished = new SimpleBooleanProperty(false);
 
         message = new SimpleStringProperty();
         clientChatOutput = new SimpleStringProperty();
