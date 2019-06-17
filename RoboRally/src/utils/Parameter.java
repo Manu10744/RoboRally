@@ -82,4 +82,7 @@ public class Parameter {
     public static final int GREEN_BELT_SPEED = 1;
     public static final int BLUE_BELT_SPEED = 2;
 
+    //ArrayElements
+    public static int FIRST_ELEMENT_POS = 0;
+    public static int SECOND_ELEMENT_POS = 1;
 }
