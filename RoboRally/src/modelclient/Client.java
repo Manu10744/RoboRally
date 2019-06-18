@@ -94,13 +94,19 @@ public class Client {
         return false;
     }
 
-    public void connectPlayer() {
-        //TODO Player control has to be controlled via "chooseRobot" PRESET ROBOT NO.1!!!!!!!
-        logger.info("Submit player values (DUMMY FIGURE 1 PRESET ATM)");
+    /**
+     * This method is responsible for sending playerValues to the server.
+     * The server is going to process the values and if valid, it will return a playerAdded message.
+     * It uses the {@link @FXML fieldName} to get the name and chooseRobot FXML to get figure.
+     *
+     * @author Ivan
+     */
+    public void playerValue(String name) {
+        //TODO until "chooseRobot" isn't finished PRESET ROBOT NO.1, when finished add "int figure" param to method
+        logger.info("Submit player values (DUMMY FIGURE 1 PRESET ATM) and name " + name);
         JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, 1));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
-        logger.info("Submitted player values");
     }
 
     /**

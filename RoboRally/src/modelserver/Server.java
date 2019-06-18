@@ -218,61 +218,72 @@ public class Server extends Application {
                         /*  This part handles C2S GAME instructions  */
                         ///////////////////////////////////////////////
 
+                        /**
+                         * This case processes the by client submitted PLAYER_VALUES name and figure.
+                         * It checks if name or figure are already in use by another client.
+                         * If the player values are valid, client gets registered in connected clients.
+                         * Every connected client receives the PlayerAdded message, additionally the new
+                         * client receives PlayerAdded messages for all already connected clients.
+                         *
+                         * @author Ivan Dovecar
+                         */
                         //Client sends player-name and player figure to server, where availability is checked and if so player is registered
                         case PLAYER_VALUES: {
                             logger.info("CASE PLAYER VALUES entered successfully");
+
                             PlayerValuesBody messageBody = (PlayerValuesBody) jsonMessage.getMessageBody();
+                            String playerValueName = messageBody.getName();
+                            int playerValueFigure = messageBody.getFigure();
 
-                            //TODO modify code according to RoboRally needs
-                            boolean success = true;
+                            boolean playerValueSuccess = true;
+
                             for (ClientWrapper client : connectedClients) {
-                                String content = messageBody.getName();
-                                if (client.name.equals(content)) {
-                                    logger.info("Client " + content + " refused (name already exists)");
 
-                                    writer.println(String.valueOf(new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR))); // Todo hier fehlen die ebcoder methoden
+                                // Checks if by PLAYER-VALUES received client' name is available
+                                if (client.name.equals(playerValueName)) {
+                                    logger.info("Client " + playerValueName + " refused (name already exists)");
+
+                                    jsonMessage = new JSONMessage("ERROR", new ErrorBody("Client " + playerValueName + " refused (name already exists)"));
+                                    writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                     writer.flush();
-                                    success = false;
+
+                                    playerValueSuccess = false;
+                                    break;
+                                }
+
+                                // Checks if by PLAYER-VALUES received client' figure is available
+                                else if (client.figure == playerValueFigure) {
+                                    logger.info("Client " + playerValueName + " refused (figure already exists)");
+
+                                    jsonMessage = new JSONMessage("ERROR", new ErrorBody("Client " + playerValueName + " refused (figure already exists)"));
+                                    writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                    writer.flush();
+
+                                    playerValueSuccess = false;
                                     break;
                                 }
                             }
 
-                             /* (!) NO PROTOCOL FOR CHECK NAME YET (!)
-                            if (success) {
-                                logger.info("Client " + content + " successfully registered");
+                            // If by PLAYER_VALUES received name and figure are valid...
+                             if (playerValueSuccess) {
+                                logger.info("Client " + playerValueName + " successfully registered");
 
                                 //Add new Client to list connected clients
-                                connectedClients.add(new ClientWrapper(clientSocket, content, writer));
+                                connectedClients.add(new ClientWrapper(clientSocket, counterPlayerID, playerValueName, playerValueFigure, writer));
 
+                                 //Send message to all active clients
+                                 jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(counterPlayerID, playerValueName, playerValueFigure));
+                                 writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                 writer.flush();
 
-                                // TODO check if the following three lines are necessary
-                                writer.write(new Instruction(NAME_SUCCESS, ""));
-                                writer.flush();
-
-                                //Send message to all already active clients
-                                for (ClientWrapper client : connectedClients) {
-                                    if(!client.socket.equals(clientSocket)) {
-                                        client.writer.write(new Instruction(CLIENT_JOINED, content));
-                                        client.writer.flush();
-
-                                    } else { //New Client receives different message:
-                                        client.writer.write(new Instruction(CLIENT_WELCOME, content));
-                                        client.writer.flush();
-                                    }
-                                }
-
-                                //Register all current activeClients at new Client
+                                //Inform new Client about all current activeClients (send all connected clients to new client without own entry)
                                 for(ClientWrapper client : connectedClients) {
                                     if (!client.socket.equals(clientSocket)) {
-                                        writer.write(new Instruction(CLIENT_REGISTER, client.name));
-                                        writer.flush();
+                                        // TODO PlayerAdded message of every already active client is sent to new client
                                     }
                                 }
                             }
                             break;
-
-                              */
-
                         }
 
                         /* Ivan, this is yours! :-) Good luck!
@@ -379,17 +390,22 @@ public class Server extends Application {
     }
 
     /**
-     * Inner class to wrap the information from the client (socket + name)
+     * Inner class to wrap the information from the client (socket, ID, name, figure, writer)
+     *
+     * @author Ivan
      */
     private class ClientWrapper {
         Socket socket;
-        String name;
-        PrintWriter writer;
         int playerID;
+        String name;
+        int figure;
+        PrintWriter writer;
 
-        private ClientWrapper(Socket socket, String name, PrintWriter writer) {
+        private ClientWrapper(Socket socket, int playerID, String name, int figure, PrintWriter writer) {
             this.socket = socket;
+            this.playerID = playerID;
             this.name = name;
+            this.figure = figure;
             this.writer = writer;
         }
 

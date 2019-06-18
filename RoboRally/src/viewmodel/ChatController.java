@@ -115,6 +115,7 @@ public class ChatController implements Initializable {
         }));
 
         //NAMEINPUT: addListener waits for name
+        // TODO figure has to be added as soon as chooseRobot is finished, ATM only name is transmitted and client adds DUMMY figure to playerValue
         name.addListener((observableValue, oldValue, newValue) -> {
             if (!newValue.equals(utils.Parameter.INVALID_CLIENTNAME)) {
                 nameSettingFinished.set(true);
@@ -123,7 +124,7 @@ public class ChatController implements Initializable {
                 showInvalidNameAlert();
                 name.setValue(Parameter.INVALID_CLIENTNAME);
             }
-            client.connectPlayer();
+            client.playerValue(name.get());
         });
 
         /* Needs to be adapated as clients are appearantly no longer adressed by
