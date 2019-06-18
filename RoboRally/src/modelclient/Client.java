@@ -29,7 +29,6 @@ public class Client {
     private PrintWriter writer;
 
     private boolean waitingForHelloClient;
-    private boolean nameSuccess;
 
     private String protocolVersion = "Version 0.1";
     private String group = "AstreineBarsche";
@@ -87,7 +86,6 @@ public class Client {
             writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
 
-           // TODO return nameSuccess; //gets set by ClientReaderTask
         } catch(IOException exp) {
             exp.printStackTrace();
         }
@@ -317,17 +315,20 @@ public class Client {
 
                             // Server informs client that a transmission error occurred
                             case ERROR: {
+                                logger.info("CASE ERROR successfully entered");
+
                                 ErrorBody messageBody = (ErrorBody) jsonMessage.getMessageBody();
+                                String errorMessage = messageBody.getError();
 
                                 Platform.runLater(() -> {
-                                    //TODO write code here and integrate case NAME_INVALID (see code below), message body contains name_invalid -> new method call
-                                /*
-                                   case NAME_INVALID: {
-                                        waitingForAnswer = false;
-                                        nameSuccess = false;
-                                        break
-                                        }
-                                 */
+                                    if (errorMessage.equals("Error: name already exists")){
+                                        logger.info(errorMessage);
+                                        //TODO write code here for proper reaction
+                                    }
+                                    if (errorMessage.equals("Error: figure already exists")){
+                                        logger.info(errorMessage);
+                                        //TODO write code here for proper reaction
+                                    }
                                 });
                                 break;
                             }
@@ -364,7 +365,7 @@ public class Client {
                             //Server confirms player_name and player_figure
                             case PLAYER_ADDED: {
                                 PlayerAddedBody messageBody = (PlayerAddedBody) jsonMessage.getMessageBody();
-                                nameSuccess = true;
+
                                 Platform.runLater(() -> {
                                     activeClients.add(messageBody.getPlayerID(), messageBody.getName());
                                     OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());

@@ -227,7 +227,6 @@ public class Server extends Application {
                          *
                          * @author Ivan Dovecar
                          */
-                        //Client sends player-name and player figure to server, where availability is checked and if so player is registered
                         case PLAYER_VALUES: {
                             logger.info("CASE PLAYER VALUES entered successfully");
 
@@ -243,7 +242,7 @@ public class Server extends Application {
                                 if (client.name.equals(playerValueName)) {
                                     logger.info("Client " + playerValueName + " refused (name already exists)");
 
-                                    jsonMessage = new JSONMessage("ERROR", new ErrorBody("Client " + playerValueName + " refused (name already exists)"));
+                                    jsonMessage = new JSONMessage("Error", new ErrorBody("Error: name already exists"));
                                     writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                     writer.flush();
 
@@ -255,7 +254,7 @@ public class Server extends Application {
                                 else if (client.figure == playerValueFigure) {
                                     logger.info("Client " + playerValueName + " refused (figure already exists)");
 
-                                    jsonMessage = new JSONMessage("ERROR", new ErrorBody("Client " + playerValueName + " refused (figure already exists)"));
+                                    jsonMessage = new JSONMessage("Error", new ErrorBody("Error: figure already exists"));
                                     writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                     writer.flush();
 
