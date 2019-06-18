@@ -134,15 +134,21 @@ public class Server extends Application {
 
                                 //counter is adjusted for next registration process
                                 counterPlayerID++;
+
+                                break;
                             }else {
                                 logger.info("Protocol version test failed");
                                 clientSocket.close();
                                 logger.info("Server connection terminated");
+                                break;
                             }
                         }
 
                         //Client sends public message to all, the value of "to" of the JSON-message must be -1
                         case SEND_CHAT: {
+                            logger.info("CASE SEND CHAT ENTERED");
+                            logger.info("INSTRUCTION: " + clientInstruction.toString());
+                            logger.info("ENUM: " + clientInstructionType.toString());
                             SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
 
                             //Stream to get client's name (because atm only the socket is known)
