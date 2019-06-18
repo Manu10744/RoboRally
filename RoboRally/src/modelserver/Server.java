@@ -146,23 +146,31 @@ public class Server extends Application {
 
                         //Client sends public message to all, the value of "to" of the JSON-message must be -1
                         case SEND_CHAT: {
-                            logger.info("CASE SEND CHAT ENTERED");
-                            logger.info("INSTRUCTION: " + clientInstruction.toString());
-                            logger.info("ENUM: " + clientInstructionType.toString());
+                            logger.info("CASE SEND CHAT successfully entered");
                             SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
 
+                            //Stream to get client's playerID (because atm only the socket is known)
+                            int senderID = connectedClients.stream().
+                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
+                                    findFirst().get().playerID;
+
                             //Stream to get client's name (because atm only the socket is known)
-                            String clientName = connectedClients.stream().
+                            String senderName = connectedClients.stream().
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
 
+                            //Build new string from client's name and message content, to show name in chat
+                            String messageContent = messageBody.getMessage();
+                            String content = senderName + ": " + messageContent;
+
                             //Send message to all clients:
                             for (ClientWrapper client : connectedClients) {
-                                String content = messageBody.getMessage();
-                                int senderID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).findFirst().get().playerID;
+
+                                //Send message to all clients:
                                 jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, false));
                                 client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                 client.writer.flush();
+                                logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
                             }
                             break;
                         }
@@ -192,27 +200,6 @@ public class Server extends Application {
                             break;
                         }
 
-
-                            /* (!) NO PROTOCOL FOR THIS FLAG YET (!)
-                             //Client leaves game and informs server thereof
-                        case BYE: {
-                            logger.info("Client " + content + " left the room");
-                            //Send message to all clients:
-                            for(ClientWrapper client : connectedClients) {
-                                client.writer.println(new Instruction(CLIENT_LEAVES, content));
-                                client.writer.flush();
-                            }
-                            writer.write(new Instruction(CLIENT_LEAVES, ""));
-                            writer.flush();
-
-                            //Use stream to remove client from serverlist: (Maybe there is a more efficient way?)
-                            connectedClients = connectedClients.stream().
-                                    filter(clientWrapper -> !clientWrapper.socket.equals(clientSocket)).
-                                    collect(Collectors.toCollection(ArrayList::new));
-                            writer.close();
-                            break;
-                        }
-                             */
 
                         ///////////////////////////////////////////////
                         /*  This part handles C2S GAME instructions  */

@@ -39,6 +39,8 @@ public class ChatController implements Initializable {
     @FXML
     private TextField fieldName;
     @FXML
+    private TextField fieldFigure;
+    @FXML
     private TextField fieldServer;
     @FXML
     private TextArea chatOutput;
@@ -61,8 +63,8 @@ public class ChatController implements Initializable {
     private IntegerProperty figure;
 
     private BooleanProperty serverSettingFinished;
-    private BooleanProperty nameSettingFinished;
     private BooleanProperty figureSettingFinished;
+    private BooleanProperty nameSettingFinished;
     private BooleanProperty playerSettingFinished;
 
     private StringProperty message;
@@ -79,10 +81,11 @@ public class ChatController implements Initializable {
 
         serverAddress = new SimpleStringProperty();
         serverSettingFinished = new SimpleBooleanProperty(false);
-        name = new SimpleStringProperty();
-        nameSettingFinished = new SimpleBooleanProperty(false);
         figure = new SimpleIntegerProperty();
         figureSettingFinished = new SimpleBooleanProperty(false);
+        name = new SimpleStringProperty();
+        nameSettingFinished = new SimpleBooleanProperty(false);
+
 
         message = new SimpleStringProperty();
         clientChatOutput = new SimpleStringProperty();
@@ -93,7 +96,7 @@ public class ChatController implements Initializable {
         fieldServerTooltip.setAutoHide(true);
 
         //NAMEINPUT: Tooltip is shown name is not entered proper
-        Tooltip fieldNameTooltip = new Tooltip("Space is not allowed in names. Maximum namesize is " + utils.Parameter.MAX_NAMESIZE + ".");
+        Tooltip fieldNameTooltip = new Tooltip("Space is not allowed in names. Maximum namesize is " + Parameter.MAX_NAMESIZE + ".");
         fieldNameTooltip.setAutoHide(true);
 
         //SERVERINPUT: addListener waits for IP and port
@@ -114,20 +117,24 @@ public class ChatController implements Initializable {
             client.connectClient();
         }));
 
+        figure.addListener((observableValue, oldValue, newValue) -> {
+            figure.setValue(newValue);
+            figureSettingFinished.set(true);
+        });
+
         //NAMEINPUT: addListener waits for name
-        // TODO figure has to be added as soon as chooseRobot is finished, ATM only name is transmitted and client adds DUMMY figure to playerValue
         name.addListener((observableValue, oldValue, newValue) -> {
-            if (!newValue.equals(utils.Parameter.INVALID_CLIENTNAME)) {
+            if (!newValue.equals(Parameter.INVALID_CLIENTNAME)) {
                 nameSettingFinished.set(true);
                 clientChatOutput.bind(client.chatHistoryProperty()); // hier wird der Text durchgegeben
             } else {
                 showInvalidNameAlert();
                 name.setValue(Parameter.INVALID_CLIENTNAME);
             }
-            client.playerValue(name.get());
+            client.playerValue(name.get(), figure.getValue().intValue());
         });
 
-        /* Needs to be adapated as clients are appearantly no longer adressed by
+
         //MESSAGEINPUT: addListener waits for Message
         message.addListener((observableValue, oldValue, newValue) -> {
             String[] partsOfMessage = newValue.split("\\s+");
@@ -137,9 +144,9 @@ public class ChatController implements Initializable {
             String firstPart = partsOfMessage[0];
             if (newValue.equals("ready")) {
                 client.ready();
-            } else if (newValue.equals("bye")) {
-                client.sayBye();
-            } else if (firstPart.charAt(0) == '@') {
+            }
+            /*
+            else if (firstPart.charAt(0) == '@') {
                 if (firstPart.length() > 1) {
                     int addressedClient = Integer.parseInt(firstPart.substring(1));
                     for (String otherClient : client.activeClientsProperty()) {
@@ -149,12 +156,10 @@ public class ChatController implements Initializable {
                         }
                     }
                 }
-            } else {
+            } */else {
                 client.sendMessage(message.get());
             }
         });
-
-         */
 
         //SERVERINPUT: Set Enter-Event
         fieldServer.setOnKeyPressed(event -> {
@@ -179,6 +184,13 @@ public class ChatController implements Initializable {
                     fieldName.disableProperty().set(true);
                     fieldNameTooltip.hide();
                 }
+            }
+        });
+
+        //FIGUREINPUT: Set Enter-Event
+        fieldFigure.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                    figure.set(Integer.parseInt(fieldFigure.getText()));
             }
         });
 
@@ -211,9 +223,15 @@ public class ChatController implements Initializable {
         //Enable fieldName after server setting is finished
         serverSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
             fieldServer.disableProperty().set(true);
+            fieldFigure.disableProperty().set(false);
+            fieldFigure.requestFocus();
+            //TODO enable visibility choose robot / disable visibility start
+        }));
+
+        figureSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
+            fieldFigure.disableProperty().set(true);
             fieldName.disableProperty().set(false);
             fieldName.requestFocus();
-            //TODO enable visibility choose robot / disable visibility start
         }));
 
         //Enable chatInput and buttons after name setting is finished
@@ -229,7 +247,7 @@ public class ChatController implements Initializable {
         fieldName.textProperty().addListener(((observableValue, s, t1) -> {
             String currentText = fieldName.getText();
             if (currentText.length() > 0 &&
-                    (currentText.charAt(currentText.length() - 1) == ' ' || currentText.length() > utils.Parameter.MAX_NAMESIZE)) {
+                    (currentText.charAt(currentText.length() - 1) == ' ' || currentText.length() > Parameter.MAX_NAMESIZE)) {
                 fieldName.setText(currentText.substring(0, currentText.length() - 1)); //delete last character
                 fieldName.positionCaret(fieldName.getText().length()); //reposition caret
                 showTooltip(primaryStage, fieldName, fieldNameTooltip); //show field (name) Tooltip declared above
@@ -252,6 +270,10 @@ public class ChatController implements Initializable {
 
     private BooleanProperty serverSettingFinishedProperty() {
         return serverSettingFinished;
+    }
+
+    private BooleanProperty figureSettingFinishedProperty() {
+        return figureSettingFinished;
     }
 
     private BooleanProperty nameSettingFinishedProperty() {

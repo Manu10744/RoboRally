@@ -8,6 +8,8 @@
 
 ### New Features
 * Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
+* Registration and Chat via protocol *(Ivan)*
+ 
 ### Changes
 
 ### Bugfixes
