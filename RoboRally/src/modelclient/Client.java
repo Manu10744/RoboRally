@@ -99,10 +99,9 @@ public class Client {
      *
      * @author Ivan
      */
-    public void playerValue(String name) {
-        //TODO until "chooseRobot" isn't finished PRESET ROBOT NO.1, when finished add "int figure" param to method
-        logger.info("Submit player values (DUMMY FIGURE 1 PRESET ATM) and name " + name);
-        JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, 1));
+    public void playerValue(String name, int figure) {
+        logger.info("Submitting player values");
+        JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
     }
@@ -112,6 +111,7 @@ public class Client {
      * The server is going to process the messages based on whether it is
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
+     *
      * @author Mia
      */
     public void sendMessage(String message) {
@@ -149,8 +149,8 @@ public class Client {
      *
      * @author Ivan Dovecar, Mia
      */
-    public void join(String name, int robot) { //TODO check how player figure is submitted Sring Int aso
-            JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, robot));
+    public void join(String name, int figure) { //TODO check how player figure is submitted Sring Int aso
+            JSONMessage jsonMessage = new JSONMessage("Ready", new PlayerValuesBody(name, figure));
 
             writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
@@ -367,7 +367,7 @@ public class Client {
                                 PlayerAddedBody messageBody = (PlayerAddedBody) jsonMessage.getMessageBody();
 
                                 Platform.runLater(() -> {
-                                    activeClients.add(messageBody.getPlayerID(), messageBody.getName());
+                                    activeClients.add(String.valueOf(messageBody.getPlayerID()));
                                     OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());
                                     otherActivePlayers.add(otherActivePlayers.size(), newPlayer);
                                 });
