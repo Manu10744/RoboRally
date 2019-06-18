@@ -68,7 +68,6 @@ public class Server extends Application {
         gameIsRunning = true;
     }
 
-
     private class ServerReaderTask extends Thread {
 
         private Socket clientSocket;
@@ -99,7 +98,7 @@ public class Server extends Application {
                 while ((jsonString = reader.readLine()) != null) {
                     // Deserialize the received JSON String into a JSON object
                     jsonMessage = JSONDecoder.deserializeJSON(jsonString);
-                    logger.info("JSONDcoder done: "+jsonString+jsonMessage);
+                    logger.info("JSONDecoder done: "+jsonString+jsonMessage);
 
                     // Here we get the instruction from the received JSON Object
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
@@ -110,19 +109,13 @@ public class Server extends Application {
                     logger.info("clientInstructionType: "+clientInstructionType);
 
                     switch (clientInstructionType) {
-                        //Check if name is already used, if not, register client
-                        /*
-                        case CHECK_NAME: {
-                    switch (clientToServerInstructionType) {
-
-
-                        *//////////////////////////////////////////////
+                        //////////////////////////////////////////////
                         /*  This part handles C2S CHAT instructions  */
                         ///////////////////////////////////////////////
 
                         //Client sends group name, protocol-vs and KI-on/off to Server
                         case HELLO_SERVER: {
-                            logger.info("CASE HELLO SERVER successfully entered");
+                            logger.info("CASE HELLO_SERVER successfully entered");
                             HelloServerBody messageBody = (HelloServerBody) jsonMessage.getMessageBody();
 
                             if (messageBody.getProtocol().equals(protocolVersion)){
@@ -136,7 +129,7 @@ public class Server extends Application {
                                 counterPlayerID++;
 
                                 break;
-                            }else {
+                            } else {
                                 logger.info("Protocol version test failed");
                                 clientSocket.close();
                                 logger.info("Server connection terminated");
@@ -146,7 +139,7 @@ public class Server extends Application {
 
                         //Client sends public message to all, the value of "to" of the JSON-message must be -1
                         case SEND_CHAT: {
-                            logger.info("CASE SEND CHAT successfully entered");
+                            logger.info("CASE SEND_CHAT successfully entered");
                             SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
 
                             //Stream to get client's playerID (because atm only the socket is known)
@@ -177,6 +170,7 @@ public class Server extends Application {
 
                         //Clients sends private message to another player via the server
                         case SEND_PRIVATE_CHAT: {
+                            logger.info("CASE SEND_PRIVATE_CHAT successfully entered");
                             SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
 
                             //Stream to get client's name
@@ -200,7 +194,6 @@ public class Server extends Application {
                             break;
                         }
 
-
                         ///////////////////////////////////////////////
                         /*  This part handles C2S GAME instructions  */
                         ///////////////////////////////////////////////
@@ -215,9 +208,9 @@ public class Server extends Application {
                          * @author Ivan Dovecar
                          */
                         case PLAYER_VALUES: {
-                            logger.info("CASE PLAYER VALUES entered successfully");
-
+                            logger.info("CASE PLAYER_VALUES entered successfully");
                             PlayerValuesBody messageBody = (PlayerValuesBody) jsonMessage.getMessageBody();
+                            
                             String playerValueName = messageBody.getName();
                             int playerValueFigure = messageBody.getFigure();
 
@@ -272,63 +265,19 @@ public class Server extends Application {
                             break;
                         }
 
-                        /* Ivan, this is yours! :-) Good luck!
-                        case RECEIVED_PRIVATE_CHAT: {
-                            //Stream to get client's name
-                            String sendingClientName = connectedClients.stream().
-                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
-                                    findFirst().get().name;
-                            for(ClientWrapper client : connectedClients){
-                                if(instruction.getAddressedClient().equals(client.name)){
-                                    client.writer.write(new Instruction(NEW_MESSAGE,
-                                            sendingClientName + ": (private) " + content));
-                                    client.writer.flush();
-                                }
-                                if(sendingClientName.equals(client.name)){
-                                    client.writer.write(new Instruction(NEW_MESSAGE,
-                                            sendingClientName + ": @" + instruction.getAddressedClient() + " (private) " + content));
-                                    client.writer.flush();
-                                }
-                            }
-                            break;
-                        }
-                        // TODO JOIN_GAME is no longer existing adapt to ... maybe SET_STATUS is suitable
+                        // Client signals the server that he's ready (ready = true) or revokes his ready statement (ready = false)
                         case SET_STATUS: {
-                            //Enables clients to join the players-list, if game is initialized but not running and
-                            //maximum players-number of four is not reached
+                            logger.info("CASE SET_STATUS entered successfully");
 
-                            //Only if Server accepts clients after game has started
-                            if (gameIsRunning) {
-                                logger.info("Client " + content + " can't set status to ready, game is already running");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.write(new Instruction(GAME_JOIN_FAIL2, content));
-                                    client.writer.flush();
-                                }
-                            } else if (gameIsRunning) {
-                                logger.info("Client " + content + " can't join an already running game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.write(new Instruction(GAME_JOIN_FAIL3, content));
-                                    client.writer.flush();
-                                }
-                            } else {
-                                logger.info(content + " joined the game");
-                                //Get PlayerName
-                                for (ClientWrapper client : connectedClients) {
-                                    if(client.socket.equals(clientSocket)) {
-                                        // TODO age is no longer needed, player figure has to be added instead
-                                     //   players.add(new Player(client.name, client.age));
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
+                            SetStatusBody messageBody = (SetStatusBody) jsonMessage.getMessageBody();
+                            boolean playerReadyStatus = messageBody.isReady();
+
+
                         }
-
-                         */
-
 
                         //Player plays a card
                         case PLAY_CARD: {
+                            logger.info("CASE PLAY_CARD entered successfully");
                             PlayCardBody messageBody = (PlayCardBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -336,6 +285,7 @@ public class Server extends Application {
 
                         //Player chooses starting point and informs server of her or his choice
                         case SET_STARTING_POINT: {
+                            logger.info("CASE SET_STARTING_POINT entered successfully");
                             SetStartingPointBody messageBody = (SetStartingPointBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -344,6 +294,7 @@ public class Server extends Application {
                         /*Player selects cards, each selected card is sent to the server after five have been chosen.
                         If a register is emptied the card value is 'null'*/
                         case SELECT_CARD: {
+                            logger.info("CASE SELECT_CARD entered successfully");
                             SelectCardBody messageBody = (SelectCardBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -351,6 +302,7 @@ public class Server extends Application {
 
                         //Client informs client that a card has been put in the register
                         case CARD_SELECTED: {
+                            logger.info("CASE CARD_SELECTED entered successfully");
                             CardSelectedBody messageBody = (CardSelectedBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -358,6 +310,7 @@ public class Server extends Application {
 
                         //Client informs server that a player has filled his or her full register
                         case SELECTION_FINISHED: {
+                            logger.info("CASE SELECTION_FINISHED entered successfully");
                             SelectionFinishedBody messageBody = (SelectionFinishedBody) jsonMessage.getMessageBody();
                             //TODO write code here
                         }

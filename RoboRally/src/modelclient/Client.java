@@ -150,7 +150,7 @@ public class Client {
      * @author Ivan Dovecar, Mia
      */
     public void join(String name, int figure) { //TODO check how player figure is submitted Sring Int aso
-            JSONMessage jsonMessage = new JSONMessage("Ready", new PlayerValuesBody(name, figure));
+            JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
 
             writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
