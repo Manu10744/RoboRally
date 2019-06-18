@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -20,7 +21,7 @@ public class WikiController extends Application {
 
     private Stage rootStage;
     @FXML
-    private AnchorPane wiki;
+    private GridPane wiki;
     @FXML
     private AnchorPane cardsWiki;
     @FXML
@@ -37,7 +38,6 @@ public class WikiController extends Application {
     private ImageView imageRobots;
     @FXML
     private ImageView imageRules;
-
 
 
     @Override
