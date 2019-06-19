@@ -1,8 +1,5 @@
 package modelserver.game.Maps;
-import modelserver.game.Tiles.Tile;
-
-
-import java.util.ArrayList;
+import utils.Parameter;
 
 /**
  * There can be created different maps in Roborally.
@@ -18,20 +15,32 @@ public class Map {
      * third for nested fields (more than one funvtion, e.g. wall with laser)
      * @author Mia
      */
-    ArrayList <Tile> mapTiles;
-    ArrayList<ArrayList<ArrayList<Tile>>> map;
+     MapBody gameMap;
 
 
-    public Map (String mapName,  ArrayList<ArrayList<ArrayList<Tile>>> map){
-        this.mapName =  mapName;
-        this.map = map;
+    public Map (String mapName){
+        Map map;
+
+        if (mapName.equals(Parameter.DIZZY_HIGHWAY)){
+            map = new DizzyHighway();
+
+            mapName = map.getMapName();
+            gameMap = map.getGameMap();
+
+        }else{
+            map = new Map();
+        }
     }
 
     public Map() {
     }
 
-    public  ArrayList<ArrayList<ArrayList<Tile>>> getMap(){
-        return this.map;
+    public MapBody getGameMap(){
+        return this.gameMap;
+    }
+
+    public  Map getMap(){
+        return this;
     }
 
 

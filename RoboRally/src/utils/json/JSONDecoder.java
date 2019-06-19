@@ -155,7 +155,7 @@ public class JSONDecoder {
                 serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.ENERGY);
                 return serverInstruction;
             case "CheckPointReached":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CHECK_POINT_REACHED);
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CHECKPOINT_REACHED);
                 return serverInstruction;
             case "GameFinished":
                 serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.GAME_FINISHED);
@@ -647,11 +647,14 @@ public class JSONDecoder {
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
+        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
         // TODO: GAMESTARTED !
 
         String s = JSONEncoder.serializeJSON(messages.get(16));
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
         System.out.println(s);
+
+
 
         JSONMessage msg = JSONDecoder.deserializeJSON(s);
         System.out.println("DESERIALIZED: " + msg.getMessageBody().getClass());

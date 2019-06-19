@@ -4,7 +4,10 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import modelserver.game.Card;
 import modelserver.game.Game;
+import modelserver.game.Maps.DizzyHighway;
+import modelserver.game.Maps.Map;
 import modelserver.game.Player;
+import utils.Parameter;
 import utils.instructions.ClientInstruction;
 import utils.instructions.ServerInstruction;
 import utils.json.JSONDecoder;
@@ -67,6 +70,7 @@ public class Server extends Application {
         game.startGame(players);
         gameIsRunning = true;
     }
+
 
     private class ServerReaderTask extends Thread {
 
@@ -210,7 +214,7 @@ public class Server extends Application {
                         case PLAYER_VALUES: {
                             logger.info("CASE PLAYER_VALUES entered successfully");
                             PlayerValuesBody messageBody = (PlayerValuesBody) jsonMessage.getMessageBody();
-                            
+
                             String playerValueName = messageBody.getName();
                             int playerValueFigure = messageBody.getFigure();
 
@@ -248,7 +252,7 @@ public class Server extends Application {
                                 logger.info("Client " + playerValueName + " successfully registered");
 
                                 //Add new Client to list connected clients
-                                connectedClients.add(new ClientWrapper(clientSocket, counterPlayerID, playerValueName, playerValueFigure, writer));
+                                connectedClients.add(new ClientWrapper(clientSocket, playerValueName, writer, playerValueFigure, counterPlayerID));
 
                                  //Send message to all active clients
                                  jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(counterPlayerID, playerValueName, playerValueFigure));
@@ -265,15 +269,74 @@ public class Server extends Application {
                             break;
                         }
 
+
                         // Client signals the server that he's ready (ready = true) or revokes his ready statement (ready = false)
                         case SET_STATUS: {
                             logger.info("CASE SET_STATUS entered successfully");
 
                             SetStatusBody messageBody = (SetStatusBody) jsonMessage.getMessageBody();
-                            boolean playerReadyStatus = messageBody.isReady();
+                            boolean clientReady = (boolean) messageBody.isReady();
+                            int playerID = 1; //TODO ab hhier Mia
+                            int numberOfReadyClients = 0; //Todo: must I really replace even that number?
+
+                            //number of clients is added one, all other clients are informed about the ready status of the one sending the message
+                            if (clientReady) {
+                                ++numberOfReadyClients;
+                                for (ClientWrapper client : connectedClients) {
+                                    jsonMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, clientReady));
+                                    client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                    client.writer.flush();
+                                }
+                            } else if (!clientReady) {
+                                --numberOfReadyClients;
+                            }
+                            //If required number of players are ready, game starts and map is created
+                            if (numberOfReadyClients >= MIN_PLAYERSIZE) {
+                                Map map = new Map();
+
+                                for (ClientWrapper client : connectedClients) {
+                                    jsonMessage = new JSONMessage("GameStarted", new GameStartedBody(map));
+                                    client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                    client.writer.flush();
+                                }
+
+                            } else {
 
 
+                            }
                         }
+
+                        //Enables clients to join the players-list, if game is initialized but not running and
+                        //maximum players-number of four is not reached
+                                /*
+                                //Only if Server accepts clients after game has started
+                                if (gameIsRunning) {
+                                    logger.info("Client " + +" can't set status to ready, game is already running");
+                                    for (ClientWrapper client : connectedClients) {
+                                        client.writer.write(new Instruction(GAME_JOIN_FAIL2, content));
+                                        client.writer.flush();
+                                    }
+                                } else if (gameIsRunning) {
+                                    logger.info("Client " + content + " can't join an already running game");
+                                    for (ClientWrapper client : connectedClients) {
+                                        client.writer.write(new Instruction(GAME_JOIN_FAIL3, content));
+                                        client.writer.flush();
+                                    }
+                                } else {
+                                    logger.info(content + " joined the game");
+                                    //Get PlayerName
+                                    for (ClientWrapper client : connectedClients) {
+                                        if (client.socket.equals(clientSocket)) {
+                                            // TODO age is no longer needed, player figure has to be added instead
+                                            //   players.add(new Player(client.name, client.age));
+                                            break;
+                                        }
+                                    }
+                    }
+                    break;
+                } */
+
+
 
                         //Player plays a card
                         case PLAY_CARD: {
@@ -328,24 +391,23 @@ public class Server extends Application {
         }
     }
 
-    /**
-     * Inner class to wrap the information from the client (socket, ID, name, figure, writer)
-     *
-     * @author Ivan
-     */
-    private class ClientWrapper {
-        Socket socket;
-        int playerID;
-        String name;
-        int figure;
-        PrintWriter writer;
+/**
+ * Inner class to wrap the information from the client (socket + name)
+ */
+class ClientWrapper {
+    Socket socket;
+    String name;
+    PrintWriter writer;
+    int playerID;
+    int figure;
+    Boolean isReady;
 
-        private ClientWrapper(Socket socket, int playerID, String name, int figure, PrintWriter writer) {
+        private ClientWrapper(Socket socket, String name, PrintWriter writer, int figure, int playerID) {
             this.socket = socket;
-            this.playerID = playerID;
             this.name = name;
-            this.figure = figure;
             this.writer = writer;
+            this.figure = figure;
+            this.playerID = playerID;
         }
 
         public int getPlayerID(){
@@ -353,3 +415,4 @@ public class Server extends Application {
         }
     }
 }
+

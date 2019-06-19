@@ -9,6 +9,7 @@ import modelserver.Server;
 import java.io.*;
 import java.util.logging.Logger;
 import utils.Parameter;
+import viewmodel.MapController;
 
 
 /**
@@ -54,6 +55,7 @@ public class Main extends Application {
             Server server = new Server();
             try {
                 server.start(primaryStage);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -79,6 +81,7 @@ public class Main extends Application {
                 loader.setLocation(Main.class.getResource("view/Stage.fxml"));
 
                 GridPane stageView;
+
                 stageView = loader.load();
 
                 // Set scene

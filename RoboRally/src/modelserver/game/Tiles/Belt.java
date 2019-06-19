@@ -1,9 +1,12 @@
 package modelserver.game.Tiles;
 
+import com.google.gson.annotations.Expose;
 import utils.Parameter;
 
 public class Belt extends Tile {
+    @Expose
     private String tileType;
+    @Expose
     private Integer speed;
 
     public Belt (String color){

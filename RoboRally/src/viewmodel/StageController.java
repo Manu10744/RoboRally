@@ -28,4 +28,6 @@ public class StageController {
     GridPane playerMat;
     @FXML
     GridPane chat;
+
+
 }

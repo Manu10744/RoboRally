@@ -3,6 +3,8 @@ package modelclient;
 import java.io.*;
 import java.util.logging.Logger;
 
+import modelserver.game.Maps.DizzyHighway;
+import modelserver.game.Maps.Map;
 import modelserver.game.Player;
 import javafx.application.Platform;
 import javafx.beans.property.*;
@@ -11,6 +13,7 @@ import utils.instructions.ServerInstruction;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.protocol.*;
+import viewmodel.MapController;
 
 import java.net.Socket;
 
@@ -37,7 +40,8 @@ public class Client {
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
     private BooleanProperty gameReady;
-    private static final Logger logger = Logger.getLogger( Client.class.getName() );
+    private Property<Map> mapProperty;
+    private static final Logger logger = Logger.getLogger(Client.class.getName());
 
     //TODO     public Client(String name, String serverIP, int serverPort) {
     public Client(String serverIP, int serverPort) {
@@ -57,6 +61,7 @@ public class Client {
     /**
      * This method is responsible for connecting the client to the specified server.
      * It uses the {link fieldServer} to get the IP and Port.
+     *
      * @return connection Success: True, connection Failed: False
      */
     public boolean connectClient() {
@@ -71,7 +76,7 @@ public class Client {
 
             //waiting for server response - waitingForHelloClient is changed by ClientReaderTask
             waitingForHelloClient = true;
-            while(waitingForHelloClient) {
+            while (waitingForHelloClient) {
                 logger.info("Waiting...");
                 if (waitingForHelloClient) try {
                     Thread.sleep(100);
@@ -104,6 +109,7 @@ public class Client {
         JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
+        logger.info("Submitted player values");
     }
 
     /**
@@ -128,15 +134,16 @@ public class Client {
      * The server is going to process the messages based on whether it is
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
-     * @param message that is to be sent
+     *
+     * @param message    that is to be sent
      * @param receiverID of the Player who receives private message
      * @author Mia
      */
-    public void sendPrivateMessage(String message, int receiverID)  {
-           JSONMessage jsonMessage = new JSONMessage("SendChat", new SendChatBody(message, receiverID));
+    public void sendPrivateMessage(String message, int receiverID) {
+        JSONMessage jsonMessage = new JSONMessage("SendChat", new SendChatBody(message, receiverID));
 
-            writer.println(JSONEncoder.serializeJSON(jsonMessage));
-            writer.flush();
+        writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        writer.flush();
 
     }
 
@@ -152,8 +159,8 @@ public class Client {
     public void join(String name, int figure) { //TODO check how player figure is submitted Sring Int aso
             JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
 
-            writer.println(JSONEncoder.serializeJSON(jsonMessage));
-            writer.flush();
+        writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        writer.flush();
 
     }
 
@@ -172,6 +179,7 @@ public class Client {
 
     /**
      * Receive message from clients
+     *
      * @param message (contents clients name)
      */
     private void receiveMessage(String message) {
@@ -388,10 +396,12 @@ public class Client {
 
                             //Server sends maps to clients
                             case GAME_STARTED: {
-                                // GameStartedBody messageBody = (GameStartedBody) jsonMessage.getMessageBody();
+                                GameStartedBody messageBody = (GameStartedBody) jsonMessage.getMessageBody();
+                                Map hameMap = messageBody.getGameMap();
 
                                 Platform.runLater(() -> {
-                                    //TODO write code here
+
+                                    //Todo display in mapview
                                 });
                                 break;
                             }
@@ -567,7 +577,7 @@ public class Client {
                             }
 
                             //Server informs all players if a player reached a checkpoint
-                            case CHECK_POINT_REACHED: {
+                            case CHECKPOINT_REACHED: {
                                 CheckPointReachedBody messageBody = (CheckPointReachedBody) jsonMessage.getMessageBody();
 
                                 Platform.runLater(() -> {
@@ -599,7 +609,7 @@ public class Client {
 
 
     public class OtherPlayer {
-      //  StringProperty name;
+        //  StringProperty name;
         IntegerProperty playerID;
 
         OtherPlayer(int playerID) {
