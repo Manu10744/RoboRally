@@ -7,10 +7,21 @@
 ## Version [0.1.1]
 
 ### New Features
+* Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
+* Registration and Chat via protocol *(Ivan)*
+ 
+### Changes
+
+### Bugfixes
+
+## Version [0.1.0]
+
+### New Features
 * First wiki draft created - *(Verena, Jessie)*
 * Switching between wiki tabs is now possible - *(Verena)*
 * GUI adapts automatically to users' screen setup - *(Ivan)*
 * GUI was completely refactored to enable fully responsiveness - *(Ivan)*
+* Added possibility to exclude fields from deserialization and serialization by the Gson @Expose tag - Fields without that identifier are ignored by Gson. - *(Manu)*
 
 ### Changes
 * Main - runs server and client parallel (with two GUIs ATM -> developer mode) - *(Ivan)*
@@ -27,10 +38,9 @@
 * Issue with running server thread after application was closed and thereby blocking server port for successful 
 application restart is solved by setting server threat to daemon. As a positive side effect server now  automatically terminates its own
  thread after last non-daemon thread (here GUI) is gone by closing last GUI window *(Ivan)*
-* Client BufferReader issue was adjusted by StringBuilder, otherwise readLine submits incomplete input to JSONDecoder which leeds to error. It's based on the behavior of readLine which ends a string by the first newline mark, so everytime an input occurs only a "{" was handed
-to the JSONDecoder
+* Client BufferReader issue was replaced by StringBuilder - *(Ivan)*
 
-## Version [0.1.0]
+## Version [0.0.1]
 
 ### New Features
 * Added Programming and Damage Cards - *(Vincent)*

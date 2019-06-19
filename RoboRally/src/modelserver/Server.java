@@ -68,7 +68,6 @@ public class Server extends Application {
         gameIsRunning = true;
     }
 
-
     private class ServerReaderTask extends Thread {
 
         private Socket clientSocket;
@@ -99,7 +98,7 @@ public class Server extends Application {
                 while ((jsonString = reader.readLine()) != null) {
                     // Deserialize the received JSON String into a JSON object
                     jsonMessage = JSONDecoder.deserializeJSON(jsonString);
-                    logger.info("JSONDcoder done: "+jsonString+jsonMessage);
+                    logger.info("JSONDecoder done: "+jsonString+jsonMessage);
 
                     // Here we get the instruction from the received JSON Object
                     ClientInstruction clientInstruction = JSONDecoder.getClientInstructionByMessageType(jsonMessage);
@@ -110,19 +109,13 @@ public class Server extends Application {
                     logger.info("clientInstructionType: "+clientInstructionType);
 
                     switch (clientInstructionType) {
-                        //Check if name is already used, if not, register client
-                        /*
-                        case CHECK_NAME: {
-                    switch (clientToServerInstructionType) {
-
-
-                        *//////////////////////////////////////////////
+                        //////////////////////////////////////////////
                         /*  This part handles C2S CHAT instructions  */
                         ///////////////////////////////////////////////
 
                         //Client sends group name, protocol-vs and KI-on/off to Server
                         case HELLO_SERVER: {
-                            logger.info("CASE HELLO SERVER successfully entered");
+                            logger.info("CASE HELLO_SERVER successfully entered");
                             HelloServerBody messageBody = (HelloServerBody) jsonMessage.getMessageBody();
 
                             if (messageBody.getProtocol().equals(protocolVersion)){
@@ -134,35 +127,50 @@ public class Server extends Application {
 
                                 //counter is adjusted for next registration process
                                 counterPlayerID++;
-                            }else {
+
+                                break;
+                            } else {
                                 logger.info("Protocol version test failed");
                                 clientSocket.close();
                                 logger.info("Server connection terminated");
+                                break;
                             }
                         }
 
                         //Client sends public message to all, the value of "to" of the JSON-message must be -1
                         case SEND_CHAT: {
+                            logger.info("CASE SEND_CHAT successfully entered");
                             SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
 
+                            //Stream to get client's playerID (because atm only the socket is known)
+                            int senderID = connectedClients.stream().
+                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
+                                    findFirst().get().playerID;
+
                             //Stream to get client's name (because atm only the socket is known)
-                            String clientName = connectedClients.stream().
+                            String senderName = connectedClients.stream().
                                     filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
                                     findFirst().get().name;
 
+                            //Build new string from client's name and message content, to show name in chat
+                            String messageContent = messageBody.getMessage();
+                            String content = senderName + ": " + messageContent;
+
                             //Send message to all clients:
                             for (ClientWrapper client : connectedClients) {
-                                String content = messageBody.getMessage();
-                                int senderID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).findFirst().get().playerID;
+
+                                //Send message to all clients:
                                 jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, false));
                                 client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                 client.writer.flush();
+                                logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
                             }
                             break;
                         }
 
                         //Clients sends private message to another player via the server
                         case SEND_PRIVATE_CHAT: {
+                            logger.info("CASE SEND_PRIVATE_CHAT successfully entered");
                             SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
 
                             //Stream to get client's name
@@ -186,146 +194,90 @@ public class Server extends Application {
                             break;
                         }
 
-
-                            /* (!) NO PROTOCOL FOR THIS FLAG YET (!)
-                             //Client leaves game and informs server thereof
-                        case BYE: {
-                            logger.info("Client " + content + " left the room");
-                            //Send message to all clients:
-                            for(ClientWrapper client : connectedClients) {
-                                client.writer.println(new Instruction(CLIENT_LEAVES, content));
-                                client.writer.flush();
-                            }
-                            writer.write(new Instruction(CLIENT_LEAVES, ""));
-                            writer.flush();
-
-                            //Use stream to remove client from serverlist: (Maybe there is a more efficient way?)
-                            connectedClients = connectedClients.stream().
-                                    filter(clientWrapper -> !clientWrapper.socket.equals(clientSocket)).
-                                    collect(Collectors.toCollection(ArrayList::new));
-                            writer.close();
-                            break;
-                        }
-                             */
-
                         ///////////////////////////////////////////////
                         /*  This part handles C2S GAME instructions  */
                         ///////////////////////////////////////////////
 
-                        //Client sends player-name and player figure to server, where availability is checked and if so player is registered
+                        /**
+                         * This case processes the by client submitted PLAYER_VALUES name and figure.
+                         * It checks if name or figure are already in use by another client.
+                         * If the player values are valid, client gets registered in connected clients.
+                         * Every connected client receives the PlayerAdded message, additionally the new
+                         * client receives PlayerAdded messages for all already connected clients.
+                         *
+                         * @author Ivan Dovecar
+                         */
                         case PLAYER_VALUES: {
-                            logger.info("CASE PLAYER VALUES entered successfully");
+                            logger.info("CASE PLAYER_VALUES entered successfully");
                             PlayerValuesBody messageBody = (PlayerValuesBody) jsonMessage.getMessageBody();
+                            
+                            String playerValueName = messageBody.getName();
+                            int playerValueFigure = messageBody.getFigure();
 
-                            //TODO modify code according to RoboRally needs
-                            boolean success = true;
+                            boolean playerValueSuccess = true;
+
                             for (ClientWrapper client : connectedClients) {
-                                String content = messageBody.getName();
-                                if (client.name.equals(content)) {
-                                    logger.info("Client " + content + " refused (name already exists)");
 
-                                    writer.println(String.valueOf(new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR))); // Todo hier fehlen die ebcoder methoden
+                                // Checks if by PLAYER-VALUES received client' name is available
+                                if (client.name.equals(playerValueName)) {
+                                    logger.info("Client " + playerValueName + " refused (name already exists)");
+
+                                    jsonMessage = new JSONMessage("Error", new ErrorBody("Error: name already exists"));
+                                    writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                     writer.flush();
-                                    success = false;
+
+                                    playerValueSuccess = false;
+                                    break;
+                                }
+
+                                // Checks if by PLAYER-VALUES received client' figure is available
+                                else if (client.figure == playerValueFigure) {
+                                    logger.info("Client " + playerValueName + " refused (figure already exists)");
+
+                                    jsonMessage = new JSONMessage("Error", new ErrorBody("Error: figure already exists"));
+                                    writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                    writer.flush();
+
+                                    playerValueSuccess = false;
                                     break;
                                 }
                             }
 
-                             /* (!) NO PROTOCOL FOR CHECK NAME YET (!)
-                            if (success) {
-                                logger.info("Client " + content + " successfully registered");
+                            // If by PLAYER_VALUES received name and figure are valid...
+                             if (playerValueSuccess) {
+                                logger.info("Client " + playerValueName + " successfully registered");
 
                                 //Add new Client to list connected clients
-                                connectedClients.add(new ClientWrapper(clientSocket, content, writer));
+                                connectedClients.add(new ClientWrapper(clientSocket, counterPlayerID, playerValueName, playerValueFigure, writer));
 
+                                 //Send message to all active clients
+                                 jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(counterPlayerID, playerValueName, playerValueFigure));
+                                 writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                 writer.flush();
 
-                                // TODO check if the following three lines are necessary
-                                writer.write(new Instruction(NAME_SUCCESS, ""));
-                                writer.flush();
-
-                                //Send message to all already active clients
-                                for (ClientWrapper client : connectedClients) {
-                                    if(!client.socket.equals(clientSocket)) {
-                                        client.writer.write(new Instruction(CLIENT_JOINED, content));
-                                        client.writer.flush();
-
-                                    } else { //New Client receives different message:
-                                        client.writer.write(new Instruction(CLIENT_WELCOME, content));
-                                        client.writer.flush();
-                                    }
-                                }
-
-                                //Register all current activeClients at new Client
+                                //Inform new Client about all current activeClients (send all connected clients to new client without own entry)
                                 for(ClientWrapper client : connectedClients) {
                                     if (!client.socket.equals(clientSocket)) {
-                                        writer.write(new Instruction(CLIENT_REGISTER, client.name));
-                                        writer.flush();
+                                        // TODO PlayerAdded message of every already active client is sent to new client
                                     }
                                 }
                             }
                             break;
-
-                              */
-
                         }
 
-                        /* Ivan, this is yours! :-) Good luck!
-                        case RECEIVED_PRIVATE_CHAT: {
-                            //Stream to get client's name
-                            String sendingClientName = connectedClients.stream().
-                                    filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).
-                                    findFirst().get().name;
-                            for(ClientWrapper client : connectedClients){
-                                if(instruction.getAddressedClient().equals(client.name)){
-                                    client.writer.write(new Instruction(NEW_MESSAGE,
-                                            sendingClientName + ": (private) " + content));
-                                    client.writer.flush();
-                                }
-                                if(sendingClientName.equals(client.name)){
-                                    client.writer.write(new Instruction(NEW_MESSAGE,
-                                            sendingClientName + ": @" + instruction.getAddressedClient() + " (private) " + content));
-                                    client.writer.flush();
-                                }
-                            }
-                            break;
-                        }
-                        // TODO JOIN_GAME is no longer existing adapt to ... maybe SET_STATUS is suitable
+                        // Client signals the server that he's ready (ready = true) or revokes his ready statement (ready = false)
                         case SET_STATUS: {
-                            //Enables clients to join the players-list, if game is initialized but not running and
-                            //maximum players-number of four is not reached
+                            logger.info("CASE SET_STATUS entered successfully");
 
-                            //Only if Server accepts clients after game has started
-                            if (gameIsRunning) {
-                                logger.info("Client " + content + " can't set status to ready, game is already running");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.write(new Instruction(GAME_JOIN_FAIL2, content));
-                                    client.writer.flush();
-                                }
-                            } else if (gameIsRunning) {
-                                logger.info("Client " + content + " can't join an already running game");
-                                for (ClientWrapper client : connectedClients) {
-                                    client.writer.write(new Instruction(GAME_JOIN_FAIL3, content));
-                                    client.writer.flush();
-                                }
-                            } else {
-                                logger.info(content + " joined the game");
-                                //Get PlayerName
-                                for (ClientWrapper client : connectedClients) {
-                                    if(client.socket.equals(clientSocket)) {
-                                        // TODO age is no longer needed, player figure has to be added instead
-                                     //   players.add(new Player(client.name, client.age));
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
+                            SetStatusBody messageBody = (SetStatusBody) jsonMessage.getMessageBody();
+                            boolean playerReadyStatus = messageBody.isReady();
+
+
                         }
-
-                         */
-
 
                         //Player plays a card
                         case PLAY_CARD: {
+                            logger.info("CASE PLAY_CARD entered successfully");
                             PlayCardBody messageBody = (PlayCardBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -333,6 +285,7 @@ public class Server extends Application {
 
                         //Player chooses starting point and informs server of her or his choice
                         case SET_STARTING_POINT: {
+                            logger.info("CASE SET_STARTING_POINT entered successfully");
                             SetStartingPointBody messageBody = (SetStartingPointBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -341,6 +294,7 @@ public class Server extends Application {
                         /*Player selects cards, each selected card is sent to the server after five have been chosen.
                         If a register is emptied the card value is 'null'*/
                         case SELECT_CARD: {
+                            logger.info("CASE SELECT_CARD entered successfully");
                             SelectCardBody messageBody = (SelectCardBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -348,6 +302,7 @@ public class Server extends Application {
 
                         //Client informs client that a card has been put in the register
                         case CARD_SELECTED: {
+                            logger.info("CASE CARD_SELECTED entered successfully");
                             CardSelectedBody messageBody = (CardSelectedBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
@@ -355,6 +310,7 @@ public class Server extends Application {
 
                         //Client informs server that a player has filled his or her full register
                         case SELECTION_FINISHED: {
+                            logger.info("CASE SELECTION_FINISHED entered successfully");
                             SelectionFinishedBody messageBody = (SelectionFinishedBody) jsonMessage.getMessageBody();
                             //TODO write code here
                         }
@@ -373,17 +329,22 @@ public class Server extends Application {
     }
 
     /**
-     * Inner class to wrap the information from the client (socket + name)
+     * Inner class to wrap the information from the client (socket, ID, name, figure, writer)
+     *
+     * @author Ivan
      */
     private class ClientWrapper {
         Socket socket;
-        String name;
-        PrintWriter writer;
         int playerID;
+        String name;
+        int figure;
+        PrintWriter writer;
 
-        private ClientWrapper(Socket socket, String name, PrintWriter writer) {
+        private ClientWrapper(Socket socket, int playerID, String name, int figure, PrintWriter writer) {
             this.socket = socket;
+            this.playerID = playerID;
             this.name = name;
+            this.figure = figure;
             this.writer = writer;
         }
 

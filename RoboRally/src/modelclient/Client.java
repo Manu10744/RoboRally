@@ -29,7 +29,6 @@ public class Client {
     private PrintWriter writer;
 
     private boolean waitingForHelloClient;
-    private boolean nameSuccess;
 
     private String protocolVersion = "Version 0.1";
     private String group = "AstreineBarsche";
@@ -87,20 +86,24 @@ public class Client {
             writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
 
-           // TODO return nameSuccess; //gets set by ClientReaderTask
         } catch(IOException exp) {
             exp.printStackTrace();
         }
         return false;
     }
 
-    public void connectPlayer() {
-        //TODO Player control has to be controlled via "chooseRobot" PRESET ROBOT NO.1!!!!!!!
-        logger.info("Submit player values (DUMMY FIGURE 1 PRESET ATM)");
-        JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, 1));
+    /**
+     * This method is responsible for sending playerValues to the server.
+     * The server is going to process the values and if valid, it will return a playerAdded message.
+     * It uses the {@link @FXML fieldName} to get the name and chooseRobot FXML to get figure.
+     *
+     * @author Ivan
+     */
+    public void playerValue(String name, int figure) {
+        logger.info("Submitting player values");
+        JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
-        logger.info("Submitted player values");
     }
 
     /**
@@ -108,6 +111,7 @@ public class Client {
      * The server is going to process the messages based on whether it is
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
+     *
      * @author Mia
      */
     public void sendMessage(String message) {
@@ -145,8 +149,8 @@ public class Client {
      *
      * @author Ivan Dovecar, Mia
      */
-    public void join(String name, int robot) { //TODO check how player figure is submitted Sring Int aso
-            JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, robot));
+    public void join(String name, int figure) { //TODO check how player figure is submitted Sring Int aso
+            JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
 
             writer.println(JSONEncoder.serializeJSON(jsonMessage));
             writer.flush();
@@ -311,17 +315,20 @@ public class Client {
 
                             // Server informs client that a transmission error occurred
                             case ERROR: {
+                                logger.info("CASE ERROR successfully entered");
+
                                 ErrorBody messageBody = (ErrorBody) jsonMessage.getMessageBody();
+                                String errorMessage = messageBody.getError();
 
                                 Platform.runLater(() -> {
-                                    //TODO write code here and integrate case NAME_INVALID (see code below), message body contains name_invalid -> new method call
-                                /*
-                                   case NAME_INVALID: {
-                                        waitingForAnswer = false;
-                                        nameSuccess = false;
-                                        break
-                                        }
-                                 */
+                                    if (errorMessage.equals("Error: name already exists")){
+                                        logger.info(errorMessage);
+                                        //TODO write code here for proper reaction
+                                    }
+                                    if (errorMessage.equals("Error: figure already exists")){
+                                        logger.info(errorMessage);
+                                        //TODO write code here for proper reaction
+                                    }
                                 });
                                 break;
                             }
@@ -358,9 +365,9 @@ public class Client {
                             //Server confirms player_name and player_figure
                             case PLAYER_ADDED: {
                                 PlayerAddedBody messageBody = (PlayerAddedBody) jsonMessage.getMessageBody();
-                                nameSuccess = true;
+
                                 Platform.runLater(() -> {
-                                    activeClients.add(messageBody.getPlayerID(), messageBody.getName());
+                                    activeClients.add(String.valueOf(messageBody.getPlayerID()));
                                     OtherPlayer newPlayer = new OtherPlayer(messageBody.getPlayerID());
                                     otherActivePlayers.add(otherActivePlayers.size(), newPlayer);
                                 });

@@ -16,7 +16,6 @@ public class ClientInstruction extends Instruction {
         HELLO_SERVER, //Client sends group name, protocol-vs and KI-on/off to Server
         SEND_CHAT, //Client sends public message to all, the value of "to" of the JSON-message must be -1
         SEND_PRIVATE_CHAT, //Clients sends private message to another player via the server
-        CLIENT_LEAVES, // Client informs Server if clients leaves the game
 
         //ClientGameInstruction
         PLAYER_VALUES, //Client sends player-name and player figure is sent to server
