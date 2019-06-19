@@ -8,6 +8,7 @@ import modelserver.game.Maps.Map;
  */
 
 public class GameStartedBody {
+    @Expose
     private Map gameMap;
 
     public GameStartedBody(Map gameMap) {

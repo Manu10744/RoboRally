@@ -8,16 +8,16 @@ import modelserver.game.Card;
  */
 public class CardPlayedBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
     private Card card;
 
-    public CardPlayedBody(int playerID, Card card) {
+    public CardPlayedBody(Integer playerID, Card card) {
         this.playerID = playerID;
         this.card = card;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 

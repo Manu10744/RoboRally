@@ -114,7 +114,7 @@ public class JSONEncoder {
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
         /*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
 
-        String json = JSONEncoder.serializeJSON(messages.get(11));
+        String json = JSONEncoder.serializeJSON(messages.get(13));
         System.out.println(json);
 
 

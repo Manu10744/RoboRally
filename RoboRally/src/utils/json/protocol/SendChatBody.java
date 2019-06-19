@@ -9,9 +9,9 @@ public class SendChatBody {
     @Expose
     private String message;
     @Expose
-    private int to;
+    private Integer to;
 
-    public SendChatBody(String message, int to) {
+    public SendChatBody(String message, Integer to) {
         this.message = message;
         this.to = to;
     }
@@ -20,7 +20,7 @@ public class SendChatBody {
         return message;
     }
 
-    public int getTo() {
+    public Integer getTo() {
         return to;
     }
 }

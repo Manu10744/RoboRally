@@ -25,15 +25,16 @@ import java.net.Socket;
  */
 public class Client {
     private String name;
-    private int figure;
-    private Socket socket;
     private String serverIP;
-    private int serverPort;
-    private PrintWriter writer;
-    private boolean waitingForHelloClient;
-
     private String protocolVersion = "Version 0.1";
     private String group = "AstreineBarsche";
+
+    private int figure;
+    private int serverPort;
+
+    private Socket socket;
+    private PrintWriter writer;
+    private boolean waitingForHelloClient;
 
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
@@ -42,7 +43,7 @@ public class Client {
     private Property<Map> mapProperty;
     private static final Logger logger = Logger.getLogger(Client.class.getName());
 
-    //TODO     public Client(String name, String serverIP, int serverPort) {
+    //TODO  public Client(String name, String serverIP, int serverPort) {
     public Client(String serverIP, int serverPort) {
         logger.info("Starting registration process...");
         this.serverIP = serverIP;
@@ -133,8 +134,8 @@ public class Client {
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
      *
-     * @param message    that is to be sent
-     * @param receiverID of the Player who receives private message
+     * @param message The message that should be sent.
+     * @param receiverID The playerID of the Player who should receive the private message.
      * @author Mia
      */
     public void sendPrivateMessage(String message, int receiverID) {
@@ -163,14 +164,12 @@ public class Client {
     }
 
     /**
-     * This method is responsible for setting the gamer status on ready or not ready.
-     * It is triggered by clicking on the ready button below the chat.
+     * This method is responsible for sending the players ready status to the server.
      *
      * <b>Note:</b> A game starts automatically when all players (at least 2 players) are ready.
      *
      * @author Ivan Dovecar
      */
-
     public void sendReadyStatus(boolean readyStatus) {
         // Inform the server about changed ready status
         JSONMessage jsonMessage = new JSONMessage("SetStatus", new SetStatusBody(readyStatus));
@@ -180,9 +179,9 @@ public class Client {
 
 
     /**
-     * Receive message from clients
+     * This method is responsible for printing a message to the chat history.
      *
-     * @param message (contents clients name)
+     * @param message The message that should be printed.
      */
     private void receiveMessage(String message) {
         String oldHistory = chatHistory.get();
@@ -219,21 +218,21 @@ public class Client {
  */
     }
 
+    public String getName() { return name; }
+
     public BooleanProperty getReadyProperty() {
         return isReadyProperty;
     }
 
-    public StringProperty chatHistoryProperty() { return chatHistory; }
+    public StringProperty getChatHistoryProperty() { return chatHistory; }
 
-    public ListProperty<OtherPlayer> otherActivePlayers() { return otherActivePlayers; }
-
-    public String getName() { return name; }
+    public ListProperty<OtherPlayer> getOtherActivePlayers() { return otherActivePlayers; }
 
     public OtherPlayer getOtherPlayerByName(int playerID) {
         return (OtherPlayer) otherActivePlayers.stream();
     }
 
-    public ListProperty<String> activeClientsProperty() { return activeClients; }
+    public ListProperty<String> getActiveClientsProperty() { return activeClients; }
 
 
     /**

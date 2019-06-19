@@ -30,9 +30,9 @@ import static utils.Parameter.*;
  * @author Ivan Dovecar
  */
 public class Server extends Application {
-
     private ArrayList<ClientWrapper> connectedClients;
     private ArrayList<Player> players = new ArrayList<>();
+
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
     private int numberOfReadyClients = 0;
@@ -71,7 +71,6 @@ public class Server extends Application {
         game.startGame(players);
         gameIsRunning = true;
     }
-
 
     private class ServerReaderTask extends Thread {
 
@@ -222,7 +221,6 @@ public class Server extends Application {
                             boolean playerValueSuccess = true;
 
                             for (ClientWrapper client : connectedClients) {
-
                                 // Checks if by PLAYER-VALUES received client' name is available
                                 if (client.name.equals(playerValueName)) {
                                     logger.info("Client " + playerValueName + " refused (name already exists)");
@@ -315,6 +313,7 @@ public class Server extends Application {
                             PlayCardBody messageBody = (PlayCardBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
+                            break;
                         }
 
                         //Player chooses starting point and informs server of her or his choice
@@ -323,6 +322,7 @@ public class Server extends Application {
                             SetStartingPointBody messageBody = (SetStartingPointBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
+                            break;
                         }
 
                         /*Player selects cards, each selected card is sent to the server after five have been chosen.
@@ -332,6 +332,7 @@ public class Server extends Application {
                             SelectCardBody messageBody = (SelectCardBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
+                            break;
                         }
 
                         //Client informs client that a card has been put in the register
@@ -340,16 +341,17 @@ public class Server extends Application {
                             CardSelectedBody messageBody = (CardSelectedBody) jsonMessage.getMessageBody();
 
                             //TODO write code here
+                            break;
                         }
 
                         //Client informs server that a player has filled his or her full register
                         case SELECTION_FINISHED: {
                             logger.info("CASE SELECTION_FINISHED entered successfully");
                             SelectionFinishedBody messageBody = (SelectionFinishedBody) jsonMessage.getMessageBody();
-                            //TODO write code here
-                        }
 
-                        // For animation purposes
+                            //TODO write code here
+                            break;
+                        }
 
                     }
                 }

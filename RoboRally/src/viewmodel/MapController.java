@@ -70,7 +70,6 @@ public class MapController extends Application {
         Scene tileScene = new Scene(tilePane);
 
         stage.setScene(tileScene);
-
         stage.show();
 
 
@@ -81,9 +80,12 @@ public class MapController extends Application {
     }
 
     public TilePane getTilePane() {
-        return  this.tilePane;}
+        return  this.tilePane;
+    }
 
-    public static void main(String args[]){launch(args);    }
+    public static void main(String args[]) {
+        launch(args);
+    }
 
     /**
      * This method controls robotlaser in activation phase
@@ -91,7 +93,4 @@ public class MapController extends Application {
     public void robotLaser() {
 
     }
-
-
-
 }

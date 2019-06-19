@@ -10,9 +10,9 @@ public class SelectCardBody {
     @Expose
     private Card card;
     @Expose
-    private int register;
+    private Integer register;
 
-    public SelectCardBody(Card card, int register) {
+    public SelectCardBody(Card card, Integer register) {
         this.card = card;
         this.register = register;
     }
@@ -21,7 +21,7 @@ public class SelectCardBody {
         return card;
     }
 
-    public int getRegister() {
+    public Integer getRegister() {
         return register;
     }
 }

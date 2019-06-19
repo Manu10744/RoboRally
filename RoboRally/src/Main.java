@@ -22,7 +22,6 @@ import viewmodel.MapController;
  */
 public class Main extends Application {
 
-
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
     @Override

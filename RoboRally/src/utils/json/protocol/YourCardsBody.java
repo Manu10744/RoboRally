@@ -12,9 +12,9 @@ public class YourCardsBody {
     @Expose
     private ArrayList<Card> cardsInHand;
     @Expose
-    private int cardsInPile;
+    private Integer cardsInPile;
 
-    public YourCardsBody(ArrayList<Card> cardsInHand, int cardsInPile) {
+    public YourCardsBody(ArrayList<Card> cardsInHand, Integer cardsInPile) {
         this.cardsInHand = cardsInHand;
         this.cardsInPile = cardsInPile;
     }
@@ -23,7 +23,7 @@ public class YourCardsBody {
         return cardsInHand;
     }
 
-    public int getCardsInPile() {
+    public Integer getCardsInPile() {
         return cardsInPile;
     }
 }

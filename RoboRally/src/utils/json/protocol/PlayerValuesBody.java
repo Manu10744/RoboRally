@@ -10,9 +10,9 @@ public class PlayerValuesBody {
     @Expose
     private String name;
     @Expose
-    private int figure;
+    private Integer figure;
 
-    public PlayerValuesBody(String name, int figure) {
+    public PlayerValuesBody(String name, Integer figure) {
         this.name = name;
         this.figure = figure;
     }
@@ -21,7 +21,7 @@ public class PlayerValuesBody {
         return name;
     }
 
-    public int getFigure() {
+    public Integer getFigure() {
         return figure;
     }
 }

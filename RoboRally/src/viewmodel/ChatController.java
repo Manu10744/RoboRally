@@ -53,12 +53,13 @@ public class ChatController implements Initializable {
     @FXML
     private Button buttonReady;
 
-    private Client client;
+    private String tempString;
     private String serverIP;
+
+    private Client client;
     private int serverPort;
 
     private Stage primaryStage;
-    private String tempString;
 
     private StringProperty serverAddress;
     private StringProperty name;
@@ -128,7 +129,7 @@ public class ChatController implements Initializable {
         name.addListener((observableValue, oldValue, newValue) -> {
             if (!newValue.equals(Parameter.INVALID_CLIENTNAME)) {
                 nameSettingFinished.set(true);
-                clientChatOutput.bind(client.chatHistoryProperty()); // hier wird der Text durchgegeben
+                clientChatOutput.bind(client.getChatHistoryProperty()); // hier wird der Text durchgegeben
             } else {
                 showInvalidNameAlert();
                 name.setValue(Parameter.INVALID_CLIENTNAME);
@@ -186,23 +187,25 @@ public class ChatController implements Initializable {
             }
         });
 
+        // FIGUREINPUT: Set Enter-Event
+        fieldFigure.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                figure.set(Integer.parseInt(fieldFigure.getText()));
+            }
+        });
+
+        // Inform server about ready status changes
         getReadyProperty().addListener((observableValue, oldvalue, newValue) -> {
             // If property changes, inform the server
             client.sendReadyStatus(newValue);
             logger.info("DONE! " + newValue);
         });
 
+        // Change ready status by clicking the 'Ready' button
         buttonReady.setOnMouseClicked(event -> {
             boolean readyStatus = getReadyProperty().get();
             // Toggle ready status
             getReadyProperty().set(!readyStatus);
-        });
-
-        // FIGUREINPUT: Set Enter-Event
-        fieldFigure.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                    figure.set(Integer.parseInt(fieldFigure.getText()));
-            }
         });
 
         //CHATINPUT: Set Key-Events

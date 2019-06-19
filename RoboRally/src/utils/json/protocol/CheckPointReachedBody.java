@@ -7,20 +7,20 @@ import com.google.gson.annotations.Expose;
  */
 public class CheckPointReachedBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
-    private int number;
+    private Integer number;
 
-    public CheckPointReachedBody(int playerID, int number) {
+    public CheckPointReachedBody(Integer playerID, Integer number) {
         this.playerID = playerID;
         this.number = number;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
-    public int getNumber() {
+    public Integer getNumber() {
         return number;
     }
 }

@@ -7,27 +7,27 @@ import com.google.gson.annotations.Expose;
  */
 public class MovementBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
-    private int x;
+    private Integer x;
     @Expose
-    private int y;
+    private Integer y;
 
-    public MovementBody(int playerID, int x, int y) {
+    public MovementBody(Integer playerID, Integer x, Integer y) {
         this.playerID = playerID;
         this.x = x;
         this.y = y;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 }

@@ -9,11 +9,11 @@ public class HelloServerBody {
     @Expose
     private String group;
     @Expose
-    private boolean isAI;
+    private Boolean isAI;
     @Expose
     private String protocol;
 
-    public HelloServerBody(String group, boolean isAI, String protocol) {
+    public HelloServerBody(String group, Boolean isAI, String protocol) {
         this.group = group;
         this.isAI = isAI;
         this.protocol = protocol;
@@ -23,7 +23,7 @@ public class HelloServerBody {
         return group;
     }
 
-    public boolean isAI() {
+    public Boolean isAI() {
         return isAI;
     }
 

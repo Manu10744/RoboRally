@@ -7,13 +7,13 @@ import com.google.gson.annotations.Expose;
  */
 public class RebootBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
 
-    public RebootBody(int playerID) {
+    public RebootBody(Integer playerID) {
         this.playerID = playerID;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 }

@@ -7,13 +7,13 @@ import com.google.gson.annotations.Expose;
  */
 public class SetStatusBody {
     @Expose
-    private boolean ready;
+    private Boolean ready;
 
-    public SetStatusBody(boolean ready) {
+    public SetStatusBody(Boolean ready) {
         this.ready = ready;
     }
 
-    public boolean isReady() {
+    public Boolean isReady() {
         return ready;
     }
 }

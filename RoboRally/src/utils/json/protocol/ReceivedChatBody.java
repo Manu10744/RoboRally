@@ -9,11 +9,11 @@ public class ReceivedChatBody {
     @Expose
     private String message;
     @Expose
-    private int from;
+    private Integer from;
     @Expose
-    private boolean isPrivate;
+    private Boolean isPrivate;
 
-    public ReceivedChatBody(String message, int from, boolean isPrivate) {
+    public ReceivedChatBody(String message, Integer from, Boolean isPrivate) {
         this.message = message;
         this.from = from;
         this.isPrivate = isPrivate;
@@ -23,11 +23,11 @@ public class ReceivedChatBody {
         return message;
     }
 
-    public int getFrom() {
+    public Integer getFrom() {
         return from;
     }
 
-    public boolean isPrivate() {
+    public Boolean isPrivate() {
         return isPrivate;
     }
 }

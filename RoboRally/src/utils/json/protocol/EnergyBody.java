@@ -7,23 +7,23 @@ import com.google.gson.annotations.Expose;
  */
 public class EnergyBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
-    private int count;
+    private Integer count;
     @Expose
     private String source;
 
-    public EnergyBody(int playerID, int count, String source) {
+    public EnergyBody(Integer playerID, Integer count, String source) {
         this.playerID = playerID;
         this.count = count;
         this.source = source;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
