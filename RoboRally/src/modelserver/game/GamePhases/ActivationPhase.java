@@ -1,7 +1,7 @@
-package modelserver.game;
+package modelserver.game.GamePhases;
 
 import modelserver.game.*;
-import modelserver.game.Deck;
+
 
 /**
  * This class implements the activation phase.

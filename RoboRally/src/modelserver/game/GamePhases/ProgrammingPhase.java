@@ -1,8 +1,8 @@
-package modelserver.game;
+package modelserver.game.GamePhases;
 
 import static utils.Parameter.TIMER_LENGTH;
 
-import modelserver.game.Deck;
+import modelserver.game.*;
 
 /**
  * This class implements the programming phase.

@@ -1,4 +1,4 @@
-package modelserver.game;
+package modelserver.game.GamePhases;
 
 /**
  * This class implements the upgrade phase.
