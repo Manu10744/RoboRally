@@ -55,7 +55,6 @@ public class Main extends Application {
             Server server = new Server();
             try {
                 server.start(primaryStage);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

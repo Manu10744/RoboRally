@@ -35,6 +35,7 @@ public class Server extends Application {
     private ArrayList<Player> players = new ArrayList<>();
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
+    private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
@@ -252,7 +253,7 @@ public class Server extends Application {
                                 logger.info("Client " + playerValueName + " successfully registered");
 
                                 //Add new Client to list connected clients
-                                connectedClients.add(new ClientWrapper(clientSocket, playerValueName, writer, playerValueFigure, counterPlayerID));
+                                connectedClients.add(new ClientWrapper(clientSocket, playerValueName, writer, playerValueFigure, counterPlayerID, false));
 
                                  //Send message to all active clients
                                  jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(counterPlayerID, playerValueName, playerValueFigure));
@@ -273,13 +274,12 @@ public class Server extends Application {
                         // Client signals the server that he's ready (ready = true) or revokes his ready statement (ready = false)
                         case SET_STATUS: {
                             logger.info("CASE SET_STATUS entered successfully");
-
                             SetStatusBody messageBody = (SetStatusBody) jsonMessage.getMessageBody();
+
                             boolean clientReady = messageBody.isReady();
                             logger.info("IS READY STATUS :" + clientReady);
                             int playerID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket))
                                     .findFirst().get().playerID;
-                            int numberOfReadyClients = 0; //Todo: must I really replace even that number?
 
                             for (ClientWrapper client : connectedClients) {
                                 jsonMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, clientReady));
@@ -294,7 +294,7 @@ public class Server extends Application {
                                 --numberOfReadyClients;
                             }
 
-                            //If required number of players are ready, game starts and map is created
+                            // If required number of players are ready, game starts and map is created
                             if (numberOfReadyClients >= MIN_PLAYERSIZE) {
                                 Map map = new Map();
 
@@ -374,12 +374,13 @@ class ClientWrapper {
     private int figure;
     private boolean isReady;
 
-        private ClientWrapper(Socket socket, String name, PrintWriter writer, int figure, int playerID) {
+        private ClientWrapper(Socket socket, String name, PrintWriter writer, int figure, int playerID, boolean isReady) {
             this.socket = socket;
             this.name = name;
             this.writer = writer;
             this.figure = figure;
             this.playerID = playerID;
+            this.isReady = isReady;
         }
 
         public Socket getClientSocket() {
@@ -401,6 +402,8 @@ class ClientWrapper {
         public int getPlayerID(){
             return  this.playerID;
         }
+
+        public boolean isReady() { return isReady; }
     }
 }
 
