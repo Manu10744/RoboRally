@@ -4,6 +4,9 @@ import modelserver.Server;
 import modelserver.game.Player;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import modelserver.game.*;
+
 /**
  * This class handles the Game itself. <br>
  * It starts it and keeps track of the players.
@@ -34,19 +37,10 @@ public class Game {
         activePlayers = new ArrayList<>(this.players);
 
         System.out.println("Game has started");
-    }
 
-    /**
-     * This method is responsible for choosing the player who starts the game
-     */
-    public void chooseFirstPlayer() {
+        //TODO
+        //Here the different Phases should be called in a smart order.
 
-    }
-
-    /**
-     * This method is responsible for choosing the player whose turn is next
-     */
-    public void chooseNextplayer() {
 
     }
 

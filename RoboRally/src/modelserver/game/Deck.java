@@ -180,4 +180,11 @@ abstract class Deck {
             // TODO:
         }
     }
+
+    /**
+     * This method fills the registers with Cards from the deckDraw, if the timer ended.
+     */
+    public static void fillRegisters() {
+        //TODO
+    }
 }

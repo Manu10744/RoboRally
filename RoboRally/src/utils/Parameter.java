@@ -41,15 +41,20 @@ public class Parameter {
     public static final int GUIS_TO_START = 2;
 
     //Game
+    public static final int TIMER_LENGTH = 30;
+
         //amount of players
     public  static final int MAX_PLAYERSIZE = 6;
     public static final int MIN_PLAYERSIZE = 2;
+
         //Register numbers
     public static final int REGISTER_ONE = 1;
     public static final int REGISTER_TWO = 2;
     public static final int REGISTER_THREE = 3;
     public static final int REGISTER_FOUR = 4;
     public static final int REGISTER_FIVE = 5;
+
+
 
     //Tiles
        //Orientation
