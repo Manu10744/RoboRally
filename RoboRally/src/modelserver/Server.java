@@ -295,7 +295,8 @@ public class Server extends Application {
                             }
 
                             // If required number of players are ready, game starts and map is created
-                            if (numberOfReadyClients >= MIN_PLAYERSIZE) {
+                            // TODO: Check case when 6 players connected and another one connects
+                            if (numberOfReadyClients >= MIN_PLAYERSIZE && numberOfReadyClients == connectedClients.size()) {
                                 Map map = new Map();
 
                                 for (ClientWrapper client : connectedClients) {
@@ -304,10 +305,8 @@ public class Server extends Application {
                                     client.writer.flush();
                                 }
 
-                            } else {
-
-
                             }
+                            break;
                         }
 
                         //Player plays a card

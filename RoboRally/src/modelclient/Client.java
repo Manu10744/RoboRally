@@ -30,7 +30,6 @@ public class Client {
     private String serverIP;
     private int serverPort;
     private PrintWriter writer;
-    private BooleanProperty isReadyProperty;
     private boolean waitingForHelloClient;
 
     private String protocolVersion = "Version 0.1";
@@ -39,6 +38,7 @@ public class Client {
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
+    private BooleanProperty isReadyProperty;
     private Property<Map> mapProperty;
     private static final Logger logger = Logger.getLogger(Client.class.getName());
 
@@ -170,8 +170,12 @@ public class Client {
      *
      * @author Ivan Dovecar
      */
-    public void ready() {
 
+    public void sendReadyStatus(boolean readyStatus) {
+        // Inform the server about changed ready status
+        JSONMessage jsonMessage = new JSONMessage("SetStatus", new SetStatusBody(readyStatus));
+        writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        writer.flush();
     }
 
 

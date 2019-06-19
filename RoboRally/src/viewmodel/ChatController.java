@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -25,6 +26,7 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
+import utils.json.protocol.JSONMessage;
 
 
 /**
@@ -142,9 +144,7 @@ public class ChatController implements Initializable {
                 return;
             }
             String firstPart = partsOfMessage[0];
-            if (newValue.equals("ready")) {
-                client.ready();
-            }
+            client.sendMessage(message.get());
             /*
             else if (firstPart.charAt(0) == '@') {
                 if (firstPart.length() > 1) {
@@ -156,9 +156,8 @@ public class ChatController implements Initializable {
                         }
                     }
                 }
-            } */else {
-                client.sendMessage(message.get());
-            }
+            } */
+
         });
 
         //SERVERINPUT: Set Enter-Event
@@ -187,7 +186,19 @@ public class ChatController implements Initializable {
             }
         });
 
-        //FIGUREINPUT: Set Enter-Event
+        getReadyProperty().addListener((observableValue, oldvalue, newValue) -> {
+            // If property changes, inform the server
+            client.sendReadyStatus(newValue);
+            logger.info("DONE! " + newValue);
+        });
+
+        buttonReady.setOnMouseClicked(event -> {
+            boolean readyStatus = getReadyProperty().get();
+            // Toggle ready status
+            getReadyProperty().set(!readyStatus);
+        });
+
+        // FIGUREINPUT: Set Enter-Event
         fieldFigure.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                     figure.set(Integer.parseInt(fieldFigure.getText()));
@@ -235,6 +246,7 @@ public class ChatController implements Initializable {
             fieldName.requestFocus();
         }));
 
+
         //Enable chatInput and buttons after name setting is finished
         nameSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
             chatInput.disableProperty().set(false);
@@ -281,7 +293,7 @@ public class ChatController implements Initializable {
         return nameSettingFinished;
     }
 
-    private BooleanProperty getIsReadyProperty() {
+    private BooleanProperty getReadyProperty() {
         return isReadyProperty;
     }
 
@@ -296,12 +308,6 @@ public class ChatController implements Initializable {
     //TODO This Property will control a.o. status traffic light in GUI
     private BooleanProperty gameReadyProperty() {
         return client.getReadyProperty();
-    }
-
-    //TODO Check if needed
-    @FXML
-    private void setButtonReady() {
-        messageProperty().setValue(formatChatMessage("ready"));
     }
 
     /**
