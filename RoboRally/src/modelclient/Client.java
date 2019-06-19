@@ -30,7 +30,7 @@ public class Client {
     private String serverIP;
     private int serverPort;
     private PrintWriter writer;
-
+    private BooleanProperty isReadyProperty;
     private boolean waitingForHelloClient;
 
     private String protocolVersion = "Version 0.1";
@@ -39,7 +39,6 @@ public class Client {
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
-    private BooleanProperty gameReady;
     private Property<Map> mapProperty;
     private static final Logger logger = Logger.getLogger(Client.class.getName());
 
@@ -54,7 +53,6 @@ public class Client {
 
         //GAME:
         otherActivePlayers = new SimpleListProperty<>(FXCollections.observableArrayList());
-        gameReady = new SimpleBooleanProperty(false);
     }
 
 
@@ -104,7 +102,7 @@ public class Client {
      *
      * @author Ivan
      */
-    public void playerValue(String name, int figure) {
+    public void sendPlayerValues(String name, int figure) {
         logger.info("Submitting player values");
         JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
@@ -217,15 +215,15 @@ public class Client {
  */
     }
 
-
+    public BooleanProperty getReadyProperty() {
+        return isReadyProperty;
+    }
 
     public StringProperty chatHistoryProperty() { return chatHistory; }
 
     public ListProperty<OtherPlayer> otherActivePlayers() { return otherActivePlayers; }
 
     public String getName() { return name; }
-
-    public BooleanProperty gameReadyProperty() { return gameReady; }
 
     public OtherPlayer getOtherPlayerByName(int playerID) {
         return (OtherPlayer) otherActivePlayers.stream();
@@ -389,7 +387,6 @@ public class Client {
                                 Platform.runLater(() -> {
                                     //TODO This part has to be edited to enable ongoing status changing
                                     // receiveMessage(messageBody.getMessage());
-                                    gameReady.set(true);
                                 });
                                 break;
                             }

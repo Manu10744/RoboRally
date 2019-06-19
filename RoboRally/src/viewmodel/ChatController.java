@@ -66,6 +66,7 @@ public class ChatController implements Initializable {
     private BooleanProperty figureSettingFinished;
     private BooleanProperty nameSettingFinished;
     private BooleanProperty playerSettingFinished;
+    private BooleanProperty isReadyProperty;
 
     private StringProperty message;
     private StringProperty clientChatOutput;
@@ -85,8 +86,7 @@ public class ChatController implements Initializable {
         figureSettingFinished = new SimpleBooleanProperty(false);
         name = new SimpleStringProperty();
         nameSettingFinished = new SimpleBooleanProperty(false);
-
-
+        isReadyProperty = new SimpleBooleanProperty(false);
         message = new SimpleStringProperty();
         clientChatOutput = new SimpleStringProperty();
 
@@ -131,7 +131,7 @@ public class ChatController implements Initializable {
                 showInvalidNameAlert();
                 name.setValue(Parameter.INVALID_CLIENTNAME);
             }
-            client.playerValue(name.get(), figure.getValue().intValue());
+            client.sendPlayerValues(name.get(), figure.getValue().intValue());
         });
 
 
@@ -212,6 +212,7 @@ public class ChatController implements Initializable {
                 if (chatAreaText.equals(tempString)) {
                     chatAreaText += "\t";
                 }
+
                 messageProperty().setValue(formatChatMessage(chatAreaText));
                 tempString = chatAreaText;
                 //Reset chatArea:
@@ -280,6 +281,10 @@ public class ChatController implements Initializable {
         return nameSettingFinished;
     }
 
+    private BooleanProperty getIsReadyProperty() {
+        return isReadyProperty;
+    }
+
     private StringProperty messageProperty() {
         return message;
     }
@@ -290,7 +295,7 @@ public class ChatController implements Initializable {
 
     //TODO This Property will control a.o. status traffic light in GUI
     private BooleanProperty gameReadyProperty() {
-        return client.gameReadyProperty();
+        return client.getReadyProperty();
     }
 
     //TODO Check if needed

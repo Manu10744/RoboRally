@@ -275,21 +275,25 @@ public class Server extends Application {
                             logger.info("CASE SET_STATUS entered successfully");
 
                             SetStatusBody messageBody = (SetStatusBody) jsonMessage.getMessageBody();
-                            boolean clientReady = (boolean) messageBody.isReady();
-                            int playerID = 1; //TODO ab hhier Mia
+                            boolean clientReady = messageBody.isReady();
+                            logger.info("IS READY STATUS :" + clientReady);
+                            int playerID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket))
+                                    .findFirst().get().playerID;
                             int numberOfReadyClients = 0; //Todo: must I really replace even that number?
 
-                            //number of clients is added one, all other clients are informed about the ready status of the one sending the message
+                            for (ClientWrapper client : connectedClients) {
+                                jsonMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, clientReady));
+                                client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
+                                client.writer.flush();
+                            }
+
+                            // Increase number of ready clients when true
                             if (clientReady) {
                                 ++numberOfReadyClients;
-                                for (ClientWrapper client : connectedClients) {
-                                    jsonMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, clientReady));
-                                    client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
-                                    client.writer.flush();
-                                }
-                            } else if (!clientReady) {
+                            } else {
                                 --numberOfReadyClients;
                             }
+
                             //If required number of players are ready, game starts and map is created
                             if (numberOfReadyClients >= MIN_PLAYERSIZE) {
                                 Map map = new Map();
@@ -305,38 +309,6 @@ public class Server extends Application {
 
                             }
                         }
-
-                        //Enables clients to join the players-list, if game is initialized but not running and
-                        //maximum players-number of four is not reached
-                                /*
-                                //Only if Server accepts clients after game has started
-                                if (gameIsRunning) {
-                                    logger.info("Client " + +" can't set status to ready, game is already running");
-                                    for (ClientWrapper client : connectedClients) {
-                                        client.writer.write(new Instruction(GAME_JOIN_FAIL2, content));
-                                        client.writer.flush();
-                                    }
-                                } else if (gameIsRunning) {
-                                    logger.info("Client " + content + " can't join an already running game");
-                                    for (ClientWrapper client : connectedClients) {
-                                        client.writer.write(new Instruction(GAME_JOIN_FAIL3, content));
-                                        client.writer.flush();
-                                    }
-                                } else {
-                                    logger.info(content + " joined the game");
-                                    //Get PlayerName
-                                    for (ClientWrapper client : connectedClients) {
-                                        if (client.socket.equals(clientSocket)) {
-                                            // TODO age is no longer needed, player figure has to be added instead
-                                            //   players.add(new Player(client.name, client.age));
-                                            break;
-                                        }
-                                    }
-                    }
-                    break;
-                } */
-
-
 
                         //Player plays a card
                         case PLAY_CARD: {
@@ -395,12 +367,12 @@ public class Server extends Application {
  * Inner class to wrap the information from the client (socket + name)
  */
 class ClientWrapper {
-    Socket socket;
-    String name;
-    PrintWriter writer;
-    int playerID;
-    int figure;
-    Boolean isReady;
+    private Socket socket;
+    private String name;
+    private PrintWriter writer;
+    private int playerID;
+    private int figure;
+    private boolean isReady;
 
         private ClientWrapper(Socket socket, String name, PrintWriter writer, int figure, int playerID) {
             this.socket = socket;
@@ -408,6 +380,22 @@ class ClientWrapper {
             this.writer = writer;
             this.figure = figure;
             this.playerID = playerID;
+        }
+
+        public Socket getClientSocket() {
+            return socket;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public PrintWriter getWriter() {
+            return writer;
+        }
+
+        public int getFigure() {
+            return figure;
         }
 
         public int getPlayerID(){
