@@ -69,7 +69,7 @@ public class Client {
             socket = new Socket(serverIP, serverPort);
 
             //Start new Thread, that reads incoming messages from server
-            ClientReaderTask readerTask = new ClientReaderTask(socket);
+            ClientReaderTask readerTask = new ClientReaderTask(this, socket);
             Thread readerThread = new Thread(readerTask);
             readerThread.start();
 
@@ -242,8 +242,10 @@ public class Client {
         private int playerID;
         private String name;
         private int figure;
+        private Client client;
 
-        public ClientReaderTask(Socket socket) {
+        public ClientReaderTask(Client client, Socket socket) {
+            this.client = client;
             this.socket = socket;
         }
 
@@ -365,19 +367,24 @@ public class Client {
                                 logger.info("CASE PLAYER_STATUS successfully entered");
                                 PlayerStatusBody messageBody = (PlayerStatusBody) jsonMessage.getMessageBody();
 
+                                boolean readyStatus = messageBody.isReady();
+
                                 Platform.runLater(() -> {
-                                    //TODO This part has to be edited to enable ongoing status changing
-                                    // receiveMessage(messageBody.getMessage());
+                                    if (readyStatus) {
+                                        client.receiveMessage("Player " + messageBody.getPlayerID() + " is ready!");
+                                    } else {
+                                        client.receiveMessage("Player " + messageBody.getPlayerID() + " is not ready!");
+                                    }
                                 });
                                 break;
                             }
 
-                            //Server sends maps to clients
+                            // Server sends maps to clients
                             case GAME_STARTED: {
                                 logger.info("CASE GAME_STARTED successfully entered");
                                 GameStartedBody messageBody = (GameStartedBody) jsonMessage.getMessageBody();
 
-                                Map hameMap = messageBody.getGameMap();
+                                Map gameMap = messageBody.getGameMap();
 
                                 Platform.runLater(() -> {
 
