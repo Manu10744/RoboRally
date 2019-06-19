@@ -308,11 +308,6 @@ public class ChatController implements Initializable {
         return clientChatOutput;
     }
 
-    //TODO This Property will control a.o. status traffic light in GUI
-    private BooleanProperty gameReadyProperty() {
-        return client.getReadyProperty();
-    }
-
     /**
      * Check if IP String is a valid IP Address and contains IP and Port
      *

@@ -279,7 +279,11 @@ public class Server extends Application {
                             int playerID = connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket))
                                     .findFirst().get().playerID;
 
+                            // Update the ClientWrapper due to the ready status change
+                            connectedClients.stream().filter(clientWrapper -> clientWrapper.socket.equals(clientSocket)).findFirst().get().isReady = clientReady;
+
                             for (ClientWrapper client : connectedClients) {
+                                logger.info("READY STATUS OF PLAYER " + client.name + ": " + client.isReady);
                                 jsonMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, clientReady));
                                 client.writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                 client.writer.flush();
