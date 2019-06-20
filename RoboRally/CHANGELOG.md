@@ -9,10 +9,12 @@
 ### New Features
 * Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
 * Registration and Chat via protocol *(Ivan)*
+* Player can now set his ready status and inform the server about it. - *(Manu)*
  
 ### Changes
 
 ### Bugfixes
+* Fixed playerID bug - ID x was given to the client, but ID x + 1 was given to his ClientWrapper object. - *(Manu)*
 
 ## Version [0.1.0]
 

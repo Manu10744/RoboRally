@@ -35,6 +35,7 @@ public class Server extends Application {
 
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
+    private int setterPlayerID;
     private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
@@ -129,6 +130,8 @@ public class Server extends Application {
                                 writer.println(JSONEncoder.serializeJSON(jsonMessage));
                                 writer.flush();
 
+                                // Save the playerID before incrementing the counter so the proper ID is given to the ClientWrapper
+                                setterPlayerID = counterPlayerID;
                                 //counter is adjusted for next registration process
                                 counterPlayerID++;
 
@@ -251,7 +254,7 @@ public class Server extends Application {
                                 logger.info("Client " + playerValueName + " successfully registered");
 
                                 //Add new Client to list connected clients
-                                connectedClients.add(new ClientWrapper(clientSocket, playerValueName, writer, playerValueFigure, counterPlayerID, false));
+                                connectedClients.add(new ClientWrapper(clientSocket, playerValueName, writer, playerValueFigure, setterPlayerID, false));
 
                                  //Send message to all active clients
                                  jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(counterPlayerID, playerValueName, playerValueFigure));

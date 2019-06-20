@@ -59,7 +59,7 @@ public class Client {
 
     /**
      * This method is responsible for connecting the client to the specified server.
-     * It uses the {link fieldServer} to get the IP and Port.
+     * It uses the {@link fieldServer} to get the IP and Port.
      *
      * @return connection Success: True, connection Failed: False
      */
@@ -117,6 +117,7 @@ public class Client {
      * a private or ordinary message.
      * It uses the {@link @FXML chatInput} to get the message content.
      *
+     * @param message The message that should be sent.
      * @author Mia
      */
     public void sendMessage(String message) {
@@ -143,7 +144,6 @@ public class Client {
 
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
-
     }
 
     //TODO This part has to be adapted to RoboRally needs - should handle the ChooseRobot part

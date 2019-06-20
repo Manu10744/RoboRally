@@ -18,10 +18,7 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -198,7 +195,7 @@ public class ChatController implements Initializable {
         getReadyProperty().addListener((observableValue, oldvalue, newValue) -> {
             // If property changes, inform the server
             client.sendReadyStatus(newValue);
-            logger.info("DONE! " + newValue);
+            logger.info("NEW READY STATUS: " + newValue);
         });
 
         // Change ready status by clicking the 'Ready' button
