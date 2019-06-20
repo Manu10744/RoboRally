@@ -31,7 +31,6 @@ public class Client {
     private int serverPort;
 
     private boolean waitingForHelloClient;
-    private boolean isReady;
     private Socket socket;
     private PrintWriter writer;
 
@@ -169,8 +168,6 @@ public class Client {
      * @author Ivan Dovecar
      */
     public void sendReadyStatus(boolean readyStatus) {
-        this.isReady = readyStatus;
-
         // Inform the server about changed ready status
         JSONMessage jsonMessage = new JSONMessage("SetStatus", new SetStatusBody(readyStatus));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));

@@ -36,7 +36,6 @@ public class Server extends Application {
     private boolean gameIsRunning = false;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
-
     @Override
     public void start(Stage stage) throws Exception {
         logger.info("Starting server...");
