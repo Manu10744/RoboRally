@@ -1,6 +1,5 @@
 package viewmodel;
 
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,9 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
+/**
+ * This class has full control over the wiki view.
+ * @author Jessica Gerlach
+ * @author Verena Sadtler
+ */
 
 public class WikiController extends Application {
 
@@ -39,12 +42,19 @@ public class WikiController extends Application {
     private ImageView imageRules;
 
 
-
+    /**
+     * This method starts the wiki
+     * @param stage
+     */
     @Override
     public void start(Stage stage) {
         this.rootStage = stage;
         initStage();
     }
+
+    /**
+     * This method inits the stage of the wiki
+     */
 
     private void initStage() {
         try {
@@ -58,6 +68,12 @@ public class WikiController extends Application {
             e.printStackTrace();
         }
     }
+
+    /**
+     * this method handles button klicks inside the wiki stage to get from one to another scene
+     * @param event
+     * @throws IOException
+     */
 
     @FXML
     public void buttonClicked(ActionEvent event)throws IOException {
