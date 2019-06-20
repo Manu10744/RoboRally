@@ -12,7 +12,7 @@
 * Player can now set his ready status and inform the server about it. - *(Manu)*
  
 ### Changes
-
+* Adjusted package names (view -> views, viewmodel -> viewmodels, modelclient -> client, modelserver - server) - *(Manu)*
 ### Bugfixes
 * Fixed playerID bug - ID x was given to the client, but ID x + 1 was given to his ClientWrapper object. - *(Manu)*
 

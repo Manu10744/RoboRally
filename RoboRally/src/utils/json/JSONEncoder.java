@@ -1,11 +1,10 @@
 package utils.json;
 
 import com.google.gson.*;
-import modelserver.game.Card;
+import server.game.Card;
 
-import modelserver.game.Maps.Map;
-import modelserver.game.ProgrammingCards.*;
-import modelserver.game.DamageCards.*;
+import server.game.Maps.Map;
+import server.game.ProgrammingCards.*;
 import utils.Parameter;
 import utils.json.protocol.*;
 

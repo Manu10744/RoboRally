@@ -1,7 +1,7 @@
 package utils.json.protocol;
 
 import com.google.gson.annotations.Expose;
-import modelserver.game.Card;
+import server.game.Card;
 
 import java.util.ArrayList;
 
