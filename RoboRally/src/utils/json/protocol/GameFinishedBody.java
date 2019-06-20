@@ -7,13 +7,13 @@ import com.google.gson.annotations.Expose;
  */
 public class GameFinishedBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
 
-    public GameFinishedBody(int playerID) {
+    public GameFinishedBody(Integer playerID) {
         this.playerID = playerID;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 }

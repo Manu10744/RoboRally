@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefViewportHeight="600.0" prefViewportWidth="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.WikiController">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0">
+         <children>
+            <VBox prefWidth="145.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="145.0">
+                     <children>
+                        <Button fx:id="buttonCards" mnemonicParsing="false" onAction="#buttonClicked" text="Cards" />
+                        <Button mnemonicParsing="false" text="Robots" />
+                        <Button fx:id="buttonRules" mnemonicParsing="false" onAction="#buttonClicked" text="Rules" />
+                     </children>
+                  </HBox>
+                  <Label prefHeight="30.0" prefWidth="145.0" text="Robots">
+                     <VBox.margin>
+                        <Insets left="45.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="20.0" top="25.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../resources/images/others/twonky-wiki-100x100.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="20.0" top="70.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../resources/images/others/hammerBot-wiki-100x100.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="20.0" top="70.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../resources/images/others/spinBot-wiki-100x100.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="20.0" top="70.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../resources/images/others/hulkX90-wiki-100x100.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="20.0" top="70.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../resources/images/others/smashBot-wiki-100x100.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <VBox.margin>
+                        <Insets left="20.0" top="70.0" />
+                     </VBox.margin>
+                     <image>
+                        <Image url="@../resources/images/others/zoomBot-wiki-100x100.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+            <VBox prefWidth="655.0" AnchorPane.leftAnchor="145.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="640.0" text="Twonky">
+                     <VBox.margin>
+                        <Insets left="15.0" top="80.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="100.0" prefWidth="640.0" text="Twonky is cute - by robot standards - and this is perhaps its greatest defense. From every angle, &#10;it appears friendly and unassuming, but Twonky is the kind of robot who kicks you hard in the shins&#10;with its titanium feet, giggles in a high-pitched voice that makes your ears ring for days, &#10;then runs away at a surprisingly high speed.">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="640.0" text="Hammer Bot">
+                     <VBox.margin>
+                        <Insets left="15.0" top="40.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="100.0" prefWidth="640.0" text="Since the days when you could hit something to make it work, Hammer Bot has thought that the solution&#10;to all problems is to give something a good smack. Sensitive and perceptive, it expresses itself with its &#10;giant eyes and a wave of that hammer. When it's happy, it'll tap out a tune and bop anything - living or&#10;inanimate - on the head as it goes by. It can't resist smashing any red button to bits. ">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="640.0" text="Spin Bot">
+                     <VBox.margin>
+                        <Insets left="15.0" top="40.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="100.0" prefWidth="640.0" text="If Spin Bot looks mean, it's because it is. Spin Bot has to constantly spin to keep upright, and that's &#10;tiring work. It's saw-like shape doesn't help its disposition, but it does make it pretty good at pushing fellow&#10;bots. Most of the time, other robots just stay out of its way. ">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="640.0" text="Hulk x90">
+                     <VBox.margin>
+                        <Insets left="15.0" top="40.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="100.0" prefWidth="640.0" text="The large cannon on the front of Hulk x90 points it in the direction of its next challenge. &#10;Its overall mission: intimidate, flatten, and move on. But Hulk x90 has to be careful and methodical&#10;in its movements, or it could easily flatten the factory machinery as it goes. ">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="640.0" text="Smash Bot">
+                     <VBox.margin>
+                        <Insets left="15.0" top="40.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="100.0" prefWidth="640.0" text="Smash Bot doesn't mind taking things a bit slow. It relishes the fact that every step it takes is a &#10;metal-flattening stomp. It likes things that bounce back up once flattened, and it'll pause &#10;after it has smashed something to see if it is inclined to pop up again. A proud robot, &#10;Smash Bot often lingers over its work with a sinister smile. ">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="640.0" text="Zoom Bot">
+                     <VBox.margin>
+                        <Insets left="15.0" top="40.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="100.0" prefWidth="640.0" text="You would expect something with the name Zoom Bot to be a shoo-in for a rally win, &#10;but Zoom Bot is built so much so for speed, it has a hard time thinking about anything else. &#10;With two giant wheels in its periphery, it looks straight ahead and goes, &#10;sometimes without seeing the wall of lasers in its path.&#10;">
+                     <VBox.margin>
+                        <Insets left="15.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+            </VBox>
+         </children></AnchorPane>
+  </content>
+</ScrollPane>

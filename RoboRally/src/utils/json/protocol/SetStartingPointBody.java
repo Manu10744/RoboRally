@@ -7,20 +7,20 @@ import com.google.gson.annotations.Expose;
  */
 public class SetStartingPointBody {
     @Expose
-    private int x;
+    private Integer x;
     @Expose
-    private int y;
+    private Integer y;
 
-    public SetStartingPointBody(int x, int y) {
+    public SetStartingPointBody(Integer x, Integer y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 }

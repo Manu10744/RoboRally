@@ -1,12 +1,11 @@
 package utils.json;
 
 import com.google.gson.*;
-import modelserver.game.Card;
-import modelserver.game.ProgrammingCards.*;
+import server.game.Card;
+import server.game.ProgrammingCards.*;
 import utils.instructions.*;
 import utils.json.protocol.*;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -155,7 +154,7 @@ public class JSONDecoder {
                 serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.ENERGY);
                 return serverInstruction;
             case "CheckPointReached":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CHECK_POINT_REACHED);
+                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CHECKPOINT_REACHED);
                 return serverInstruction;
             case "GameFinished":
                 serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.GAME_FINISHED);
@@ -647,19 +646,18 @@ public class JSONDecoder {
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
+        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
         // TODO: GAMESTARTED !
 
-        String s = JSONEncoder.serializeJSON(messages.get(16));
+        String s = JSONEncoder.serializeJSON(messages.get(32));
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
         System.out.println(s);
 
+
         JSONMessage msg = JSONDecoder.deserializeJSON(s);
         System.out.println("DESERIALIZED: " + msg.getMessageBody().getClass());
-        YourCardsBody msgbody = (YourCardsBody) msg.getMessageBody();
-        System.out.println(msgbody.getCardsInHand().get(0));
-        System.out.println(msgbody.getCardsInHand().get(1));
-        System.out.println(msgbody.getCardsInHand().get(2));
-        System.out.println(msgbody.getCardsInPile());
+        CheckPointReachedBody msgbody = (CheckPointReachedBody) msg.getMessageBody();
+        System.out.println(msgbody.getPlayerID());
 
     }
 }

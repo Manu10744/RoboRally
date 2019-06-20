@@ -7,16 +7,16 @@ import com.google.gson.annotations.Expose;
  */
 public class PlayerTurningBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
     private String direction;
 
-    public PlayerTurningBody(int playerID, String direction) {
+    public PlayerTurningBody(Integer playerID, String direction) {
         this.playerID = playerID;
         this.direction = direction;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 

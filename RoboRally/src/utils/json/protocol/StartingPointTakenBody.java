@@ -7,27 +7,27 @@ import com.google.gson.annotations.Expose;
  */
 public class StartingPointTakenBody {
     @Expose
-    private int x;
+    private Integer x;
     @Expose
-    private int y;
+    private Integer y;
     @Expose
-    private int playerID;
+    private Integer playerID;
 
-    public StartingPointTakenBody(int x, int y, int playerID) {
+    public StartingPointTakenBody(Integer x, Integer y, Integer playerID) {
         this.x = x;
         this.y = y;
         this.playerID = playerID;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 }

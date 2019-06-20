@@ -42,7 +42,7 @@ public class ServerInstruction extends Instruction {
         PLAYER_SHOOTING, // only important for animation purposes
         PLAYER_TURNING, // Server informs all clients if a player turns (left, right)
         ENERGY, // Server informs client of new energy level and its reason for changing
-        CHECK_POINT_REACHED, // Server informs all palyers if a player reached a checkpoint
+        CHECKPOINT_REACHED, // Server informs all palyers if a player reached a checkpoint
         GAME_FINISHED // Server informs palyers if a player has won
     }
 }

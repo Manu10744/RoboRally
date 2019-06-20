@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
-import modelserver.Server;
+import server.Server;
 import java.io.*;
 import java.util.logging.Logger;
 import utils.Parameter;
@@ -20,7 +20,6 @@ import utils.Parameter;
  * @author Ivan Dovecar
  */
 public class Main extends Application {
-
 
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
@@ -75,10 +74,11 @@ public class Main extends Application {
             try {
                 Stage primaryStage = new Stage();
                 FXMLLoader loader = new FXMLLoader();
-                // Load view for primaryStage
-                loader.setLocation(Main.class.getResource("view/Stage.fxml"));
+                // Load views for primaryStage
+                loader.setLocation(Main.class.getResource("views/Stage.fxml"));
 
                 GridPane stageView;
+
                 stageView = loader.load();
 
                 // Set scene

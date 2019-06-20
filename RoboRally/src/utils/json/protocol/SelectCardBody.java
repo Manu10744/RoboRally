@@ -1,7 +1,7 @@
 package utils.json.protocol;
 
 import com.google.gson.annotations.Expose;
-import modelserver.game.Card;
+import server.game.Card;
 
 /** This is the wrapper class for the message body of the 'SelectCard' protocol JSON message.
  * @author Manuel Neumayer
@@ -10,9 +10,9 @@ public class SelectCardBody {
     @Expose
     private Card card;
     @Expose
-    private int register;
+    private Integer register;
 
-    public SelectCardBody(Card card, int register) {
+    public SelectCardBody(Card card, Integer register) {
         this.card = card;
         this.register = register;
     }
@@ -21,7 +21,7 @@ public class SelectCardBody {
         return card;
     }
 
-    public int getRegister() {
+    public Integer getRegister() {
         return register;
     }
 }

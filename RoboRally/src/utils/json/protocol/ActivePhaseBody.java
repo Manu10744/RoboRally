@@ -7,13 +7,13 @@ import com.google.gson.annotations.Expose;
  */
 public class ActivePhaseBody {
     @Expose
-    private int phase;
+    private Integer phase;
 
-    public ActivePhaseBody(int phase) {
+    public ActivePhaseBody(Integer phase) {
         this.phase = phase;
     }
 
-    public int getPhase() {
+    public Integer getPhase() {
         return phase;
     }
 }

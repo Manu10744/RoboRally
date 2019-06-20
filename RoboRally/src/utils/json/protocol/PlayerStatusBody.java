@@ -7,20 +7,20 @@ import com.google.gson.annotations.Expose;
  */
 public class PlayerStatusBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
-    private boolean ready;
+    private Boolean ready;
 
-    public PlayerStatusBody(int playerID, boolean ready) {
+    public PlayerStatusBody(Integer playerID, Boolean ready) {
         this.playerID = playerID;
         this.ready = ready;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
-    public boolean isReady() {
+    public Boolean isReady() {
         return ready;
     }
 }

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.WikiController">
+   <children>
+      <ScrollPane hbarPolicy="NEVER" prefViewportHeight="600.0" prefViewportWidth="800.0" prefWidth="800.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <VBox prefWidth="145.0">
+                     <children>
+                        <HBox prefHeight="30.0" prefWidth="145.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Cards" />
+                              <Button fx:id="buttonRobots" mnemonicParsing="false" onAction="#buttonClicked" text="Robots" />
+                              <Button fx:id="buttonRules" mnemonicParsing="false" onAction="#buttonClicked" text="Rules" />
+                           </children>
+                        </HBox>
+                        <Label maxHeight="30.0" prefHeight="30.0" text="Programming Cards">
+                           <VBox.margin>
+                              <Insets left="12.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="move1" fitHeight="100.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/move1-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/move2-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/move3-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/rightturn-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="20.0" layoutY="370.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/uturn-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/moveback-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/powerup-blue100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView>
+                           <image>
+                              <Image url="@../resources/images/cards/again-blue100x100.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="15.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <Label prefHeight="30.0" prefWidth="125.0" text="Damage Cards">
+                           <VBox.margin>
+                              <Insets left="25.0" top="45.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/spam-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/trojanhorse-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/worm-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/virus-100x100.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+                  <VBox layoutX="135.0" layoutY="24.0" prefWidth="655.0" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="24.0">
+                     <children>
+                        <Label prefWidth="650.0" text="Move 1">
+                           <VBox.margin>
+                              <Insets left="15.0" top="40.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label lineSpacing="5.0" prefHeight="50.0" prefWidth="665.0" text="Move your robot one space in the direction it is facing." wrapText="true">
+                           <VBox.margin>
+                              <Insets bottom="25.0" left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Move 2">
+                           <VBox.margin>
+                              <Insets left="15.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Move your robot two spaces in the direction it is facing.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Move 3">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Move your robot three spaces in the direction it is facing.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Turn Right">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 90 degrees to the right.&#10;The robot remains in its current space.&#10;">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Turn Left">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 90 degrees to the left.&#10;The robot remains in its current space.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="U-Turn">
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Back Up">
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Move your robot one space back.&#10;The robot doesn't change the direction it is facing.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Power Up">
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Take one energie cube, and place it on your player mat.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="650.0" text="Again">
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="100.0" prefWidth="650.0" text="Repeat the programming in your previous register.&#10;If your previous register was a damage card, draw a card from the top of your deck, &#10;and play that card this register.&#10;If you used an update in your previous register that allowed you to play multiple programming cards,&#10;re-execute the second card. This card can't be played in the first register.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="655.0" text="Spam">
+                           <VBox.margin>
+                              <Insets left="15.0" top="70.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="640.0" text="This is the simplest form of damage.&#10;Robots must take a spam damage card when they are shot by a board or robot laser.&#10;">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="640.0" text="Trojan Horse">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="640.0" text="When you program a trojan horse damage card, you must immediatly take two spam damage cards.&#10;">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="640.0" text="Worm">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="50.0" prefWidth="640.0" text="When you program a worm damage card, you must immediatly reboot your robot.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="27.0" prefWidth="640.0" text="Virus">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="60.0" prefWidth="640.0" text="When you program a virus damage card,&#10;any robot on the board within a six-space radius of you must immediatly take a virus card &#10;of the draw pile.&#10;">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

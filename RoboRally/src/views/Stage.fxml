@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.stage.Screen?>
+
+<!-- Stage contains board and chat and it size automatically adapts to the users' setup -->
+<GridPane fx:id="stage"
+          prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}"
+          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="viewmodels.StageController">
+
+   <!-- Determine screen resolution -->
+   <fx:define>
+      <Screen fx:factory="getPrimary" fx:id="screen"/>
+   </fx:define>
+
+   <columnConstraints>
+      <ColumnConstraints  hgrow="ALWAYS" minWidth="0.0" percentWidth="80.0"/> <!-- Board -->
+      <ColumnConstraints  hgrow="ALWAYS" minWidth="0.0" percentWidth="20.0"/> <!-- Chat -->
+   </columnConstraints>
+
+   <rowConstraints>
+      <RowConstraints vgrow="ALWAYS" minHeight="0.0" percentHeight="100.0"/>
+   </rowConstraints>
+
+   <!-- Board -->
+   <GridPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+
+      <columnConstraints>
+         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="100.0"/>
+      </columnConstraints>
+
+      <rowConstraints>
+         <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="10.0"/> <!-- OpponentMat -->
+         <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="70.0"/> <!-- Map -->
+         <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="20.0"/> <!-- PlayerMat -->
+      </rowConstraints>
+
+      <!-- TODO StartScreen -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
+
+      <!-- TODO ChooseRobot -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
+
+      <!-- OpponentMat -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>
+
+      <!-- Map -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="true"/>
+
+      <!-- PlayerMat -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="playerMat" source="PlayerMat.fxml" visible="true"/>
+   </GridPane>
+
+   <!-- Chat -->
+   <fx:include GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chat" source="Chat.fxml" />
+
+</GridPane>

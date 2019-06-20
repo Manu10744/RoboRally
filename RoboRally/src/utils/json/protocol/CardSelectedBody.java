@@ -7,20 +7,20 @@ import com.google.gson.annotations.Expose;
  */
 public class CardSelectedBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
-    private int register;
+    private Integer register;
 
-    public CardSelectedBody(int playerID, int register) {
+    public CardSelectedBody(int playerID, Integer register) {
         this.playerID = playerID;
         this.register = register;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
-    public int getRegister() {
+    public Integer getRegister() {
         return register;
     }
 }

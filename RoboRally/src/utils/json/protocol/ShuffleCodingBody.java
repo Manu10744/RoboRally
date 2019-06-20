@@ -7,13 +7,13 @@ import com.google.gson.annotations.Expose;
  */
 public class ShuffleCodingBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
 
-    public ShuffleCodingBody(int playerID) {
+    public ShuffleCodingBody(Integer playerID) {
         this.playerID = playerID;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 }

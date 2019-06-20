@@ -7,19 +7,19 @@ import com.google.gson.annotations.Expose;
  */
 public class PlayerAddedBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
     private String name;
     @Expose
-    private int figure;
+    private Integer figure;
 
-    public PlayerAddedBody(int playerID, String name, int figure) {
+    public PlayerAddedBody(Integer playerID, String name, Integer figure) {
         this.playerID = playerID;
         this.name = name;
         this.figure = figure;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
@@ -27,7 +27,7 @@ public class PlayerAddedBody {
         return name;
     }
 
-    public int getFigure() {
+    public Integer getFigure() {
         return figure;
     }
 }

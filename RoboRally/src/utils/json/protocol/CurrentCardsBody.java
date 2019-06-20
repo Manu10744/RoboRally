@@ -1,7 +1,7 @@
 package utils.json.protocol;
 
 import com.google.gson.annotations.Expose;
-import modelserver.game.Card;
+import server.game.Card;
 
 import java.util.ArrayList;
 
@@ -22,16 +22,16 @@ public class CurrentCardsBody {
 
     public static class ActiveCardsObject {
         @Expose
-        private int playerID;
+        private Integer playerID;
         @Expose
         private Card card;
 
-        public ActiveCardsObject(int playerID, Card card) {
+        public ActiveCardsObject(Integer playerID, Card card) {
             this.playerID = playerID;
             this.card = card;
         }
 
-        public int getPlayerID() { return playerID; }
+        public Integer getPlayerID() { return playerID; }
 
         public Card getCard() { return card; }
     }

@@ -7,27 +7,27 @@ import com.google.gson.annotations.Expose;
  */
 public class NotYourCardsBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
-    private int cardsInHand;
+    private Integer cardsInHand;
     @Expose
-    private int cardsInPile;
+    private Integer cardsInPile;
 
-    public NotYourCardsBody(int playerID, int cardsInHand, int cardsInPile) {
+    public NotYourCardsBody(Integer playerID, Integer cardsInHand, Integer cardsInPile) {
         this.playerID = playerID;
         this.cardsInHand = cardsInHand;
         this.cardsInPile = cardsInPile;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
-    public int getCardsInHand() {
+    public Integer getCardsInHand() {
         return cardsInHand;
     }
 
-    public int getCardsInPile() {
+    public Integer getCardsInPile() {
         return cardsInPile;
     }
 }

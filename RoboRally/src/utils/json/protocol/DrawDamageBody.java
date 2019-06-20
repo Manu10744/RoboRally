@@ -1,7 +1,7 @@
 package utils.json.protocol;
 
 import com.google.gson.annotations.Expose;
-import modelserver.game.Card;
+import server.game.Card;
 
 import java.util.ArrayList;
 
@@ -10,16 +10,16 @@ import java.util.ArrayList;
  */
 public class DrawDamageBody {
     @Expose
-    private int playerID;
+    private Integer playerID;
     @Expose
     private ArrayList<Card> cards;
 
-    public DrawDamageBody(int playerID, ArrayList<Card> cards) {
+    public DrawDamageBody(Integer playerID, ArrayList<Card> cards) {
         this.playerID = playerID;
         this.cards = cards;
     }
 
-    public int getPlayerID() {
+    public Integer getPlayerID() {
         return playerID;
     }
 
