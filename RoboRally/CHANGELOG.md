@@ -1,8 +1,5 @@
 ### Known Issues
 * Chat - tooltip is not working
-* Sending and Receiving of JSON Strings still needs to be implemented for every instruction
-* Deserialization of protocol messages 'YourCards', 'TimerEnded', 'CardsYouGotNow', 'CurrentCards' and 'DrawDamage' not
-  not possible yet.
 
 ## Version [0.1.1]
 
