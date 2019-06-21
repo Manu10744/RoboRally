@@ -1,11 +1,13 @@
 package utils.json.protocol;
 
+import client.Client;
 import com.google.gson.annotations.Expose;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'Movement' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class MovementBody {
+public class MovementBody implements ServerMessageAction<MovementBody> {
     @Expose
     private Integer playerID;
     @Expose
@@ -17,6 +19,11 @@ public class MovementBody {
         this.playerID = playerID;
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public void triggerAction(Client client, Client.ClientReaderTask task, MovementBody bodyObject) {
+        MessageDistributer.handleMovement(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {
