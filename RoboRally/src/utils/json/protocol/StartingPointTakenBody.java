@@ -1,11 +1,13 @@
 package utils.json.protocol;
 
+import client.Client;
 import com.google.gson.annotations.Expose;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'StartingPointTaken' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class StartingPointTakenBody {
+public class StartingPointTakenBody implements ServerMessageAction<StartingPointTakenBody> {
     @Expose
     private Integer x;
     @Expose
@@ -17,6 +19,11 @@ public class StartingPointTakenBody {
         this.x = x;
         this.y = y;
         this.playerID = playerID;
+    }
+
+    @Override
+    public void triggerAction(Client client, Client.ClientReaderTask task, StartingPointTakenBody bodyObject) {
+        MessageDistributer.handleStartingPointTaken(client, task, bodyObject);
     }
 
     public Integer getX() {

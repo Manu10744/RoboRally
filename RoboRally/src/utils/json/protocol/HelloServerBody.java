@@ -1,11 +1,14 @@
 package utils.json.protocol;
 
+import client.Client;
 import com.google.gson.annotations.Expose;
+import server.Server;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'HelloServer' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class HelloServerBody {
+public class HelloServerBody implements ClientMessageAction<HelloServerBody> {
     @Expose
     private String group;
     @Expose
@@ -17,6 +20,11 @@ public class HelloServerBody {
         this.group = group;
         this.isAI = isAI;
         this.protocol = protocol;
+    }
+
+    @Override
+    public void triggerAction(Server server, Server.ServerReaderTask task, HelloServerBody bodyObject) {
+        MessageDistributer.handleHelloServer(server, task, bodyObject);
     }
 
     public String getGroup() {

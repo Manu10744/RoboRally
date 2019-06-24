@@ -1,11 +1,13 @@
 package utils.json.protocol;
 
+import client.Client;
 import com.google.gson.annotations.Expose;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'NotYourCards' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class NotYourCardsBody {
+public class NotYourCardsBody implements ServerMessageAction<NotYourCardsBody> {
     @Expose
     private Integer playerID;
     @Expose
@@ -17,6 +19,11 @@ public class NotYourCardsBody {
         this.playerID = playerID;
         this.cardsInHand = cardsInHand;
         this.cardsInPile = cardsInPile;
+    }
+
+    @Override
+    public void triggerAction(Client client, Client.ClientReaderTask task, NotYourCardsBody bodyObject) {
+        MessageDistributer.handleNotYourCards(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

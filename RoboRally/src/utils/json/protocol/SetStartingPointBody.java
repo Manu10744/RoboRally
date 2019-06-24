@@ -1,11 +1,13 @@
 package utils.json.protocol;
 
 import com.google.gson.annotations.Expose;
+import server.Server;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'SetStartingPoint' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class SetStartingPointBody {
+public class SetStartingPointBody implements ClientMessageAction<SetStartingPointBody> {
     @Expose
     private Integer x;
     @Expose
@@ -14,6 +16,11 @@ public class SetStartingPointBody {
     public SetStartingPointBody(Integer x, Integer y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public void triggerAction(Server server, Server.ServerReaderTask task, SetStartingPointBody bodyObject) {
+        MessageDistributer.handleSetStartingPoint(server, task, bodyObject);
     }
 
     public Integer getX() {
