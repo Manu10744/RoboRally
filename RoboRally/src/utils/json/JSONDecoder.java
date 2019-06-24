@@ -1,12 +1,11 @@
 package utils.json;
 
 import com.google.gson.*;
-import modelserver.game.Card;
-import modelserver.game.ProgrammingCards.*;
+import server.game.Card;
+import server.game.ProgrammingCards.*;
 import utils.instructions.*;
 import utils.json.protocol.*;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 

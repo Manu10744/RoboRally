@@ -1,18 +1,17 @@
 ### Known Issues
 * Chat - tooltip is not working
-* Sending and Receiving of JSON Strings still needs to be implemented for every instruction
-* Deserialization of protocol messages 'YourCards', 'TimerEnded', 'CardsYouGotNow', 'CurrentCards' and 'DrawDamage' not
-  not possible yet.
 
 ## Version [0.1.1]
 
 ### New Features
 * Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
 * Registration and Chat via protocol *(Ivan)*
+* Player can now set his ready status and inform the server about it. - *(Manu)*
  
 ### Changes
-
+* Adjusted package names (view -> views, viewmodel -> viewmodels, modelclient -> client, modelserver - server) - *(Manu)*
 ### Bugfixes
+* Fixed playerID bug - ID x was given to the client, but ID x + 1 was given to his ClientWrapper object. - *(Manu)*
 
 ## Version [0.1.0]
 

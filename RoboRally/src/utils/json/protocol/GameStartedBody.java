@@ -1,7 +1,7 @@
 package utils.json.protocol;
 
 import com.google.gson.annotations.Expose;
-import modelserver.game.Maps.Map;
+import server.game.Maps.Map;
 
 /** This is the wrapper class for the message body of the 'GameStarted' protocol JSON message. Its main prupose is to sent the map
  * @author Mia
