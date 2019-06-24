@@ -7,415 +7,436 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefViewportHeight="600.0" prefViewportWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.WikiController">
-  <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0">
-         <children>
-            <HBox prefHeight="30.0" prefWidth="145.0" AnchorPane.topAnchor="0.0">
+<GridPane minHeight="600.0" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="viewmodel.WikiController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="25.0" minHeight="25.0" percentHeight="0.0" prefHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+    <RowConstraints percentHeight="0.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <ScrollPane fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" GridPane.rowIndex="1">
+         <content>
+            <AnchorPane minHeight="600.0" minWidth="800.0" prefWidth="800.0">
                <children>
-                  <Button fx:id="buttonCards" mnemonicParsing="false" onAction="#buttonClicked" text="Cards" />
-                  <Button fx:id="buttonRobots" mnemonicParsing="false" onAction="#buttonClicked" text="Robots" />
-                  <Button fx:id="buttonRules" mnemonicParsing="false" onAction="#buttonClicked" text="Rules" />
-               </children>
-            </HBox>
-            <VBox AnchorPane.topAnchor="30.0">
-               <children>
-                  <Label text="How to play">
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label prefHeight="40.0" prefWidth="760.0" text="RoboRally is played in rounds. Each round is made up of the following three phases:&#10;The Upgrade Phase, the Programming Phase, and the Activation Phase.&#10;&#10;&#10;">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label prefHeight="20.0" prefWidth="760.0" text="1. The Upgrade Phase">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="At the start of each round, players may purchase upgrade cards for their robots using energy cubes which you’ll have chances &#10;to collect throughout the game. There are two basic types of upgrades: permanent and temporary.&#10;Once you purchase a permanent upgrade, its effects will last for the  remainder of the game. &#10;Temporary upgrades may be used only once and are discarded after you activate them.&#10;At the start of the upgrade phase, determine which player has priority. That player has first choice of the upgrades available in the upgrade &#10;shop and may buy only one. Continue to determine priority to see who gets to purchase upgrades second, third, and so on. &#10;To purchase an upgrade, look at the number in the top left-hand corner of the card. &#10;This is the number of energy cubes you must pay to purchase the card.&#10;Your robot can have a maximum of three permanent upgrades and three temporary upgrades. &#10;If there is an upgrade in the upgrade shop that you’d like to buy when you have the maximum number of upgrades, &#10;you may discard an upgrade of the same type that you own and then purchase the desired upgrade.&#10;&#10;">
-                     <VBox.margin>
-                        <Insets left="45.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="2. The Programming Phase">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="280.0" text="During the Programming Phase , you'll plan your robot's actions for the round. You'll do this by placing programming cards in each &#10;of the five registers on your player mat. &#10;To programm your robots, all players perform the following actions at the same time. &#10;&#10;1. Draw nine cards from your programming deck.&#10;2. The nine cards represent the moves available for this round. Inspect the gameboard to see which cards will help you safely make your&#10;    way to the next checkpoint.&#10;3. After you have an idea of what you need your robot to do, choose five cards to play and place one on each of the five registers&#10;    on your player mat. Once you have placed your final programming card, you can not change your cards.&#10;&#10;RoboRally is a race! Program your robots as quickly as you can! After the first player has finished placing their programming cards, &#10;the timer starts. Players who are still placing programming cards have until the timer runs out to finish programming &#10;without consequence. &#10; A player who is not finished programming, after the timer ran out, must immediately discard the programming cards in their hand. &#10;They must then take cards from the top of their deck and randomly place them on the unfinished registers. &#10;&#10;&#10;&#10;">
-                     <VBox.margin>
-                        <Insets left="45.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="3. The Activation Phase">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label text="During the Activation Phase, the programming cards you placed in your registers during the programming phase activate.&#10;&#10;1. The player with priority carries out the action on the programming card they placed on their first register. At any given time,    &#10;    the player whose robot is closest to the priority antenna has priority. After that player takes their turn, the second closest player &#10;    to the antenna has priority and takes their turn, and so on. &#10;2. The next player with priority carries out the action in their first register and so on until all players have activated their&#10;    programming in their first register. &#10;3. Now board elements activate and robot lasers fire. &#10;">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="End of the game">
-                     <VBox.margin>
-                        <Insets left="45.0" top="50.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label text="The game ends as soon as one robot ends a register on the final checkpoint, according to your chosen course.&#10;That player wins!&#10;">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="Board Elements">
-                     <VBox.margin>
-                        <Insets left="45.0" top="50.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <HBox>
+                  <VBox AnchorPane.topAnchor="20.0">
                      <children>
-                        <VBox>
+                        <Label text="How to play">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="40.0" prefWidth="760.0" text="RoboRally is played in rounds. Each round is made up of the following three phases:&#10;The Upgrade Phase, the Programming Phase, and the Activation Phase.&#10;&#10;&#10;">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label prefHeight="20.0" prefWidth="760.0" text="1. The Upgrade Phase">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="At the start of each round, players may purchase upgrade cards for their robots using energy cubes which you’ll have chances &#10;to collect throughout the game. There are two basic types of upgrades: permanent and temporary.&#10;Once you purchase a permanent upgrade, its effects will last for the  remainder of the game. &#10;Temporary upgrades may be used only once and are discarded after you activate them.&#10;At the start of the upgrade phase, determine which player has priority. That player has first choice of the upgrades available in the upgrade &#10;shop and may buy only one. Continue to determine priority to see who gets to purchase upgrades second, third, and so on. &#10;To purchase an upgrade, look at the number in the top left-hand corner of the card. &#10;This is the number of energy cubes you must pay to purchase the card.&#10;Your robot can have a maximum of three permanent upgrades and three temporary upgrades. &#10;If there is an upgrade in the upgrade shop that you’d like to buy when you have the maximum number of upgrades, &#10;you may discard an upgrade of the same type that you own and then purchase the desired upgrade.&#10;&#10;">
+                           <VBox.margin>
+                              <Insets left="45.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="2. The Programming Phase">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label prefHeight="280.0" text="During the Programming Phase , you'll plan your robot's actions for the round. You'll do this by placing programming cards in each &#10;of the five registers on your player mat. &#10;To programm your robots, all players perform the following actions at the same time. &#10;&#10;1. Draw nine cards from your programming deck.&#10;2. The nine cards represent the moves available for this round. Inspect the gameboard to see which cards will help you safely make your&#10;    way to the next checkpoint.&#10;3. After you have an idea of what you need your robot to do, choose five cards to play and place one on each of the five registers&#10;    on your player mat. Once you have placed your final programming card, you can not change your cards.&#10;&#10;RoboRally is a race! Program your robots as quickly as you can! After the first player has finished placing their programming cards, &#10;the timer starts. Players who are still placing programming cards have until the timer runs out to finish programming &#10;without consequence. &#10; A player who is not finished programming, after the timer ran out, must immediately discard the programming cards in their hand. &#10;They must then take cards from the top of their deck and randomly place them on the unfinished registers. &#10;&#10;&#10;&#10;">
+                           <VBox.margin>
+                              <Insets left="45.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="3. The Activation Phase">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label text="During the Activation Phase, the programming cards you placed in your registers during the programming phase activate.&#10;&#10;1. The player with priority carries out the action on the programming card they placed on their first register. At any given time,    &#10;    the player whose robot is closest to the priority antenna has priority. After that player takes their turn, the second closest player &#10;    to the antenna has priority and takes their turn, and so on. &#10;2. The next player with priority carries out the action in their first register and so on until all players have activated their&#10;    programming in their first register. &#10;3. Now board elements activate and robot lasers fire. &#10;">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="End of the game">
+                           <VBox.margin>
+                              <Insets left="45.0" top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label text="The game ends as soon as one robot ends a register on the final checkpoint, according to your chosen course.&#10;That player wins!&#10;">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Board Elements">
+                           <VBox.margin>
+                              <Insets left="45.0" top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <HBox>
                            <children>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/bluecvb-straight-top.png" />
-                                 </image>
-                                 <VBox.margin>
-                                    <Insets left="-5.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets left="-5.0" top="5.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/greencvb-straight-top.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="30.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/pushpanel-24-top.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/gear-red.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/laser-onebeam-start-left.png" />
-                                 </image>
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/energyspace-top-bottom.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/victory-1.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/bluecvb-curved-sharp-bottom-right.png" />
-                                 </image>
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/pit.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/wall-two-bottom-left.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/priority-antenna.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                                 <image>
-                                    <Image url="@../resources/images/mapelements/reboot.png" />
-                                 </image>
-                              </ImageView>
+                              <VBox>
+                                 <children>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/bluecvb-straight-top.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets left="-5.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets left="-5.0" top="5.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/greencvb-straight-top.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/pushpanel-24-top.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/gear-red.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/laser-onebeam-start-left.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/energyspace-top-bottom.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/victory-1.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/bluecvb-curved-sharp-bottom-right.png" />
+                                       </image>
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/pit.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/wall-two-bottom-left.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/priority-antenna.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                       <image>
+                                          <Image url="@../resources/images/mapelements/reboot.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Label text="Blue Conveyer Belts">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Blue conveyor belts move any robot resting on them two spaces &#10;in the direction of the arrows.">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Green Conveyer Belts">
+                                       <VBox.margin>
+                                          <Insets top="35.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Green conveyor belts move any robot resting on them one space &#10;in the direction of the arrows.">
+                                       <VBox.margin>
+                                          <Insets top="20.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Push Panels">
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Push panels push any robot resting on them into the next space in the direction the push panel faces. &#10;The panels activate only in the register that corresponds to the number on them. ">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Gears">
+                                       <VBox.margin>
+                                          <Insets top="65.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Gears rotate robots resting on them 90 degrees &#10;in the direction of the arrows.">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Board Lasers">
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Board Lasers fire, hitting any robots in their line of sight. &#10;Board lasers cannot fire through walls, the priority antenna, or hit more than one robot, &#10;and they shoot from the red and white pointer. (Take a Spam damage card for each laser that hits you.">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Energy Spaces">
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="When you end a register on an energy space, if there is an energy cube there, take it. &#10;If you end the fifth register on an energy space, take an energy cube from the energy bank.">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Checkpoints">
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="You must reach checkpoints in numerical order. In order to reach a checkpoint, you must be on it &#10;at the end of a register and you may enter a checkpoint from any side. &#10;After you reach a checkpoint, take a checkpoint token, and place it on your player mat &#10;to track your progress in the race.&#10;">
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Rotating Conveyer Belts">
+                                       <VBox.margin>
+                                          <Insets top="35.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Robots rotate 90 degrees in the direction of the curved arrow &#10;as they move onto the curved section of the belt.">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Pits">
+                                       <VBox.margin>
+                                          <Insets top="35.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="If you land on a pit, &#10;you immediately fall in and must reboot your robot.">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Walls">
+                                       <VBox.margin>
+                                          <Insets top="50.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Robots cannot move through walls, &#10;and robot and board lasers cannot shoot through walls">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Priority Antenna">
+                                       <VBox.margin>
+                                          <Insets top="50.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="The priority antenna helps determine whose turn it is. &#10;As a board element, it acts as a wall. Robots cannot move through, push, shoot through, &#10;or occupy the same space as the priority antenna. ">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <Label text="Reboot">
+                                       <VBox.margin>
+                                          <Insets top="40.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="When you fall off the board or into a pit, or when you activate a worm card, &#10;you must reboot your robot.">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets left="40.0" />
+                                 </HBox.margin>
+                              </VBox>
                            </children>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox>
-                           <children>
-                              <Label text="Blue Conveyer Belts">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Blue conveyor belts move any robot resting on them two spaces &#10;in the direction of the arrows.">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Green Conveyer Belts">
-                                 <VBox.margin>
-                                    <Insets top="35.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Green conveyor belts move any robot resting on them one space &#10;in the direction of the arrows.">
-                                 <VBox.margin>
-                                    <Insets top="20.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Push Panels">
-                                 <VBox.margin>
-                                    <Insets top="40.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Push panels push any robot resting on them into the next space in the direction the push panel faces. &#10;The panels activate only in the register that corresponds to the number on them. ">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Gears">
-                                 <VBox.margin>
-                                    <Insets top="65.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Gears rotate robots resting on them 90 degrees &#10;in the direction of the arrows.">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Board Lasers">
-                                 <VBox.margin>
-                                    <Insets top="40.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Board Lasers fire, hitting any robots in their line of sight. &#10;Board lasers cannot fire through walls, the priority antenna, or hit more than one robot, &#10;and they shoot from the red and white pointer. (Take a Spam damage card for each laser that hits you.">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Energy Spaces">
-                                 <VBox.margin>
-                                    <Insets top="40.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="When you end a register on an energy space, if there is an energy cube there, take it. &#10;If you end the fifth register on an energy space, take an energy cube from the energy bank.">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Checkpoints">
-                                 <VBox.margin>
-                                    <Insets top="40.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="You must reach checkpoints in numerical order. In order to reach a checkpoint, you must be on it &#10;at the end of a register and you may enter a checkpoint from any side. &#10;After you reach a checkpoint, take a checkpoint token, and place it on your player mat &#10;to track your progress in the race.&#10;">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Rotating Conveyer Belts">
-                                 <VBox.margin>
-                                    <Insets top="35.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Robots rotate 90 degrees in the direction of the curved arrow &#10;as they move onto the curved section of the belt.">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Pits">
-                                 <VBox.margin>
-                                    <Insets top="35.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="If you land on a pit, &#10;you immediately fall in and must reboot your robot.">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Walls">
-                                 <VBox.margin>
-                                    <Insets top="50.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Robots cannot move through walls, &#10;and robot and board lasers cannot shoot through walls">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Priority Antenna">
-                                 <VBox.margin>
-                                    <Insets top="50.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="The priority antenna helps determine whose turn it is. &#10;As a board element, it acts as a wall. Robots cannot move through, push, shoot through, &#10;or occupy the same space as the priority antenna. ">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <Label text="Reboot">
-                                 <VBox.margin>
-                                    <Insets top="40.0" />
-                                 </VBox.margin>
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Label>
-                              <Label text="When you fall off the board or into a pit, or when you activate a worm card, &#10;you must reboot your robot.">
-                                 <VBox.margin>
-                                    <Insets top="10.0" />
-                                 </VBox.margin>
-                              </Label>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="40.0" />
-                           </HBox.margin>
-                        </VBox>
+                           <VBox.margin>
+                              <Insets left="45.0" top="25.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label text="Robot Interactions">
+                           <VBox.margin>
+                              <Insets left="45.0" top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label text="Robot Lasers">
+                           <VBox.margin>
+                              <Insets left="45.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label text="Robot lasers fire at robots they are facing, as long as the laser’s line of sight is not blocked by a wall, the priority antenna, &#10;or another robot. &#10;If your robot is shot by a robot laser, you must take damage in the form of one Spam damage card for each hit &#10;and place it in your discard pile.">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Pushing other Robots">
+                           <VBox.margin>
+                              <Insets left="45.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label text="If a robot enters a space occupied by another robot, the robot in motion will push the other robot in the  direction the pushing robot &#10;is moving until it ends its move. Robots do not change the direction they are facing when they are pushed. &#10;Robots can be pushed almost anywhere on the board, including into a pit. They can even be pushed off the side of the board!&#10;Robots cannot be pushed through walls. If a robot pushes another robot into a wall, both robots immediately end their movement. &#10;">
+                           <VBox.margin>
+                              <Insets left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Rebooting">
+                           <VBox.margin>
+                              <Insets left="45.0" top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label text="When you fall off the board or into a pit, or when you activate a worm card, you must reboot your robot.&#10; When you reboot your robot, you must immediately take the following steps: &#10;1. Take two Spam damage cards, and place them in your discard pile. &#10;2. Regardless of the current register, your programming is canceled  for the round, and you may not complete remaining registers.&#10;    You must wait until the next round to program your robot.&#10;3. Place your robot on the reboot token that is on the same board where your robot was when it rebooted. &#10;    You may turn your robot to face any direction. If you rebooted from the start board, place your robot on the space &#10;    where you started the game.&#10;&#10;If multiple robots reboot on the same board in the same round or if a robot sits on the reboot token when other robots are rebooting, &#10;robots will leave the reboot space in the order they rebooted, with the next robot pushing the robot before it in the direction &#10;indicated by the arrow on the reboot token.&#10;You can be shot or pushed by an active robot while on a reboot token, but you cannot shoot robots. &#10;You also may not use upgrades. ">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="45.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
                      </children>
-                     <VBox.margin>
-                        <Insets left="45.0" top="25.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <Label text="Robot Interactions">
-                     <VBox.margin>
-                        <Insets left="45.0" top="50.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label text="Robot Lasers">
-                     <VBox.margin>
-                        <Insets left="45.0" top="30.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label text="Robot lasers fire at robots they are facing, as long as the laser’s line of sight is not blocked by a wall, the priority antenna, &#10;or another robot. &#10;If your robot is shot by a robot laser, you must take damage in the form of one Spam damage card for each hit &#10;and place it in your discard pile.">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="Pushing other Robots">
-                     <VBox.margin>
-                        <Insets left="45.0" top="30.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label text="If a robot enters a space occupied by another robot, the robot in motion will push the other robot in the  direction the pushing robot &#10;is moving until it ends its move. Robots do not change the direction they are facing when they are pushed. &#10;Robots can be pushed almost anywhere on the board, including into a pit. They can even be pushed off the side of the board!&#10;Robots cannot be pushed through walls. If a robot pushes another robot into a wall, both robots immediately end their movement. &#10;">
-                     <VBox.margin>
-                        <Insets left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="Rebooting">
-                     <VBox.margin>
-                        <Insets left="45.0" top="50.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="System Bold" size="13.0" />
-                     </font>
-                  </Label>
-                  <Label text="When you fall off the board or into a pit, or when you activate a worm card, you must reboot your robot.&#10; When you reboot your robot, you must immediately take the following steps: &#10;1. Take two Spam damage cards, and place them in your discard pile. &#10;2. Regardless of the current register, your programming is canceled  for the round, and you may not complete remaining registers.&#10;    You must wait until the next round to program your robot.&#10;3. Place your robot on the reboot token that is on the same board where your robot was when it rebooted. &#10;    You may turn your robot to face any direction. If you rebooted from the start board, place your robot on the space &#10;    where you started the game.&#10;&#10;If multiple robots reboot on the same board in the same round or if a robot sits on the reboot token when other robots are rebooting, &#10;robots will leave the reboot space in the order they rebooted, with the next robot pushing the robot before it in the direction &#10;indicated by the arrow on the reboot token.&#10;You can be shot or pushed by an active robot while on a reboot token, but you cannot shoot robots. &#10;You also may not use upgrades. ">
-                     <VBox.margin>
-                        <Insets bottom="10.0" left="45.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding>
+                  </VBox>
                </children>
-            </VBox>
-         </children></AnchorPane>
-  </content>
-</ScrollPane>
+            </AnchorPane>
+         </content>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </ScrollPane>
+      <HBox prefHeight="30.0" prefWidth="145.0">
+         <children>
+            <Button fx:id="buttonCards" mnemonicParsing="false" onAction="#buttonClicked" text="Cards" />
+            <Button fx:id="buttonRobots" mnemonicParsing="false" onAction="#buttonClicked" text="Robots" />
+            <Button fx:id="buttonRules" mnemonicParsing="false" onAction="#buttonClicked" text="Rules" />
+         </children>
+      </HBox>
+   </children>
+</GridPane>

@@ -53,6 +53,12 @@ public class WikiController extends Application {
             wiki = loader.load();
             Scene scene = new Scene(wiki);
             rootStage.setScene(scene);
+            rootStage.showingProperty().addListener((observable, oldValue, showing)-> {
+                if (showing) {
+                    rootStage.setMinWidth(rootStage.getWidth());
+                    rootStage.setMinHeight(rootStage.getHeight());
+                        }
+                    });
             rootStage.show();
         } catch (IOException e) {
             e.printStackTrace();
