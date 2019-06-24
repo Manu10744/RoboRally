@@ -1,8 +1,10 @@
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import server.Server;
@@ -84,6 +86,14 @@ public class Main extends Application {
                 // Set scene
                 Scene scene = new Scene(stageView);
 
+                // Set Stage boundaries to visible bounds of the main screen
+                Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+                primaryStage.setX(primaryScreenBounds.getMinX());
+                primaryStage.setY(primaryScreenBounds.getMinY());
+                primaryStage.setWidth(primaryScreenBounds.getWidth());
+                primaryStage.setHeight(primaryScreenBounds.getHeight());
+
+                // Set Stage icon and title
                 primaryStage.getIcons().add(new Image("/resources/images/others/robotIcon.png"));
                 primaryStage.setTitle("RoboRally");
                 primaryStage.setScene(scene);
