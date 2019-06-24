@@ -11,8 +11,6 @@ import com.google.gson.annotations.SerializedName;
  */
 public abstract class Card {
 
-    public int cardAmount;
-
     @Expose @SerializedName("card")
     public String cardName;
 
@@ -28,11 +26,4 @@ public abstract class Card {
         return cardName;
     }
 
-    /**
-     * This method simply returns how many cards there are of a certain type.
-     * @return cardAmount
-     */
-    public int getCardAmount() {
-        return cardAmount;
-    }
 }
