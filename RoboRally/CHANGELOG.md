@@ -1,11 +1,23 @@
 ### Known Issues
 * Chat - tooltip is not working
 
+## Version [0.2.0]
+
+### New Features 
+* Transfered logic for each JSON message to a Distributer with corresponding handler functions and thus replaced switch-case blocks in both Server and Client. - *(Manu)*
+
+### Changes
+* Instructions and everything related to them was completely removed. Everything runs solely according to the JSON message protocol now. - *(Manu)*
+### Bugfixes
+
+
+
+
 ## Version [0.1.1]
 
 ### New Features
 * Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
-* Registration and Chat via protocol *(Ivan)*
+* Registration and Chat via protocol. - *(Ivan)*
 * Player can now set his ready status and inform the server about it. - *(Manu)*
  
 ### Changes
