@@ -349,14 +349,6 @@ public class ChatController implements Initializable {
         alert.showAndWait();
     }
 
-    private static void showInvalidNameAlert() {
-        Toolkit.getDefaultToolkit().beep();
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Invalid Name");
-        alert.setHeaderText("ERROR");
-        alert.setContentText("Name already used");
-        alert.showAndWait();
-    }
 
     /**
      * Formats the chat message, removing all \n at the end of a message.
