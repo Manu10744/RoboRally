@@ -99,7 +99,7 @@ public class ChatController implements Initializable {
 
         //SERVERINPUT: addListener waits for IP and port
         serverAddress.addListener(((observableValue, oldValue, newValue) -> {
-            logger.info("serverAddress addlistener");
+            logger.info("serverAddress addlistener is creating and closing a test-socket to check if IP and port are valid (leads to first server INFO: Client connected from: IP");
             serverIP = serverAddress.get().split("\\:")[0];
             serverPort = Integer.parseInt(serverAddress.get().split("\\:")[1]);
             try {
