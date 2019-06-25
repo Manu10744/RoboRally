@@ -3,7 +3,7 @@
 
 ### Eclipse ###
 .metadata
-xbin/
+bin/
 tmp/
 *.tmp
 *.bak
