@@ -1,10 +1,8 @@
 package server;
 
-import client.Client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import server.game.Game;
-import server.game.Maps.Map;
 import server.game.Player;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;

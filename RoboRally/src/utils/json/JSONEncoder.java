@@ -3,7 +3,6 @@ package utils.json;
 import com.google.gson.*;
 import server.game.Card;
 
-import server.game.Maps.Map;
 import server.game.ProgrammingCards.*;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -27,6 +26,7 @@ public class JSONEncoder {
         // Tell Gson how to parse Card objects by registering a TypeAdapter
         gsonBuilder.registerTypeAdapter(Card.class, customSerializer);
         gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        gsonBuilder.setPrettyPrinting();
 
         // After (!) settings, create Gson instance to serialize
         Gson gson = gsonBuilder.create();
@@ -60,7 +60,6 @@ public class JSONEncoder {
         // Create a new Gson object
         Gson gson = new Gson();
 
-        Map gameMap = new Map(Parameter.DIZZY_HIGHWAY);
         ArrayList<Card> cards = new ArrayList<Card>();
         cards.add(new TurnLeft());
         cards.add(new MoveI());
@@ -111,7 +110,7 @@ public class JSONEncoder {
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
-        /*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
+        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
 
         String json = JSONEncoder.serializeJSON(messages.get(0));
         System.out.println(json);

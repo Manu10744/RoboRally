@@ -16,6 +16,7 @@ public class Wall extends Tile {
       this.tileType = Parameter.WALL_NAME;
       this.orientations.add(wallOrientation);
     }
+
     public Wall (String wallOrientation1, String wallOrientation2){
       super();
         this.tileType = "Wall";

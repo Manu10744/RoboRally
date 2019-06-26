@@ -1,16 +1,11 @@
 package viewmodels;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import server.game.Maps.DizzyHighway;
-import server.game.Maps.Map;
-import server.game.Maps.MapBody;
 import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import utils.Parameter;
@@ -29,8 +24,6 @@ public class MapController implements Initializable {
 
     private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
 
-    //Todo must be adapted for other maps than dizzy Highway -> input from a choose icon as String, then calling the Map(String mapName) constructor with it
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
         logger.info("map started, GridPane initialised");
 
@@ -39,10 +32,6 @@ public class MapController implements Initializable {
         map.setGridLinesVisible(true);
         map.setPrefWidth(Parameter.DIZZY_HIGHWAY_WIDTH * 100);
         map.setMaxWidth(1300);
-
-        logger.info("Map, dizzyHighway created; MapBody with its tiles saved");
-        Map dizzyHighway = new DizzyHighway(); //here the name would have to come via an imput
-        MapBody dizzyHighWayMapBody = dizzyHighway.getGameMap();
 
         ArrayList<Image> tileImages = new ArrayList<>();
         logger.info("ArrayList for all the images within the dizzyHighway map initialised");

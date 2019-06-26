@@ -42,7 +42,6 @@ module RoboRally {
     opens server.game;
     opens server.game.DamageCards;
     opens server.game.GamePhases;
-    opens server.game.Maps;
     opens server.game.ProgrammingCards;
     opens server.game.Tiles;
     opens utils;

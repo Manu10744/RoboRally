@@ -1,7 +1,6 @@
 package utils.json;
 
 import java.io.IOException;
-import server.game.Maps.Map;
 import java.util.logging.Logger;
 
 import client.Client;
@@ -162,14 +161,14 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-            Map map = new Map();
 
+            /*
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("GameStarted", new GameStartedBody(map));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
-
+            */
         }
     }
 

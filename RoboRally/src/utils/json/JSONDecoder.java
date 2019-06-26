@@ -492,18 +492,16 @@ public class JSONDecoder {
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
-        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
+        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(map)));
         // TODO: GAMESTARTED !
 
-        String s = JSONEncoder.serializeJSON(messages.get(32));
+        String s = JSONEncoder.serializeJSON(messages.get(33));
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
         System.out.println(s);
 
-
         JSONMessage msg = JSONDecoder.deserializeJSON(s);
         System.out.println("DESERIALIZED: " + msg.getMessageBody().getClass());
-        CheckPointReachedBody msgbody = (CheckPointReachedBody) msg.getMessageBody();
-        System.out.println(msgbody.getPlayerID());
+        GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
 
     }
 }

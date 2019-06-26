@@ -77,10 +77,6 @@ public class Tile {
         //normal tile
 
         switch (type) {
-            case "Empty": {
-                path.append("normal1.png");
-                break;
-            }
             case "Antenna": {
                 path.append("priority-antenna.png");
                 break;
