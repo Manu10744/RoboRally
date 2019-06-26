@@ -3,6 +3,7 @@ package server.game.Tiles;
 import com.google.gson.annotations.Expose;
 import utils.Parameter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Antenna extends Tile {
@@ -18,6 +19,7 @@ public class Antenna extends Tile {
     public Antenna(){
         super();
         this.tileType = Parameter.ANTENNA_NAME;
+        orientations = new ArrayList<>();
         orientations.add("right");
     }
 
