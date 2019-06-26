@@ -4,9 +4,12 @@ import com.google.gson.*;
 import server.game.Card;
 
 import server.game.ProgrammingCards.*;
+import server.game.Tiles.Antenna;
+import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -74,6 +77,12 @@ public class JSONEncoder {
         activeCards.add(new CurrentCardsBody.ActiveCardsObject(42, new MoveI()));
         activeCards.add(new CurrentCardsBody.ActiveCardsObject(1337, new Again()));
 
+        ArrayList<ArrayList<ArrayList<Tile>>> gameMap = new ArrayList<>();
+        ArrayList<ArrayList<Tile>> doubled = new ArrayList<>();
+        ArrayList<Tile> single = new ArrayList<>();
+        single.add(new Antenna());
+        doubled.add(single);
+        gameMap.add(doubled);
 
         ArrayList<JSONMessage> messages = new ArrayList<JSONMessage>();
         /*0*/ messages.add(new JSONMessage("HelloClient", new HelloClientBody("Version 1.0")));
@@ -110,9 +119,10 @@ public class JSONEncoder {
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
-        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
+        /*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
 
-        String json = JSONEncoder.serializeJSON(messages.get(0));
+
+        String json = JSONEncoder.serializeJSON(messages.get(34));
         System.out.println(json);
 
 

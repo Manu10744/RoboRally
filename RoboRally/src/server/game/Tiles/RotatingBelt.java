@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class RotatingBelt extends Tile {
     @Expose
-    private String tileType;
+    private String type;
     @Expose
     private Integer speed;
     @Expose
@@ -23,7 +23,7 @@ public class RotatingBelt extends Tile {
 
     public RotatingBelt (Integer speed, String orientationBeforeTurn, String orientationAfterTurn, Boolean isCrossing){
         super();
-        this.tileType = Parameter.ROTATINGBELT_NAME;
+        this.type = Parameter.ROTATINGBELT_NAME;
         this.speed = speed;
         this.orientations.add(orientationBeforeTurn);
         this.orientations.add(orientationAfterTurn);
@@ -32,7 +32,7 @@ public class RotatingBelt extends Tile {
 
     @Override
     public String getTileType(){
-        return this.tileType;
+        return this.type;
     }
 
     @Override

@@ -16,8 +16,8 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
 
     @Expose @SerializedName("gameMap")
     private ArrayList<ArrayList<ArrayList<Tile>>> mapBody;
-    private ArrayList<Tile> tileList;
     private ArrayList<ArrayList<Tile>> doubledNestedArray;
+    private ArrayList<Tile> tileList;
 
     public GameStartedBody(ArrayList<ArrayList<ArrayList<Tile>>> mapBody) {
         this.mapBody = mapBody;

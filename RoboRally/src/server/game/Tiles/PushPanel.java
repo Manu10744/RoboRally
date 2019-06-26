@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class PushPanel extends Tile {
     @Expose
-    private String tileType;
+    private String type;
     @Expose
     private ArrayList<String> orientations;
     @Expose
@@ -24,7 +24,7 @@ public class PushPanel extends Tile {
      */
     public PushPanel(String orientation, Integer register1, Integer register2){
         super();
-        this.tileType = Parameter.PUSHPANEL_NAME;
+        this.type = Parameter.PUSHPANEL_NAME;
         this.orientations.add(orientation);
         this.registers.add(register1);
         this.registers.add(register2);
@@ -32,7 +32,7 @@ public class PushPanel extends Tile {
 
     public PushPanel(String orientation, Integer register1, Integer register2, Integer register3){
         super();
-        this.tileType = Parameter.PUSHPANEL_NAME;
+        this.type = Parameter.PUSHPANEL_NAME;
         this.orientations.add(orientation);
         this.registers.add(register1);
         this.registers.add(register2);
@@ -41,7 +41,7 @@ public class PushPanel extends Tile {
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 
     @Override

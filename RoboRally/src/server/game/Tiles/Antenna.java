@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Antenna extends Tile {
     @Expose
-    private String tileType;
+    private String type;
     @Expose
     private ArrayList<String> orientations;
 
@@ -18,7 +18,7 @@ public class Antenna extends Tile {
      */
     public Antenna(){
         super();
-        this.tileType = Parameter.ANTENNA_NAME;
+        this.type = Parameter.ANTENNA_NAME;
         orientations = new ArrayList<>();
         orientations.add("right");
     }
@@ -30,14 +30,14 @@ public class Antenna extends Tile {
      */
     public Antenna(String orientation){
         super();
-        this.tileType = "CustomAntenna";
+        this.type = "CustomAntenna";
         this.orientations.add(orientation);
 
     }
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 
     @Override

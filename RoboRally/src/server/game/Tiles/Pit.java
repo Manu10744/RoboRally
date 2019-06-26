@@ -5,15 +5,15 @@ import utils.Parameter;
 
 public class Pit extends Tile {
     @Expose
-    private String tileType;
+    private String type;
 
     public Pit(){
         super();
-        this.tileType = Parameter.PIT_NAME;
+        this.type = Parameter.PIT_NAME;
     }
 
     @Override
     public String getTileType(){
-        return this.tileType;
+        return this.type;
     }
 }

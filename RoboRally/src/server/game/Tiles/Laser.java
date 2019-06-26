@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Laser extends Tile {
     @Expose
-    private String tileType;
+    private String type;
     @Expose
     private Integer count; //amount of lasers in a laser field
     @Expose
@@ -15,14 +15,14 @@ public class Laser extends Tile {
 
     public Laser (Integer count, String orientation){
         super();
-        this.tileType = Parameter.LASER_NAME;
+        this.type = Parameter.LASER_NAME;
         this.count = count;
         this.orientations.add(orientation);
     }
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 
     @Override
