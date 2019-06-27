@@ -11,7 +11,7 @@
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints minHeight="0.0" percentHeight="100.0" />
+        <RowConstraints minHeight="0.0"/>
     </rowConstraints>
 
 </GridPane>
