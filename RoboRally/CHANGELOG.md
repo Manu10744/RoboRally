@@ -11,7 +11,7 @@
 * Instructions and everything related to them was completely removed. Everything runs solely according to the JSON message protocol now. - *(Manu)*
 ### Bugfixes
 * Fixed bug that happened when GridPane was filled but map elements were not shown once the application was started. - *(Manu)*
-
+* Fixed bug of GridPane starting in mid while filling it with ImageViews. Now starting in bottom left corner. - *(Manu)*
 
 
 ## Version [0.1.1]
