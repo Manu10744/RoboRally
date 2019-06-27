@@ -1,6 +1,6 @@
 ### Known Issues
 * Chat - tooltip is not working
-
+* Map is still not stretched to full width and not responsible for smaller screens
 ## Version [0.2.0]
 
 ### New Features 
@@ -10,7 +10,7 @@
 ### Changes
 * Instructions and everything related to them was completely removed. Everything runs solely according to the JSON message protocol now. - *(Manu)*
 ### Bugfixes
-
+* Fixed bug that happened when GridPane was filled but map elements were not shown once the application was started. - *(Manu)*
 
 
 
