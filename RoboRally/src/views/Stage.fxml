@@ -38,7 +38,7 @@
       </rowConstraints>
 
       <!-- TODO StartScreen -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="true"/>
 
       <!-- TODO ChooseRobot -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
