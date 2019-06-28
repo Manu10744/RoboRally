@@ -7,6 +7,7 @@
 ### New Features 
 * Transfered logic for each JSON message to a Distributer with corresponding handler functions and thus replaced switch-case blocks in both Server and Client. - *(Manu)*
 * By implementing module-info (reflection sensitive) a.o.t. no more vm-option declaration is needed - *(Ivan)*
+* Map is zoomable (keyboard) and scrollable (by Mouse or keyboard). *(Ivan)*
 
 ### Changes
 * Instructions and everything related to them was completely removed. Everything runs solely according to the JSON message protocol now. - *(Manu)*
