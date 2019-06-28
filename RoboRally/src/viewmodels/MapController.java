@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -93,29 +94,51 @@ public class MapController implements Initializable {
         ArrayList<Image> tileImages = new ArrayList<>();
         logger.info("ArrayList for all the images within the dizzyHighway map initialised");
 
-        ArrayList<ImageView> imageViews = new ArrayList<>();
+        ArrayList<ImageView> imageViews;
         logger.info("ArrayList for ImageView containing images from map initialised");
 
         logger.info("Test: One tile created and as image saved");
-        Image image = Tile.getTileImageView(new Belt(Parameter.BLUE_BELT, Parameter.ORIENTATION_RIGHT));
+        Image image = Tile.getTileImage(new Empty());
+        Image image2 = Tile.getTileImage(new Laser(Parameter.LASER_ONE, Parameter.ORIENTATION_RIGHT));
+        Image image3 = Tile.getTileImage(new Wall(Parameter.ORIENTATION_RIGHT));
 
         int col = 0;
         int row = 0;
         ImageView imageView;
+        ImageView imageView2;
+        ImageView imageView3;
+
 
         for (int i = 0; i < Parameter.DIZZY_HIGHWAY_HEIGHT * Parameter.DIZZY_HIGHWAY_WIDTH; i++) {
             //130 tiles are in dizzyHighway, 0 - 129 places in array have to be filled
             imageView = new ImageView(image);
+            imageView2 = new ImageView(image2);
+            imageView3 = new ImageView(image3);
+            imageViews = new ArrayList<>();
+            imageViews.add(imageView);
+            imageViews.add((imageView2));
+            imageViews.add((imageView3));
+            Group group = new Group();
             imageView.fitWidthProperty().bind(map.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
             imageView.fitHeightProperty().bind(map.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+            imageView2.fitWidthProperty().bind(map.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+            imageView2.fitHeightProperty().bind(map.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+            imageView3.fitWidthProperty().bind(map.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+            imageView3.fitHeightProperty().bind(map.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
             imageView.setPreserveRatio(true);
+            imageView2.setPreserveRatio(true);
+            imageView3.setPreserveRatio(true);
+
+
 
             map.setConstraints(imageView, col, row);
+            map.setConstraints(imageView2, col, row);
+            map.setConstraints(imageView3, col, row);
             col++;
-            map.getChildren().add(i, imageView);
+            map.getChildren().addAll(i, imageViews);
+            /* map.getChildren().add(i, imageView2); */
             System.out.println(map.getChildren().get(i) + " LENGTH: " + map.getChildren().size() + " ROW: " + row + " COL: " + col);
             if (col >= Parameter.DIZZY_HIGHWAY_WIDTH) {
-                map.addRow(row);
                 row++;
                 col = 0;
             }

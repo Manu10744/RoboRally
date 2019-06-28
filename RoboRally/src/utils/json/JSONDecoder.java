@@ -530,7 +530,7 @@ public class JSONDecoder {
         ArrayList<Tile> x1y0 = new ArrayList<>();
         ArrayList<Tile> x1y1 = new ArrayList<>();
         x0y0.add(new RotatingBelt(2, "up", "left", true));
-        x0y1.add(new PushPanel("left", 2, 4));
+        x0y1.add(new PushPanel("left", 2));
         x1y0.add(new Wall("up", "right"));
         x1y0.add(new Laser(2, "right"));
 

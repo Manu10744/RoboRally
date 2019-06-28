@@ -32,7 +32,8 @@ public class Laser extends Tile {
         return count;
     }
 
-    public ArrayList<String> getOrientation() {
+    @Override
+    public ArrayList<String> getOrientations() {
         return this.orientations;
     }
 }

@@ -11,12 +11,10 @@ public class Gear extends Tile {
     @Expose
       private String type;
 
-    public Gear (String color, String orientation){
+    public Gear (String color){
         this.type = Parameter.GEAR_NAME;
 
         this.orientations = new ArrayList<>();
-        this.orientations.add(orientation);
-
         if (color.equals(Parameter.RED_GEAR)) {this.orientations.add(Parameter.ORIENTATION_LEFT);}
         else if (color.equals(Parameter.GREEN_GEAR)) {this.orientations.add(Parameter.ORIENTATION_RIGHT);}
     }
