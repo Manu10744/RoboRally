@@ -23,12 +23,12 @@ public class PushPanel extends Tile {
      * @author Mia
      */
     public PushPanel(String orientation, Integer register1, Integer register2){
-        super();
-        this.orientations = new ArrayList<>();
-        this.registers = new ArrayList<>();
-
         this.type = Parameter.PUSHPANEL_NAME;
+
+        this.orientations = new ArrayList<>();
         this.orientations.add(orientation);
+
+        this.registers = new ArrayList<>();
         this.registers.add(register1);
         this.registers.add(register2);
     }

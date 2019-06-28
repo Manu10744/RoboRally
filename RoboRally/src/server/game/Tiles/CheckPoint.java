@@ -10,8 +10,8 @@ public class CheckPoint extends Tile {
     private Integer count;
 
     public CheckPoint(Integer count){
-            super();
             this.type = Parameter.CHECKPOINT_NAME;
+
             this.count = count;
     }
 

@@ -12,7 +12,6 @@ public class Empty extends Tile {
     private String type;
 
     public Empty (){
-    super();
     this.type = Parameter.EMPTY_NAME;
     }
 

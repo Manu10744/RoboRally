@@ -13,18 +13,17 @@ public class Wall extends Tile {
     private ArrayList<String> orientations;
 
     public Wall (String wallOrientation){
-      super();
-      this.orientations = new ArrayList<>();
-
       this.type = Parameter.WALL_NAME;
+
+      this.orientations = new ArrayList<>();
       this.orientations.add(wallOrientation);
+
     }
 
     public Wall (String wallOrientation1, String wallOrientation2){
-      super();
-      this.orientations = new ArrayList<>();
-
       this.type = "Wall";
+
+      this.orientations = new ArrayList<>();
       this.orientations.add(wallOrientation1);
       this.orientations.add(wallOrientation2);
     }

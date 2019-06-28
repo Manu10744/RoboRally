@@ -10,8 +10,8 @@ public class EnergySpace extends Tile {
     private Integer count;
 
     public EnergySpace (Integer count){
-        super();
         this.type = Parameter.ENERGYSPACE_NAME;
+
         this.count = count;
     }
 

@@ -8,7 +8,6 @@ public class Pit extends Tile {
     private String type;
 
     public Pit(){
-        super();
         this.type = Parameter.PIT_NAME;
     }
 

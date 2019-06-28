@@ -8,7 +8,6 @@ public class StartPoint extends Tile {
     private String type;
 
     public StartPoint(){
-        super();
         this.type = Parameter.STARTPOINT_NAME;
     }
 

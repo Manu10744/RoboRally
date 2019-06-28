@@ -14,10 +14,11 @@ public class Laser extends Tile {
     private Integer count; //amount of lasers in a laser field
 
     public Laser (Integer count, String orientation){
-        super();
+        this.type = Parameter.LASER_NAME;
+
+        this.orientations = new ArrayList<>();
         this.orientations.add(orientation);
 
-        this.type = Parameter.LASER_NAME;
         this.count = count;
     }
 
