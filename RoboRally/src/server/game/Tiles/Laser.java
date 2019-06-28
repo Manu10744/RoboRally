@@ -3,15 +3,17 @@ package server.game.Tiles;
 import com.google.gson.annotations.Expose;
 import utils.Parameter;
 
+import java.util.ArrayList;
+
 public class Laser extends Tile {
     @Expose
     private String type;
     @Expose
-    private String orientations;
+    private ArrayList<String> orientations;
     @Expose
     private Integer count; //amount of lasers in a laser field
 
-    public Laser (Integer count, String orientation){
+    public Laser (Integer count, ArrayList<String> orientation){
         super();
         this.orientations = orientation;
 
@@ -29,7 +31,7 @@ public class Laser extends Tile {
         return count;
     }
 
-    public String getOrientation() {
+    public ArrayList<String> getOrientation() {
         return this.orientations;
     }
 }
