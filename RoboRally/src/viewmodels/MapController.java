@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import server.game.Tiles.Antenna;
-import server.game.Tiles.Tile;
+import server.game.Tiles.*;
 import utils.Parameter;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class MapController implements Initializable {
         logger.info("ArrayList for ImageView containing images from map initialised");
 
         logger.info("Test: One tile created and as image saved");
-        Image image = Tile.getTileImageView(new Antenna());
+        Image image = Tile.getTileImageView(new Pit());
 
         int col = 0;
         int row = 0;

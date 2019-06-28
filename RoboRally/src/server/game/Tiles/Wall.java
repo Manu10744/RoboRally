@@ -3,6 +3,7 @@ package server.game.Tiles;
 import com.google.gson.annotations.Expose;
 import utils.Parameter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Wall extends Tile {
@@ -13,15 +14,19 @@ public class Wall extends Tile {
 
     public Wall (String wallOrientation){
       super();
+      this.orientations = new ArrayList<>();
+
       this.type = Parameter.WALL_NAME;
       this.orientations.add(wallOrientation);
     }
 
     public Wall (String wallOrientation1, String wallOrientation2){
       super();
-        this.type = "Wall";
-        this.orientations.add(wallOrientation1);
-        this.orientations.add(wallOrientation2);
+      this.orientations = new ArrayList<>();
+
+      this.type = "Wall";
+      this.orientations.add(wallOrientation1);
+      this.orientations.add(wallOrientation2);
     }
 
     @Override
