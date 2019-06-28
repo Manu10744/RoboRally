@@ -74,9 +74,12 @@ public class Tile {
         String type = tile.getTileType();
         Image image;
 
-        //normal tile
-
         switch (type) {
+            //normal tile
+            case "Empty": {
+                path.append(("normal1.png"));
+                break;
+            }
             case "Antenna": {
                 path.append("priority-antenna.png");
                 break;
@@ -228,7 +231,8 @@ public class Tile {
             case "Laser": {
                 tile = (Laser) tile;
                 int laserBeamNumber = tile.getCount();
-                String laserOrientation = ((Laser) tile).getOrientation();
+                //As lasers have only one direction, their direction can be found on pos 0 within the orientations array
+                String laserOrientation = ((Laser) tile).getOrientation().get(Parameter.FIRST_ELEMENT_POS);
                 switch (laserBeamNumber) {
                     case (Parameter.LASER_ONE): {
                         switch (laserOrientation) {
@@ -312,7 +316,7 @@ public class Tile {
                             break;
                         }
                         case Parameter.ORIENTATION_RIGHT: {
-                            path.append("bluecvb-straight-bottom.png");
+                            path.append("bluecvb-straight-right.png");
                             break;
                         }
                     }

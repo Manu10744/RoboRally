@@ -532,7 +532,7 @@ public class JSONDecoder {
         x0y0.add(new RotatingBelt(2, "up", "left", true));
         x0y1.add(new PushPanel("left", 2, 4));
         x1y0.add(new Wall("up", "right"));
-        x1y0.add(new Laser(2, "down"));
+        x1y0.add(new Laser(2, "right"));
 
         doubledx0.add(x0y0);
         doubledx0.add(x0y1);

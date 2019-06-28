@@ -97,7 +97,7 @@ public class MapController implements Initializable {
         logger.info("ArrayList for ImageView containing images from map initialised");
 
         logger.info("Test: One tile created and as image saved");
-        Image image = Tile.getTileImageView(new Pit());
+        Image image = Tile.getTileImageView(new Belt(Parameter.BLUE_BELT));
 
         int col = 0;
         int row = 0;
