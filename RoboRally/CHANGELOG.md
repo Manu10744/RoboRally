@@ -1,6 +1,7 @@
 ### Known Issues
 * Chat - tooltip is not working
-* Map is still not stretched to full width and not responsible for smaller screens
+
+
 ## Version [0.2.0]
 
 ### New Features 
@@ -9,9 +10,11 @@
 
 ### Changes
 * Instructions and everything related to them was completely removed. Everything runs solely according to the JSON message protocol now. - *(Manu)*
+
 ### Bugfixes
 * Fixed bug that happened when GridPane was filled but map elements were not shown once the application was started. - *(Manu)*
 * Fixed bug of GridPane starting in mid while filling it with ImageViews. Now starting in bottom left corner. - *(Manu)*
+* Map (GridPane and its' ImageViews) is fully responsive - *(Ivan)*
 
 
 ## Version [0.1.1]
@@ -23,6 +26,7 @@
  
 ### Changes
 * Adjusted package names (view -> views, viewmodel -> viewmodels, modelclient -> client, modelserver - server) - *(Manu)*
+
 ### Bugfixes
 * Fixed playerID bug - ID x was given to the client, but ID x + 1 was given to his ClientWrapper object. - *(Manu)*
 
