@@ -1,6 +1,7 @@
 package server.game.Tiles;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.Parameter;
@@ -226,7 +227,6 @@ public class Tile {
                 /*Lasers - TODO: we actually only need the lasers without the beams, if we want to animate them? We also cannot differentiate between
                              the end of a laser or its beginning */
             case "Laser": {
-                tile = (Laser) tile;
                 int laserBeamNumber = tile.getCount();
                 String laserOrientation = ((Laser) tile).getOrientation();
                 switch (laserBeamNumber) {
@@ -295,7 +295,7 @@ public class Tile {
             //Belts (blue and green conveyor belts insofar as they are straight
             case "Belt": {
                 int beltSpeed = tile.getSpeed();
-                String beltOrientation = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+                String beltOrientation = ((Belt) tile).getOrientation();
                 //The Conveyor belts differ mainly in speed: blue speed = 2, green speed = 1
                 if (beltSpeed == (int) Parameter.BLUE_BELT_SPEED) {
                     switch (beltOrientation) {

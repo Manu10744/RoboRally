@@ -1,13 +1,21 @@
 package utils.json;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import server.game.Card;
 import server.game.Game;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import utils.json.protocol.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +47,6 @@ public class JSONDecoder {
 
         // Map the received JSON String message into a JSONMessage object
         JSONMessage messageObj = customGson.fromJson(jsonString, JSONMessage.class);
-
         return messageObj;
     }
 
@@ -108,9 +115,14 @@ public class JSONDecoder {
              String messageType = jsonMessage.get("messageType").getAsString();
 
              // For parsing JSON Arrays into Java ArrayLists<?>
-             Gson arrayListParser = new GsonBuilder()
+             Gson cardArrayListParser = new GsonBuilder()
                      .excludeFieldsWithoutExposeAnnotation()
                      .registerTypeAdapter(ArrayList.class, cardArrayDeserializer)
+                     .create();
+
+             Gson tileArrayListParser = new GsonBuilder()
+                     .registerTypeAdapter(Tile.class, tileJsonDeserializer)
+                     .excludeFieldsWithoutExposeAnnotation()
                      .create();
 
              if (messageType.equals("HelloClient")) {
@@ -238,7 +250,7 @@ public class JSONDecoder {
 
                  return new JSONMessage("StartingPointTaken", startingPointTakenBody);
              } else if (messageType.equals("YourCards")) {
-                 ArrayList<Card> cardsInHand = arrayListParser.fromJson(jsonElement, ArrayList.class);
+                 ArrayList<Card> cardsInHand = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
                  YourCardsBody yourCardsBody = new YourCardsBody(
                            cardsInHand,
@@ -305,7 +317,7 @@ public class JSONDecoder {
                  );
                  return new JSONMessage("TimerEnded", timerEndedBody);
              } else if (messageType.equals("CardsYouGotNow")) {
-                 ArrayList<Card> cards = arrayListParser.fromJson(jsonElement, ArrayList.class);
+                 ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
                  CardsYouGotNowBody cardsYouGotNowBody = new CardsYouGotNowBody(
                          cards
@@ -347,7 +359,7 @@ public class JSONDecoder {
 
                  return new JSONMessage("Movement", movementBody);
              } else if (messageType.equals("DrawDamage")) {
-                 ArrayList<Card> cards = arrayListParser.fromJson(jsonElement, ArrayList.class);
+                 ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
                  DrawDamageBody drawDamageBody = new DrawDamageBody(
                          messageBody.get("playerID").getAsInt(),
@@ -397,15 +409,16 @@ public class JSONDecoder {
 
                  return new JSONMessage("GameFinished", gameFinishedBody);
              } else if (messageType.equals("GameStarted")) {
-                 Gson gson = new Gson();
+                 JsonElement tripleNestedArray = messageBody.get("gameMap").getAsJsonArray();
 
-                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = gson.fromJson(messageBody.get("gameMap"), ArrayList.class);
+                 // Tell Gson the exact type of list that has to be used while deserializing
+                 Type listType = new TypeToken<ArrayList<ArrayList<ArrayList<Tile>>>>() {}.getType();
+
+                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = tileArrayListParser.fromJson(tripleNestedArray, listType);
+
                  System.out.println("SIZE OF X ARRAY: " + mapBody.size());
                  System.out.println("SIZE OF FIRST DOUBLE IN X ARRAY: " + mapBody.get(0).size());
                  System.out.println("SIZE OF SECOND DOUBLE IN X ARRAY " + mapBody.get(1).size());
-
-                 //System.out.println("TYPE IN SINGLES: " + mapBody.get(0).get(0).get(0).getClass());
-                 //System.out.println("TYPE IN SINGLES: " + mapBody.get(1).get(0).get(0).getClass());
 
                  GameStartedBody gameStartedBody = new GameStartedBody(
                          mapBody
@@ -415,6 +428,57 @@ public class JSONDecoder {
              // Something went wrong, could not deserialize!
              return new JSONMessage("Error", new ErrorBody("Fatal error: Could not resolve message." +
                      "Something went wrong while deserializing."));
+         }
+     };
+
+    /**
+     * This is a custom Deserializer for Gson. Gson needs a way to decide how to parse the tiles of a JSON
+     * 'GameStarted' message as the equivalent java object representation. This can't be done by Gson itself because
+     * {@link Tile} has various child classes. This Deserializer tells Gson how to parse each Tile correctly.
+     */
+     public static JsonDeserializer<Tile> tileJsonDeserializer = new JsonDeserializer<Tile>() {
+         @Override
+         public Tile deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+             JsonObject tileObject = jsonElement.getAsJsonObject();
+             String tileType = tileObject.get("type").getAsString();
+
+             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+             if (tileType.equals("Antenna")) {
+                 Antenna result = gson.fromJson(jsonElement, Antenna.class);
+                 return result;
+             } else if (tileType.equals("Belt")) {
+                 Belt result = gson.fromJson(jsonElement, Belt.class);
+                 return result;
+             } else if (tileType.equals("CheckPoint")) {
+                 CheckPoint result = gson.fromJson(jsonElement, CheckPoint.class);
+                 return result;
+             } else if (tileType.equals("EnergySpace")) {
+                 EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
+                 return result;
+             } else if (tileType.equals("Gear")) {
+                 Gear result = gson.fromJson(jsonElement, Gear.class);
+                 return result;
+             } else if (tileType.equals("Laser")) {
+                 Laser result = gson.fromJson(jsonElement, Laser.class);
+                 return result;
+             } else if (tileType.equals("Pit")) {
+                 Pit result = gson.fromJson(jsonElement, Pit.class);
+                 return result;
+             } else if (tileType.equals("PushPanel")) {
+                 PushPanel result = gson.fromJson(jsonElement, PushPanel.class);
+                 return result;
+             } else if (tileType.equals("RotatingBelt")) {
+                 RotatingBelt result = gson.fromJson(jsonElement, RotatingBelt.class);
+                 return result;
+             } else if (tileType.equals("StartPoint")) {
+                 StartPoint result = gson.fromJson(jsonElement, StartPoint.class);
+                 return result;
+             } else if (tileType.equals("Wall")) {
+                 Wall result = gson.fromJson(jsonElement, Wall.class);
+                 return result;
+             }
+             return null; // Error
          }
      };
 
@@ -457,51 +521,6 @@ public class JSONDecoder {
          return null; // Error
      }
 
-    /**
-     * This method deserializs a single JSON Tile into the equivalent Java object.
-     * @param jsonMessageBody
-     * @param type
-     * @return The exact tile-subclass of {@link Tile} that corresponds to the type of the Tile.
-     */
-     public static Tile deserializeTiles(JsonObject jsonMessageBody, String type) {
-         Gson gson = new Gson();
-         if (type.equals("Antenna")) {
-             Antenna result = gson.fromJson(jsonMessageBody, Antenna.class);
-             return result;
-         } else if (type.equals("Belt")) {
-             Belt result = gson.fromJson(jsonMessageBody, Belt.class);
-             return result;
-         } else if (type.equals("CheckPoint")) {
-             CheckPoint result = gson.fromJson(jsonMessageBody, CheckPoint.class);
-             return result;
-         } else if (type.equals("EnergySpace")) {
-             EnergySpace result = gson.fromJson(jsonMessageBody, EnergySpace.class);
-             return result;
-         } else if (type.equals("Gear")) {
-             Gear result = gson.fromJson(jsonMessageBody, Gear.class);
-             return result;
-         } else if (type.equals("Laser")) {
-             Laser result = gson.fromJson(jsonMessageBody, Laser.class);
-             return result;
-         } else if (type.equals("Pit")) {
-             Pit result = gson.fromJson(jsonMessageBody, Pit.class);
-             return result;
-         } else if (type.equals("PushPanel")) {
-             PushPanel result = gson.fromJson(jsonMessageBody, PushPanel.class);
-             return result;
-         } else if (type.equals("RotatingBelt")) {
-             RotatingBelt result = gson.fromJson(jsonMessageBody, RotatingBelt.class);
-             return result;
-         } else if (type.equals("StartPoint")) {
-             StartPoint result = gson.fromJson(jsonMessageBody, StartPoint.class);
-             return result;
-         } else if (type.equals("Wall")) {
-             Wall result = gson.fromJson(jsonMessageBody, Wall.class);
-             return result;
-         }
-         return null; // Error
-     }
-
     // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.
     // ONLY FOR TESTING!!!
     public static void main(String[] args) {
@@ -533,6 +552,7 @@ public class JSONDecoder {
         x0y1.add(new PushPanel("left", 2, 4));
         x1y0.add(new Wall("up", "right"));
         x1y0.add(new Laser(2, "down"));
+        x1y1.add(null);
 
         doubledx0.add(x0y0);
         doubledx0.add(x0y1);
@@ -581,8 +601,18 @@ public class JSONDecoder {
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
         System.out.println(s);
 
-        JSONMessage msg = JSONDecoder.deserializeJSON(s);
-        System.out.println(msg.getMessageType());
-        GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
+        try {
+            Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            String content = Files.readString(path, StandardCharsets.UTF_8);
+            content = content.replace("\r\n", "").replace(" ", "");
+            System.out.println(content);
+
+            JSONMessage msg = JSONDecoder.deserializeJSON(content);
+            GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

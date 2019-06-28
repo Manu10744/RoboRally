@@ -356,9 +356,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "right"
-      ],
+      "orientations": "right",
       "count": 1
      }
     ]
@@ -373,9 +371,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "left"
-      ],
+      "orientations": "left",
       "count": 1
      }
     ]
@@ -400,9 +396,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "up"
-      ],
+      "orientations": "up",
       "count": 1
      }
     ]
@@ -499,9 +493,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "down"
-      ],
+      "orientations": "down",
       "count": 1
      }
     ]
@@ -575,9 +567,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "up"
-      ],
+      "orientations": "up",
       "count": 1
      }
     ]
@@ -669,9 +659,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "down"
-      ],
+      "orientations": "down",
       "count": 1
      }
     ]
@@ -691,9 +679,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "right"
-      ],
+      "orientations": "right",
       "count": 1
      }
     ]
@@ -708,9 +694,7 @@
      },
      {
       "type": "Laser",
-      "orientations": [
-       "left"
-      ],
+      "orientations": "left",
       "count": 1
      }
     ]
