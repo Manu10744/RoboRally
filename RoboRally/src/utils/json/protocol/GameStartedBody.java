@@ -16,7 +16,9 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
 
     @Expose @SerializedName("gameMap")
     private ArrayList<ArrayList<ArrayList<Tile>>> mapBody;
+    @Expose
     private ArrayList<ArrayList<Tile>> doubledNestedArray;
+    @Expose
     private ArrayList<Tile> tileList;
 
     public GameStartedBody(ArrayList<ArrayList<ArrayList<Tile>>> mapBody) {
@@ -25,9 +27,6 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
 
     public ArrayList<ArrayList<ArrayList<Tile>>> getXArray() {
         return mapBody;
-    }
-    public ArrayList<ArrayList<Tile>> getYArray() {
-        return doubledNestedArray;
     }
 
 

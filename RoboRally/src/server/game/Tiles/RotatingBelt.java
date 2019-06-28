@@ -17,12 +17,14 @@ public class RotatingBelt extends Tile {
     @Expose
     private Integer speed;
     @Expose
-    private ArrayList<String> orientations;
-    @Expose
     private Boolean isCrossing;
+    @Expose
+    private ArrayList<String> orientations;
 
     public RotatingBelt (Integer speed, String orientationBeforeTurn, String orientationAfterTurn, Boolean isCrossing){
         super();
+        this.orientations = new ArrayList<>();
+
         this.type = Parameter.ROTATINGBELT_NAME;
         this.speed = speed;
         this.orientations.add(orientationBeforeTurn);

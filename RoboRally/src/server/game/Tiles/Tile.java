@@ -226,8 +226,9 @@ public class Tile {
                 /*Lasers - TODO: we actually only need the lasers without the beams, if we want to animate them? We also cannot differentiate between
                              the end of a laser or its beginning */
             case "Laser": {
+                tile = (Laser) tile;
                 int laserBeamNumber = tile.getCount();
-                String laserOrientation = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+                String laserOrientation = ((Laser) tile).getOrientation();
                 switch (laserBeamNumber) {
                     case (Parameter.LASER_ONE): {
                         switch (laserOrientation) {
