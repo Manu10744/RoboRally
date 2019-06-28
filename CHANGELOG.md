@@ -1,10 +1,16 @@
 ### Known Issues
 * Chat - tooltip is not working
 
+## Version [0.3.0] 
+### New Features
+* 'GameStarted' protocol message can now be properly deserialized, which makes sending maps to the client possible. - *(Manu)*
+
+### Changes
+
+### Bugfixes
 
 ## Version [0.2.0]
-
-### New Features 
+### New Features
 * Transfered logic for each JSON message to a Distributer with corresponding handler functions and thus replaced switch-case blocks in both Server and Client. - *(Manu)*
 * By implementing module-info (reflection sensitive) a.o.t. no more vm-option declaration is needed - *(Ivan)*
 * Map is zoomable (keyboard) and scrollable (by Mouse or keyboard). *(Ivan)*
@@ -19,7 +25,6 @@
 
 
 ## Version [0.1.1]
-
 ### New Features
 * Game Wiki can now be opened by clicking the '?' Button - *(Verena)*
 * Registration and Chat via protocol. - *(Ivan)*
@@ -58,7 +63,6 @@ application restart is solved by setting server threat to daemon. As a positive 
 * Client BufferReader issue was replaced by StringBuilder - *(Ivan)*
 
 ## Version [0.0.1]
-
 ### New Features
 * Added Programming and Damage Cards - *(Vincent)*
 * Implemented Chat - Server, Client, Instructions aso. - *(Ivan)*
@@ -73,7 +77,6 @@ application restart is solved by setting server threat to daemon. As a positive 
 
 
 ## Version [0.0.0]
-
 ### New Features
 * Basic project structure added - *(Team)*
 * Views and corresponding Controllers added - *(Manu, Anna-Maria)*
