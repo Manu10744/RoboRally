@@ -7,11 +7,7 @@ import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import utils.json.protocol.*;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -401,8 +397,20 @@ public class JSONDecoder {
 
                  return new JSONMessage("GameFinished", gameFinishedBody);
              } else if (messageType.equals("GameStarted")) {
+                 Gson gson = new Gson();
 
-                 return new JSONMessage("GameStarted", null);
+                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = gson.fromJson(messageBody.get("gameMap"), ArrayList.class);
+                 System.out.println("SIZE OF X ARRAY: " + mapBody.size());
+                 System.out.println("SIZE OF FIRST DOUBLE IN X ARRAY: " + mapBody.get(0).size());
+                 System.out.println("SIZE OF SECOND DOUBLE IN X ARRAY " + mapBody.get(1).size());
+
+                 //System.out.println("TYPE IN SINGLES: " + mapBody.get(0).get(0).get(0).getClass());
+                 //System.out.println("TYPE IN SINGLES: " + mapBody.get(1).get(0).get(0).getClass());
+
+                 GameStartedBody gameStartedBody = new GameStartedBody(
+                         mapBody
+                 );
+                 return new JSONMessage("GameStarted", gameStartedBody);
              }
              // Something went wrong, could not deserialize!
              return new JSONMessage("Error", new ErrorBody("Fatal error: Could not resolve message." +
@@ -574,6 +582,7 @@ public class JSONDecoder {
         System.out.println(s);
 
         JSONMessage msg = JSONDecoder.deserializeJSON(s);
-        System.out.println("DESERIALIZED: " + msg.getMessageBody().getClass());
+        System.out.println(msg.getMessageType());
+        GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
     }
 }
