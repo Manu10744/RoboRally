@@ -43,6 +43,7 @@ public class MapController implements Initializable {
         int col = 0;
         int row = 0;
         ImageView imageView;
+
         for (int i = 0; i < Parameter.DIZZY_HIGHWAY_HEIGHT * Parameter.DIZZY_HIGHWAY_WIDTH; i++) {
             //130 tiles are in dizzyHighway, 0 - 129 places in array have to be filled
             imageView = new ImageView(image);
