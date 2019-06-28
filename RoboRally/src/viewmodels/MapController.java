@@ -28,10 +28,8 @@ public class MapController implements Initializable {
         logger.info("map started, GridPane initialised");
 
         logger.info("Alignment for map filing and width set");
-        map.setAlignment(Pos.BOTTOM_LEFT);
         map.setGridLinesVisible(true);
-        map.setPrefWidth(Parameter.DIZZY_HIGHWAY_WIDTH * 100);
-        map.setMaxWidth(1300);
+        map.autosize();
 
         ArrayList<Image> tileImages = new ArrayList<>();
         logger.info("ArrayList for all the images within the dizzyHighway map initialised");
@@ -48,6 +46,9 @@ public class MapController implements Initializable {
         for (int i = 0; i < Parameter.DIZZY_HIGHWAY_HEIGHT * Parameter.DIZZY_HIGHWAY_WIDTH; i++) {
             //130 tiles are in dizzyHighway, 0 - 129 places in array have to be filled
             imageView = new ImageView(image);
+            imageView.fitWidthProperty().bind(map.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+            imageView.fitHeightProperty().bind(map.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+            imageView.setPreserveRatio(true);
 
             map.setConstraints(imageView, col, row);
             col++;
