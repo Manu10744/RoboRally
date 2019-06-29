@@ -453,6 +453,9 @@ public class JSONDecoder {
              } else if (tileType.equals("CheckPoint")) {
                  CheckPoint result = gson.fromJson(jsonElement, CheckPoint.class);
                  return result;
+             } else if (tileType.equals("Empty")) {
+                 Empty result = gson.fromJson(jsonElement, Empty.class);
+                 return result;
              } else if (tileType.equals("EnergySpace")) {
                  EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
                  return result;
@@ -600,14 +603,19 @@ public class JSONDecoder {
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
         System.out.println(s);
 
+        // Read dizzyHighway.json and deserialize it into a GameStarted message object
         try {
             Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
             String content = Files.readString(path, StandardCharsets.UTF_8);
-            content = content.replace("\r\n", "").replace(" ", "");
             System.out.println(content);
 
             JSONMessage msg = JSONDecoder.deserializeJSON(content);
             GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
+
+            for (int i = 0; i < msgbody.getXArray().size(); i++) {
+                // Checking if everything gets deserialized correctly
+                System.out.println(msgbody.getXArray().get(i));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
