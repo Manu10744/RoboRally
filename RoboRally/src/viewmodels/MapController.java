@@ -97,9 +97,9 @@ public class MapController implements Initializable {
         logger.info("ArrayList for ImageView containing images from map initialised");
 
         logger.info("Test: One tile created and as image saved");
-        Image image = Tile.getTileImage(new Empty());
-        Image image2 = Tile.getTileImage(new Laser(Parameter.LASER_ONE, Parameter.ORIENTATION_RIGHT));
-        Image image3 = Tile.getTileImage(new Wall(Parameter.ORIENTATION_RIGHT));
+        Image image = (new Empty()).getTileImage();
+        Image image2 = new Laser(Parameter.LASER_ONE, Parameter.ORIENTATION_RIGHT).getTileImage();
+        Image image3 = new Wall(Parameter.ORIENTATION_RIGHT).getTileImage();
 
         int col = 0;
         int row = 0;

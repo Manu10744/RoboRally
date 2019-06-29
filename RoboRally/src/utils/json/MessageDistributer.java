@@ -1,11 +1,14 @@
 package utils.json;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import client.Client;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
 import server.Server;
+import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
 
@@ -331,7 +334,29 @@ public class MessageDistributer {
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
-        // TODO: Write code here Mia
+        /*
+        On every x/y Position of the map there is one array with tiles which is saved here in a doubled nested arraylist called tiles
+         (or in case of empty arrays null, in whic case a new empty array is initialised and returned, see implementation of getTileArrayFromMapBody in GameStartedBody.class)
+        */
+        ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
+
+        for (int xPos = 0; xPos < gameStartedBody.getMapBody().size(); xPos++){
+            for (int yPos = 0; yPos < gameStartedBody.getDoubledNestedArray().size(); yPos++){
+                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(xPos, yPos);
+                tiles.add(tileArray);
+            }
+        }
+
+        /*
+        Those Tiles are now translated into images with the method getImageFromTile (see for its implementation Tile.class) which are in a next substep translated to imageviews as images alone
+        are no nodes and can thus not be displayed in javafx
+         */
+        for (ArrayList<Tile> tileArray : tiles){
+            for (Tile tile : tileArray){
+                Image image = Tile.getTileImage(tile);
+            }
+        }
+
     }
 
     /**

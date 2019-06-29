@@ -69,9 +69,9 @@ public class Tile {
      * @return
      * @author Mia
      */
-    public static Image getTileImage(Tile tile) {
+    public Image getTileImage() {
         StringBuilder path = new StringBuilder("resources/images/mapelements/");
-        String type = tile.getTileType();
+        String type = this.getTileType();
         Image image;
 
         switch (type) {
@@ -101,7 +101,7 @@ public class Tile {
             }
             //Gears
             case "Gear": {
-                String gearOrientation = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+                String gearOrientation = this.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
                 //Red and Green Gears differ mainly in their orientation: greens turn left, reds turn right
                 if (gearOrientation.equals(Parameter.ORIENTATION_LEFT)) {
                     path.append("gear-red.png");
@@ -114,7 +114,7 @@ public class Tile {
             }
             //The six victory icons
             case "CheckPoint": {
-                int checkpointNumber = (int) tile.getCount();
+                int checkpointNumber = (int) this.getCount();
                 //there are six different checkpoint icons and its corresponding images like so:
                 if (checkpointNumber == Parameter.CHECKPOINT_ONE) {
                     path.append("victory-1.png");
@@ -133,8 +133,8 @@ public class Tile {
             }
             //Push Panels
             case "PushPanel": {
-                ArrayList<Integer> registers = tile.getRegisters();
-                String orientation = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+                ArrayList<Integer> registers = this.getRegisters();
+                String orientation = this.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
                 //There are either two or three registers specified
                 //Two registers are filled, on our maps this is always register 2 and 4, therefor only one switch case works
                 if (registers.size() == Parameter.REGISTER_TWO) {
@@ -181,7 +181,7 @@ public class Tile {
             }
             //Walls, double and single
             case "Wall": {
-                ArrayList<String> wallOrientations = tile.getOrientations();
+                ArrayList<String> wallOrientations = this.getOrientations();
                 //single walls
                 if (wallOrientations.size() == Parameter.ONE_WALL) {
                     switch (wallOrientations.get(Parameter.FIRST_ELEMENT_POS)) {
@@ -228,9 +228,9 @@ public class Tile {
             }
 
             case "Laser": {
-                int laserBeamNumber = tile.getCount();
+                int laserBeamNumber = this.getCount();
                 //As lasers have only one direction, their direction can be found on pos 0 within the orientations array
-                String laserOrientation = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+                String laserOrientation = this.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
                 switch (laserBeamNumber) {
                     case (Parameter.LASER_ONE): {
                         if ((laserOrientation.equals(Parameter.ORIENTATION_RIGHT) || (laserOrientation.equals(Parameter.ORIENTATION_LEFT)))) {
@@ -265,8 +265,8 @@ public class Tile {
 
         //Belts (blue and green conveyor belts insofar as they are straight
         case "Belt": {
-            int beltSpeed = tile.getSpeed();
-            String beltOrientation = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+            int beltSpeed = this.getSpeed();
+            String beltOrientation = this.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
             //The Conveyor belts differ mainly in speed: blue speed = 2, green speed = 1
             if (beltSpeed == (int) Parameter.BLUE_BELT_SPEED) {
                 switch (beltOrientation) {
@@ -314,10 +314,10 @@ public class Tile {
 
         //Belts (blue and green insofar as they are curved
         case "RotatingBelt": {
-            int speed = tile.getSpeed();
-            boolean isCrossing = tile.getCrossing();
-            String curvedBeltOrientationBefore = tile.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
-            String curvedBeltOrientationAfter = tile.getOrientations().get(Parameter.SECOND_ELEMENT_POS);
+            int speed = this.getSpeed();
+            boolean isCrossing = this.getCrossing();
+            String curvedBeltOrientationBefore = this.getOrientations().get(Parameter.FIRST_ELEMENT_POS);
+            String curvedBeltOrientationAfter = this.getOrientations().get(Parameter.SECOND_ELEMENT_POS);
             //The Conveyor belts differ mainly in speed: blue speed = 2, green speed = 1
 
             //Blue conveyor belt

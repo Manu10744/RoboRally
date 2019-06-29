@@ -50,4 +50,16 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
     public void triggerAction(Client client, Client.ClientReaderTask task, GameStartedBody bodyObject) {
         MessageDistributer.handleGameStarted(client, task, bodyObject);
     }
+
+    public ArrayList<ArrayList<ArrayList<Tile>>> getMapBody() {
+        return mapBody;
+    }
+
+    public ArrayList<ArrayList<Tile>> getDoubledNestedArray() {
+        return doubledNestedArray;
+    }
+
+    public ArrayList<Tile> getTileList() {
+        return tileList;
+    }
 }
