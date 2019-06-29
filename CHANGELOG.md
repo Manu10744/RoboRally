@@ -1,5 +1,8 @@
 ### Known Issues
 * Chat - tooltip is not working
+* StartScreen is not responsive and doesnt take up 100% width
+* Automatic filling of GridPane by reading deserialized GameStarted message not implemented yet
+* Ability to choose map not implemented yet
 
 ## Version [0.3.0] 
 ### New Features

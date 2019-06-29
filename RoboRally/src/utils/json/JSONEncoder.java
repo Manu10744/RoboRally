@@ -28,7 +28,6 @@ public class JSONEncoder {
 
         // Tell Gson how to parse Card objects by registering a TypeAdapter
         gsonBuilder.registerTypeAdapter(Card.class, customSerializer)
-            .setPrettyPrinting()
             .excludeFieldsWithoutExposeAnnotation();
 
         // After (!) settings, create Gson instance to serialize
