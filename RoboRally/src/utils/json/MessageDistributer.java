@@ -352,8 +352,8 @@ public class MessageDistributer {
         are no nodes and can thus not be displayed in javafx
          */
         for (ArrayList<Tile> tileArray : tiles){
-            for (Tile tile : tileArray){
-                Image image = Tile.getTileImage(tile);
+            for (Tile tile : tileArray) {
+                Image image = tile.getTileImage();
             }
         }
 
