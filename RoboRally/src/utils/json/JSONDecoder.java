@@ -21,9 +21,9 @@ import java.util.ArrayList;
 /**
  * This class is responsible for the deserialization (JSON -> Java) of JSON Messages being in their String representation.<br>
  * It makes use of the Gson library. A customized Gson instance using a TypeAdapter is used to properly parse the
- * messageBody object (can be e.g. of type HelloServerBody, HelloClientBody, etc.) while deserializing. Another customized
- * Gson instance is explicitly used to deserialize JSON Arrays of cards. (For more details see
- * {@link JSONDecoder#cardArrayDeserializer})
+ * messageBody object (can be e.g. of type HelloServerBody, HelloClientBody, etc.) while deserializing. More customized
+ * Gson instances are used to deserialize JSON Arrays of cards and Tiles. (For more details see
+ * {@link JSONDecoder#cardArrayDeserializer} and {@link JSONDecoder#tileJsonDeserializer})
  *
  * @author Manuel Neumayer
  * @author Mia

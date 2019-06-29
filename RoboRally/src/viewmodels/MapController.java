@@ -90,7 +90,6 @@ public class MapController implements Initializable {
             }
         });
 
-
         ArrayList<Image> tileImages = new ArrayList<>();
         logger.info("ArrayList for all the images within the dizzyHighway map initialised");
 

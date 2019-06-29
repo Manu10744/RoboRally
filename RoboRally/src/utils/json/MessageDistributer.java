@@ -229,7 +229,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link SetStartingPointBody#triggerAction(Server, Server.ServerReaderTask, SetStartingPointBody)}.
      * @param server The Server itself.
      * @param task The ReaderTask of the server (Gives access to the PrintWriter).
-     * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
+     * @param setStartingPointBody The message body of the message which is of type {@link SetStartingPointBody}.
      */
     public static void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
         System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
