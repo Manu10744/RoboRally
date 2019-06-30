@@ -205,7 +205,7 @@ public class ClientWrapper {
         }
 
         public int getPlayerID(){
-            return playerID;
+            return  this.playerID;
         }
 
         public boolean isReady() { return isReady; }
