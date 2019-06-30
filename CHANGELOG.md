@@ -9,7 +9,6 @@
 * 'GameStarted' protocol message can now be properly deserialized, which makes sending maps to the client possible. - *(Manu)*
 
 ### Changes
-* Private messages implemented - *(Ivan)*
 
 ### Bugfixes
 
