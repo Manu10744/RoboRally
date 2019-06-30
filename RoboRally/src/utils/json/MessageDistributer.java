@@ -197,7 +197,7 @@ public class MessageDistributer {
 
         // Build new string from client's name and message content, to show name in chat
         String messageContent = sendChatBody.getMessage();
-        String content = senderName + ": " + messageContent;
+        String content = senderName + " (@" + senderID + ") : " + messageContent;
 
         int to = sendChatBody.getTo();
 
@@ -210,7 +210,15 @@ public class MessageDistributer {
                 logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
             }
         } else {
-            // TODO: PRIVATE MESSAGE
+            // TODO Send private message to client:
+            for (Server.ClientWrapper client : server.getConnectedClients()) {
+                if (client.getPlayerID() == to) {
+                    JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, true));
+                    client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    client.getWriter().flush();
+                    logger.info("SEND_PRIVATE_CHAT: Content of ReceivedChat: " + content + " " + senderID);
+                }
+            }
         }
     }
 

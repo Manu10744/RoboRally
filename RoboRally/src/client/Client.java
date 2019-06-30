@@ -295,6 +295,6 @@ public class Client {
             this.playerID = new SimpleIntegerProperty(playerID);
         }
 
-      //  public String getName() { return name.get();}
+        //  public String getName() { return name.get();}
     }
 }
