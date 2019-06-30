@@ -552,6 +552,7 @@ public class JSONDecoder {
         ArrayList<Tile> x1y0 = new ArrayList<>();
         ArrayList<Tile> x1y1 = new ArrayList<>();
         x0y0.add(new RotatingBelt(2, "up", "left", true));
+        x0y1.add(new PushPanel("left", 2));
         x1y0.add(new Wall("up", "right"));
         x1y0.add(new Laser(2, "down"));
         x1y1.add(null);
@@ -611,11 +612,10 @@ public class JSONDecoder {
 
             JSONMessage msg = JSONDecoder.deserializeJSON(content);
             GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
-
-            for (int i = 0; i < msgbody.getXArray().size(); i++) {
-                // Checking if everything gets deserialized correctly
-                System.out.println(msgbody.getXArray().get(i));
-            }
+            System.out.println(msgbody.getXArray().get(0).get(0));
+            System.out.println(msgbody.getXArray().get(0).get(1));
+            System.out.println(msgbody.getXArray().get(1).get(0));
+            System.out.println(msgbody.getXArray().get(1).get(1));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
