@@ -610,11 +610,11 @@ public class JSONDecoder {
             System.out.println(content);
 
             JSONMessage msg = JSONDecoder.deserializeJSON(content);
-            GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
+            GameStartedBody mapbody = (GameStartedBody) msg.getMessageBody();
 
-            for (int i = 0; i < msgbody.getXArray().size(); i++) {
+            for (int i = 0; i < mapbody.getXArray().size(); i++) {
                 // Checking if everything gets deserialized correctly
-                System.out.println(msgbody.getXArray().get(i));
+                System.out.println(mapbody.getXArray().get(i));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
