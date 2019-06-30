@@ -1,10 +1,8 @@
 package server;
 
-import client.Client;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import server.game.Game;
-import server.game.Maps.Map;
 import server.game.Player;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
@@ -40,13 +38,13 @@ public class Server extends Application {
     public void start(Stage stage) throws Exception {
         logger.info("Starting server...");
 
-        //  Open socket for incoming connections, if socket already exists start aborts
+        // Open socket for incoming connections, if socket already exists start aborts
         ServerSocket serverSocket = new ServerSocket(SERVER_PORT);
 
         connectedClients = new ArrayList<>();
         boolean isAcceptingNewClients = true;
 
-        while(isAcceptingNewClients) { //Runs forever at the moment
+        while(isAcceptingNewClients) { // Runs forever at the moment
             logger.info("Waiting for new client...");
             //New client connects: (accept() waits for new client)
             Socket clientSocket = serverSocket.accept();
@@ -207,7 +205,7 @@ public class ClientWrapper {
         }
 
         public int getPlayerID(){
-            return  this.playerID;
+            return playerID;
         }
 
         public boolean isReady() { return isReady; }

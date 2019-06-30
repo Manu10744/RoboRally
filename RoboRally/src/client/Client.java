@@ -1,13 +1,9 @@
 package client;
 
 import java.io.*;
-import java.lang.reflect.AccessibleObject;
 import java.util.logging.Logger;
 
-import server.Server;
-import server.game.Maps.Map;
 import server.game.Player;
-import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import utils.json.JSONDecoder;
@@ -38,7 +34,6 @@ public class Client {
     private StringProperty chatHistory;
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
-    private Property<Map> mapProperty;
     private static final Logger logger = Logger.getLogger(Client.class.getName());
 
     //TODO  public Client(String name, String serverIP, int serverPort) {
@@ -59,7 +54,7 @@ public class Client {
      * This method is responsible for connecting the client to the specified server.
      * It uses the {@link @FXML fieldServer} to get the IP and Port.
      *
-     * @return connection Success: True, connection Failed: False
+     * @return <code>true</code> if connection could be established.
      */
     public boolean connectClient() {
         try {
@@ -300,6 +295,6 @@ public class Client {
             this.playerID = new SimpleIntegerProperty(playerID);
         }
 
-      //  public String getName() { return name.get();}
+        //  public String getName() { return name.get();}
     }
 }

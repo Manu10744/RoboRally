@@ -1,12 +1,14 @@
 package utils.json;
 
 import java.io.IOException;
-import server.game.Maps.Map;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import client.Client;
 import javafx.application.Platform;
+import javafx.scene.image.Image;
 import server.Server;
+import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
 
@@ -162,14 +164,14 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-            Map map = new Map();
 
+            /*
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("GameStarted", new GameStartedBody(map));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
-
+            */
         }
     }
 
@@ -195,7 +197,7 @@ public class MessageDistributer {
 
         // Build new string from client's name and message content, to show name in chat
         String messageContent = sendChatBody.getMessage();
-        String content = senderName + ": " + messageContent;
+        String content = senderName + " (@" + senderID + ") : " + messageContent;
 
         int to = sendChatBody.getTo();
 
@@ -208,7 +210,15 @@ public class MessageDistributer {
                 logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
             }
         } else {
-            // TODO: PRIVATE MESSAGE
+            // TODO Send private message to client:
+            for (Server.ClientWrapper client : server.getConnectedClients()) {
+                if (client.getPlayerID() == to) {
+                    JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, true));
+                    client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    client.getWriter().flush();
+                    logger.info("SEND_PRIVATE_CHAT: Content of ReceivedChat: " + content + " " + senderID);
+                }
+            }
         }
     }
 
@@ -230,7 +240,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link SetStartingPointBody#triggerAction(Server, Server.ServerReaderTask, SetStartingPointBody)}.
      * @param server The Server itself.
      * @param task The ReaderTask of the server (Gives access to the PrintWriter).
-     * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
+     * @param setStartingPointBody The message body of the message which is of type {@link SetStartingPointBody}.
      */
     public static void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
         System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
@@ -332,7 +342,29 @@ public class MessageDistributer {
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
-        // TODO: Write code heree
+        /*
+        On every x/y Position of the map there is one array with tiles which is saved here in a doubled nested arraylist called tiles
+         (or in case of empty arrays null, in whic case a new empty array is initialised and returned, see implementation of getTileArrayFromMapBody in GameStartedBody.class)
+        */
+        ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
+
+        for (int xPos = 0; xPos < gameStartedBody.getMapBody().size(); xPos++){
+            for (int yPos = 0; yPos < gameStartedBody.getDoubledNestedArray().size(); yPos++){
+                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(xPos, yPos);
+                tiles.add(tileArray);
+            }
+        }
+
+        /*
+        Those Tiles are now translated into images with the method getImageFromTile (see for its implementation Tile.class) which are in a next substep translated to imageviews as images alone
+        are no nodes and can thus not be displayed in javafx
+         */
+        for (ArrayList<Tile> tileArray : tiles){
+            for (Tile tile : tileArray) {
+                Image image = tile.getTileImage();
+            }
+        }
+
     }
 
     /**
