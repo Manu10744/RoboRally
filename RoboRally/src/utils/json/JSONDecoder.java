@@ -616,6 +616,10 @@ public class JSONDecoder {
                 // Checking if everything gets deserialized correctly
                 System.out.println(msgbody.getXArray().get(i));
             }
+            System.out.println(mapbody.getXArray().get(0).get(0));
+            System.out.println(mapbody.getXArray().get(0).get(1));
+            System.out.println(mapbody.getXArray().get(1).get(0));
+            System.out.println(mapbody.getXArray().get(1).get(1));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

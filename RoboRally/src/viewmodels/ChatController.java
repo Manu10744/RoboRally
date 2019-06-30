@@ -131,25 +131,18 @@ public class ChatController implements Initializable {
 
         //MESSAGEINPUT: addListener waits for Message
         message.addListener((observableValue, oldValue, newValue) -> {
+
             String[] partsOfMessage = newValue.split("\\s+");
+            String firstPart = partsOfMessage[0];
+
             if (partsOfMessage.length == 0) {
                 return;
-            }
-            String firstPart = partsOfMessage[0];
-            client.sendMessage(message.get());
-            /*
-            else if (firstPart.charAt(0) == '@') {
-                if (firstPart.length() > 1) {
-                    int addressedClient = Integer.parseInt(firstPart.substring(1));
-                    for (String otherClient : client.activeClientsProperty()) {
-                        if (addressedClient.equals(otherClient)) {
-                            client.sendPrivateMessage(message.get().substring(firstPart.length()), addressedClient);
-                            break;
-                        }
-                    }
-                }
-            } */
-
+            } else if (firstPart.charAt(0) == '@' && firstPart.length() > 1) {
+                    int addressedPlayerID = Integer.parseInt(firstPart.substring(1));
+                    client.sendPrivateMessage(message.get().substring(firstPart.length()), addressedPlayerID);
+                    logger.info("Private message values: " + message.get().substring(firstPart.length()) +
+                            ", addressed playerID: " + addressedPlayerID);
+            } else client.sendMessage(message.get());
         });
 
         //SERVERINPUT: Set Enter-Event
