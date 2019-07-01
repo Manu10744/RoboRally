@@ -19,6 +19,8 @@ import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.MapController;
 
+import static viewmodels.MapController.fillMapWithImageViews;
+
 /**
  * This class has the sole purpose to distribute the logic for each {@link JSONMessage} into seperate functions
  * that are called when the corresponding message was deserialized.
@@ -374,21 +376,21 @@ public class MessageDistributer {
         ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
         ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
 
-        for (int xPos = 0; xPos < Parameter.DIZZY_HIGHWAY_WIDTH; xPos++) {
+        for (int posX = 0; posX < Parameter.DIZZY_HIGHWAY_WIDTH; posX++) {
             System.out.println("Tiles are turned");
             for (int yPos = 0; yPos < Parameter.DIZZY_HIGHWAY_HEIGHT; yPos++) {
 
 
                 System.out.println(gameStartedBody.getXArray());
-                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(xPos, yPos);
+                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(posX, yPos);
                 tiles.add(tileArray);
 
             }
 
         }
 
-        MapController mapController = new MapController();
-        mapController.fillMapWithImageViews(tiles);
+
+      // fillMapWithImageViews(tiles);
     }
 
 
