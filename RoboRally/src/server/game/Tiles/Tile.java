@@ -16,6 +16,7 @@ public class Tile {
     private Integer speed;
     private Integer count;
     private Boolean isCrossing;
+    private String orientation;
     private ArrayList<String> orientations;
     private ArrayList<Integer> registers;
 
@@ -57,6 +58,10 @@ public class Tile {
 
     public ArrayList<Integer> getRegisters() {
         return registers;
+    }
+
+    public String getOrientation() {
+        return orientation;
     }
 
     /**
@@ -230,7 +235,7 @@ public class Tile {
             case "Laser": {
                 int laserBeamNumber = this.getCount();
                 //As lasers have only one direction, their direction can be found on pos 0 within the orientations array
-                ArrayList<String> laserOrientation = this.getOrientations();
+                String laserOrientation = this.getOrientation();
                 switch (laserBeamNumber) {
                     case (Parameter.LASER_ONE): {
                         if ((laserOrientation.equals(Parameter.ORIENTATION_RIGHT) || (laserOrientation.equals(Parameter.ORIENTATION_LEFT)))) {

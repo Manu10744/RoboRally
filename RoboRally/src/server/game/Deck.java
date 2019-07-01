@@ -1,12 +1,10 @@
 package server.game;
 
-import server.game.DamageCards.DamageCard;
-import server.game.ProgrammingCards.*;
-import server.game.GamePhases.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
+import server.game.DamageCards.DamageCard;
+import server.game.ProgrammingCards.*;
 import static utils.Parameter.*;
 
 /**
@@ -15,7 +13,7 @@ import static utils.Parameter.*;
  * @author Vincent Tafferner
  * @author Jessica Gerlach
  */
-public class Deck {
+abstract class Deck {
 
     private static ArrayList<Card> deckDraw;
     private static ArrayList<Card> deckDiscard;
@@ -48,7 +46,7 @@ public class Deck {
 
         // Add TurnRight cards to the deck. The default value is 3.
         for (int i = 0; i < TURNRIGHT_CARDS_AMOUNT; i++) {
-            deckDraw.add(new TurnRight());
+            deckDraw.add( new TurnRight());
         }
 
         // Add TurnLeft cards to the deck. The default value is 3.
@@ -95,14 +93,6 @@ public class Deck {
      */
     public static void drawCard() {
         for (int i = 0; i < HAND_CARDS_AMOUNT; i++) {
-
-            // Each time this checks if there are still enaugh Cards left in the deckDraw.
-            if (deckEmpty(deckDraw)) {
-                addDiscardToDraw();
-                shuffleDeck(deckDraw);
-            }
-
-            // The first Card of deckDraw is added to the deckHand.
             deckHand.add(getTopCard(deckDraw));
             removeTopCard(deckDraw);
         }
@@ -113,10 +103,10 @@ public class Deck {
      */
     public static void addRegister(){
         if (deckRegister.size() >= REGISTER_CARDS_AMOUNT) {
-            //isFinishedProgramming();
+            System.out.println("Aua!"); // TODO: ADD REAL STATEMENT HERE.
         }else {
-            deckRegister.add(new Card());
-            deckHand.remove(new Card());
+            deckRegister.add(new MoveI()); // TODO: THE METHOD SHOULD TAKE A SPECIFIC CARD CHOSEN BY THE USER.
+            deckHand.remove(0);
         }
     }
 
@@ -178,96 +168,21 @@ public class Deck {
 
     /**
      * This method draws a Damage Card and adds it to the deckDiscard.
+     * TODO: UNFINISHED.  BE ABLE TO CHOOSE DIFFERENT CARDS. BE ABLE TO TAKE ONE SPAM AND ONE VIRUS FOR EXAMPLE?
      */
     public static void drawDamageCard(ArrayList<Card> DamageDeck, ArrayList<Card> DiscardDeck, Card DamageCard){
         if (deckEmpty(DamageDeck) == false) {
-            DiscardDeck.add(DamageCard);
+            deckDiscard.add(new DamageCard());
             removeTopCard(DamageDeck);
+        }else {
+            // TODO:
         }
     }
 
     /**
-     * This method fills the registers with Cards from the deckDraw, if the timer ended. <br>
-     * It is necessary to ask for all indices specifically because its possible, that the register at index 0 is empty <br>
-     * while the others are already filled. <br>
-     * The try catch is necessary because its not possible to look if an index is null as with normal arrays. <br>
-     * This is because get() throws an exception instead of null.
+     * This method fills the registers with Cards from the deckDraw, if the timer ended.
      */
     public static void fillRegisters() {
-
-        // If the index at 0 is empty the first Card of deckDraw will be put there
-        try {
-            deckRegister.get(0);
-        } catch (IndexOutOfBoundsException e ) {
-
-            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
-            if (deckEmpty(deckDraw)) {
-                addDiscardToDraw();
-                shuffleDeck(deckDraw);
-            }
-
-            deckRegister.add(0, getTopCard(deckDraw));
-            removeTopCard(deckDraw);
-        }
-
-        // If the index at 1 is empty the first Card of deckDraw will be put there
-        try {
-            deckRegister.get(1);
-        } catch (IndexOutOfBoundsException e ) {
-
-            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
-            if (deckEmpty(deckDraw)) {
-                addDiscardToDraw();
-                shuffleDeck(deckDraw);
-            }
-
-            deckRegister.add(1, getTopCard(deckDraw));
-            removeTopCard(deckDraw);
-        }
-
-        // If the index at 2 is empty the first Card of deckDraw will be put there
-        try {
-            deckRegister.get(2);
-        } catch (IndexOutOfBoundsException e ) {
-
-            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
-            if (deckEmpty(deckDraw)) {
-                addDiscardToDraw();
-                shuffleDeck(deckDraw);
-            }
-
-            deckRegister.add(2, getTopCard(deckDraw));
-            removeTopCard(deckDraw);
-        }
-
-        // If the index at 3 is empty the first Card of deckDraw will be put there
-        try {
-            deckRegister.get(3);
-        } catch (IndexOutOfBoundsException e ) {
-
-            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
-            if (deckEmpty(deckDraw)) {
-                addDiscardToDraw();
-                shuffleDeck(deckDraw);
-            }
-
-            deckRegister.add(3, getTopCard(deckDraw));
-            removeTopCard(deckDraw);
-        }
-
-        // If the index at 4 is empty the first Card of deckDraw will be put there
-        try {
-            deckRegister.get(4);
-        } catch (IndexOutOfBoundsException e ) {
-
-            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
-            if (deckEmpty(deckDraw)) {
-                addDiscardToDraw();
-                shuffleDeck(deckDraw);
-            }
-
-            deckRegister.add(4, getTopCard(deckDraw));
-            removeTopCard(deckDraw);
-        }
+        //TODO
     }
 }
