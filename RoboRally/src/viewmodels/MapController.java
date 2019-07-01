@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import server.game.Tiles.*;
 import utils.Parameter;
 
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -83,42 +82,9 @@ public class MapController implements Initializable {
             }
         });
 
-        int col = 0;
-        int row = 0;
-
-
-        Image image;
-        ImageView imageView;
-
-        //130 (height * width are in dizzyHighway, 0 - 129 places in array have to be filled
-
-        for (int i = 0; i < Parameter.DIZZY_HIGHWAY_HEIGHT * Parameter.DIZZY_HIGHWAY_WIDTH; i++) {
-          //normal tile imageviews are produced
-            image = (new Empty()).getTileImage();
-            imageView = new ImageView(image);
-
-            // responsiveness of the images to the gridpane is introduced
-            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-            imageView.setPreserveRatio(true);
-
-            //ImageView is added to an array
-            ArrayList<ImageView> imageViews = new ArrayList<>();
-            imageViews.add(imageView);
-
-            //Finally, the array with one normal tile is added to the gridpane
-            mapPane.setConstraints(imageView, row, col);
-            mapPane.getChildren().addAll(i, imageViews);
-            col++;
-
-            if (col >= Parameter.DIZZY_HIGHWAY_HEIGHT) {
-                row++;
-                col = 0;
-            }
-        }
     }
 
-    /** This
+    /**
      * @param tiles
      */
     public void fillMapWithImageViews(ArrayList<ArrayList<Tile>> tiles) {
@@ -144,27 +110,24 @@ public class MapController implements Initializable {
                     imageView = new ImageView(image);
 
                     // Here the width and height are made responsive through them being set in relation to the width and height of the map (divide width snd height and setting the outcome as their respective ratio to the whole gidpane //
-//                    imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-//                    imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
- //                   imageView.setPreserveRatio(true);
+                    imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                    imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                    imageView.setPreserveRatio(true);
 
-                    if (imageView.getImage().equals((new Empty()).getTileImage())){
-                        row++;
-                        //add nothing as there is already a normal tile there
-                    }else {
+                    // Here the imageviews are added to the arry that is ultimatley added to the grispane for displayinf the tile-imageviews //
+                    imageViewArray.add(imageView);
+
                     /*
-                    The position of the imageview-arrays in the gridpane is set as x and y coordinates, then the imageview-arrays are added to the gridpane like they would be to an arraylist
-                     */
-                        mapPane.setConstraints(imageView, col, row);
-                        //here we do not add an arraylist as we already initialised the gridpane with them, so we add to the ones existing imageViews
-                        mapPane.getChildren().add(i, imageView);
-                        row++;
 
-                        System.out.println(mapPane.getChildren().get(i) + " LENGTH: " + mapPane.getChildren().size() + " ROW: " + row + " COL: " + col);
-                        if (col >= Parameter.DIZZY_HIGHWAY_WIDTH) {
-                            col++;
-                            row = 0;
-                        }
+                     */
+                    mapPane.setConstraints(imageView, col, row);
+                    mapPane.getChildren().addAll(i, imageViewArray);
+                    col++;
+
+                    System.out.println(mapPane.getChildren().get(i) + " LENGTH: " + mapPane.getChildren().size() + " ROW: " + row + " COL: " + col);
+                    if (col >= Parameter.DIZZY_HIGHWAY_WIDTH) {
+                        row++;
+                        col = 0;
                     }
                 }
             }
