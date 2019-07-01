@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 
 
+
 /**
  * This class has full control over the chat views. It is responsible for providing the ability to connect to a server,
  * chat with other clients and to signal ready status to the server which starts a game when every client is ready.
@@ -31,7 +32,7 @@ import javafx.fxml.FXML;
  *
  * @author Ivan Dovecar
  */
-public class ChatController implements Initializable {
+public class ChatController implements Initializable, IController {
 
     @FXML
     private TextField fieldName;
@@ -382,5 +383,10 @@ public class ChatController implements Initializable {
 
         }
 
+    }
+
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
     }
 }

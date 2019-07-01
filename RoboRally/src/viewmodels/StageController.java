@@ -12,8 +12,10 @@ import javafx.scene.layout.GridPane;
 import static viewmodels.ChatController.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class StageController {
+public class StageController implements IController {
 
 /**
  * This controller class is responsible for the board and the chat.
@@ -51,7 +53,9 @@ public class StageController {
     @FXML
     ImageView zoomBot;
 
-   public void mouseClicked() {
+    private Map<String, IController> controllerMap = new HashMap<>();
+
+    public void mouseClicked() {
        /*
        hammerBot.setOnMousePressed(event ->{
            figure.setValue(1);
@@ -80,4 +84,8 @@ public class StageController {
        */
    }
 
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
+    }
 }
