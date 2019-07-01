@@ -184,6 +184,11 @@ public class ChatController implements Initializable, IController {
             boolean readyStatus = getReadyProperty().get();
             // Toggle ready status
             getReadyProperty().set(!readyStatus);
+
+            // Button changes color according to ready status
+            if (buttonReady.getStyle().equals("-fx-base: #00FF00;")) {
+                buttonReady.setStyle("-fx-base: #FF0000;");
+            } else buttonReady.setStyle("-fx-base: #00FF00;");
         });
 
         //CHATINPUT: Set Key-Events
