@@ -58,7 +58,7 @@ public class ChatController implements Initializable {
 
     private StringProperty serverAddress;
     private StringProperty name;
-    public static IntegerProperty figure;
+    public IntegerProperty figure;
 
     private BooleanProperty serverSettingFinished;
     private BooleanProperty figureSettingFinished;
