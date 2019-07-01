@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author Vincent Tafferner
  */
-public abstract class Card {
+public class Card {
 
     @Expose @SerializedName("card")
     public String cardName;
