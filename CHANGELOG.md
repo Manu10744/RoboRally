@@ -10,10 +10,13 @@
 * Timer method in ProgrammingPhase is now available - *(Vincent)*
 * ChooseRobot view added - *(Jessie)*
 * ScoreBoard view added - *(Jessie)*
+* Deck functionality finished - *(Vincent)*
+* Basic game Logic created - *(Vincent)*
 
 ### Changes
 * Private messages implemented - *(Ivan)*
-* StartScreen fills complete screen now - *(Vincent)*
+* StartScreen is FullHD now - *(Vincent)*
+* StartScreen without RoboRally-Text was added - *(Vincent)*
 
 ### Bugfixes
 
