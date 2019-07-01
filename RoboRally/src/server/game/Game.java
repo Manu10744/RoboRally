@@ -1,9 +1,5 @@
 package server.game;
 
-import static server.game.GamePhases.ActivationPhase.*;
-import static server.game.GamePhases.ProgrammingPhase.*;
-import static server.game.GamePhases.UpgradePhase.*;
-
 import server.Server;
 
 import java.util.ArrayList;
@@ -21,7 +17,6 @@ public class Game {
     private ArrayList<Player> activePlayers;
     private Server server;
     private boolean isFinished;
-    private int playerAmount;
 
 
     public Game(Server server) {
@@ -29,47 +24,32 @@ public class Game {
         isFinished = false;
     }
 
-
     /**
      * This method starts a game
-     * @author Vincent Tafferner
      * @author Ivan Dovecar
      */
     public void startGame(ArrayList<Player> players) {
-
         //Create Players:
         this.players = new ArrayList<>(players);
         activePlayers = new ArrayList<>(this.players);
-
 
         System.out.println("Game has started");
 
         //TODO
         //Here the different Phases should be called in a smart order.
 
-        while (playerAmount >=2)
-        startUpgradePhase();
-        startProgrammingPhase();
-        startActivationPhase();
+
     }
 
     /**
-     * This method counts the current PLayer Amount.
+     * This method is responsible for ending a game
      */
-    public int countPlayerAmount() {
-        playerAmount = activePlayers.size();
-        return playerAmount;
+    public void endGame() {
+
     }
 
     /**
-     * This method is responsible for ending a game.
-     */
-    public static void endGame() {
-        //TODO
-    }
-
-    /**
-     * Getter for the array list the players are stored in.
+     * Getter for the array list the players are stored in
      * @return players The players of the game
      */
     public ArrayList<Player> getPlayers() {
@@ -77,7 +57,7 @@ public class Game {
     }
 
     /**
-     * Getter for the array list the active players are stored in.
+     * Getter for the array list the active players are stored in
      * @return activePlayers The activePlayers of a game round
      */
     public ArrayList<Player> getActivePlayers() {

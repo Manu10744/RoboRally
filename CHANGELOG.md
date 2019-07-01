@@ -7,13 +7,9 @@
 ## Version [0.3.0] 
 ### New Features
 * 'GameStarted' protocol message can now be properly deserialized, which makes sending maps to the client possible. - *(Manu)*
-* Timer method in ProgrammingPhase is now available - *(Vincent)*
-* ChooseRobot view added - *(Jessie)*
-* ScoreBoard view added - *(Jessie)*
 
 ### Changes
 * Private messages implemented - *(Ivan)*
-* StartScreen fills complete screen now - *(Vincent)*
 
 ### Bugfixes
 

@@ -1,21 +1,9 @@
 package viewmodels;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import static viewmodels.ChatController.*;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-public class StageController implements IController {
+public class StageController {
 
 /**
  * This controller class is responsible for the board and the chat.
@@ -40,52 +28,6 @@ public class StageController implements IController {
     GridPane playerMat;
     @FXML
     GridPane chat;
-    @FXML
-    ImageView hammerBot;
-    @FXML
-    ImageView hulkX90;
-    @FXML
-    ImageView smashBot;
-    @FXML
-    ImageView twonky;
-    @FXML
-    ImageView spinBot;
-    @FXML
-    ImageView zoomBot;
 
-    private Map<String, IController> controllerMap = new HashMap<>();
 
-    public void mouseClicked() {
-       /*
-       hammerBot.setOnMousePressed(event ->{
-           figure.setValue(1);
-           chooseRobot.setVisible(false);
-       });
-       hulkX90.setOnMousePressed(event ->{
-           figure.setValue(2);
-           chooseRobot.setVisible(false);
-       });
-       smashBot.setOnMousePressed(event ->{
-           figure.setValue(3);
-           chooseRobot.setVisible(false);
-       });
-       twonky.setOnMousePressed(event ->{
-           figure.setValue(4);
-           chooseRobot.setVisible(false);
-       });
-       spinBot.setOnMousePressed(event ->{
-           figure.setValue(5);
-           chooseRobot.setVisible(false);
-       });
-       zoomBot.setOnMousePressed(event ->{
-           figure.setValue(6);
-           chooseRobot.setVisible(false);
-       });
-       */
-   }
-
-    @Override
-    public IController setPrimaryController(StageController stageController) {
-        return this;
-    }
 }
