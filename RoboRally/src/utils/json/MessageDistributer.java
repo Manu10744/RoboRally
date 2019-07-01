@@ -19,7 +19,6 @@ import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.MapController;
 
-import static viewmodels.MapController.fillMapWithImageViews;
 
 /**
  * This class has the sole purpose to distribute the logic for each {@link JSONMessage} into seperate functions
