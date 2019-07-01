@@ -12,7 +12,6 @@ import static utils.Parameter.*;
 public class ProgrammingPhase {
 
     public boolean ready = false;
-    public int timer = TIMER_LENGTH;
 
     /**
      * This method handles the programming phase.
@@ -33,7 +32,7 @@ public class ProgrammingPhase {
      * This method checks if a player has finished programming.
      */
     public void isFinishedProgramming() {
-        //TODO
+        ready = true;
     }
 
     /**
