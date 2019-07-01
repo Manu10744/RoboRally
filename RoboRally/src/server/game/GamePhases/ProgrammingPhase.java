@@ -1,6 +1,8 @@
 package server.game.GamePhases;
 
-import static utils.Parameter.TIMER_LENGTH;
+import static utils.Countdown.*;
+import static utils.Parameter.*;
+
 
 /**
  * This class implements the programming phase.
@@ -20,10 +22,11 @@ public class ProgrammingPhase {
     }
 
     /**
-     * This method starts the Timer, when a player has finished programming.
+     * This method starts the Timer, when a player has finished programming. <br>
+     * The makeTimer method is implemented in the Countdown class.
      */
     public void startTimer() {
-        //TODO
+        makeTimer();
     }
 
     /**
