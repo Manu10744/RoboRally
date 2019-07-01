@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+
 import static viewmodels.ChatController.*;
 
 import java.io.IOException;
@@ -50,8 +51,8 @@ public class StageController {
     @FXML
     ImageView zoomBot;
 
-
    public void mouseClicked() {
+       /*
        hammerBot.setOnMousePressed(event ->{
            figure.setValue(1);
            chooseRobot.setVisible(false);
@@ -76,7 +77,7 @@ public class StageController {
            figure.setValue(6);
            chooseRobot.setVisible(false);
        });
+       */
    }
-
 
 }
