@@ -1,29 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.TilePane?>
 
-<GridPane fx:id="map" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1"
+<GridPane fx:id="map" alignment="CENTER"
+          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="viewmodels.MapController">
 
+    <!-- the following constraints support a maximum map size of 40 x 40 fields -->
     <columnConstraints>
-        <ColumnConstraints minWidth="0.0" percentWidth="100.0"/>
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
+        <ColumnConstraints minWidth="0.0" />
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints minHeight="0.0" percentHeight="100.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0"/>
     </rowConstraints>
-
-    <TilePane fx:id="tilePane" style="-fx-background-color: yellow;"/>
-
-    <ImageView fx:id="robotYellow" fitHeight="100.0" fitWidth="100.0"/>
-    <ImageView fx:id="robotOrange" fitHeight="100.0" fitWidth="100.0"/>
-    <ImageView fx:id="robotRed" fitHeight="100.0" fitWidth="100.0"/>
-    <ImageView fx:id="robotPurple" fitHeight="100.0" fitWidth="100.0"/>
-    <ImageView fx:id="robotBlue" fitHeight="100.0" fitWidth="100.0"/>
-    <ImageView fx:id="robotGreen" fitHeight="100.0" fitWidth="100.0"/>
 
 </GridPane>

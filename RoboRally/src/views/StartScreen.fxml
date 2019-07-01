@@ -4,6 +4,8 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.StageController">
 
     <columnConstraints>
@@ -14,11 +16,11 @@
         <RowConstraints valignment="CENTER" minHeight="0.0" percentHeight="100.0"/>
     </rowConstraints>
 
-    <!-- add here robo rally logo and remove text -->
-    <Text text="ROBO RALLY (logo)">
-        <font>
-            <Font name="Tahoma" size="34.0" />
-        </font>
-    </Text>
-
+    <children>
+    <ImageView fx:id="imageView" fitHeight="1054" fitWidth="1899" layoutX="61.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../resources/images/others/StartScreen.png" backgroundLoading="true"/>
+        </image>
+    </ImageView>
+    </children>
 </GridPane>

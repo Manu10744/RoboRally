@@ -7,22 +7,22 @@ import java.util.ArrayList;
 
 public class Laser extends Tile {
     @Expose
-    private String tileType;
+    private String type;
+    @Expose
+    private String orientation;
     @Expose
     private Integer count; //amount of lasers in a laser field
-    @Expose
-    ArrayList<String> orientations;
 
     public Laser (Integer count, String orientation){
-        super();
-        this.tileType = Parameter.LASER_NAME;
+        this.type = Parameter.LASER_NAME;
+        this.orientation = orientation;
+
         this.count = count;
-        this.orientations.add(orientation);
     }
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 
     @Override
@@ -30,8 +30,7 @@ public class Laser extends Tile {
         return count;
     }
 
-    @Override
-    public ArrayList<String> getOrientations(){
-        return this.orientations;
+    public String getOrientation() {
+        return orientation;
     }
 }

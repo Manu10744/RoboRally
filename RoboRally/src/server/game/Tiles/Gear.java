@@ -2,17 +2,19 @@ package server.game.Tiles;
 
 import com.google.gson.annotations.Expose;
 import utils.Parameter;
+
 import java.util.ArrayList;
 
 public class Gear extends Tile {
     @Expose
       private ArrayList<String> orientations;
     @Expose
-      private String tileType;
+      private String type;
 
     public Gear (String color){
-        super();
-        this.tileType = Parameter.GEAR_NAME;
+        this.type = Parameter.GEAR_NAME;
+
+        this.orientations = new ArrayList<>();
         if (color.equals(Parameter.RED_GEAR)) {this.orientations.add(Parameter.ORIENTATION_LEFT);}
         else if (color.equals(Parameter.GREEN_GEAR)) {this.orientations.add(Parameter.ORIENTATION_RIGHT);}
     }
@@ -24,6 +26,6 @@ public class Gear extends Tile {
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 }

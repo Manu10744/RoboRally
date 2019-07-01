@@ -9,15 +9,14 @@ import utils.Parameter;
  */
 public class Empty extends Tile {
     @Expose
-    private String tileType;
+    private String type;
 
     public Empty (){
-    super();
-    this.tileType = Parameter.EMPTY_NAME;
+    this.type = Parameter.EMPTY_NAME;
     }
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 }

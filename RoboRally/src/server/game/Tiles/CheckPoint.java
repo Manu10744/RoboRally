@@ -5,19 +5,19 @@ import utils.Parameter;
 
 public class CheckPoint extends Tile {
     @Expose
-    private String tileType;
+    private String type;
     @Expose
     private Integer count;
 
     public CheckPoint(Integer count){
-            super();
-            this.tileType = Parameter.CHECKPOINT_NAME;
+            this.type = Parameter.CHECKPOINT_NAME;
+
             this.count = count;
     }
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 
     @Override

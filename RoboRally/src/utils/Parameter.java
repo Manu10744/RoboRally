@@ -42,6 +42,8 @@ public class Parameter {
 
     //Game
     public static final int TIMER_LENGTH = 30;
+    public static final int TIMER_DELAY = 1000; // This should be 1000 because a second has 1000 milliseconds.
+    public static final int TIMER_PERIOD = 1000;
 
         //amount of players
     public  static final int MAX_PLAYERSIZE = 6;
@@ -91,6 +93,9 @@ public class Parameter {
     public static String WALL_NAME = "Wall";
 
 
+    //PushPanels number of Registers
+    public static  final int PUSHPANEL_REG_NUM_TWO = 2;
+    public static  final int PUSHPANEL_REG_NUM_THREE = 3;
     //Gear color
     public static final String RED_GEAR = "red";
     public static final String GREEN_GEAR = "green";
@@ -104,18 +109,14 @@ public class Parameter {
     public static final int BLUE_BELT_SPEED = 2;
 
     //Wall
-        //amaonut of walls
+        //amount of walls
     public static final int ONE_WALL = 1;
     public static final int TWO_WALLS = 2;
 
     //Map
-        //names
-    public static final String DIZZY_HIGHWAY = "Dizzy Highway";
         //size
     public static final int DIZZY_HIGHWAY_HEIGHT = 10;
     public static final int DIZZY_HIGHWAY_WIDTH = 13;
-        //tile_position
-    public static final int DIZZY_BLUE_BOTTOM_CVB_Y_POS = 5;
 
     //ArrayElements
     public static int FIRST_ELEMENT_POS = 0;
