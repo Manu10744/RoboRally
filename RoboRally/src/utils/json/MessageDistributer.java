@@ -1,6 +1,10 @@
 package utils.json;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -11,6 +15,7 @@ import server.Server;
 import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
+import viewmodels.MapController;
 
 /**
  * This class has the sole purpose to distribute the logic for each {@link JSONMessage} into seperate functions
@@ -164,14 +169,17 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-
-            /*
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("GameStarted", new GameStartedBody(map));
-                client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                client.getWriter().flush();
+                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+
+                try {
+                    String map = Files.readString(path, StandardCharsets.UTF_8);
+                    client.getWriter().println(map);
+                    client.getWriter().flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            */
         }
     }
 
@@ -342,29 +350,7 @@ public class MessageDistributer {
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
-        /*
-        On every x/y Position of the map there is one array with tiles which is saved here in a doubled nested arraylist called tiles
-         (or in case of empty arrays null, in whic case a new empty array is initialised and returned, see implementation of getTileArrayFromMapBody in GameStartedBody.class)
-        */
-        ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
-
-        for (int xPos = 0; xPos < gameStartedBody.getMapBody().size(); xPos++){
-            for (int yPos = 0; yPos < gameStartedBody.getDoubledNestedArray().size(); yPos++){
-                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(xPos, yPos);
-                tiles.add(tileArray);
-            }
-        }
-
-        /*
-        Those Tiles are now translated into images with the method getImageFromTile (see for its implementation Tile.class) which are in a next substep translated to imageviews as images alone
-        are no nodes and can thus not be displayed in javafx
-         */
-        for (ArrayList<Tile> tileArray : tiles){
-            for (Tile tile : tileArray) {
-                Image image = tile.getTileImage();
-            }
-        }
-
+        // TODO FILLING MAP
     }
 
     /**
