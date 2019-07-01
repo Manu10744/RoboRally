@@ -7,5 +7,11 @@ package server.game.GamePhases;
  */
 public class UpgradePhase {
 
-    //TODO
+    /**
+     * This method starts the UpgradePhase.
+     */
+    public static void startUpgradePhase() {
+        //TODO
+    }
+
 }

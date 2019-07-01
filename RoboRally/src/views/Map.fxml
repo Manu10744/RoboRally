@@ -4,11 +4,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="mapPane" alignment="CENTER"
+<GridPane fx:id="map" alignment="CENTER"
           xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="viewmodels.MapController">
 
-    <!-- the following constraints support a maximum mapPane size of 40 x 40 fields -->
+    <!-- the following constraints support a maximum map size of 40 x 40 fields -->
     <columnConstraints>
         <ColumnConstraints minWidth="0.0" />
         <ColumnConstraints minWidth="0.0" />
