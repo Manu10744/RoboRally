@@ -350,8 +350,7 @@ public class MessageDistributer {
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
-        MapController controller = new MapController();
-        controller.printInfo();
+        // TODO FILLING MAP
     }
 
     /**
