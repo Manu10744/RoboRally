@@ -44,6 +44,9 @@ public class MessageDistributer {
      * @param server          The Server itself.
      * @param task            The ReaderTask of the server (Gives access to the PrintWriter).
      * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
+     *
+     * @author Ivan Dovecar
+     * @author Manu
      */
     public static void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "Entered handleHelloServer()" + ANSI_RESET);
@@ -78,6 +81,9 @@ public class MessageDistributer {
      * @param server           The Server itself.
      * @param task             The ReaderTask of the server (Gives access to the PrintWriter).
      * @param playerValuesBody The message body of the message which is of type {@link PlayerValuesBody}.
+     *
+     * @author Ivan Dovecar
+     * @author Manu
      */
     public static void handlePlayerValues(Server server, Server.ServerReaderTask task, PlayerValuesBody playerValuesBody) {
         System.out.println(ANSI_CYAN + "Entered handlePlayerValues()" + ANSI_RESET);
@@ -125,10 +131,19 @@ public class MessageDistributer {
             task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
             task.getWriter().flush();
 
-            //Inform new Client about all current activeClients (send all connected clients to new client without own entry)
-            for (Server.ClientWrapper client : server.getConnectedClients()) {
-                if (!client.getClientSocket().equals(task.getClientSocket())) {
-                    // TODO PlayerAdded message of every already active client is sent to new client
+            //Inform new client with private chat message about all current active clients(without own entry)
+            for(Server.ClientWrapper client : server.getConnectedClients()){
+                if(playerValueName.equals(client.getName())){
+                    for(Server.ClientWrapper otherClient : server.getConnectedClients()){
+                        if(!playerValueName.equals(otherClient.getName())){
+                            String content = "Active player " + otherClient.getName() + " has ID " + otherClient.getPlayerID()
+                                    + " and figure " + otherClient.getFigure();
+                            JSONMessage jsonMessageAlreadyConnectedPlayers = new JSONMessage("ReceivedChat",
+                                    new ReceivedChatBody(content, otherClient.getPlayerID(), true));
+                            client.getWriter().println(JSONEncoder.serializeJSON(jsonMessageAlreadyConnectedPlayers));
+                            client.getWriter().flush();
+                        }
+                    }
                 }
             }
         }
@@ -200,6 +215,9 @@ public class MessageDistributer {
      * @param server       The Server itself.
      * @param task         The ReaderTask of the server (Gives access to the PrintWriter).
      * @param sendChatBody The message body of the message which is of type {@link SendChatBody}.
+     *
+     * @author Ivan Dovecar
+     * @author Manu
      */
     public static void handleSendChat(Server server, Server.ServerReaderTask task, SendChatBody sendChatBody) {
         System.out.println(ANSI_CYAN + "Entered handleSendChat()" + ANSI_RESET);
@@ -229,7 +247,7 @@ public class MessageDistributer {
                 logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
             }
         } else {
-            // TODO Send private message to client:
+            // Send private message to client:
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 if (client.getPlayerID() == to) {
                     JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, true));
@@ -416,6 +434,9 @@ public static void handleReceivedChat(Client client,Client.ClientReaderTask task
  * @param client    The Client itself.
  * @param task      The ReaderTask of the client (Gives access to the PrintWriter).
  * @param errorBody The message body of the message which is of type {@link ErrorBody}.
+ *
+ * @author Ivan Dovecar
+ * @author Manu
  */
 public static void handleError(Client client,Client.ClientReaderTask task,ErrorBody errorBody){
         System.out.println(ANSI_CYAN+"Entered handleError()"+ANSI_RESET);
