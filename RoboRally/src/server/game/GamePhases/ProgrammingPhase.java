@@ -1,6 +1,8 @@
 package server.game.GamePhases;
 
-import static utils.Parameter.TIMER_LENGTH;
+import static utils.Countdown.*;
+import static utils.Parameter.*;
+
 
 /**
  * This class implements the programming phase.
@@ -9,48 +11,52 @@ import static utils.Parameter.TIMER_LENGTH;
  */
 public class ProgrammingPhase {
 
-    public boolean ready = false;
-    public int timer = TIMER_LENGTH;
+    public static boolean ready;
+
+    public ProgrammingPhase(){
+        ready = false;
+    }
 
     /**
      * This method handles the programming phase.
      */
-    public void startProgrammingPhase() {
+    public static void startProgrammingPhase() {
         //TODO
     }
 
     /**
-     * This method starts the Timer, when a player has finished programming.
+     * This method starts the Timer, when a player has finished programming. <br>
+     * The makeTimer method is implemented in the Countdown class.
      */
-    public void startTimer() {
-        //TODO
+    public static void startTimer() {
+        makeTimer();
     }
 
     /**
      * This method checks if a player has finished programming.
      */
-    public void isFinishedProgramming() {
-        //TODO
+    public static void isFinishedProgramming() {
+        ready = true;
     }
 
     /**
      * This method tells each player about the current state of the opponents registers.
      */
-    public void tellPlayers() {
+    public static void tellPlayers() {
         //TODO
     }
 
     /**
      * This method tells the Clients which cards they have.
      */
-    public void giveCards() {
+    public static void giveCards() {
         //TODO
     }
 
     /**
      * This method receives the cards from the Players.
      */
-    public void receiveCards() {
+    public static void receiveCards() {
         //TODO
     }
 
