@@ -48,7 +48,7 @@ public class Deck {
 
         // Add TurnRight cards to the deck. The default value is 3.
         for (int i = 0; i < TURNRIGHT_CARDS_AMOUNT; i++) {
-            deckDraw.add( new TurnRight());
+            deckDraw.add(new TurnRight());
         }
 
         // Add TurnLeft cards to the deck. The default value is 3.
@@ -95,6 +95,14 @@ public class Deck {
      */
     public static void drawCard() {
         for (int i = 0; i < HAND_CARDS_AMOUNT; i++) {
+
+            // Each time this checks if there are still enaugh Cards left in the deckDraw.
+            if (deckEmpty(deckDraw)) {
+                addDiscardToDraw();
+                shuffleDeck(deckDraw);
+            }
+
+            // The first Card of deckDraw is added to the deckHand.
             deckHand.add(getTopCard(deckDraw));
             removeTopCard(deckDraw);
         }
@@ -170,42 +178,18 @@ public class Deck {
 
     /**
      * This method draws a Damage Card and adds it to the deckDiscard.
-     * TODO: UNFINISHED.  BE ABLE TO CHOOSE DIFFERENT CARDS. BE ABLE TO TAKE ONE SPAM AND ONE VIRUS FOR EXAMPLE?
      */
     public static void drawDamageCard(ArrayList<Card> DamageDeck, ArrayList<Card> DiscardDeck, Card DamageCard){
         if (deckEmpty(DamageDeck) == false) {
-            deckDiscard.add(new DamageCard());
+            DiscardDeck.add(DamageCard);
             removeTopCard(DamageDeck);
-        }else {
-            // TODO:
         }
     }
-
-    /**
-     * This method fills the registers with Cards from the deckDraw, if the timer ended.
-     */
-    /*
-    public static void fillRegisters() {
-        if (deckRegister(0).isEmpty == true) {
-            deckRegister.add(0, getTopCard(deckDraw));
-        }else if (deckRegister(1).isEmpty == true) {
-            deckRegister.add(1, getTopCard(deckDraw));
-        }else if (deckRegister(2).isEmpty == true) {
-            deckRegister.add(2, getTopCard(deckDraw));
-        }else if (deckRegister(3).isEmpty == true) {
-            deckRegister.add(3, getTopCard(deckDraw));
-        }else if (deckRegister(4).isEmpty == true) {
-            deckRegister.add(4, getTopCard(deckDraw));
-        }else {
-
-        }
-    }
-     */
 
     /**
      * This method fills the registers with Cards from the deckDraw, if the timer ended. <br>
      * It is necessary to ask for all indices specifically because its possible, that the register at index 0 is empty <br>
-     * while the others are already filled.
+     * while the others are already filled. <br>
      * The try catch is necessary because its not possible to look if an index is null as with normal arrays. <br>
      * This is because get() throws an exception instead of null.
      */
