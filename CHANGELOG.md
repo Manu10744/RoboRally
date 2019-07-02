@@ -1,5 +1,4 @@
 ### Known Issues
-* Chat - tooltip is not working
 * StartScreen is not responsive and doesnt take up 100% width
 * Automatic filling of GridPane by reading deserialized GameStarted message not implemented yet
 * Ability to choose map not implemented yet
@@ -19,6 +18,7 @@
 * StartScreen without RoboRally-Text was added - *(Vincent)*
 
 ### Bugfixes
+* Chat - tooltip is working - *(Ivan)*
 
 ## Version [0.2.0]
 ### New Features
