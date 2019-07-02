@@ -91,13 +91,10 @@ public class ChatController implements Initializable, IController {
         clientChatOutput = new SimpleStringProperty();
 
 
-        //SERVERINPUT: Tooltip is shown if ip and port information are not entered proper
-        Tooltip fieldServerTooltip = new Tooltip("xxx.xxx.xxx.xxx:xxxx");
-        fieldServerTooltip.setAutoHide(true);
+        //SERVERINPUT: Tooltip is shown while fieldServer is focused
+        final Tooltip tooltipFieldServer = new Tooltip("Enter server and port as follows xxx.xxx.xxx.xxx:xxxx");
+        fieldServer.setTooltip(tooltipFieldServer);
 
-        //NAMEINPUT: Tooltip is shown name is not entered proper (ATM no use because there are no restrictions)
-        Tooltip fieldNameTooltip = new Tooltip("ADD TEXT IF NECESSARY.");
-        fieldNameTooltip.setAutoHide(true);
 
         //SERVERINPUT: addListener waits for IP and port
         serverAddress.addListener(((observableValue, oldValue, newValue) -> {
@@ -152,9 +149,6 @@ public class ChatController implements Initializable, IController {
             if (event.getCode() == KeyCode.ENTER) {
                 if (checkIPString(fieldServer.getText())) {
                     serverAddressProperty().set(fieldServer.getText());
-                    fieldServerTooltip.hide();
-                } else {
-                    showTooltip(primaryStage, fieldServer, fieldServerTooltip);
                 }
             }
         });
@@ -224,6 +218,8 @@ public class ChatController implements Initializable, IController {
             fieldServer.disableProperty().set(true);
             fieldFigure.disableProperty().set(false);
             fieldFigure.requestFocus();
+            final Tooltip tooltipFieldFigure = new Tooltip("Choose a figur by entering a number 1 to 6");
+            fieldFigure.setTooltip(tooltipFieldFigure);
             //TODO enable visibility choose robot / disable visibility start
         }));
 
@@ -232,6 +228,8 @@ public class ChatController implements Initializable, IController {
             fieldFigure.disableProperty().set(true);
             fieldName.disableProperty().set(false);
             fieldName.requestFocus();
+            final Tooltip tooltipFieldName = new Tooltip("Choose any player name");
+            fieldName.setTooltip(tooltipFieldName);
         }));
 
         //Enable chatInput and buttons after name setting is finished
