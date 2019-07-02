@@ -15,10 +15,8 @@ public class Laser extends Tile {
 
     public Laser (Integer count, String orientation){
         this.type = Parameter.LASER_NAME;
-
         this.orientations = new ArrayList<>();
         this.orientations.add(orientation);
-
         this.count = count;
     }
 
@@ -34,6 +32,6 @@ public class Laser extends Tile {
 
     @Override
     public ArrayList<String> getOrientations() {
-        return this.orientations;
+        return orientations;
     }
 }

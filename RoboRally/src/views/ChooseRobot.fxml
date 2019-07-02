@@ -1,26 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="chooseRobot" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.StageController">
+<GridPane fx:id="chooseRobot" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ChooseRobotController">
 
 <columnConstraints>
-    <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0"/>
+    <ColumnConstraints minWidth="0.0" />
 </columnConstraints>
 
 <rowConstraints>
-    <RowConstraints valignment="CENTER" minHeight="0.0" percentHeight="50.0"/>
-    <RowConstraints valignment="CENTER" minHeight="0.0" percentHeight="50.0"/>
+    <RowConstraints minHeight="0.0" />
 </rowConstraints>
 
-    <HBox fx:id="chooseRobotBox1" GridPane.columnIndex="0" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: black;">
-        <!-- TODO add robots 1 - 3 (see example) -->
-        <ImageView fx:id="NAMEOFROBOT1" fitHeight=" 200.0" fitWidth=" 300.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
+   <ImageView fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" >
+      <image>
+         <Image url="@../resources/images/others/HintergrundWikiStartseite.png" />
+      </image>
+   </ImageView>
+
+    <VBox fx:id="vBox1" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+
+   <Label fx:id="heading" text="Choose a robot" textFill="#ebe1e1">
+      <font>
+         <Font name="System Bold" size="48"/>
+      </font>
+   </Label>
+
+    <HBox fx:id="chooseRobotBox1" alignment="CENTER" minHeight="0.0" minWidth="0.0">
+
+      <VBox>
+         <ImageView fx:id="hammerBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../resources/images/robots/choose-robot-hammerbot.png"/>
+            </image>
+         </ImageView>
+         <Label text="HammerBot" textFill="#ebe1e1" GridPane.halignment="CENTER">
+            <font>
+               <Font name="System Bold"  />
+            </font>
+         </Label>
+      </VBox>
+
+      <VBox>
+            <ImageView fx:id="hulkX90" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/images/robots/choose-robot-hulkX90.png" />
+               </image>
+            </ImageView>
+            <Label text="HulkX90" textFill="#ebe1e1" alignment="CENTER">
+               <font>
+                  <Font name="System Bold"  />
+               </font>
+            </Label>
+      </VBox>
+
+      <VBox>
+            <ImageView fx:id="smashBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/images/robots/choose-robot-smashbot.png" />
+               </image>
+            </ImageView>
+            <Label text="SmashBot" textFill="#ebe1e1">
+               <font>
+                  <Font name="System Bold"  />
+               </font>
+            </Label>
+      </VBox>
+
     </HBox>
 
-    <HBox fx:id="chooseRobotBox2" GridPane.columnIndex="0" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: grey;">
-        <!-- TODO add robots 4 - 6 -->
-    </HBox>
+    <HBox fx:id="chooseRobotBox2" alignment="CENTER" minHeight="0.0" minWidth="0.0">
 
+         <VBox>
+               <ImageView fx:id="spinBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/images/robots/choose-robot-spinbot.png" />
+                  </image>
+               </ImageView>
+               <Label text="SpinBot" textFill="#ebe1e1">
+                  <font>
+                     <Font name="System Bold"  />
+                  </font>
+               </Label>
+
+         </VBox>
+
+         <VBox>
+               <ImageView fx:id="twonky" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/images/robots/choose-robot-twonky.png"/>
+                  </image>
+               </ImageView>
+               <Label text="Twonky" textFill="#ebe1e1">
+                  <font>
+                     <Font name="System Bold"/>
+                  </font>
+               </Label>
+         </VBox>
+
+         <VBox>
+               <ImageView fx:id="zoomBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/images/robots/choose-robot-zoombot.png"/>
+                  </image>
+               </ImageView>
+               <Label text="ZoomBot" textFill="#ebe1e1">
+                  <font>
+                     <Font name="System Bold" />
+                  </font>
+               </Label>
+         </VBox>
+    </HBox>
+    </VBox>
 </GridPane>

@@ -42,6 +42,8 @@ public class Parameter {
 
     //Game
     public static final int TIMER_LENGTH = 30;
+    public static final int TIMER_DELAY = 1000; // This should be 1000 because a second has 1000 milliseconds.
+    public static final int TIMER_PERIOD = 1000;
 
         //amount of players
     public  static final int MAX_PLAYERSIZE = 6;
@@ -119,4 +121,8 @@ public class Parameter {
     //ArrayElements
     public static int FIRST_ELEMENT_POS = 0;
     public static int SECOND_ELEMENT_POS = 1;
+
+    //ChooseRobot
+    public static final int CHOOSE_ROBOT_RATIO_WIDTH = 5;
+    public static final int CHOOSE_ROBOT_RATIO_HEIGHT = 3;
 }

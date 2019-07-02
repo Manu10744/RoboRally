@@ -21,7 +21,7 @@ public class Spam extends DamageCard {
      * In this case the player has to play the top card of his programming deck.
      */
     @Override
-    public void activateDamage() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }

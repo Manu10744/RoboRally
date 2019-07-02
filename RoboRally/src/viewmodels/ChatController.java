@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import client.Client;
+import javafx.scene.image.Image;
 import utils.Parameter;
 import javafx.fxml.Initializable;
 import javafx.beans.property.*;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 
 
+
 /**
  * This class has full control over the chat views. It is responsible for providing the ability to connect to a server,
  * chat with other clients and to signal ready status to the server which starts a game when every client is ready.
@@ -31,7 +33,7 @@ import javafx.fxml.FXML;
  *
  * @author Ivan Dovecar
  */
-public class ChatController implements Initializable {
+public class ChatController implements Initializable, IController {
 
     @FXML
     private TextField fieldName;
@@ -58,7 +60,7 @@ public class ChatController implements Initializable {
 
     private StringProperty serverAddress;
     private StringProperty name;
-    private IntegerProperty figure;
+    public IntegerProperty figure;
 
     private BooleanProperty serverSettingFinished;
     private BooleanProperty figureSettingFinished;
@@ -89,13 +91,10 @@ public class ChatController implements Initializable {
         clientChatOutput = new SimpleStringProperty();
 
 
-        //SERVERINPUT: Tooltip is shown if ip and port information are not entered proper
-        Tooltip fieldServerTooltip = new Tooltip("xxx.xxx.xxx.xxx:xxxx");
-        fieldServerTooltip.setAutoHide(true);
+        //SERVERINPUT: Tooltip is shown while fieldServer is focused
+        final Tooltip tooltipFieldServer = new Tooltip("Enter server and port as follows xxx.xxx.xxx.xxx:xxxx");
+        fieldServer.setTooltip(tooltipFieldServer);
 
-        //NAMEINPUT: Tooltip is shown name is not entered proper (ATM no use because there are no restrictions)
-        Tooltip fieldNameTooltip = new Tooltip("ADD TEXT IF NECESSARY.");
-        fieldNameTooltip.setAutoHide(true);
 
         //SERVERINPUT: addListener waits for IP and port
         serverAddress.addListener(((observableValue, oldValue, newValue) -> {
@@ -150,9 +149,6 @@ public class ChatController implements Initializable {
             if (event.getCode() == KeyCode.ENTER) {
                 if (checkIPString(fieldServer.getText())) {
                     serverAddressProperty().set(fieldServer.getText());
-                    fieldServerTooltip.hide();
-                } else {
-                    showTooltip(primaryStage, fieldServer, fieldServerTooltip);
                 }
             }
         });
@@ -183,6 +179,11 @@ public class ChatController implements Initializable {
             boolean readyStatus = getReadyProperty().get();
             // Toggle ready status
             getReadyProperty().set(!readyStatus);
+
+            // Button changes color according to ready status
+            if (buttonReady.getStyle().equals("-fx-base: #00FF00;")) {
+                buttonReady.setStyle("-fx-base: #FF0000;");
+            } else buttonReady.setStyle("-fx-base: #00FF00;");
         });
 
         //CHATINPUT: Set Key-Events
@@ -217,6 +218,8 @@ public class ChatController implements Initializable {
             fieldServer.disableProperty().set(true);
             fieldFigure.disableProperty().set(false);
             fieldFigure.requestFocus();
+            final Tooltip tooltipFieldFigure = new Tooltip("Choose a figur by entering a number 1 to 6");
+            fieldFigure.setTooltip(tooltipFieldFigure);
             //TODO enable visibility choose robot / disable visibility start
         }));
 
@@ -225,6 +228,8 @@ public class ChatController implements Initializable {
             fieldFigure.disableProperty().set(true);
             fieldName.disableProperty().set(false);
             fieldName.requestFocus();
+            final Tooltip tooltipFieldName = new Tooltip("Choose any player name");
+            fieldName.setTooltip(tooltipFieldName);
         }));
 
         //Enable chatInput and buttons after name setting is finished
@@ -367,6 +372,13 @@ public class ChatController implements Initializable {
         return result;
     }
 
+    /**
+     * opens the RoboRally Wiki when button is clicked
+     * @param event
+     * @throws IOException
+     * @author Verena Sadtler
+     */
+
     @FXML
     void openWiki(ActionEvent event) throws IOException{
         Stage rootStage;
@@ -377,10 +389,17 @@ public class ChatController implements Initializable {
             root1 = FXMLLoader.load(getClass().getResource("/views/Wiki.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
+            // Set Stage icon and title
             stage.setTitle("WikiRoboRally");
+            stage.getIcons().add(new Image("/resources/images/others/wiki-icon.png"));
             stage.show();
 
         }
 
+    }
+
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
     }
 }
