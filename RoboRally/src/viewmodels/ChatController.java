@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import client.Client;
+import javafx.scene.image.Image;
 import utils.Parameter;
 import javafx.fxml.Initializable;
 import javafx.beans.property.*;
@@ -383,7 +384,9 @@ public class ChatController implements Initializable, IController {
             root1 = FXMLLoader.load(getClass().getResource("/views/Wiki.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
+            // Set Stage icon and title
             stage.setTitle("WikiRoboRally");
+            stage.getIcons().add(new Image("/resources/images/others/wiki-icon.png"));
             stage.show();
 
         }
