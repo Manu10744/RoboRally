@@ -15,7 +15,7 @@ public class TurnRight extends ProgrammingCard {
      * This will make the robot turn 90 degrees to the right.
      */
     @Override
-    public void moveRobot() {
+    public void activateProgram() {
         // TODO
     }
 }

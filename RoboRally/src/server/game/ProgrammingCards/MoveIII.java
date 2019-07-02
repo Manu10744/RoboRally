@@ -1,7 +1,9 @@
 package server.game.ProgrammingCards;
 
 /**
- * This class implements the MoveIII card.
+ * This class implements the MoveIII card. <br>
+ * It does this by calling the MoveI method three times. <br>
+ * This is important because otherwise the Robot might be able to jump over walls.
  *
  * @author Vincent Tafferner
  */
@@ -16,7 +18,7 @@ public class MoveIII extends ProgrammingCard {
      * It is important, that he moves one tile at a time so he cant jump over holes or walls.
      */
     @Override
-    public void moveRobot() {
+    public void activateProgram() {
         // TODO
     }
 }
