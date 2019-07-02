@@ -121,4 +121,8 @@ public class Parameter {
     //ArrayElements
     public static int FIRST_ELEMENT_POS = 0;
     public static int SECOND_ELEMENT_POS = 1;
+
+    //ChooseRobot
+    public static final int CHOOSE_ROBOT_RATIO_WIDTH = 5;
+    public static final int CHOOSE_ROBOT_RATIO_HEIGHT = 3;
 }
