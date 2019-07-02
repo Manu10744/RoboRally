@@ -8,8 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -20,7 +22,7 @@ public class WikiController extends Application {
 
     private Stage rootStage;
     @FXML
-    private AnchorPane wiki;
+    private GridPane wiki;
     @FXML
     private AnchorPane cardsWiki;
     @FXML
@@ -43,6 +45,7 @@ public class WikiController extends Application {
      * This method starts the wiki
      * @param stage
      */
+
     @Override
     public void start(Stage stage) {
         this.rootStage = stage;
@@ -56,9 +59,10 @@ public class WikiController extends Application {
     private void initStage() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(WikiController.class.getResource("/view/Wiki.fxml"));
+            loader.setLocation(WikiController.class.getResource("/views/Wiki.fxml"));
             wiki = loader.load();
             Scene scene = new Scene(wiki);
+
             rootStage.setScene(scene);
             rootStage.showingProperty().addListener((observable, oldValue, showing)-> {
                 if (showing) {
@@ -67,6 +71,7 @@ public class WikiController extends Application {
                         }
                     });
             rootStage.show();
+            //rootStage.getStylesheets().addAll(getClass().getResource("/css/app.css").toExternalForm())
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -86,21 +91,21 @@ public class WikiController extends Application {
 
         if (event.getSource() == buttonCards) {
             rootStage = (Stage) buttonCards.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/view/WikiCards.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/views/WikiCards.fxml"));
             Scene scene = new Scene(root);
             rootStage.setScene(scene);
             rootStage.show();
         }
         if (event.getSource() == buttonRobots) {
             rootStage = (Stage) buttonRobots.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/view/WikiRobots.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/views/WikiRobots.fxml"));
             Scene scene = new Scene(root);
             rootStage.setScene(scene);
             rootStage.show();
         }
         if (event.getSource() == buttonRules) {
             rootStage = (Stage) buttonRules.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/view/WikiRules.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/views/WikiRules.fxml"));
             Scene scene = new Scene(root);
             rootStage.setScene(scene);
             rootStage.show();

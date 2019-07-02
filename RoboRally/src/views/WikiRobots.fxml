@@ -23,7 +23,12 @@
     <RowConstraints minHeight="10.0" percentHeight="0.0" prefHeight="575.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <ImageView blendMode="MULTIPLY" fitHeight="627.0" fitWidth="800.0" GridPane.rowIndex="1">
+         <image>
+            <Image url="@../resources/images/others/HintergrundWikiUnterseite.png" />
+         </image>
+      </ImageView>
+      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <content>
             <AnchorPane minHeight="600.0" minWidth="800.0" prefWidth="800.0">
                <children>
@@ -176,7 +181,7 @@
             <Insets top="15.0" />
          </GridPane.margin>
       </ScrollPane>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" style="-fx-background-color: white;" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <HBox blendMode="MULTIPLY" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="800.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <children>
             <Button fx:id="buttonCards" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="25.0" text="Cards" />
             <Button mnemonicParsing="false" text="Robots" />
