@@ -19,7 +19,7 @@ public class Worm extends DamageCard {
      * In this case the robot has to reboot.
      */
     @Override
-    public void activateDamage() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }

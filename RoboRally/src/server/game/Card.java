@@ -14,8 +14,17 @@ public class Card {
     @Expose @SerializedName("card")
     public String cardName;
 
+    //This is the constructor :D
     public Card(){
         cardName = "Card";
+    }
+
+    /**
+     * This is the method that is called, when the Card's effect is activated. <br>
+     * It will be overwritten in each subclass.
+     */
+    public void activateCard(){
+        //TODO please overwrite
     }
 
     /**

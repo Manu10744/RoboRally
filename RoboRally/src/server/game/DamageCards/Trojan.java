@@ -19,7 +19,7 @@ public class Trojan extends DamageCard {
      * In this case you have to take two SpamCards and play the top card of your programming deck.
      */
     @Override
-    public void activateDamage() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }
