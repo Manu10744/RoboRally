@@ -15,8 +15,8 @@ public class PowerUp extends ProgrammingCard {
      * Even though the name suggests a move, in this case the robot will activate a powerup instead of moving <br>
      * around on the map.
      */
-    @Override
-    public void activateCard() {
-        //TODO
+
+    public static void activateCard() {
+        //TODO .... ... . .. . .
     }
 }
