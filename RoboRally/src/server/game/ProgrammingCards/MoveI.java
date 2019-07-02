@@ -15,7 +15,7 @@ public class MoveI extends ProgrammingCard {
      * This will move the robot one tile in the direction he is facing.
      */
     @Override
-    public void moveRobot() {
-        // TODO
+    public void activateProgram() {
+
     }
 }

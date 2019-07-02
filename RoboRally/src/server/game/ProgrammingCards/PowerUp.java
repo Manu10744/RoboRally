@@ -16,7 +16,7 @@ public class PowerUp extends ProgrammingCard {
      * around on the map.
      */
     @Override
-    public void moveRobot() {
+    public void activateProgram() {
         // TODO
     }
 }
