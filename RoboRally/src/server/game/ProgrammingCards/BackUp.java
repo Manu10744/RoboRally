@@ -16,7 +16,7 @@ public class BackUp extends ProgrammingCard {
      * It is important, that the robot still faces the same direction.
      */
     @Override
-    public void activateProgram() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }

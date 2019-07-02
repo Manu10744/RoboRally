@@ -16,7 +16,7 @@ public class Again extends ProgrammingCard {
      * If there was no previous move the robot shall do nothing.
      */
     @Override
-    public void activateProgram() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }

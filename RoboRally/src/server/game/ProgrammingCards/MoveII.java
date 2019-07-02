@@ -18,7 +18,7 @@ public class MoveII extends ProgrammingCard {
      * It is important, that he moves one tile at a time so he cant jump over holes or walls.
      */
     @Override
-    public void activateProgram() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }

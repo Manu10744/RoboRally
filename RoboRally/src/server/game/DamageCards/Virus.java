@@ -19,7 +19,7 @@ public class Virus extends DamageCard {
      * You play the top card of your programming deck.
      */
     @Override
-    public void activateDamage() {
-        // TODO
+    public void activateCard() {
+        //TODO
     }
 }
