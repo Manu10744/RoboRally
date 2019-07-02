@@ -5,9 +5,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.stage.Screen?>
 
-<!-- Stage contains board and chat and it size automatically adapts to the users' setup -->
+<!-- Stage contains board and chat -->
 <GridPane fx:id="stage"
-          prefHeight="${screen.visualBounds.height}" prefWidth="${screen.visualBounds.width}"
           xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="viewmodels.StageController">
 
@@ -44,11 +43,11 @@
       <!-- TODO ChooseRobot -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
 
-      <!-- OpponentMat -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>
-
       <!-- Map -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="true"/>
+
+      <!-- OpponentMat -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>
 
       <!-- PlayerMat -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="playerMat" source="PlayerMat.fxml" visible="true"/>

@@ -5,15 +5,14 @@ import utils.Parameter;
 
 public class StartPoint extends Tile {
     @Expose
-    private String tileType;
+    private String type;
 
     public StartPoint(){
-        super();
-        this.tileType = Parameter.STARTPOINT_NAME;
+        this.type = Parameter.STARTPOINT_NAME;
     }
 
     @Override
     public String getTileType(){
-        return this.tileType;
+        return this.type;
     }
 }

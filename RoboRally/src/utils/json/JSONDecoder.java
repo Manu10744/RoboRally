@@ -1,20 +1,29 @@
 package utils.json;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import server.game.Card;
+import server.game.Game;
 import server.game.ProgrammingCards.*;
-import utils.instructions.*;
+import server.game.Tiles.*;
 import utils.json.protocol.*;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
  * This class is responsible for the deserialization (JSON -> Java) of JSON Messages being in their String representation.<br>
  * It makes use of the Gson library. A customized Gson instance using a TypeAdapter is used to properly parse the
- * messageBody object (can be e.g. of type HelloServerBody, HelloClientBody, etc.) while deserializing. Another customized
- * Gson instance is explicitly used to deserialize JSON Arrays of cards. (For more details see
- * {@link JSONDecoder#cardArrayDeserializer})
+ * messageBody object (can be e.g. of type HelloServerBody, HelloClientBody, etc.) while deserializing. More customized
+ * Gson instances are used to deserialize JSON Arrays of cards and Tiles. (For more details see
+ * {@link JSONDecoder#cardArrayDeserializer} and {@link JSONDecoder#tileJsonDeserializer})
  *
  * @author Manuel Neumayer
  * @author Mia
@@ -38,161 +47,7 @@ public class JSONDecoder {
 
         // Map the received JSON String message into a JSONMessage object
         JSONMessage messageObj = customGson.fromJson(jsonString, JSONMessage.class);
-
         return messageObj;
-    }
-
-    /**
-     * This method returns the corresponding {@link ClientInstruction} based on the messageType of a given object
-     * representation of a protocol message.
-     * @param jsonMessage A {@link JSONMessage} object which is the object representation of a protocol message.
-     * @return The corresponding {@link ClientInstruction} of the JSON Object's messageType.
-     */
-    public static ClientInstruction getClientInstructionByMessageType(JSONMessage jsonMessage) {
-        // Declare a instruction and initialize it depending on the message type
-        ClientInstruction clientInstruction;
-
-        switch (jsonMessage.getMessageType()) {
-            case "HelloServer":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.HELLO_SERVER);
-                return clientInstruction;
-            case "PlayerValues":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.PLAYER_VALUES);
-                return clientInstruction;
-            case "SetStatus":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SET_STATUS);
-                return clientInstruction;
-            case "SendChat":
-                SendChatBody messageBody = (SendChatBody) jsonMessage.getMessageBody();
-                // Is public message
-                if (messageBody.getTo() == -1) {
-                    clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SEND_CHAT);
-                    return clientInstruction;
-                } else {
-                    // Is private message
-                    clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SEND_PRIVATE_CHAT);
-                    return clientInstruction;
-                }
-            case "PlayCard":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.PLAY_CARD);
-                return clientInstruction;
-            case "SetStartingPoint":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SET_STARTING_POINT);
-                return clientInstruction;
-            case "SelectCard":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SELECT_CARD);
-                return clientInstruction;
-            case "CardSelected":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.CARD_SELECTED);
-                return clientInstruction;
-            case "SelectionFinished":
-                clientInstruction = new ClientInstruction(ClientInstruction.ClientInstructionType.SELECTION_FINISHED);
-                return clientInstruction;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * This method returns the corresponding {@link ServerInstruction} based on the messageType of a given
-     * object representation of a protocol message.
-     * @param jsonMessage A {@link JSONMessage} object which is the object representation of a protocol message.
-     * @return The corresponding {@link ServerInstruction} of the JSON String's messageType.
-     */
-    public static ServerInstruction getServerInstructionByMessageType(JSONMessage jsonMessage) {
-       ServerInstruction serverInstruction;
-
-        switch (jsonMessage.getMessageType()) {
-            case "HelloClient":
-                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.HELLO_CLIENT);
-                return serverInstruction;
-            case "Welcome":
-                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.WELCOME);
-                return serverInstruction;
-            case "PlayerStatus":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_STATUS);
-                return  serverInstruction;
-            case "GameStarted":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.GAME_STARTED);
-                return serverInstruction;
-            case "ReceivedChat":
-                ReceivedChatBody messageBody = (ReceivedChatBody) jsonMessage.getMessageBody();
-                // Is public message
-                if (messageBody.isPrivate() == false) {
-                    serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.RECEIVED_CHAT);
-                    return serverInstruction;
-                } else {
-                    // Is private message
-                    serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.RECEIVED_PRIVATE_CHAT);
-                    return serverInstruction;
-                }
-            case "Error":
-                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.ERROR);
-                return serverInstruction;
-            case "StartingPointTaken":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.STARTING_POINT_TAKEN);
-                return serverInstruction;
-            case "YourCards":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.YOUR_CARDS);
-                return serverInstruction;
-            case "NotYourCards":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.NOT_YOUR_CARD);
-                return serverInstruction;
-            case "ShuffleCoding":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.SHUFFLE_CODING);
-                return serverInstruction;
-            case "CardPlayed":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CARD_PLAYED);
-                return serverInstruction;
-            case "CurrentPlayer":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CURRENT_PLAYER);
-                return serverInstruction;
-            case "ActivePhase":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.ACTIVE_PHASE);
-                return serverInstruction;
-            case "Energy":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.ENERGY);
-                return serverInstruction;
-            case "CheckPointReached":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CHECKPOINT_REACHED);
-                return serverInstruction;
-            case "GameFinished":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.GAME_FINISHED);
-                return serverInstruction;
-            case "PlayerAdded":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_ADDED);
-                return serverInstruction;
-            case "TimerStarted":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.TIMER_STARTED);
-                return serverInstruction;
-            case "TimerEnded":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.TIMER_ENDED);
-                return serverInstruction;
-            case "CardsYouGotNow":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CARDS_YOU_GOT_NOW);
-                return serverInstruction;
-            case "CurrentCards":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.CURRENT_CARDS);
-                return serverInstruction;
-            case "Movement":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.MOVEMENT);
-                return serverInstruction;
-            case "DrawDamage":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.DRAW_DAMAGE);
-                return serverInstruction;
-            case "PlayerShooting":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_SHOOTING);
-                return serverInstruction;
-            case "Reboot":
-                serverInstruction = new  ServerInstruction(ServerInstruction.ServerInstructionType.REBOOT);
-                return serverInstruction;
-            case "PlayerTurning":
-                serverInstruction = new ServerInstruction(ServerInstruction.ServerInstructionType.PLAYER_TURNING);
-                return serverInstruction;
-
-            default:
-                return null;
-        }
     }
 
     /** This is a custom deserializer for Gson. Gson needs a way to decide how to deserialize JSON Arrays containg cards.
@@ -260,9 +115,14 @@ public class JSONDecoder {
              String messageType = jsonMessage.get("messageType").getAsString();
 
              // For parsing JSON Arrays into Java ArrayLists<?>
-             Gson arrayListParser = new GsonBuilder()
+             Gson cardArrayListParser = new GsonBuilder()
                      .excludeFieldsWithoutExposeAnnotation()
                      .registerTypeAdapter(ArrayList.class, cardArrayDeserializer)
+                     .create();
+
+             Gson tileArrayListParser = new GsonBuilder()
+                     .registerTypeAdapter(Tile.class, tileJsonDeserializer)
+                     .excludeFieldsWithoutExposeAnnotation()
                      .create();
 
              if (messageType.equals("HelloClient")) {
@@ -390,7 +250,7 @@ public class JSONDecoder {
 
                  return new JSONMessage("StartingPointTaken", startingPointTakenBody);
              } else if (messageType.equals("YourCards")) {
-                 ArrayList<Card> cardsInHand = arrayListParser.fromJson(jsonElement, ArrayList.class);
+                 ArrayList<Card> cardsInHand = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
                  YourCardsBody yourCardsBody = new YourCardsBody(
                            cardsInHand,
@@ -457,7 +317,7 @@ public class JSONDecoder {
                  );
                  return new JSONMessage("TimerEnded", timerEndedBody);
              } else if (messageType.equals("CardsYouGotNow")) {
-                 ArrayList<Card> cards = arrayListParser.fromJson(jsonElement, ArrayList.class);
+                 ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
                  CardsYouGotNowBody cardsYouGotNowBody = new CardsYouGotNowBody(
                          cards
@@ -499,7 +359,7 @@ public class JSONDecoder {
 
                  return new JSONMessage("Movement", movementBody);
              } else if (messageType.equals("DrawDamage")) {
-                 ArrayList<Card> cards = arrayListParser.fromJson(jsonElement, ArrayList.class);
+                 ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
                  DrawDamageBody drawDamageBody = new DrawDamageBody(
                          messageBody.get("playerID").getAsInt(),
@@ -548,6 +408,22 @@ public class JSONDecoder {
                  );
 
                  return new JSONMessage("GameFinished", gameFinishedBody);
+             } else if (messageType.equals("GameStarted")) {
+                 JsonElement tripleNestedArray = messageBody.get("gameMap").getAsJsonArray();
+
+                 // Tell Gson the exact type of list that has to be used while deserializing
+                 Type listType = new TypeToken<ArrayList<ArrayList<ArrayList<Tile>>>>() {}.getType();
+
+                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = tileArrayListParser.fromJson(tripleNestedArray, listType);
+
+                 System.out.println("SIZE OF X ARRAY: " + mapBody.size());
+                 System.out.println("SIZE OF FIRST DOUBLE IN X ARRAY: " + mapBody.get(0).size());
+                 System.out.println("SIZE OF SECOND DOUBLE IN X ARRAY " + mapBody.get(1).size());
+
+                 GameStartedBody gameStartedBody = new GameStartedBody(
+                         mapBody
+                 );
+                 return new JSONMessage("GameStarted", gameStartedBody);
              }
              // Something went wrong, could not deserialize!
              return new JSONMessage("Error", new ErrorBody("Fatal error: Could not resolve message." +
@@ -555,7 +431,61 @@ public class JSONDecoder {
          }
      };
 
-    /** This method deserializes a JSON card into the equivalent Java object.
+    /**
+     * This is a custom Deserializer for Gson. Gson needs a way to decide how to parse the tiles of a JSON
+     * 'GameStarted' message as the equivalent java object representation. This can't be done by Gson itself because
+     * {@link Tile} has various child classes. This Deserializer tells Gson how to parse each Tile correctly.
+     */
+     public static JsonDeserializer<Tile> tileJsonDeserializer = new JsonDeserializer<Tile>() {
+         @Override
+         public Tile deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+             JsonObject tileObject = jsonElement.getAsJsonObject();
+             String tileType = tileObject.get("type").getAsString();
+
+             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+             if (tileType.equals("Antenna")) {
+                 Antenna result = gson.fromJson(jsonElement, Antenna.class);
+                 return result;
+             } else if (tileType.equals("Belt")) {
+                 Belt result = gson.fromJson(jsonElement, Belt.class);
+                 return result;
+             } else if (tileType.equals("CheckPoint")) {
+                 CheckPoint result = gson.fromJson(jsonElement, CheckPoint.class);
+                 return result;
+             } else if (tileType.equals("Empty")) {
+                 Empty result = gson.fromJson(jsonElement, Empty.class);
+                 return result;
+             } else if (tileType.equals("EnergySpace")) {
+                 EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
+                 return result;
+             } else if (tileType.equals("Gear")) {
+                 Gear result = gson.fromJson(jsonElement, Gear.class);
+                 return result;
+             } else if (tileType.equals("Laser")) {
+                 Laser result = gson.fromJson(jsonElement, Laser.class);
+                 return result;
+             } else if (tileType.equals("Pit")) {
+                 Pit result = gson.fromJson(jsonElement, Pit.class);
+                 return result;
+             } else if (tileType.equals("PushPanel")) {
+                 PushPanel result = gson.fromJson(jsonElement, PushPanel.class);
+                 return result;
+             } else if (tileType.equals("RotatingBelt")) {
+                 RotatingBelt result = gson.fromJson(jsonElement, RotatingBelt.class);
+                 return result;
+             } else if (tileType.equals("StartPoint")) {
+                 StartPoint result = gson.fromJson(jsonElement, StartPoint.class);
+                 return result;
+             } else if (tileType.equals("Wall")) {
+                 Wall result = gson.fromJson(jsonElement, Wall.class);
+                 return result;
+             }
+             return null; // Error
+         }
+     };
+
+    /** This method deserializes a single JSON card into the equivalent Java object.
      * @param jsonMessageBody A part of JSON containing the card that need to be deserialized. Only needed for Gson
      *                        to know the context.
      * @param cardName The name of the card that needs to be deserialized.
@@ -611,6 +541,27 @@ public class JSONDecoder {
         activeCards.add(new CurrentCardsBody.ActiveCardsObject(42, new MoveI()));
         activeCards.add(new CurrentCardsBody.ActiveCardsObject(1337, new Again()));
 
+        ArrayList<ArrayList<ArrayList<Tile>>> gameMap = new ArrayList<>();
+        ArrayList<ArrayList<Tile>> doubledx0 = new ArrayList<>();
+        ArrayList<ArrayList<Tile>> doubledx1 = new ArrayList<>();
+        gameMap.add(doubledx0);
+        gameMap.add(doubledx1);
+
+        ArrayList<Tile> x0y0 = new ArrayList<>();
+        ArrayList<Tile> x0y1 = new ArrayList<>();
+        ArrayList<Tile> x1y0 = new ArrayList<>();
+        ArrayList<Tile> x1y1 = new ArrayList<>();
+        x0y0.add(new RotatingBelt(2, "up", "left", true));
+        x1y0.add(new Wall("up", "right"));
+        x1y0.add(new Laser(2, "down"));
+        x1y1.add(null);
+
+        doubledx0.add(x0y0);
+        doubledx0.add(x0y1);
+        doubledx1.add(x1y0);
+        doubledx1.add(x1y1);
+
+
         ArrayList<JSONMessage> messages = new ArrayList<JSONMessage>();
         /*0*/ messages.add(new JSONMessage("HelloClient", new HelloClientBody("Version 1.0")));
         /*1*/ messages.add(new JSONMessage("HelloServer", new HelloServerBody("TolleTrolle", false, "Version 1.0")));
@@ -646,18 +597,29 @@ public class JSONDecoder {
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
         /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
-        ///*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
-        // TODO: GAMESTARTED !
+        /*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
 
-        String s = JSONEncoder.serializeJSON(messages.get(32));
+        String s = JSONEncoder.serializeJSON(messages.get(34));
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
         System.out.println(s);
 
+        // Read dizzyHighway.json and deserialize it into a GameStarted message object
+        try {
+            Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            String content = Files.readString(path, StandardCharsets.UTF_8);
+            System.out.println(content);
 
-        JSONMessage msg = JSONDecoder.deserializeJSON(s);
-        System.out.println("DESERIALIZED: " + msg.getMessageBody().getClass());
-        CheckPointReachedBody msgbody = (CheckPointReachedBody) msg.getMessageBody();
-        System.out.println(msgbody.getPlayerID());
+            JSONMessage msg = JSONDecoder.deserializeJSON(content);
+            GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
 
+            for (int i = 0; i < msgbody.getXArray().size(); i++) {
+                // Checking if everything gets deserialized correctly
+                System.out.println(msgbody.getXArray().get(i));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

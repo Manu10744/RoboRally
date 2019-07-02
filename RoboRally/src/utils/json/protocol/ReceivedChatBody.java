@@ -1,11 +1,13 @@
 package utils.json.protocol;
 
+import client.Client;
 import com.google.gson.annotations.Expose;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'ReceivedChat' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class ReceivedChatBody {
+public class ReceivedChatBody implements ServerMessageAction<ReceivedChatBody> {
     @Expose
     private String message;
     @Expose
@@ -17,6 +19,11 @@ public class ReceivedChatBody {
         this.message = message;
         this.from = from;
         this.isPrivate = isPrivate;
+    }
+
+    @Override
+    public void triggerAction(Client client, Client.ClientReaderTask task, ReceivedChatBody bodyObject) {
+        MessageDistributer.handleReceivedChat(client, task, bodyObject);
     }
 
     public String getMessage() {

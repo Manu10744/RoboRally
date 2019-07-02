@@ -1,11 +1,13 @@
 package utils.json.protocol;
 
+import client.Client;
 import com.google.gson.annotations.Expose;
+import utils.json.MessageDistributer;
 
 /** This is the wrapper class for the message body of the 'Energy' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class EnergyBody {
+public class EnergyBody implements ServerMessageAction<EnergyBody> {
     @Expose
     private Integer playerID;
     @Expose
@@ -17,6 +19,11 @@ public class EnergyBody {
         this.playerID = playerID;
         this.count = count;
         this.source = source;
+    }
+
+    @Override
+    public void triggerAction(Client client, Client.ClientReaderTask task, EnergyBody bodyObject) {
+        MessageDistributer.handleEnergy(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

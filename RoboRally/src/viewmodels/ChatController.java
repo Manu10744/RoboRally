@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 
 
+
 /**
  * This class has full control over the chat views. It is responsible for providing the ability to connect to a server,
  * chat with other clients and to signal ready status to the server which starts a game when every client is ready.
@@ -31,7 +32,7 @@ import javafx.fxml.FXML;
  *
  * @author Ivan Dovecar
  */
-public class ChatController implements Initializable {
+public class ChatController implements Initializable, IController {
 
     @FXML
     private TextField fieldName;
@@ -58,7 +59,7 @@ public class ChatController implements Initializable {
 
     private StringProperty serverAddress;
     private StringProperty name;
-    private IntegerProperty figure;
+    public IntegerProperty figure;
 
     private BooleanProperty serverSettingFinished;
     private BooleanProperty figureSettingFinished;
@@ -93,13 +94,13 @@ public class ChatController implements Initializable {
         Tooltip fieldServerTooltip = new Tooltip("xxx.xxx.xxx.xxx:xxxx");
         fieldServerTooltip.setAutoHide(true);
 
-        //NAMEINPUT: Tooltip is shown name is not entered proper
-        Tooltip fieldNameTooltip = new Tooltip("Space is not allowed in names. Maximum namesize is " + Parameter.MAX_NAMESIZE + ".");
+        //NAMEINPUT: Tooltip is shown name is not entered proper (ATM no use because there are no restrictions)
+        Tooltip fieldNameTooltip = new Tooltip("ADD TEXT IF NECESSARY.");
         fieldNameTooltip.setAutoHide(true);
 
         //SERVERINPUT: addListener waits for IP and port
         serverAddress.addListener(((observableValue, oldValue, newValue) -> {
-            logger.info("serverAddress addlistener");
+            logger.info("serverAddress addlistener is creating and closing a test-socket to check if IP and port are valid (leads to first server INFO: Client connected from: IP");
             serverIP = serverAddress.get().split("\\:")[0];
             serverPort = Integer.parseInt(serverAddress.get().split("\\:")[1]);
             try {
@@ -122,38 +123,27 @@ public class ChatController implements Initializable {
 
         //NAMEINPUT: addListener waits for name
         name.addListener((observableValue, oldValue, newValue) -> {
-            if (!newValue.equals(Parameter.INVALID_CLIENTNAME)) {
-                nameSettingFinished.set(true);
-                clientChatOutput.bind(client.getChatHistoryProperty()); // hier wird der Text durchgegeben
-            } else {
-                showInvalidNameAlert();
-                name.setValue(Parameter.INVALID_CLIENTNAME);
-            }
+            clientChatOutput.bind(client.getChatHistoryProperty());
+            //After name input player values (name, figure) are handed over to client
             client.sendPlayerValues(name.get(), figure.getValue().intValue());
+            nameSettingFinished.set(true);
         });
 
 
         //MESSAGEINPUT: addListener waits for Message
         message.addListener((observableValue, oldValue, newValue) -> {
+
             String[] partsOfMessage = newValue.split("\\s+");
+            String firstPart = partsOfMessage[0];
+
             if (partsOfMessage.length == 0) {
                 return;
-            }
-            String firstPart = partsOfMessage[0];
-            client.sendMessage(message.get());
-            /*
-            else if (firstPart.charAt(0) == '@') {
-                if (firstPart.length() > 1) {
-                    int addressedClient = Integer.parseInt(firstPart.substring(1));
-                    for (String otherClient : client.activeClientsProperty()) {
-                        if (addressedClient.equals(otherClient)) {
-                            client.sendPrivateMessage(message.get().substring(firstPart.length()), addressedClient);
-                            break;
-                        }
-                    }
-                }
-            } */
-
+            } else if (firstPart.charAt(0) == '@' && firstPart.length() > 1) {
+                    int addressedPlayerID = Integer.parseInt(firstPart.substring(1));
+                    client.sendPrivateMessage(message.get().substring(firstPart.length()), addressedPlayerID);
+                    logger.info("Private message values: " + message.get().substring(firstPart.length()) +
+                            ", addressed playerID: " + addressedPlayerID);
+            } else client.sendMessage(message.get());
         });
 
         //SERVERINPUT: Set Enter-Event
@@ -171,15 +161,8 @@ public class ChatController implements Initializable {
         //NAMEINPUT: Set Enter-Event
         fieldName.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                //Don't allow space in name, safety check:
-                if (fieldName.getText().contains(" ") || fieldName.getText().equals("") || fieldName.getText().contains("\t")) {
-                    showTooltip(primaryStage, fieldName, fieldNameTooltip);
-                } else {
                     nameProperty().setValue(fieldName.getText());
-                    fieldName.disableProperty().set(true);
-                    fieldNameTooltip.hide();
                 }
-            }
         });
 
         // FIGUREINPUT: Set Enter-Event
@@ -201,6 +184,11 @@ public class ChatController implements Initializable {
             boolean readyStatus = getReadyProperty().get();
             // Toggle ready status
             getReadyProperty().set(!readyStatus);
+
+            // Button changes color according to ready status
+            if (buttonReady.getStyle().equals("-fx-base: #00FF00;")) {
+                buttonReady.setStyle("-fx-base: #FF0000;");
+            } else buttonReady.setStyle("-fx-base: #00FF00;");
         });
 
         //CHATINPUT: Set Key-Events
@@ -230,7 +218,7 @@ public class ChatController implements Initializable {
             }
         });
 
-        //Enable fieldName after server setting is finished
+        //Enable fieldFigure after server setting is finished
         serverSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
             fieldServer.disableProperty().set(true);
             fieldFigure.disableProperty().set(false);
@@ -238,31 +226,21 @@ public class ChatController implements Initializable {
             //TODO enable visibility choose robot / disable visibility start
         }));
 
+        //Enable fieldName after figure setting is finished
         figureSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
             fieldFigure.disableProperty().set(true);
             fieldName.disableProperty().set(false);
             fieldName.requestFocus();
         }));
 
-
         //Enable chatInput and buttons after name setting is finished
         nameSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
+            fieldName.disableProperty().set(true);
             chatInput.disableProperty().set(false);
             chatInput.requestFocus();
             chatInput.selectEnd();
             chatOutput.textProperty().bind(clientChatOutputProperty());
             buttonReady.disableProperty().set(false);
-        }));
-
-        //NAMEINPUT: Avoid spaces in names and limit maximum namesize
-        fieldName.textProperty().addListener(((observableValue, s, t1) -> {
-            String currentText = fieldName.getText();
-            if (currentText.length() > 0 &&
-                    (currentText.charAt(currentText.length() - 1) == ' ' || currentText.length() > Parameter.MAX_NAMESIZE)) {
-                fieldName.setText(currentText.substring(0, currentText.length() - 1)); //delete last character
-                fieldName.positionCaret(fieldName.getText().length()); //reposition caret
-                showTooltip(primaryStage, fieldName, fieldNameTooltip); //show field (name) Tooltip declared above
-            }
         }));
 
         //Autoscroll in chat output:
@@ -370,14 +348,6 @@ public class ChatController implements Initializable {
         alert.showAndWait();
     }
 
-    private static void showInvalidNameAlert() {
-        Toolkit.getDefaultToolkit().beep();
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Invalid Name");
-        alert.setHeaderText("ERROR");
-        alert.setContentText("Name already used");
-        alert.showAndWait();
-    }
 
     /**
      * Formats the chat message, removing all \n at the end of a message.
@@ -418,5 +388,10 @@ public class ChatController implements Initializable {
 
         }
 
+    }
+
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
     }
 }

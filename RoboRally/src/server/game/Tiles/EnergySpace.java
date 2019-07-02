@@ -5,19 +5,19 @@ import utils.Parameter;
 
 public class EnergySpace extends Tile {
     @Expose
-    private String tileType;
+    private String type;
     @Expose
     private Integer count;
 
     public EnergySpace (Integer count){
-        super();
-        this.tileType = Parameter.ENERGYSPACE_NAME;
+        this.type = Parameter.ENERGYSPACE_NAME;
+
         this.count = count;
     }
 
     @Override
     public String getTileType() {
-        return tileType;
+        return type;
     }
 
     @Override
