@@ -374,6 +374,13 @@ public class ChatController implements Initializable, IController {
         return result;
     }
 
+    /**
+     * opens the RoboRally Wiki when button is clicked
+     * @param event
+     * @throws IOException
+     * @author Verena Sadtler
+     */
+
     @FXML
     void openWiki(ActionEvent event) throws IOException{
         Stage rootStage;

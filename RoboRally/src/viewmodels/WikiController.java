@@ -1,6 +1,4 @@
 package viewmodels;
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -17,6 +14,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This controller class is responsible for the wiki.
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
+ */
 
 public class WikiController extends Application {
 
@@ -43,6 +45,7 @@ public class WikiController extends Application {
 
     /**
      * This method starts the wiki
+     *
      * @param stage
      */
 
@@ -64,12 +67,12 @@ public class WikiController extends Application {
             Scene scene = new Scene(wiki);
 
             rootStage.setScene(scene);
-            rootStage.showingProperty().addListener((observable, oldValue, showing)-> {
+            rootStage.showingProperty().addListener((observable, oldValue, showing) -> {
                 if (showing) {
                     rootStage.setMinWidth(rootStage.getWidth());
                     rootStage.setMinHeight(rootStage.getHeight());
-                        }
-                    });
+                }
+            });
             rootStage.show();
             //rootStage.getStylesheets().addAll(getClass().getResource("/css/app.css").toExternalForm())
         } catch (IOException e) {
@@ -79,12 +82,13 @@ public class WikiController extends Application {
 
     /**
      * this method handles button klicks inside the wiki stage to get from one to another scene
+     *
      * @param event
      * @throws IOException
      */
 
     @FXML
-    public void buttonClicked(ActionEvent event)throws IOException {
+    public void buttonClicked(ActionEvent event) throws IOException {
 
         Stage rootStage;
         Parent root;
@@ -112,9 +116,4 @@ public class WikiController extends Application {
         }
     }
 
-
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
