@@ -20,8 +20,7 @@ public class Spam extends DamageCard {
      * This is the method that activates the effect of a damage card. <br>
      * In this case the player has to play the top card of his programming deck.
      */
-    @Override
-    public void activateCard() {
+    public static void activateCard() {
         //TODO
     }
 }
