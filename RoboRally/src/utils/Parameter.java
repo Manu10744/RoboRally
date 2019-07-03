@@ -125,4 +125,7 @@ public class Parameter {
     //ChooseRobot
     public static final int CHOOSE_ROBOT_RATIO_WIDTH = 5;
     public static final int CHOOSE_ROBOT_RATIO_HEIGHT = 3;
+    public static final int CHOOSE_ROBOT_RATIO_WIDTH_BGR = 1;
+    public static final int CHOOSE_ROBOT_RATIO_HEIGHT_BGR = 1;
+
 }

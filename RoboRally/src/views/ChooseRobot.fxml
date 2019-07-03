@@ -21,49 +21,49 @@
     <RowConstraints minHeight="0.0" />
 </rowConstraints>
 
-   <ImageView fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" >
+   <ImageView fx:id="chooseRobotBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" >
       <image>
          <Image url="@../resources/images/others/HintergrundWikiStartseite.png" />
       </image>
    </ImageView>
 
-    <VBox fx:id="vBox1" GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
 
-   <Label fx:id="heading" text="Choose a robot" textFill="#ebe1e1">
+   <Label text="Choose a robot" textFill="#ebe1e1">
       <font>
-         <Font name="System Bold" size="48"/>
+         <Font name="System Bold" size="58"/>
       </font>
    </Label>
 
     <HBox fx:id="chooseRobotBox1" alignment="CENTER" minHeight="0.0" minWidth="0.0">
 
-      <VBox>
+      <VBox alignment="CENTER">
          <ImageView fx:id="hammerBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../resources/images/robots/choose-robot-hammerbot.png"/>
             </image>
          </ImageView>
-         <Label text="HammerBot" textFill="#ebe1e1" GridPane.halignment="CENTER">
+         <Label text="HammerBot" textFill="#ebe1e1">
             <font>
-               <Font name="System Bold"  />
+               <Font name="System Bold" size="24" />
             </font>
          </Label>
       </VBox>
 
-      <VBox>
+      <VBox alignment="CENTER">
             <ImageView fx:id="hulkX90" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/images/robots/choose-robot-hulkX90.png" />
                </image>
             </ImageView>
-            <Label text="HulkX90" textFill="#ebe1e1" alignment="CENTER">
+            <Label text="HulkX90" textFill="#ebe1e1" >
                <font>
-                  <Font name="System Bold"  />
+                  <Font name="System Bold" size="24" />
                </font>
             </Label>
       </VBox>
 
-      <VBox>
+      <VBox alignment="CENTER">
             <ImageView fx:id="smashBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/images/robots/choose-robot-smashbot.png" />
@@ -71,7 +71,7 @@
             </ImageView>
             <Label text="SmashBot" textFill="#ebe1e1">
                <font>
-                  <Font name="System Bold"  />
+                  <Font name="System Bold" size="24" />
                </font>
             </Label>
       </VBox>
@@ -80,7 +80,7 @@
 
     <HBox fx:id="chooseRobotBox2" alignment="CENTER" minHeight="0.0" minWidth="0.0">
 
-         <VBox>
+         <VBox alignment="CENTER">
                <ImageView fx:id="spinBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../resources/images/robots/choose-robot-spinbot.png" />
@@ -88,34 +88,34 @@
                </ImageView>
                <Label text="SpinBot" textFill="#ebe1e1">
                   <font>
-                     <Font name="System Bold"  />
+                     <Font name="System Bold" size="24" />
                   </font>
                </Label>
 
          </VBox>
 
-         <VBox>
+         <VBox alignment="CENTER">
                <ImageView fx:id="twonky" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../resources/images/robots/choose-robot-twonky.png"/>
                   </image>
                </ImageView>
-               <Label text="Twonky" textFill="#ebe1e1">
+               <Label text="Twonky" textFill="#ebe1e1" >
                   <font>
-                     <Font name="System Bold"/>
+                     <Font name="System Bold" size="24"/>
                   </font>
                </Label>
          </VBox>
 
-         <VBox>
+         <VBox alignment="CENTER">
                <ImageView fx:id="zoomBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../resources/images/robots/choose-robot-zoombot.png"/>
                   </image>
                </ImageView>
-               <Label text="ZoomBot" textFill="#ebe1e1">
+               <Label text="ZoomBot" textFill="#ebe1e1" >
                   <font>
-                     <Font name="System Bold" />
+                     <Font name="System Bold" size="24" />
                   </font>
                </Label>
          </VBox>
