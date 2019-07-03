@@ -11,6 +11,7 @@
 * ScoreBoard view added - *(Jessie)*
 * Deck functionality finished - *(Vincent)*
 * Basic game Logic created - *(Vincent)*
+* Game Wiki is completed now *(Verena)*
 
 ### Changes
 * Private messages implemented - *(Ivan)*
