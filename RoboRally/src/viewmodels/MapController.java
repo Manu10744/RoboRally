@@ -27,6 +27,7 @@ import java.util.logging.Logger;
  * @author Mia
  */
 public class MapController implements Initializable {
+
     @FXML
     private GridPane map;
 
@@ -39,7 +40,9 @@ public class MapController implements Initializable {
         map.setGridLinesVisible(true);
         map.autosize();
 
-        map.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+        map.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
             public void handle(MouseEvent mouseEvent)
             {
                 map.requestFocus();
@@ -124,6 +127,8 @@ public class MapController implements Initializable {
             imageView.setPreserveRatio(true);
             imageView2.setPreserveRatio(true);
             imageView3.setPreserveRatio(true);
+
+
 
             map.setConstraints(imageView, col, row);
             map.setConstraints(imageView2, col, row);
