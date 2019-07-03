@@ -52,7 +52,7 @@ public class StageController implements Initializable, IController {
     ImageView zoomBot;
     @FXML
     private ChatController chatController;
-
+    @FXML
     private MapController mapController;
     @FXML
     private OpponentMatController opponentMatController;

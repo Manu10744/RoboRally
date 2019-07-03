@@ -29,9 +29,9 @@ import viewmodels.MapController;
  * @author Manuel Neumayer
  */
 public class MessageDistributer {
+    public static Map<String, IController> controllerMap;
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
-    public static Map controllerMap;
 
     private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
@@ -419,6 +419,7 @@ public class MessageDistributer {
 
         }
 
+        ((MapController) controllerMap.get("Map")).fillGridPaneWithMap(gameStartedBody);
 
       // fillMapWithImageViews(tiles);
     }
