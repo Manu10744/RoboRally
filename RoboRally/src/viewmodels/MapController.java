@@ -1,5 +1,6 @@
 package viewmodels;
 
+import client.Client;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,6 +38,11 @@ public class MapController implements IController {
         return this;
     }
 
+    /**
+     * This method fills the GridPane that's responsible for displaying the map. It is triggered inside of the
+     * {@link utils.json.MessageDistributer#handleGameStarted(Client, Client.ClientReaderTask, GameStartedBody)} method.
+     * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
+     */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
         System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
 
@@ -102,19 +108,19 @@ public class MapController implements IController {
 
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                                Image image = tile.getTileImage();
-                                ImageView imageView = new ImageView();
-                                imageView.setImage(image);
+                            Image image = tile.getTileImage();
+                            ImageView imageView = new ImageView();
+                            imageView.setImage(image);
 
-                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                imageView.setPreserveRatio(true);
+                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                            imageView.setPreserveRatio(true);
 
-                                // Set new Y-position to avoid the map getting displayed inverted (!)
-                                int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
-                                mapPane.setConstraints(imageView, xPos, newYPos);
-                                mapPane.getChildren().add(i, imageView);
-                                i++;
+                            // Set new Y-position to avoid the map getting displayed inverted (!)
+                            int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
+                            mapPane.setConstraints(imageView, xPos, newYPos);
+                            mapPane.getChildren().add(i, imageView);
+                            i++;
                         }
                     }
                 }

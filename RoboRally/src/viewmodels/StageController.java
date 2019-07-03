@@ -61,6 +61,9 @@ public class StageController implements Initializable, IController {
     @FXML
     private WikiController wikiController;
 
+    @FXML
+    private ChooseRobotController chooseRobotController;
+
     private Map<String, IController> controllerMap = new HashMap<>();
 
     /**
@@ -70,10 +73,13 @@ public class StageController implements Initializable, IController {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        if (chooseRobotController != null) {
+            controllerMap.put("ChooseRobot", chooseRobotController.setPrimaryController(this));
+        }
         if(mapController != null){
             controllerMap.put("Map", mapController);
         }
-        if(chatController != null){
+        if(chatController != null) {
             controllerMap.put("Chat", chatController);
         }
         if(opponentMatController != null){
@@ -82,12 +88,15 @@ public class StageController implements Initializable, IController {
         if(playerMatController != null){
             controllerMap.put("PlayertMat", playerMatController);
         }
-        //Sents the HasMap to the MessageDistributer
+        // Sends the HasMap to the MessageDistributer after adding all controllers
         if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null){
             MessageDistributer.setControllerMap(controllerMap);
         }
     }
 
+    public Map<String, IController> getControllerMap() {
+        return controllerMap;
+    }
     public void mouseClicked() {
        /*
        hammerBot.setOnMousePressed(event ->{
