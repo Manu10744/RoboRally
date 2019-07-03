@@ -230,7 +230,7 @@ public class Tile {
             case "Laser": {
                 int laserBeamNumber = this.getCount();
                 //As lasers have only one direction, their direction can be found on pos 0 within the orientations array
-                String laserOrientation =((Laser) this).getOrientation();
+                ArrayList<String> laserOrientation = this.getOrientations();
                 switch (laserBeamNumber) {
                     case (Parameter.LASER_ONE): {
                         if ((laserOrientation.equals(Parameter.ORIENTATION_RIGHT) || (laserOrientation.equals(Parameter.ORIENTATION_LEFT)))) {
