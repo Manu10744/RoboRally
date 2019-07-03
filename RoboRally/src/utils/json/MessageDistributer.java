@@ -399,25 +399,6 @@ public class MessageDistributer {
      */
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
-        /*
-        On every x/y Position of the map there is one array with tiles which is saved here in a doubled nested arraylist called tiles
-         (or in case of empty arrays null, in whic case a new empty array is initialised and returned, see implementation of getTileArrayFromMapBody in GameStartedBody.class)
-        */
-        ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
-        ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
-
-        for (int posX = 0; posX < Parameter.DIZZY_HIGHWAY_WIDTH; posX++) {
-            System.out.println("Tiles are turned");
-            for (int yPos = 0; yPos < Parameter.DIZZY_HIGHWAY_HEIGHT; yPos++) {
-
-
-                System.out.println(gameStartedBody.getXArray());
-                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(posX, yPos);
-                tiles.add(tileArray);
-
-            }
-
-        }
 
         ((MapController) controllerMap.get("Map")).fillGridPaneWithMap(gameStartedBody);
 
