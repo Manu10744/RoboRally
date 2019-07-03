@@ -95,13 +95,13 @@ public class MapController implements IController {
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
 
                 int i = 0;
-                for (int xPos = 0; xPos < Parameter.DIZZY_HIGHWAY_WIDTH; xPos++) {
-                    for (int yPos = 0; yPos < Parameter.DIZZY_HIGHWAY_HEIGHT; yPos++) {
+                for (int xPos = Parameter.DIZZY_HIGHWAY_WIDTH - 1; xPos >= 0; xPos--) {
+                    for (int yPos = Parameter.DIZZY_HIGHWAY_HEIGHT - 1; yPos >= 0 ; yPos--) {
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
                         for (Tile tile : tileArray) {
                             if (tile.equals(new Empty())) {
-                                i++;
+                                i--;
                             } else {
                                 Image image = tile.getTileImage();
                                 ImageView imageView = new ImageView();
@@ -111,28 +111,15 @@ public class MapController implements IController {
                                 imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                                 imageView.setPreserveRatio(true);
 
-
-                                mapPane.setConstraints(imageView, xPos, yPos);
+                                // Set new Y-position to avoid the map being inverted (!)
+                                int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
+                                mapPane.setConstraints(imageView, xPos, newYPos);
                                 mapPane.getChildren().add(i, imageView);
                                 i++;
-
                             }
                         }
                     }
                 }
-                int nodeCounter = 0;
-                for (Node node : mapPane.getChildren()) {
-                    System.out.println(node instanceof ImageView);
-
-                    if (node instanceof ImageView == true) {
-                        nodeCounter++;
-                        ImageView imageView = (ImageView) node;
-                        System.out.println(nodeCounter + "IMAGE OF IMAGEVIEW IS: " + imageView.getImage().getUrl());
-                    }
-                }
-                System.out.println(mapPane.getChildren().size());
-
-
             }
         });
     }
