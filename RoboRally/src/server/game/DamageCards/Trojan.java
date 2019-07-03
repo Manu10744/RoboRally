@@ -18,8 +18,7 @@ public class Trojan extends DamageCard {
      * This is the method that activates the effect of a damage card. <br>
      * In this case you have to take two SpamCards and play the top card of your programming deck.
      */
-    @Override
-    public void activateCard() {
+    public static void activateCard() {
         //TODO
     }
 }

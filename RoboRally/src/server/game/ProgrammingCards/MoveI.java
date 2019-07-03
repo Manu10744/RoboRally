@@ -17,9 +17,6 @@ public class MoveI extends ProgrammingCard {
      * This will move the robot one tile in the direction he is facing. <br>
      */
     public static void activateCard() {
-        getLineOfSight();
-        getxPosition();  // column
-        getyPosition();  // row
 
         switch (lineOfSight){
             case ("up"):

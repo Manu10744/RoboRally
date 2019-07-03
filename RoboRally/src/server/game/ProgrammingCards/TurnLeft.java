@@ -17,7 +17,6 @@ public class TurnLeft extends ProgrammingCard {
      * This will make the robot turn 90 degrees to the left.
      */
     public static void activateCard() {
-        getLineOfSight();
 
         switch (lineOfSight) {
             case ("up"):

@@ -18,9 +18,6 @@ public class BackUp extends ProgrammingCard {
      * It is important, that the robot still faces the same direction.
      */
     public static void activateCard() {
-        getLineOfSight();
-        getxPosition();  // column
-        getyPosition();  // row
 
         switch (lineOfSight){
             case ("up"):
