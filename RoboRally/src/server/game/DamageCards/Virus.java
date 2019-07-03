@@ -18,7 +18,8 @@ public class Virus extends DamageCard {
      * In this case all robots within a 6-tile radius take a Spam card. <br>
      * You play the top card of your programming deck.
      */
-    public static void activateCard() {
+    @Override
+    public void activateCard() {
         //TODO
     }
 }

@@ -18,7 +18,8 @@ public class Worm extends DamageCard {
      * This is the method that activates the effect of a damage card. <br>
      * In this case the robot has to reboot.
      */
-    public static void activateCard() {
+    @Override
+    public void activateCard() {
         //TODO
     }
 }
