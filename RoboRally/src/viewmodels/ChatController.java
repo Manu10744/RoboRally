@@ -393,6 +393,7 @@ public class ChatController implements Initializable, IController {
             stage.setTitle("WikiRoboRally");
             stage.getIcons().add(new Image("/resources/images/others/wiki-icon.png"));
             stage.show();
+            stage.setResizable(false);
 
         }
 
