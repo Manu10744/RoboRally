@@ -6,18 +6,18 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.StartScreenController">
+<GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.StageController">
 
     <columnConstraints>
-        <ColumnConstraints halignment="CENTER" minWidth="0.0" />
+        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0"/>
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints valignment="CENTER" minHeight="0.0" />
+        <RowConstraints valignment="CENTER" minHeight="0.0" percentHeight="100.0"/>
     </rowConstraints>
 
     <children>
-    <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="false">
+    <ImageView fx:id="imageView" fitHeight="1054" fitWidth="1899" layoutX="61.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../resources/images/others/StartScreen.png" backgroundLoading="true"/>
         </image>

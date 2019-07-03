@@ -15,8 +15,7 @@ public class Again extends ProgrammingCard {
      * This move will repeat the move that was performed in the previous register. <br>
      * If there was no previous move the robot shall do nothing.
      */
-    @Override
-    public void activateCard() {
-        //TODO
+    public static void activateCard() {
+        //TODO get card from previous register and perfort that again
     }
 }

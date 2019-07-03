@@ -1,5 +1,7 @@
 package server.game.ProgrammingCards;
 
+import static server.game.Robot.*;
+
 /**
  * This class implements the TurnLeft card.
  *

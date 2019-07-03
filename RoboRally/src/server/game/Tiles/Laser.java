@@ -9,14 +9,14 @@ public class Laser extends Tile {
     @Expose
     private String type;
     @Expose
-    private ArrayList<String> orientations;
+    private String orientation;
     @Expose
     private Integer count; //amount of lasers in a laser field
 
     public Laser (Integer count, String orientation){
         this.type = Parameter.LASER_NAME;
-        this.orientations = new ArrayList<>();
-        this.orientations.add(orientation);
+        this.orientation = orientation;
+
         this.count = count;
     }
 
@@ -30,8 +30,7 @@ public class Laser extends Tile {
         return count;
     }
 
-    @Override
-    public ArrayList<String> getOrientations() {
-        return orientations;
+    public String getOrientation() {
+        return orientation;
     }
 }
