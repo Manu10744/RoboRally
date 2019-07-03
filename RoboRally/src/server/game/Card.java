@@ -23,8 +23,8 @@ public class Card {
      * This is the method that is called, when the Card's effect is activated. <br>
      * It will be overwritten in each subclass.
      */
-    public static void activateCard(){
-        //TODO please overload
+    public void activateCard(){
+        //TODO please overwrite
     }
 
     /**

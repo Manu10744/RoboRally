@@ -1,7 +1,5 @@
 package server.game.ProgrammingCards;
 
-import static server.game.Robot.*;
-
 /**
  * This class implements the MoveI card.
  *
@@ -14,7 +12,7 @@ public class MoveI extends ProgrammingCard {
     }
 
     /**
-     * This will move the robot one tile in the direction he is facing. <br>
+     * This will move the robot one tile in the direction he is facing.
      */
     public static void activateCard() {
 
