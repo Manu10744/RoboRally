@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import client.Client;
@@ -17,6 +18,7 @@ import server.Server;
 import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
+import viewmodels.IController;
 import viewmodels.MapController;
 
 
@@ -29,6 +31,7 @@ import viewmodels.MapController;
 public class MessageDistributer {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
+    public static Map controllerMap;
 
     private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
@@ -47,7 +50,17 @@ public class MessageDistributer {
      *
      * @author Ivan Dovecar
      * @author Manu
+     * @author Mia
      */
+
+    /**
+     * This method is used to get all the controllers that are saved in the stage. With those, the individual gui-elements, e.g. chat and map can be referenced
+     * @param stageControllerMap
+     */
+    public static void setControllerMap(Map stageControllerMap){
+        controllerMap = stageControllerMap;
+    }
+
     public static void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "Entered handleHelloServer()" + ANSI_RESET);
 

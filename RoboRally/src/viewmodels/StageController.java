@@ -1,32 +1,28 @@
 package viewmodels;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-
-
-import static viewmodels.ChatController.*;
-
-import java.io.IOException;
-
+import utils.json.MessageDistributer;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-public class StageController implements IController {
+public class StageController implements Initializable, IController {
 
-/**
- * This controller class is responsible for the board and the chat.
- * GridPane 'stage' adapts automatically to the users' screen setup.
- * Stage GUI and its elements are fully responsive.
- * It loads furthermore the initial start screen and the select robot screen.
- *
- * @author Ivan Dovecar
- */
+    /**
+     * This controller class is responsible for the board and the chat.
+     * GridPane 'stage' adapts automatically to the users' screen setup.
+     * Stage GUI and its elements are fully responsive.
+     * It loads furthermore the initial start screen and the select robot screen.
+     *
+     * @author Ivan Dovecar
+     * @author Manu
+     * @author Mia
+     */
 
     @FXML
     GridPane stage;
@@ -42,7 +38,6 @@ public class StageController implements IController {
     GridPane playerMat;
     @FXML
     GridPane chat;
-
     @FXML
     ImageView hammerBot;
     @FXML
@@ -56,10 +51,42 @@ public class StageController implements IController {
     @FXML
     ImageView zoomBot;
     @FXML
-    ImageView imageView;
+    private ChatController chatController;
 
+    private MapController mapController;
+    @FXML
+    private OpponentMatController opponentMatController;
+    @FXML
+    private PlayerMatController playerMatController;
+    @FXML
+    private WikiController wikiController;
 
     private Map<String, IController> controllerMap = new HashMap<>();
+
+    /**
+     * If a new Controller is initialized, this method adds it then to the HasMap from which is given to the
+     * {@link MessageDistributer} so that the controllers can be referenced statically there.
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        if(mapController != null){
+            controllerMap.put("Map", mapController);
+        }
+        if(chatController != null){
+            controllerMap.put("Chat", chatController);
+        }
+        if(opponentMatController != null){
+            controllerMap.put("OpponentMap", opponentMatController);
+        }
+        if(playerMatController != null){
+            controllerMap.put("PlayertMat", playerMatController);
+        }
+        //Sents the HasMap to the MessageDistributer
+        if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null){
+            MessageDistributer.setControllerMap(controllerMap);
+        }
+    }
 
     public void mouseClicked() {
        /*
@@ -94,4 +121,5 @@ public class StageController implements IController {
     public IController setPrimaryController(StageController stageController) {
         return this;
     }
+
 }

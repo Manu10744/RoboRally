@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
  * @author Jessica Gerlach
  */
 
-public class PlayerMatController {
+public class PlayerMatController implements  IController{
 
     @FXML
     private HBox playerIcons;
@@ -87,4 +87,8 @@ public class PlayerMatController {
     @FXML
     private ImageView emptyIcon21;
 
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
+    }
 }
