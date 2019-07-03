@@ -15,7 +15,7 @@ public class MoveI extends ProgrammingCard {
      * This will move the robot one tile in the direction he is facing.
      */
     public void activateCard() {
-      /*
+        /*
         switch (lineOfSight){
             case ("up"):
                 xPosition = xPosition -1;
@@ -33,7 +33,6 @@ public class MoveI extends ProgrammingCard {
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
 
-       */
+         */
     }
-
 }
