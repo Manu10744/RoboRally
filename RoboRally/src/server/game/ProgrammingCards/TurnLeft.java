@@ -14,8 +14,8 @@ public class TurnLeft extends ProgrammingCard {
     /**
      * This will make the robot turn 90 degrees to the left.
      */
-    public static void activateCard() {
-
+    public  void activateCard() {
+       /*
         switch (lineOfSight) {
             case ("up"):
                 lineOfSight = "left";
@@ -33,5 +33,7 @@ public class TurnLeft extends ProgrammingCard {
                 System.out.println("There is a Problem with the lineOfSight variable.");
 
         }
+
+        */
     }
 }

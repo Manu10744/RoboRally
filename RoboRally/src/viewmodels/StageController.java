@@ -42,6 +42,7 @@ public class StageController implements IController {
     GridPane playerMat;
     @FXML
     GridPane chat;
+
     @FXML
     ImageView hammerBot;
     @FXML
