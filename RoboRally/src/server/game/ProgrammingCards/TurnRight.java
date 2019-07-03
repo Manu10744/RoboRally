@@ -1,5 +1,7 @@
 package server.game.ProgrammingCards;
 
+import static server.game.ProgrammingCards.TurnLeft.*;
+
 /**
  * This class implements the TurnRight card.
  *
@@ -14,8 +16,9 @@ public class TurnRight extends ProgrammingCard {
     /**
      * This will make the robot turn 90 degrees to the right.
      */
-    @Override
-    public void activateCard() {
-        //TODO
+    public static void activateCard() {
+        TurnLeft.activateCard();
+        TurnLeft.activateCard();
+        TurnLeft.activateCard();
     }
 }

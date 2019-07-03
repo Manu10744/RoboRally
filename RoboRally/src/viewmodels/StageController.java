@@ -9,15 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-
 import static viewmodels.ChatController.*;
 
 import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class StageController implements IController {
+public class StageController {
 
 /**
  * This controller class is responsible for the board and the chat.
@@ -54,13 +50,8 @@ public class StageController implements IController {
     ImageView spinBot;
     @FXML
     ImageView zoomBot;
-    @FXML
-    ImageView imageView;
 
-
-    private Map<String, IController> controllerMap = new HashMap<>();
-
-    public void mouseClicked() {
+   public void mouseClicked() {
        /*
        hammerBot.setOnMousePressed(event ->{
            figure.setValue(1);
@@ -87,10 +78,6 @@ public class StageController implements IController {
            chooseRobot.setVisible(false);
        });
        */
-    }
+   }
 
-    @Override
-    public IController setPrimaryController(StageController stageController) {
-        return this;
-    }
 }
