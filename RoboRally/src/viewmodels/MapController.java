@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * @author Ivan Dovecar
  * @author Mia
  */
-public class MapController implements Initializable {
+public class MapController implements Initializable, IController {
 
     @FXML
     private GridPane map;
@@ -149,5 +149,10 @@ public class MapController implements Initializable {
      */
     public void robotLaser() {
 
+    }
+
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
     }
 }
