@@ -7,8 +7,7 @@
 
 <!-- Stage contains board and chat -->
 <GridPane fx:id="stage"
-          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="viewmodels.StageController">
+          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
    <!-- Determine screen resolution -->
    <fx:define>
