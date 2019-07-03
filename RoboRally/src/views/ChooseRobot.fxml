@@ -21,7 +21,7 @@
     <RowConstraints minHeight="0.0" />
 </rowConstraints>
 
-   <ImageView fx:id="chooseRobotBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" >
+   <ImageView fx:id="chooseRobotBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" preserveRatio="false" >
       <image>
          <Image url="@../resources/images/others/HintergrundWikiStartseite.png" />
       </image>

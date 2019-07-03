@@ -128,4 +128,9 @@ public class Parameter {
     public static final int CHOOSE_ROBOT_RATIO_WIDTH_BGR = 1;
     public static final int CHOOSE_ROBOT_RATIO_HEIGHT_BGR = 1;
 
+    //StartScreen
+    public static final int START_SCREEN_RATIO_WIDTH = 1;
+    public static final int START_SCREEN_RATIO_HEIGHT = 1;
+
+
 }
