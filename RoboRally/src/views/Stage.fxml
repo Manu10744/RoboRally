@@ -38,7 +38,7 @@
 
 
       <!-- Map -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="false"/>
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="true"/>
 
       <!-- ChooseRobot -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
@@ -47,7 +47,7 @@
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
 
       <!-- TODO Scoreboard -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="scoreboard" source="Scoreboard.fxml" visible="true"/>
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="scoreboard" source="Scoreboard.fxml" visible="false"/>
 
       <!-- OpponentMat -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>

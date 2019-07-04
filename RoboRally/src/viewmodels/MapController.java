@@ -4,7 +4,7 @@ import client.Client;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -13,6 +13,8 @@ import server.game.Tiles.*;
 import utils.Parameter;
 import utils.json.protocol.GameStartedBody;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -24,6 +26,9 @@ import java.util.logging.Logger;
  * scroll wheel for x-position) or by keyboard (left by "A" / right by "D" / up by "W" / down by "S"). By Pressing "Z"
  * Map will instantly resize and scroll to default size and position.
  *
+ * Additionally, we save every group with imageViews of the pos x/y in a hashmap, so that each group content can be gotten via this hashmap instead of going through the arrays
+ * with calling tileGroups.get("x-y")
+ *
  * @author Ivan Dovecar
  * @author Mia
  * @author Manu
@@ -32,7 +37,9 @@ public class MapController implements IController {
 
     @FXML
     private GridPane mapPane;
+    private Map<String, Group> tileGroups = new HashMap<String, Group>();
     private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
+
 
     @Override
     public IController setPrimaryController(StageController stageController) {
@@ -58,6 +65,7 @@ public class MapController implements IController {
                         mapPane.requestFocus();
                     }
                 });
+
 
                 mapPane.setOnScroll(new EventHandler<ScrollEvent>() {
                     @Override
@@ -103,7 +111,6 @@ public class MapController implements IController {
 
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
 
-                int i = 0;
                 for (int xPos = Parameter.DIZZY_HIGHWAY_WIDTH - 1; xPos >= 0; xPos--) {
                     for (int yPos = Parameter.DIZZY_HIGHWAY_HEIGHT - 1; yPos >= 0 ; yPos--) {
                         // Each field on the map is represented by a single Array of Tiles
@@ -114,6 +121,7 @@ public class MapController implements IController {
                             tileArray.add(0, new Empty());
                         }
 
+                        Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
                             Image image = tile.getTileImage();
@@ -125,16 +133,22 @@ public class MapController implements IController {
                             imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                             imageView.setPreserveRatio(true);
 
+                            imageGroup.getChildren().add(imageView);
+                        }
+                        //Groups are added to HashMap
+                        String groupID = xPos + "-" + yPos;
+                        tileGroups.put(groupID, imageGroup);
+
                             // Set new Y-position to avoid the map getting displayed inverted (!)
                             int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
-                            mapPane.setConstraints(imageView, xPos, newYPos);
-                            mapPane.getChildren().add(i, imageView);
-                            i++;
+                            mapPane.setConstraints(imageGroup, xPos, newYPos);
+                            mapPane.getChildren().add(imageGroup);
                         }
                     }
-                }
+                System.out.println("TILE ON POS 0,0" + tileGroups.get("12-6").getChildren());
             }
         });
+
     }
 
 
