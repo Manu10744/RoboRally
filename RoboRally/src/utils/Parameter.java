@@ -45,16 +45,22 @@ public class Parameter {
     public static final int TIMER_DELAY = 1000; // This should be 1000 because a second has 1000 milliseconds.
     public static final int TIMER_PERIOD = 1000;
 
+        //Robot
+        public static final String ROBOT_START_LINEOFSIGHT = "right";
+        public static final int ROBOT_START_XPOSITION = 0;
+        public static final int ROBOT_START_YPOSITION = 0;
+
+
         //amount of players
-    public  static final int MAX_PLAYERSIZE = 6;
-    public static final int MIN_PLAYERSIZE = 2;
+        public  static final int MAX_PLAYERSIZE = 6;
+        public static final int MIN_PLAYERSIZE = 2;
 
         //Register numbers
-    public static final int REGISTER_ONE = 1;
-    public static final int REGISTER_TWO = 2;
-    public static final int REGISTER_THREE = 3;
-    public static final int REGISTER_FOUR = 4;
-    public static final int REGISTER_FIVE = 5;
+        public static final int REGISTER_ONE = 1;
+        public static final int REGISTER_TWO = 2;
+        public static final int REGISTER_THREE = 3;
+        public static final int REGISTER_FOUR = 4;
+        public static final int REGISTER_FIVE = 5;
 
 
 

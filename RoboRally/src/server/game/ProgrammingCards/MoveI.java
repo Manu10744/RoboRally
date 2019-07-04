@@ -5,7 +5,7 @@ package server.game.ProgrammingCards;
  *
  * @author Vincent Tafferner
  */
-public class MoveI extends ProgrammingCard {
+public class MoveI extends server.game.Card {
 
     public MoveI() {
         cardName = "MoveI";
@@ -13,9 +13,10 @@ public class MoveI extends ProgrammingCard {
 
     /**
      * This will move the robot one tile in the direction he is facing.
+     * //TODO remove if not needed in final version.
      */
+    /*
     public void activateCard() {
-        /*
         switch (lineOfSight){
             case ("up"):
                 xPosition = xPosition -1;
@@ -32,7 +33,6 @@ public class MoveI extends ProgrammingCard {
             default:
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
-
-         */
     }
+    */
 }
