@@ -41,7 +41,7 @@ public class Robot {
      * This method is responsible for moving the robot on the map
      */
     public void move() {
-        //TODO not needed
+        //TODO delete if not needed in the future
     }
 
     /**
