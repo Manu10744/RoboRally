@@ -18,13 +18,17 @@
 ### New Features
 * 'GameStarted' protocol message can now be properly deserialized, which makes sending maps to the client possible. - *(Manu)*
 * Responsive ChooseRobot view added - *(Jessie)*
-* ScoreBoard view added - *(Jessie)*
+* Responsive ScoreBoard view added - *(Jessie)*
+* Maps can now be displayed after receiving 'GameStarted' messages - *(Mia, Manu, Ivan)*
 * Deck functionality finished - *(Vincent)*
 * Basic game Logic created - *(Vincent)*
 * Game Wiki is completed now *(Verena)*
+* Zooming and Scrolling works smoother now, Map can be reset to its default position by pressing 'Z' - *(Ivan)*
 
 ### Changes
 * Private messages implemented - *(Ivan)*
+* GridPane of Map now contains one group per field to achieve more convenient editing of map - *(Mia*
+* Each group is stored in a HashMap to access each field efficiently - *(Mia)*
 
 ### Bugfixes
 * Chat - tooltips are now working - *(Ivan)*
