@@ -46,7 +46,7 @@ public class Parameter {
     public static final int TIMER_PERIOD = 1000;
 
         //amount of players
-    public  static final int MAX_PLAYERSIZE = 6;
+    public static final int MAX_PLAYERSIZE = 6;
     public static final int MIN_PLAYERSIZE = 1;
 
         //Register numbers
@@ -55,8 +55,6 @@ public class Parameter {
     public static final int REGISTER_THREE = 3;
     public static final int REGISTER_FOUR = 4;
     public static final int REGISTER_FIVE = 5;
-
-
 
     //Tiles
        //Orientation

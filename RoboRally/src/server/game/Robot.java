@@ -13,11 +13,6 @@ public class Robot {
     private int xPosition;
     private int yPosition;
 
-    public Robot() {
-        lineOfSight = ROBOT_START_LINEOFSIGHT;
-        xPosition = ROBOT_START_XPOSITION;
-        yPosition = ROBOT_START_YPOSITION;
-    }
     /**
      * Get the line of sight of the robot
      * @return lineOfSight The lineOfSight of th robot
