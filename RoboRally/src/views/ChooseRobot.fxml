@@ -23,7 +23,7 @@
 
    <ImageView fx:id="chooseRobotBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" preserveRatio="false" >
       <image>
-         <Image url="@../resources/images/others/HintergrundWikiStartseite.png" />
+         <Image url="@../resources/images/others/background-all-grey.png" />
       </image>
    </ImageView>
 
