@@ -7,8 +7,11 @@
 * Figure textfield needs to be removed from the view, is now redundant
 * Ready Button's width is not correct
 * Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard)
-* Program is not terminated when all windows are closed 
-* Forbid two clients with same username and figure
+* Program is not terminated when all windows are closed
+* Cursor change at hovering over robot and map needs to be implemented
+* Don't allow to choose Robot when Server field was not sent yet
+* Dont allow two clients to choose same username and same figure
+* Drag and Drop for choosing Programming cards needs to be implemented
 
 
 ## Version [0.3.0] 

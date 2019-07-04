@@ -1,6 +1,4 @@
 package server.game.DamageCards;
-import static utils.Parameter.SPAM_CARDS_AMOUNT;
-
 
 /**
  * Spam cards are the simplest form of damage a player can receive. <br>
@@ -8,9 +6,7 @@ import static utils.Parameter.SPAM_CARDS_AMOUNT;
  *
  * @author Vincent Tafferner
  */
-public class Spam extends DamageCard {
-
-    int cardAmount = SPAM_CARDS_AMOUNT;
+public class Spam extends server.game.Card {
 
     public Spam() {
         cardName = "Spam";
@@ -19,8 +15,11 @@ public class Spam extends DamageCard {
     /**
      * This is the method that activates the effect of a damage card. <br>
      * In this case the player has to play the top card of his programming deck.
+     * //TODO remove if not needed in final version.
      */
+    /*
     public void activateCard() {
-        //TODO
+
     }
+    */
 }

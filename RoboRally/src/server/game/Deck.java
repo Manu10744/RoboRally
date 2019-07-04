@@ -1,6 +1,6 @@
 package server.game;
 
-import server.game.DamageCards.DamageCard;
+import server.game.DamageCards.*;
 import server.game.ProgrammingCards.*;
 import server.game.GamePhases.*;
 import server.game.decks.*;
@@ -35,7 +35,7 @@ public class Deck {
     /**
      * This method shuffles the deck.
      */
-    public static void shuffleDeck(ArrayList<Card> Deck) {
+    public void shuffleDeck(ArrayList<Card> Deck) {
         Collections.shuffle(Deck);
     }
 
@@ -43,10 +43,10 @@ public class Deck {
      * This method is used for drawing cards from the deck. <br>
      * It draws Cards until the maximum amount of allowed hand cards is reached.
      */
-    public static void drawCard() {
+    public void drawCard() {
         for (int i = 0; i < HAND_CARDS_AMOUNT; i++) {
 
-            // Each time this checks if there are still enaugh Cards left in the deckDraw.
+            // Each time this checks if there are still enough Cards left in the deckDraw.
             if (deckEmpty(deckDraw)) {
                 addDiscardToDraw();
                 shuffleDeck(deckDraw);
@@ -61,8 +61,11 @@ public class Deck {
     /**
      * This method can add a Card from the deckHand to the deckRegister.
      * //TODO let the player choose a card.
+     * //TODO maybe think of new code.
+     * //TODO right now Card is abstract and therefor cannot be instantiated.
      */
-    public static void addRegister(){
+    /*
+    public void addRegister(){
         if (deckRegister.size() >= REGISTER_CARDS_AMOUNT) {
             //isFinishedProgramming();
             System.out.println("The Register is full!");
@@ -71,18 +74,19 @@ public class Deck {
             deckHand.remove(new Card());
         }
     }
+    */
 
     /**
      * This method clears the deckRegister after they have been played.
      */
-    public static void clearRegister(){
+    public void clearRegister(){
         clearDeck(deckRegister);
     }
 
     /**
      * This method knows the top card of any deck.
      */
-    public static Card getTopCard(ArrayList<Card> Deck) {
+    public Card getTopCard(ArrayList<Card> Deck) {
         topCard = Deck.get(0);
         return topCard;
     }
@@ -90,21 +94,21 @@ public class Deck {
     /**
      * This method removes the Top Card of a deck.
      */
-    public static void removeTopCard(ArrayList<Card> Deck) {
+    public void removeTopCard(ArrayList<Card> Deck) {
         Deck.remove(0);
     }
 
     /**
      * This method clears a Deck. For example you could clear the deckDiscard after you've added it to the deckDraw.
      */
-    public static void clearDeck(ArrayList<Card> Deck) {
+    public void clearDeck(ArrayList<Card> Deck) {
         Deck.clear();
     }
 
     /**
      * This method is needed, if the deckDraw gets to small.
      */
-    public static void addDiscardToDraw() {
+    public void addDiscardToDraw() {
         deckDraw.addAll(deckDiscard);
         clearDeck(deckDiscard);
     }
@@ -112,7 +116,7 @@ public class Deck {
     /**
      * This method is used to add the deckHand to the deckDiscard.
      */
-    public static void addHandToDiscard() {
+    public void addHandToDiscard() {
         deckDiscard.addAll(deckHand);
         clearDeck(deckHand);
     }
@@ -120,14 +124,14 @@ public class Deck {
     /**
      * This method can check if a Deck has Cards left in it.
      */
-    public static boolean deckEmpty(ArrayList<Card> Deck){
+    public boolean deckEmpty(ArrayList<Card> Deck){
         return Deck.isEmpty();
     }
 
     /**
      * This method draws a Damage Card and adds it to the deckDiscard.
      */
-    public static void drawDamageCard(ArrayList<Card> DamageDeck, ArrayList<Card> DiscardDeck, Card DamageCard){
+    public void drawDamageCard(ArrayList<Card> DamageDeck, ArrayList<Card> DiscardDeck, Card DamageCard){
         if (!deckEmpty(DamageDeck)) {
             DiscardDeck.add(DamageCard);
             removeTopCard(DamageDeck);
@@ -141,7 +145,7 @@ public class Deck {
      * The try catch is necessary because its not possible to look if an index is null as with normal arrays. <br>
      * This is because get() throws an exception instead of null.
      */
-    public static void fillRegisters() {
+    public void fillRegisters() {
 
         // If the index at 0 is empty the first Card of deckDraw will be put there
         try {

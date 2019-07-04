@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  * Map will instantly resize and scroll to default size and position.
  *
  * Additionally, we save every group with imageViews of the pos x/y in a hashmap, so that each group content can be gotten via this hashmap instead of going through the arrays
- * with calling tileGroups.get("x-y")
+ * with calling fieldMap.get("x-y")
  *
  * @author Ivan Dovecar
  * @author Mia
@@ -37,7 +37,7 @@ public class MapController implements IController {
 
     @FXML
     private GridPane mapPane;
-    private Map<String, Group> tileGroups = new HashMap<String, Group>();
+    private Map<String, Group> fieldMap = new HashMap<String, Group>();
     private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
 
 
@@ -137,7 +137,7 @@ public class MapController implements IController {
                         }
                         //Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
-                        tileGroups.put(groupID, imageGroup);
+                        fieldMap.put(groupID, imageGroup);
 
                             // Set new Y-position to avoid the map getting displayed inverted (!)
                             int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);

@@ -1,17 +1,15 @@
 package server.game.DamageCards;
-import static utils.Parameter.VIRUS_CARDS_AMOUNT;
 
 /**
  * This class defines a kind of damage.
  *
  * @author Vincent Tafferner
  */
-public class Virus extends DamageCard {
+public class Virus extends server.game.Card {
 
     public Virus() {
         cardName = "Virus";
     }
-    int cardAmount = VIRUS_CARDS_AMOUNT;
 
     /**
      * This is the method that activates the effect of a damage card. <br>

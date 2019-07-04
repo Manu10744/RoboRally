@@ -1,8 +1,7 @@
 package server.game.decks;
 
 import server.game.Card;
-import server.game.DamageCards.*;
-import server.game.ProgrammingCards.*;
+import server.game.DamageCards.Virus;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class DeckVirus {
     /**
      * This method initializes the deck of Virus cards.
      */
-    public static void initializeDeckVirus(){
+    public void initializeDeckVirus(){
 
         ArrayList<Card> deckVirus = new ArrayList<>();
 

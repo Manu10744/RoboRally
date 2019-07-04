@@ -2,7 +2,6 @@ package server.game.decks;
 
 import server.game.Card;
 import server.game.DamageCards.*;
-import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class DeckTrojan {
     /**
      * This method initializes the deck of Trojan cards.
      */
-    public static void initializeDeckTrojan(){
+    public void initializeDeckTrojan(){
 
         ArrayList<Card> deckTrojan = new ArrayList<>();
 
