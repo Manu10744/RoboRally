@@ -1,7 +1,6 @@
 ### Known Issues
 * Automatic filling of GridPane by reading deserialized GameStarted message not implemented yet
 * Ability to choose map not implemented yet
-* Game Logic must be tested and is incomplete
 * Disabling robot image for the next client after choosing robot needs to be implemented
 * After robot has been chosen maybe implement a lobby view until game starts
 * Figure textfield needs to be removed from the view, is now redundant
@@ -20,11 +19,12 @@
 * Responsive ChooseRobot view added - *(Jessie)*
 * ScoreBoard view added - *(Jessie)*
 * Deck functionality finished - *(Vincent)*
-* Basic game Logic created - *(Vincent)*
+* ~~Basic game Logic created -~~ *(Vincent)*
 * Game Wiki is completed now *(Verena)*
 
 ### Changes
 * Private messages implemented - *(Ivan)*
+* Basic Game Logic removed from Cards and they were made non-static - *(Vincent)*
 
 ### Bugfixes
 * Chat - tooltips are now working - *(Ivan)*

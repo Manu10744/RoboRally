@@ -23,12 +23,10 @@ public class Game {
     private boolean isFinished;
     private int playerAmount;
 
-
     public Game(Server server) {
         this.server = server;
         isFinished = false;
     }
-
 
     /**
      * This method starts a game
@@ -40,7 +38,6 @@ public class Game {
         //Create Players:
         this.players = new ArrayList<>(players);
         activePlayers = new ArrayList<>(this.players);
-
 
         System.out.println("Game has started");
 
@@ -65,7 +62,7 @@ public class Game {
      * This method is responsible for ending a game.
      */
     public static void endGame() {
-        //TODO
+
     }
 
     /**
