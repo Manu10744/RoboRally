@@ -13,7 +13,7 @@ import javafx.scene.image.ImageView;
  * @author Jessica Gerlach
  */
 
-public class OpponentMatController {
+public class OpponentMatController implements  IController{
 
     @FXML
     private GridPane opponentMat;
@@ -168,4 +168,9 @@ public class OpponentMatController {
     private ImageView player5PermUpdates2;
     @FXML
     private ImageView player5PermUpdates3;
+
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        return this;
+    }
 }

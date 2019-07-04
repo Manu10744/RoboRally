@@ -1,7 +1,5 @@
 package viewmodels;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -9,7 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import utils.Parameter;
 
 import javax.swing.event.ChangeListener;
@@ -33,11 +30,9 @@ public class ChooseRobotController implements Initializable,IController{
     @FXML
     ImageView zoomBot;
     @FXML
-    Label heading;
-    @FXML
-    VBox vBox1;
+    ImageView chooseRobotBackground;
 
-
+    private StageController stageController;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         smashBot.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH));
@@ -52,40 +47,43 @@ public class ChooseRobotController implements Initializable,IController{
         spinBot.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT));
         zoomBot.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH));
         zoomBot.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT));
+        chooseRobotBackground.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH_BGR));
+        chooseRobotBackground.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT_BGR));
     }
 
 
     public void mouseClicked() {
-       /*
+        System.out.println("CHATCONTROLLER:" + this.stageController);
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
        hammerBot.setOnMousePressed(event ->{
-           figure.setValue(1);
+           chatController.figure.setValue(1);
            chooseRobot.setVisible(false);
        });
        hulkX90.setOnMousePressed(event ->{
-           figure.setValue(2);
+           chatController.figure.setValue(2);
            chooseRobot.setVisible(false);
        });
        smashBot.setOnMousePressed(event ->{
-           figure.setValue(3);
+           chatController.figure.setValue(3);
            chooseRobot.setVisible(false);
        });
        twonky.setOnMousePressed(event ->{
-           figure.setValue(4);
+           chatController.figure.setValue(4);
            chooseRobot.setVisible(false);
        });
        spinBot.setOnMousePressed(event ->{
-           figure.setValue(5);
+           chatController.figure.setValue(5);
            chooseRobot.setVisible(false);
        });
        zoomBot.setOnMousePressed(event ->{
-           figure.setValue(6);
+           chatController.figure.setValue(6);
            chooseRobot.setVisible(false);
        });
-       */
     }
 
     @Override
     public IController setPrimaryController(StageController stageController) {
+        this.stageController = stageController;
         return this;
     }
 }

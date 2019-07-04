@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import client.Client;
@@ -17,6 +18,7 @@ import server.Server;
 import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
+import viewmodels.IController;
 import viewmodels.MapController;
 
 
@@ -27,6 +29,7 @@ import viewmodels.MapController;
  * @author Manuel Neumayer
  */
 public class MessageDistributer {
+    public static Map<String, IController> controllerMap;
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
 
@@ -47,7 +50,17 @@ public class MessageDistributer {
      *
      * @author Ivan Dovecar
      * @author Manu
+     * @author Mia
      */
+
+    /**
+     * This method is used to get all the controllers that are saved in the stage. With those, the individual gui-elements, e.g. chat and map can be referenced
+     * @param stageControllerMap
+     */
+    public static void setControllerMap(Map stageControllerMap){
+        controllerMap = stageControllerMap;
+    }
+
     public static void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "Entered handleHelloServer()" + ANSI_RESET);
 
@@ -386,26 +399,8 @@ public class MessageDistributer {
      */
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
-        /*
-        On every x/y Position of the map there is one array with tiles which is saved here in a doubled nested arraylist called tiles
-         (or in case of empty arrays null, in whic case a new empty array is initialised and returned, see implementation of getTileArrayFromMapBody in GameStartedBody.class)
-        */
-        ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
-        ArrayList<ArrayList<Tile>> tiles = new ArrayList<>();
 
-        for (int posX = 0; posX < Parameter.DIZZY_HIGHWAY_WIDTH; posX++) {
-            System.out.println("Tiles are turned");
-            for (int yPos = 0; yPos < Parameter.DIZZY_HIGHWAY_HEIGHT; yPos++) {
-
-
-                System.out.println(gameStartedBody.getXArray());
-                ArrayList<Tile> tileArray = gameStartedBody.getTileArrayFromMapBody(posX, yPos);
-                tiles.add(tileArray);
-
-            }
-
-        }
-
+        ((MapController) controllerMap.get("Map")).fillGridPaneWithMap(gameStartedBody);
 
       // fillMapWithImageViews(tiles);
     }

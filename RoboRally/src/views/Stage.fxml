@@ -7,8 +7,7 @@
 
 <!-- Stage contains board and chat -->
 <GridPane fx:id="stage"
-          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="viewmodels.StageController">
+          xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
    <!-- Determine screen resolution -->
    <fx:define>
@@ -37,20 +36,25 @@
          <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="20.0"/> <!-- PlayerMat -->
       </rowConstraints>
 
-      <!-- TODO StartScreen -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
-
-      <!-- TODO ChooseRobot -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
 
       <!-- Map -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="true"/>
+
+      <!-- ChooseRobot -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="true"/>
+
+      <!-- TODO StartScreen -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
+
+      <!-- TODO Scoreboard -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="scoreboard" source="Scoreboard.fxml" visible="false"/>
 
       <!-- OpponentMat -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>
 
       <!-- PlayerMat -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="playerMat" source="PlayerMat.fxml" visible="true"/>
+
    </GridPane>
 
    <!-- Chat -->

@@ -5,7 +5,7 @@ package server.game.ProgrammingCards;
  *
  * @author Vincent Tafferner
  */
-public class UTurn extends ProgrammingCard {
+public class UTurn extends server.game.Card {
 
     public UTurn() {
         cardName = "UTurn";
@@ -13,9 +13,11 @@ public class UTurn extends ProgrammingCard {
 
     /**
      * This will make the robot perform a 180.
+     * //TODO remove if not needed in final version.
      */
-    @Override
+    /*
     public void activateCard() {
-        //TODO
+
     }
+    */
 }

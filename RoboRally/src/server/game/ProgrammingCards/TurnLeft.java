@@ -5,7 +5,7 @@ package server.game.ProgrammingCards;
  *
  * @author Vincent Tafferner
  */
-public class TurnLeft extends ProgrammingCard {
+public class TurnLeft extends server.game.Card {
 
     public TurnLeft() {
         cardName = "TurnLeft";
@@ -13,9 +13,28 @@ public class TurnLeft extends ProgrammingCard {
 
     /**
      * This will make the robot turn 90 degrees to the left.
+     * //TODO remove if not needed in final version.
      */
-    @Override
+    /*
     public void activateCard() {
-        //TODO
+
+        switch (lineOfSight) {
+            case ("up"):
+                lineOfSight = "left";
+                break;
+            case ("right"):
+                lineOfSight = "up";
+                break;
+            case ("down"):
+                lineOfSight = "right";
+                break;
+            case ("left"):
+                lineOfSight = "down";
+                break;
+            default:
+                System.out.println("There is a Problem with the lineOfSight variable.");
+        }
+
     }
+    */
 }

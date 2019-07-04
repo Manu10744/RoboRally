@@ -13,6 +13,7 @@ import server.Server;
 import java.io.*;
 import java.util.logging.Logger;
 import utils.Parameter;
+import viewmodels.StageController;
 
 
 /**
@@ -24,7 +25,6 @@ import utils.Parameter;
  * @author Ivan Dovecar
  */
 public class Main extends Application {
-
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
     @Override
@@ -49,7 +49,7 @@ public class Main extends Application {
      *
      * @author Ivan Dovecar
      */
-   public class ServerStarterTask implements Runnable {
+    public class ServerStarterTask implements Runnable {
         Stage primaryStage;
 
         @Override
@@ -75,36 +75,40 @@ public class Main extends Application {
         public void run () {
 
             Platform.runLater(() -> {
-            try {
-                Stage primaryStage = new Stage();
-                FXMLLoader loader = new FXMLLoader();
-                // Load views for primaryStage
-                loader.setLocation(Main.class.getResource("/views/Stage.fxml"));
+                try {
+                    Stage primaryStage = new Stage();
+                    FXMLLoader loader = new FXMLLoader();
+                    // Load views for primaryStage
+                    loader.setLocation(Main.class.getResource("/views/Stage.fxml"));
 
-                GridPane stageView;
+                    // Custom loader setting, set the StageController manually, not automatically by @FXML
+                    StageController stageController = new StageController();
+                    loader.setController(stageController);
 
-                stageView = loader.load();
+                    GridPane stageView;
 
-                // Set scene
-                Scene scene = new Scene(stageView);
+                    stageView = loader.load();
 
-                // Set Stage boundaries to visible bounds of the main screen
-                Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-                primaryStage.setX(primaryScreenBounds.getMinX());
-                primaryStage.setY(primaryScreenBounds.getMinY());
-                primaryStage.setWidth(primaryScreenBounds.getWidth());
-                primaryStage.setHeight(primaryScreenBounds.getHeight());
+                    // Set scene
+                    Scene scene = new Scene(stageView);
 
-                // Set Stage icon and title
-                primaryStage.getIcons().add(new Image("/resources/images/others/robotIcon.png"));
-                primaryStage.setTitle("RoboRally");
-                primaryStage.setScene(scene);
+                    // Set Stage boundaries to visible bounds of the main screen
+                    Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+                    primaryStage.setX(primaryScreenBounds.getMinX());
+                    primaryStage.setY(primaryScreenBounds.getMinY());
+                    primaryStage.setWidth(primaryScreenBounds.getWidth());
+                    primaryStage.setHeight(primaryScreenBounds.getHeight());
 
-                // Show primaryStage
-                primaryStage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                    // Set Stage icon and title
+                    primaryStage.getIcons().add(new Image("/resources/images/others/robotIcon.png"));
+                    primaryStage.setTitle("RoboRally");
+                    primaryStage.setScene(scene);
+
+                    // Show primaryStage
+                    primaryStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             });
         }
     }
