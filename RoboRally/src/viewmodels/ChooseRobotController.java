@@ -32,7 +32,7 @@ public class ChooseRobotController implements Initializable,IController{
     @FXML
     ImageView chooseRobotBackground;
 
-
+    private StageController stageController;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         smashBot.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH));
@@ -53,36 +53,37 @@ public class ChooseRobotController implements Initializable,IController{
 
 
     public void mouseClicked() {
-       /*
+        System.out.println("CHATCONTROLLER:" + this.stageController);
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
        hammerBot.setOnMousePressed(event ->{
-           figure.setValue(1);
+           chatController.figure.setValue(1);
            chooseRobot.setVisible(false);
        });
        hulkX90.setOnMousePressed(event ->{
-           figure.setValue(2);
+           chatController.figure.setValue(2);
            chooseRobot.setVisible(false);
        });
        smashBot.setOnMousePressed(event ->{
-           figure.setValue(3);
+           chatController.figure.setValue(3);
            chooseRobot.setVisible(false);
        });
        twonky.setOnMousePressed(event ->{
-           figure.setValue(4);
+           chatController.figure.setValue(4);
            chooseRobot.setVisible(false);
        });
        spinBot.setOnMousePressed(event ->{
-           figure.setValue(5);
+           chatController.figure.setValue(5);
            chooseRobot.setVisible(false);
        });
        zoomBot.setOnMousePressed(event ->{
-           figure.setValue(6);
+           chatController.figure.setValue(6);
            chooseRobot.setVisible(false);
        });
-       */
     }
 
     @Override
     public IController setPrimaryController(StageController stageController) {
+        this.stageController = stageController;
         return this;
     }
 }

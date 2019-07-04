@@ -36,20 +36,25 @@
          <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="20.0"/> <!-- PlayerMat -->
       </rowConstraints>
 
+
+      <!-- Map -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="false"/>
+
+      <!-- ChooseRobot -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
+
       <!-- TODO StartScreen -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="startScreen" source="StartScreen.fxml" visible="false"/>
 
-      <!-- TODO ChooseRobot -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="chooseRobot" source="ChooseRobot.fxml" visible="false"/>
-
-      <!-- Map -->
-      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="map" source="Map.fxml" visible="true"/>
+      <!-- TODO Scoreboard -->
+      <fx:include GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="scoreboard" source="Scoreboard.fxml" visible="true"/>
 
       <!-- OpponentMat -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="opponentMat" source="OpponentMat.fxml" visible="true"/>
 
       <!-- PlayerMat -->
       <fx:include GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" fx:id="playerMat" source="PlayerMat.fxml" visible="true"/>
+
    </GridPane>
 
    <!-- Chat -->

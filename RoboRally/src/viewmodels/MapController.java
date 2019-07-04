@@ -1,5 +1,6 @@
 package viewmodels;
 
+import client.Client;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,7 +21,8 @@ import java.util.logging.Logger;
  * The class MapController notifies the Server where each robot is positioned and and on which tile(type) it rests
  * The mapPane fits the grid and is responsive, furthermore it is zoomable (click the mapPane for requesting focus ->
  * zoom in by pressing "+" / zoom out by pressing "-") and scrollable by Mouse (scroll wheel for y-pos and SHIFT +
- * scroll wheel for x-position) or by keyboard (left by "A" / right by "D" / up by "W" / down by "S").
+ * scroll wheel for x-position) or by keyboard (left by "A" / right by "D" / up by "W" / down by "S"). By Pressing "Z"
+ * Map will instantly resize and scroll to default size and position.
  *
  * @author Ivan Dovecar
  * @author Mia
@@ -37,6 +39,11 @@ public class MapController implements IController {
         return this;
     }
 
+    /**
+     * This method fills the GridPane that's responsible for displaying the map. It is triggered inside of the
+     * {@link utils.json.MessageDistributer#handleGameStarted(Client, Client.ClientReaderTask, GameStartedBody)} method.
+     * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
+     */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
         System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
 
@@ -63,29 +70,35 @@ public class MapController implements IController {
                     }
                 });
 
-                mapPane.addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent e) -> {
-                    logger.info("Pressed Key: " + e);
+                mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
+                    logger.info("Pressed Key: " + e + mapPane.getTranslateY());
                     if (e.getCode() == KeyCode.PLUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() * 1.1);
-                        mapPane.setScaleY(mapPane.getScaleY() * 1.1);
+                        mapPane.setScaleX(mapPane.getScaleX() * 1.05);
+                        mapPane.setScaleY(mapPane.getScaleY() * 1.05);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.MINUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() / 1.1);
-                        mapPane.setScaleY(mapPane.getScaleY() / 1.1);
+                        mapPane.setScaleX(mapPane.getScaleX() / 1.05);
+                        mapPane.setScaleY(mapPane.getScaleY() / 1.05);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.A) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() - 10);
+                        mapPane.setTranslateX(mapPane.getTranslateX() - 5);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.D) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() + 10);
+                        mapPane.setTranslateX(mapPane.getTranslateX() + 5);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.W) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() - 10);
+                        mapPane.setTranslateY(mapPane.getTranslateY() - 5);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.S) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() + 10);
+                        mapPane.setTranslateY(mapPane.getTranslateY() + 5);
                         mapPane.requestFocus();
-                    }
+                    } else if (e.getCode() == KeyCode.Z) {
+                        mapPane.setScaleX(1);
+                        mapPane.setScaleY(1);
+                        mapPane.setTranslateX(0.0);
+                        mapPane.setTranslateY(0.0);
+                        mapPane.requestFocus();
+                }
                 });
 
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
@@ -93,6 +106,7 @@ public class MapController implements IController {
                 int i = 0;
                 for (int xPos = Parameter.DIZZY_HIGHWAY_WIDTH - 1; xPos >= 0; xPos--) {
                     for (int yPos = Parameter.DIZZY_HIGHWAY_HEIGHT - 1; yPos >= 0 ; yPos--) {
+                        // Each field on the map is represented by a single Array of Tiles
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
                         // Add a normal tile to each non-empty field to prevent whitespace
@@ -102,19 +116,20 @@ public class MapController implements IController {
 
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                                Image image = tile.getTileImage();
-                                ImageView imageView = new ImageView();
-                                imageView.setImage(image);
+                            Image image = tile.getTileImage();
+                            ImageView imageView = new ImageView();
+                            imageView.setImage(image);
 
-                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                imageView.setPreserveRatio(true);
+                            // Necessary for making map fields responsive
+                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                            imageView.setPreserveRatio(true);
 
-                                // Set new Y-position to avoid the map getting displayed inverted (!)
-                                int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
-                                mapPane.setConstraints(imageView, xPos, newYPos);
-                                mapPane.getChildren().add(i, imageView);
-                                i++;
+                            // Set new Y-position to avoid the map getting displayed inverted (!)
+                            int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
+                            mapPane.setConstraints(imageView, xPos, newYPos);
+                            mapPane.getChildren().add(i, imageView);
+                            i++;
                         }
                     }
                 }
