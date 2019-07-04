@@ -69,7 +69,7 @@ public class MapController implements IController {
                     }
                 });
 
-                mapPane.addEventFilter(KeyEvent.KEY_RELEASED, (KeyEvent e) -> {
+                mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
                     logger.info("Pressed Key: " + e);
                     if (e.getCode() == KeyCode.PLUS) {
                         mapPane.setScaleX(mapPane.getScaleX() * 1.1);
