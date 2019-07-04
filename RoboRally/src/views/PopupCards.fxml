@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane fx:id="popupCards" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="viewmodels.PlayerMatController" >
+    <HBox>
+        <ImageView fx:id="card1" fitWidth="100" fitHeight="100" >
+            <image>
+                <Image url="@../resources/images/robots/choose-robot-hammerbot.png"/>
+            </image>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+        <ImageView>
+        </ImageView>
+    </HBox>
+
+</GridPane>

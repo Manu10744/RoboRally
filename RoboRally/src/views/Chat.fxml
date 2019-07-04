@@ -63,7 +63,7 @@
          </TextArea>
       </VBox>
 
-      <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Ready">
+      <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" onAction="#openPopupCards" prefHeight="30.0" prefWidth="400.0" text="Ready">
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </VBox.margin>
