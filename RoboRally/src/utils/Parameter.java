@@ -50,7 +50,6 @@ public class Parameter {
         public static final int ROBOT_START_XPOSITION = 0;
         public static final int ROBOT_START_YPOSITION = 0;
 
-
         //amount of players
         public  static final int MAX_PLAYERSIZE = 6;
         public static final int MIN_PLAYERSIZE = 2;
@@ -61,7 +60,6 @@ public class Parameter {
         public static final int REGISTER_THREE = 3;
         public static final int REGISTER_FOUR = 4;
         public static final int REGISTER_FIVE = 5;
-
 
 
     //Tiles
