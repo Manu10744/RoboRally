@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class StageController implements Initializable, IController {
-
     /**
      * This controller class is responsible for the board and the chat.
      * GridPane 'stage' adapts automatically to the users' screen setup.
