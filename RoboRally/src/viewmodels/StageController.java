@@ -68,7 +68,7 @@ public class StageController implements Initializable, IController {
             controllerMap.put("ChooseRobot", chooseRobotController.setPrimaryController(this));
         }
         if (mapController != null){
-            controllerMap.put("Map", mapController);
+            controllerMap.put("Map", mapController.setPrimaryController(this));
         }
         if (chatController != null) {
             controllerMap.put("Chat", chatController);

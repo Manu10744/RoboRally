@@ -47,10 +47,12 @@ public class Game {
 
         while (playerAmount >= MIN_PLAYERSIZE && playerAmount <= MAX_PLAYERSIZE) {
             startUpgradePhase();
-        startProgrammingPhase();
+        //startProgrammingPhase();
         startActivationPhase();
     }
     }
+
+
 
     /**
      * This method counts the current PLayer Amount.

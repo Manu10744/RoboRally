@@ -1,5 +1,11 @@
 package server.game.GamePhases;
 
+import server.game.Card;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+
 import static utils.Countdown.*;
 import static utils.Parameter.*;
 
@@ -13,6 +19,7 @@ public class ProgrammingPhase {
 
     public static boolean ready;
 
+
     public ProgrammingPhase(){
         ready = false;
     }
@@ -20,7 +27,7 @@ public class ProgrammingPhase {
     /**
      * This method handles the programming phase.
      */
-    public static void startProgrammingPhase() {
+    public void startProgrammingPhase() {
         //TODO
     }
 
