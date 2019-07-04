@@ -72,24 +72,24 @@ public class MapController implements IController {
                 mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
                     logger.info("Pressed Key: " + e);
                     if (e.getCode() == KeyCode.PLUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() * 1.1);
-                        mapPane.setScaleY(mapPane.getScaleY() * 1.1);
+                        mapPane.setScaleX(mapPane.getScaleX() * 1.05);
+                        mapPane.setScaleY(mapPane.getScaleY() * 1.05);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.MINUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() / 1.1);
-                        mapPane.setScaleY(mapPane.getScaleY() / 1.1);
+                        mapPane.setScaleX(mapPane.getScaleX() / 1.05);
+                        mapPane.setScaleY(mapPane.getScaleY() / 1.05);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.A) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() - 10);
+                        mapPane.setTranslateX(mapPane.getTranslateX() - 5);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.D) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() + 10);
+                        mapPane.setTranslateX(mapPane.getTranslateX() + 5);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.W) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() - 10);
+                        mapPane.setTranslateY(mapPane.getTranslateY() - 5);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.S) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() + 10);
+                        mapPane.setTranslateY(mapPane.getTranslateY() + 5);
                         mapPane.requestFocus();
                     }
                 });
