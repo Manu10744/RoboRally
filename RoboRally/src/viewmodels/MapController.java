@@ -21,7 +21,8 @@ import java.util.logging.Logger;
  * The class MapController notifies the Server where each robot is positioned and and on which tile(type) it rests
  * The mapPane fits the grid and is responsive, furthermore it is zoomable (click the mapPane for requesting focus ->
  * zoom in by pressing "+" / zoom out by pressing "-") and scrollable by Mouse (scroll wheel for y-pos and SHIFT +
- * scroll wheel for x-position) or by keyboard (left by "A" / right by "D" / up by "W" / down by "S").
+ * scroll wheel for x-position) or by keyboard (left by "A" / right by "D" / up by "W" / down by "S"). By Pressing "Z"
+ * Map will instantly resize and scroll to default size and position.
  *
  * @author Ivan Dovecar
  * @author Mia
@@ -70,7 +71,7 @@ public class MapController implements IController {
                 });
 
                 mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
-                    logger.info("Pressed Key: " + e);
+                    logger.info("Pressed Key: " + e + mapPane.getTranslateY());
                     if (e.getCode() == KeyCode.PLUS) {
                         mapPane.setScaleX(mapPane.getScaleX() * 1.05);
                         mapPane.setScaleY(mapPane.getScaleY() * 1.05);
@@ -91,7 +92,13 @@ public class MapController implements IController {
                     } else if (e.getCode() == KeyCode.S) {
                         mapPane.setTranslateY(mapPane.getTranslateY() + 5);
                         mapPane.requestFocus();
-                    }
+                    } else if (e.getCode() == KeyCode.Z) {
+                        mapPane.setScaleX(1);
+                        mapPane.setScaleY(1);
+                        mapPane.setTranslateX(0.0);
+                        mapPane.setTranslateY(0.0);
+                        mapPane.requestFocus();
+                }
                 });
 
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
