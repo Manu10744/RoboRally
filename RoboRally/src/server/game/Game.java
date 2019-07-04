@@ -3,6 +3,7 @@ package server.game;
 import static server.game.GamePhases.ActivationPhase.*;
 import static server.game.GamePhases.ProgrammingPhase.*;
 import static server.game.GamePhases.UpgradePhase.*;
+import static utils.Parameter.*;
 
 import server.Server;
 
@@ -44,10 +45,11 @@ public class Game {
         //TODO
         //Here the different Phases should be called in a smart order.
 
-        while (playerAmount >=2)
-        startUpgradePhase();
+        while (playerAmount >= MIN_PLAYERSIZE && playerAmount <= MAX_PLAYERSIZE) {
+            startUpgradePhase();
         startProgrammingPhase();
         startActivationPhase();
+    }
     }
 
     /**
