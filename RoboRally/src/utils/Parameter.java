@@ -132,5 +132,15 @@ public class Parameter {
     public static final int START_SCREEN_RATIO_WIDTH = 1;
     public static final int START_SCREEN_RATIO_HEIGHT = 1;
 
+    //Scoreboard
+    public static final int SCOREBOARD_RATIO_WIDTH = 1;
+    public static final int SCOREBOARD_RATIO_HEIGHT = 1;
+    public static final int SCOREBOARD_SIEGERTREPPE_RATIO_WIDTH = 3;
+    public static final int SCOREBOARD_SIEGERTREPPE_RATIO_HEIGHT = 2;
+    public static final int SCOREBOARD_ROBOT_RATIO_WIDTH = 8;
+    public static final int SCOREBOARD_ROBOT_RATIO_HEIGHT = 4;
+
+    public static final int SCOREBOARD_ROBOT_LOSER_RATIO_WIDTH = 10;
+    public static final int SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT = 5;
 
 }

@@ -42,12 +42,13 @@ public class ScoreboardController implements Initializable {
         hammerBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_HEIGHT));
         hulkX90.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_WIDTH));
         hulkX90.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_HEIGHT));
-        twonky.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_WIDTH));
-        twonky.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_HEIGHT));
-        spinBot.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_WIDTH));
-        spinBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_HEIGHT));
-        zoomBot.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_WIDTH));
-        zoomBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_RATIO_HEIGHT));
+
+        twonky.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_WIDTH));
+        twonky.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT));
+        spinBot.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_WIDTH));
+        spinBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT));
+        zoomBot.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_WIDTH));
+        zoomBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT));
     }
 
 }
