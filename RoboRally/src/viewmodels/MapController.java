@@ -145,7 +145,6 @@ public class MapController implements IController {
                             mapPane.getChildren().add(imageGroup);
                         }
                     }
-                System.out.println("TILE ON POS 0,0" + tileGroups.get("12-6").getChildren());
             }
         });
 
