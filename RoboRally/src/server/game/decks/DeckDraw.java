@@ -17,7 +17,7 @@ public class DeckDraw {
     /**
      * This method initializes the deck of the programming cards.
      */
-    public static void initializeDeckDraw() {
+    public void initializeDeckDraw() {
 
         ArrayList<Card> deckDraw = new ArrayList<>();
 

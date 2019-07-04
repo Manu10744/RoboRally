@@ -7,7 +7,7 @@ package server.game.ProgrammingCards;
  *
  * @author Vincent Tafferner
  */
-public class MoveIII extends ProgrammingCard {
+public class MoveIII extends server.game.Card {
 
     public MoveIII() {
         cardName = "MoveIII";
@@ -16,9 +16,11 @@ public class MoveIII extends ProgrammingCard {
     /**
      * This will move the robot three tiles in the direction he is facing. <br>
      * It is important, that he moves one tile at a time so he cant jump over holes or walls.
+     * //TODO remove if not needed in final version.
      */
-    @Override
+    /*
     public void activateCard() {
-        //TODO
+
     }
+    */
 }

@@ -1,12 +1,11 @@
 package server.game.decks;
 
 import server.game.Card;
-import server.game.DamageCards.*;
-import server.game.ProgrammingCards.*;
+import server.game.DamageCards.Worm;
 
 import java.util.ArrayList;
 
-import static utils.Parameter.*;
+import static utils.Parameter.WORM_CARDS_AMOUNT;
 
 /**
  * This class implements the deckWorm.
@@ -18,7 +17,7 @@ public class DeckWorm {
     /**
      * This method initializes the deck of Worm cards.
      */
-    public static void initializeDeckWorm(){
+    public void initializeDeckWorm(){
 
         ArrayList<Card> deckWorm = new ArrayList<>();
 

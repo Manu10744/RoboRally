@@ -2,7 +2,6 @@ package server.game.decks;
 
 import server.game.Card;
 import server.game.DamageCards.*;
-import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class DeckSpam {
     /**
      * This method initializes the deck of Spam cards.
      */
-    public static void initializeDeckSpam(){
+    public void initializeDeckSpam(){
 
         ArrayList<Card> deckSpam = new ArrayList<>();
 

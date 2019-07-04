@@ -5,7 +5,7 @@ package server.game.ProgrammingCards;
  *
  * @author Vincent Tafferner
  */
-public class BackUp extends ProgrammingCard {
+public class BackUp extends server.game.Card {
 
     public BackUp() {
         cardName = "BackUp";
@@ -14,9 +14,11 @@ public class BackUp extends ProgrammingCard {
     /**
      * This move will make the robot take one step back. <br>
      * It is important, that the robot still faces the same direction.
+     * //TODO remove if not needed in final version.
      */
+    /*
     public void activateCard() {
-        /*
+
         switch (lineOfSight){
             case ("up"):
                 xPosition = xPosition +1;
@@ -33,8 +35,7 @@ public class BackUp extends ProgrammingCard {
             default:
                 System.out.println("There was a problem with the lineOfSight Variable");
         }
-
-         */
     }
+     */
 
 }

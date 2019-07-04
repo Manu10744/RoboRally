@@ -17,7 +17,7 @@ public class DeckRegister {
     /**
      * This method creates an empty deckRegister.
      */
-    public static void initializeDeckRegister(){
+    public void initializeDeckRegister(){
 
         ArrayList<Card> deckRegister = new ArrayList<>();
 

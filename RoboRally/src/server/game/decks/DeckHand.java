@@ -17,7 +17,7 @@ public class DeckHand {
     /**
      * This method creates an empty deckHand.
      */
-    public static void initializeDeckHand() {
+    public void initializeDeckHand() {
 
         ArrayList<Card> deckHand = new ArrayList<>();
 

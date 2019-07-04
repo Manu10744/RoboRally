@@ -17,7 +17,7 @@ public class DeckDiscard {
     /**
      * This method creates an empty deckDiscard.
      */
-    public static void initializeDeckDiscard() {
+    public void initializeDeckDiscard() {
 
         ArrayList<Card> deckDiscard = new ArrayList<>();
 
