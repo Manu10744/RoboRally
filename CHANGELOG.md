@@ -1,13 +1,19 @@
 ### Known Issues
-* StartScreen is not responsive and doesnt take up 100% width
 * Automatic filling of GridPane by reading deserialized GameStarted message not implemented yet
 * Ability to choose map not implemented yet
 * Game Logic must be tested and is incomplete
+* Disabling robot image for the next client after choosing robot needs to be implemented
+* After robot has been chosen maybe implement a lobby view until game starts
+* Figure textfield needs to be removed from the view, is now redundant
+* Ready Button's width is not correct
+* Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard)
+* Program is not terminated when all windows are closed 
+
 
 ## Version [0.3.0] 
 ### New Features
 * 'GameStarted' protocol message can now be properly deserialized, which makes sending maps to the client possible. - *(Manu)*
-* ChooseRobot view added - *(Jessie)*
+* Responsive ChooseRobot view added - *(Jessie)*
 * ScoreBoard view added - *(Jessie)*
 * Deck functionality finished - *(Vincent)*
 * Basic game Logic created - *(Vincent)*
@@ -17,7 +23,7 @@
 * Private messages implemented - *(Ivan)*
 
 ### Bugfixes
-* Chat - tooltip is working - *(Ivan)*
+* Chat - tooltips are now working - *(Ivan)*
 
 ## Version [0.2.0]
 ### New Features
