@@ -149,51 +149,47 @@ public class MapController implements IController {
                             mapPane.setConstraints(imageGroup, xPos, newYPos);
                             mapPane.getChildren().add(imageGroup);
                         }
-
-
-
                     }
-
-                populateStarpoint();
+                // After filling the map, populate the Startpoints
+                // TODO: Trigger this after an Event MAP_FILLED
+               populateStartpoints();
             }
         });
-
-
-
     }
 
     public ImageView getImageByFigure(int figure){
 
-            if(figure==1){
+            if (figure==1){
                 Image HammerBot = new Image("/resources/images/robots/HammerBot.PNG");
                 ImageView HammerBotView = new ImageView(HammerBot);
                 return HammerBotView;
-            }else if (figure == 2){
+            } else if (figure == 2){
                 Image HulkX90 = new Image("/resources/images/robots/HulkX90.PNG");
                 ImageView HulkX90View = new ImageView(HulkX90);
                 return HulkX90View;
-            }else if (figure == 3) {
+            } else if (figure == 3) {
                 Image SmashBot = new Image("/resources/images/robots/SmashBot.PNG");
                 ImageView SmashBotView = new ImageView(SmashBot);
                 return SmashBotView;
-            }else if (figure == 4) {
+            } else if (figure == 4) {
                 Image Twonky = new Image("/resources/images/robots/Twonky.PNG");
                 ImageView TwonkyView = new ImageView(Twonky);
                 return TwonkyView;
-            }else if (figure == 5) {
+            } else if (figure == 5) {
                 Image Spinbot = new Image("/resources/images/robots/Spinbot.PNG");
                 ImageView SpinbotView = new ImageView(Spinbot);
                 return SpinbotView;
-            }else if (figure == 6){
+            } else if (figure == 6){
                 Image ZoomBot = new Image("/resources/images/robots/ZoomBot.PNG");
                 ImageView ZoomBotView = new ImageView(ZoomBot);
                 return ZoomBotView;
-        } return null;
+             }
+            return null;
     }
 
 
 
-    public void populateStarpoint(){
+    public void populateStartpoints() {
         Group startPoint1 = fieldMap.get("0-3");
 
         ChatController chatController = (ChatController)stageController.getControllerMap().get("Chat");
