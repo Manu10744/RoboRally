@@ -7,6 +7,8 @@
 * Figure textfield needs to be removed from the view, is now redundant
 * Ready Button's width is not correct
 * Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard)
+* Program is not terminated when all windows are closed 
+
 
 ## Version [0.3.0] 
 ### New Features
