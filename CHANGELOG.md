@@ -8,6 +8,7 @@
 * Ready Button's width is not correct
 * Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard)
 * Program is not terminated when all windows are closed 
+* Forbid two clients with same username and figure
 
 
 ## Version [0.3.0] 

@@ -25,9 +25,7 @@ import viewmodels.StageController;
  * @author Ivan Dovecar
  */
 public class Main extends Application {
-
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -83,6 +81,7 @@ public class Main extends Application {
                     // Load views for primaryStage
                     loader.setLocation(Main.class.getResource("/views/Stage.fxml"));
 
+                    // Custom loader setting, set the StageController manually, not automatically by @FXML
                     StageController stageController = new StageController();
                     loader.setController(stageController);
 
