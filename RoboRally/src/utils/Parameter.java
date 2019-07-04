@@ -38,7 +38,7 @@ public class Parameter {
     public static final int SERVER_PORT = 9998;
 
     //GUI
-    public static final int GUIS_TO_START = 2;
+    public static final int GUIS_TO_START = 1;
 
     //Game
     public static final int TIMER_LENGTH = 30;

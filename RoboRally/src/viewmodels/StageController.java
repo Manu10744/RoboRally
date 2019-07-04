@@ -39,18 +39,6 @@ public class StageController implements Initializable, IController {
     @FXML
     GridPane chat;
     @FXML
-    ImageView hammerBot;
-    @FXML
-    ImageView hulkX90;
-    @FXML
-    ImageView smashBot;
-    @FXML
-    ImageView twonky;
-    @FXML
-    ImageView spinBot;
-    @FXML
-    ImageView zoomBot;
-    @FXML
     private ChatController chatController;
     @FXML
     private MapController mapController;
@@ -97,34 +85,7 @@ public class StageController implements Initializable, IController {
     public Map<String, IController> getControllerMap() {
         return controllerMap;
     }
-    public void mouseClicked() {
-       /*
-       hammerBot.setOnMousePressed(event ->{
-           figure.setValue(1);
-           chooseRobot.setVisible(false);
-       });
-       hulkX90.setOnMousePressed(event ->{
-           figure.setValue(2);
-           chooseRobot.setVisible(false);
-       });
-       smashBot.setOnMousePressed(event ->{
-           figure.setValue(3);
-           chooseRobot.setVisible(false);
-       });
-       twonky.setOnMousePressed(event ->{
-           figure.setValue(4);
-           chooseRobot.setVisible(false);
-       });
-       spinBot.setOnMousePressed(event ->{
-           figure.setValue(5);
-           chooseRobot.setVisible(false);
-       });
-       zoomBot.setOnMousePressed(event ->{
-           figure.setValue(6);
-           chooseRobot.setVisible(false);
-       });
-       */
-    }
+
 
     @Override
     public IController setPrimaryController(StageController stageController) {
