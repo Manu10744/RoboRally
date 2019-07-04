@@ -106,6 +106,7 @@ public class MapController implements IController {
                 int i = 0;
                 for (int xPos = Parameter.DIZZY_HIGHWAY_WIDTH - 1; xPos >= 0; xPos--) {
                     for (int yPos = Parameter.DIZZY_HIGHWAY_HEIGHT - 1; yPos >= 0 ; yPos--) {
+                        // Each field on the map is represented by a single Array of Tiles
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
                         // Add a normal tile to each non-empty field to prevent whitespace
@@ -119,6 +120,7 @@ public class MapController implements IController {
                             ImageView imageView = new ImageView();
                             imageView.setImage(image);
 
+                            // Necessary for making map fields responsive
                             imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
                             imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                             imageView.setPreserveRatio(true);
