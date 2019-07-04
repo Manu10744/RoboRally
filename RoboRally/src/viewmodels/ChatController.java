@@ -116,6 +116,7 @@ public class ChatController implements Initializable, IController {
 
         figure.addListener((observableValue, oldValue, newValue) -> {
             figure.setValue(newValue);
+            client.setFigure(newValue.intValue());
             figureSettingFinished.set(true);
         });
 
@@ -279,6 +280,8 @@ public class ChatController implements Initializable, IController {
     private StringProperty clientChatOutputProperty() {
         return clientChatOutput;
     }
+
+    public Client getClient(){return client;}
 
     /**
      * Check if IP String is a valid IP Address and contains IP and Port

@@ -231,6 +231,10 @@ public class Client {
         this.waitingForHelloClient = isWaiting;
     }
 
+    public int getFigure(){return figure;}
+
+    public void setFigure(int figure){this.figure = figure;}
+
     /**
      * Inner class to define ReaderTask with Server
      */
