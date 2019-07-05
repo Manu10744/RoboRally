@@ -11,42 +11,42 @@ public class ActivationPhase {
     /**
      * This method starts the Activation Phase.
      */
-    public static void startActivationPhase() {
+    public void startActivationPhase() {
         //TODO
     }
 
     /**
      * This method sends the Card of a register to all Clients.
      */
-    public static void showNextCard() {
+    public void showNextCard() {
         //TODO
     }
 
     /**
      * This method calculates the distance between two tiles.
      */
-    public static void calculateDistance() {
+    public void calculateDistance() {
         //TODO
     }
 
     /**
      * This method always knows the next player.
      */
-    public static void determineNextPlayer() {
+    public void determineNextPlayer() {
         //TODO
     }
 
     /**
      * This method executes the Effects of the different Cards.
      */
-    public static void executeCard() {
+    public void executeCard() {
         //TODO
     }
 
     /**
      * This activates the Blue Conveyor Belts. It is #1 in order.
      */
-    public static void activteBlueConveyorBelts() {
+    public void activteBlueConveyorBelts() {
         //TODO
     }
 
@@ -54,7 +54,7 @@ public class ActivationPhase {
     /**
      * This activates the Green Conveyor Belts. It is #2 in order.
      */
-    public static void activateGreenConveyorBelts() {
+    public void activateGreenConveyorBelts() {
         //TODO
     }
 
@@ -62,7 +62,7 @@ public class ActivationPhase {
     /**
      * This activates the Push Panels. It is #3 in order.
      */
-    public static void activatePushPanels() {
+    public void activatePushPanels() {
         //TODO
     }
 
@@ -70,7 +70,7 @@ public class ActivationPhase {
     /**
      * This activates the Gears. It is #4 in order.
      */
-    public static void activateGears() {
+    public void activateGears() {
         //TODO
     }
 
@@ -78,14 +78,14 @@ public class ActivationPhase {
     /**
      * This activates the Board Lasers. It is #5 in order.
      */
-    public static void activateBoardLasers() {
+    public void activateBoardLasers() {
         //TODO
     }
 
     /**
      * This activates the Robot Lasers. It is #6 in order.
      */
-    public static void activateRobotLasers() {
+    public void activateRobotLasers() {
         //TODO
     }
 
@@ -93,7 +93,7 @@ public class ActivationPhase {
     /**
      * This activates the Energy Spaces. It is #7 in order.
      */
-    public static void activateEnergySpaces() {
+    public void activateEnergySpaces() {
         //TODO
     }
 
@@ -101,7 +101,7 @@ public class ActivationPhase {
     /**
      * This activates the Checkpoints. It is #8 in order.
      */
-    public static void activateCheckpoint() {
+    public void activateCheckpoint() {
         //TODO
     }
 

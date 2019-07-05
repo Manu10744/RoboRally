@@ -10,7 +10,7 @@ public class UpgradePhase {
     /**
      * This method starts the UpgradePhase.
      */
-    public static void startUpgradePhase() {
+    public void startUpgradePhase() {
         //TODO
     }
 
