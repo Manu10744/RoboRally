@@ -1,13 +1,11 @@
 package server.game;
 
-import static server.game.GamePhases.ActivationPhase.*;
-import static server.game.GamePhases.ProgrammingPhase.*;
-import static server.game.GamePhases.UpgradePhase.*;
-import static utils.Parameter.*;
-
 import server.Server;
 
 import java.util.ArrayList;
+
+import static utils.Parameter.MAX_PLAYERSIZE;
+import static utils.Parameter.MIN_PLAYERSIZE;
 
 /**
  * This class handles the Game itself. <br>
@@ -42,17 +40,15 @@ public class Game {
 
         System.out.println("Game has started");
 
-        //TODO
-        //Here the different Phases should be called in a smart order.
+        //TODO Here the different Phases should be called in a smart order.
 
         while (playerAmount >= MIN_PLAYERSIZE && playerAmount <= MAX_PLAYERSIZE) {
-            startUpgradePhase();
-        //startProgrammingPhase();
-        startActivationPhase();
+            //startUpgradePhase();
+            //startProgrammingPhase();
+            //startActivationPhase();
+            //TODO find a way to use the methods correctly, or delete if other solution works.
     }
     }
-
-
 
     /**
      * This method counts the current PLayer Amount.
@@ -65,8 +61,8 @@ public class Game {
     /**
      * This method is responsible for ending a game.
      */
-    public static void endGame() {
-
+    public void endGame() {
+        //TODO
     }
 
     /**
