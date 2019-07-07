@@ -32,6 +32,21 @@ public class ChooseRobotController implements Initializable,IController{
     @FXML
     ImageView chooseRobotBackground;
 
+    @FXML
+    Label headline;
+    @FXML
+    Label smashBotLabel;
+    @FXML
+    Label hammerBotLabel;
+    @FXML
+    Label hulkX90Label;
+    @FXML
+    Label twonkyLabel;
+    @FXML
+    Label spinBotLabel;
+    @FXML
+    Label zoomBotLabel;
+
     private StageController stageController;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,6 +64,8 @@ public class ChooseRobotController implements Initializable,IController{
         zoomBot.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT));
         chooseRobotBackground.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH_BGR));
         chooseRobotBackground.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT_BGR));
+
+
         chooseRobot.getStylesheets().add("/resources/css/main.css");
     }
 
