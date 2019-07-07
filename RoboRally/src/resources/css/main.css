@@ -4,4 +4,6 @@
 
 #hammerBot:hover, #hulkX90:hover, #smashBot:hover, #spinBot:hover, #twonky:hover, #zoomBot:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.4), 10, 10, 10, 10);
+    -fx-cursor: hand;
 }
+
