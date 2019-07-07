@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,17 +20,17 @@
     <RowConstraints minHeight="0.0" />
 </rowConstraints>
 
-   <ImageView fx:id="chooseRobotBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" preserveRatio="false" >
+   <ImageView fx:id="chooseRobotBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" preserveRatio="false">
       <image>
          <Image url="@../resources/images/others/background-all-grey.png" />
       </image>
    </ImageView>
 
-    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+    <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
 
-   <Label text="Choose a robot" textFill="#ebe1e1">
+   <Label fx:id="headline" text="Choose a robot" textFill="#ebe1e1">
       <font>
-         <Font name="System Bold" size="58"/>
+         <Font name="System Bold" size="58" />
       </font>
    </Label>
 
@@ -40,10 +39,10 @@
       <VBox alignment="CENTER">
          <ImageView fx:id="hammerBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@../resources/images/robots/choose-robot-hammerbot.png"/>
+               <Image url="@../resources/images/robots/choose-robot-hammerbot.png" />
             </image>
          </ImageView>
-         <Label text="HammerBot" textFill="#ebe1e1">
+         <Label fx:id="hammerBotLabel" text="HammerBot" textFill="#ebe1e1">
             <font>
                <Font name="System Bold" size="24" />
             </font>
@@ -56,7 +55,7 @@
                   <Image url="@../resources/images/robots/choose-robot-hulkX90.png" />
                </image>
             </ImageView>
-            <Label text="HulkX90" textFill="#ebe1e1" >
+            <Label fx:id="hulkX90Label" text="HulkX90" textFill="#ebe1e1">
                <font>
                   <Font name="System Bold" size="24" />
                </font>
@@ -69,7 +68,7 @@
                   <Image url="@../resources/images/robots/choose-robot-smashbot.png" />
                </image>
             </ImageView>
-            <Label text="SmashBot" textFill="#ebe1e1">
+            <Label fx:id="smashBotLabel" text="SmashBot" textFill="#ebe1e1">
                <font>
                   <Font name="System Bold" size="24" />
                </font>
@@ -86,7 +85,7 @@
                      <Image url="@../resources/images/robots/choose-robot-spinbot.png" />
                   </image>
                </ImageView>
-               <Label text="SpinBot" textFill="#ebe1e1">
+               <Label fx:id="spinBotLabel" text="SpinBot" textFill="#ebe1e1">
                   <font>
                      <Font name="System Bold" size="24" />
                   </font>
@@ -97,12 +96,12 @@
          <VBox alignment="CENTER">
                <ImageView fx:id="twonky" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@../resources/images/robots/choose-robot-twonky.png"/>
+                     <Image url="@../resources/images/robots/choose-robot-twonky.png" />
                   </image>
                </ImageView>
-               <Label text="Twonky" textFill="#ebe1e1" >
+               <Label fx:id="twonkyLabel" text="Twonky" textFill="#ebe1e1">
                   <font>
-                     <Font name="System Bold" size="24"/>
+                     <Font name="System Bold" size="24" />
                   </font>
                </Label>
          </VBox>
@@ -110,10 +109,10 @@
          <VBox alignment="CENTER">
                <ImageView fx:id="zoomBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
-                     <Image url="@../resources/images/robots/choose-robot-zoombot.png"/>
+                     <Image url="@../resources/images/robots/choose-robot-zoombot.png" />
                   </image>
                </ImageView>
-               <Label text="ZoomBot" textFill="#ebe1e1" >
+               <Label fx:id="zoomBotLabel" text="ZoomBot" textFill="#ebe1e1">
                   <font>
                      <Font name="System Bold" size="24" />
                   </font>
