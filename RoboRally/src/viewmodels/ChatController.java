@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import client.Client;
 import javafx.scene.image.Image;
+import javafx.stage.StageStyle;
 import utils.Parameter;
 import javafx.fxml.Initializable;
 import javafx.beans.property.*;
@@ -404,8 +405,10 @@ public class ChatController implements Initializable, IController {
         if (event.getSource() == buttonReady) {
 
             root1 = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+            root1.getStylesheets().add("/resources/css/main.css");
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
+            stage.initStyle(StageStyle.TRANSPARENT);
             stage.show();
             PlayerMatController.setStage(stage);
 

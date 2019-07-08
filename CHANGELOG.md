@@ -1,5 +1,4 @@
 ### Known Issues
-* Automatic filling of GridPane by reading deserialized GameStarted message not implemented yet
 * Ability to choose map not implemented yet
 * Disabling robot image for the next client after choosing robot needs to be implemented
 * After robot has been chosen maybe implement a lobby view until game starts
@@ -7,20 +6,28 @@
 * Ready Button's width is not correct
 * Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard)
 * Program is not terminated when all windows are closed
-* Cursor change at hovering over robot and map needs to be implemented
-* Don't allow to choose Robot when Server field was not sent yet
 * Dont allow two clients to choose same username and same figure
-* Drag and Drop for choosing Programming cards needs to be implemented
+* Drag and Drop must be fixed (Bugs)
+* New connecting clients are not informed about ready status of already connected players
+* Connection of player, game and robot class missing
+* Remaining maps are missing
 
+## Version [0.3.1] 
+### New Features 
+* Robot can now be set by clicking on robots in the chooseRobot view - *(Verena, Jessi)*
+* Player avatars are now set after choosing robot - *(Verena)*
+
+### Changes
+
+### Bugfixes
 
 ## Version [0.3.0] 
 ### New Features
 * 'GameStarted' protocol message can now be properly deserialized, which makes sending maps to the client possible. - *(Manu)*
-* Responsive ChooseRobot view added - *(Jessie)*
-* Responsive ScoreBoard view added - *(Jessie)*
+* Responsive ChooseRobot view added - *(Verena, Jessie)*
+* Responsive ScoreBoard view added - *(Verena, Jessie)*
 * Maps can now be displayed after receiving 'GameStarted' messages - *(Mia, Manu, Ivan)*
 * Deck functionality finished - *(Vincent)*
-* ~~Basic game Logic created -~~ *(Vincent)*
 * Game Wiki is completed now *(Verena)*
 * Zooming and Scrolling works smoother now, Map can be reset to its default position by pressing 'Z' - *(Ivan)*
 

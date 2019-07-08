@@ -104,6 +104,7 @@ public class PlayerMatController implements IController {
     private ImageView emptyIcon20;
     @FXML
     private ImageView emptyIcon21;
+
     @FXML
     HBox cards;
 

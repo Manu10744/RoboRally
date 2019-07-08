@@ -140,7 +140,7 @@ public class MapController implements IController {
 
                             imageGroup.getChildren().add(imageView);
                         }
-                        //Groups are added to HashMap
+                        // Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
                         fieldMap.put(groupID, imageGroup);
 
@@ -157,9 +157,8 @@ public class MapController implements IController {
         });
     }
 
-    public ImageView getImageByFigure(int figure){
-
-            if (figure==1){
+    public ImageView getImageByFigure(int figure) {
+            if (figure==1) {
                 Image HammerBot = new Image("/resources/images/robots/HammerBot.PNG");
                 ImageView HammerBotView = new ImageView(HammerBot);
                 return HammerBotView;

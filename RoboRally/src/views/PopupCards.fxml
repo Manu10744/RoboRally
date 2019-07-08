@@ -9,40 +9,40 @@
 
 <GridPane fx:id="popupCards" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.PlayerMatController">
     <HBox fx:id="cards">
-        <ImageView onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
+        <ImageView fx:id="dragImage1" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/move1-blue100x100.png" />
             </image>
         </ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage2">
          <image>
             <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage3">
          <image>
             <Image url="@../resources/images/cards/move2-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage4">
          <image>
             <Image url="@../resources/images/cards/moveback-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage5">
          <image>
             <Image url="@../resources/images/cards/powerup-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage6">
          <image>
             <Image url="@../resources/images/cards/rightturn-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage7">
          <image>
             <Image url="@../resources/images/cards/again-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage8">
          <image>
             <Image url="@../resources/images/cards/move1-blue100x100.png" />
          </image></ImageView>
-        <ImageView>
+        <ImageView fx:id="dragImage9">
          <image>
             <Image url="@../resources/images/cards/move3-blue100x100.png" />
          </image></ImageView>
