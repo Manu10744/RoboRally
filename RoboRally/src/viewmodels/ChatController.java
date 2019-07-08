@@ -111,6 +111,20 @@ public class ChatController implements Initializable, IController {
                 e.printStackTrace();
             }
             client = new Client(serverIP, serverPort);
+
+            // Register all controllers to the client
+            MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+            ChooseRobotController chooseRobotController = (ChooseRobotController) this.stageController.getControllerMap().get("ChooseRobot");
+            PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+            OpponentMatController opponentMatController = (OpponentMatController) this.stageController.getControllerMap().get("OpponentMat");
+            client.setChatController(this);
+            client.setMapController(mapController);
+            client.setStageController(this.stageController);
+            client.setChooseRobotController(chooseRobotController);
+            client.setPlayerMatController(playerMatController);
+            client.setOpponentMatController(opponentMatController);
+
+            // Connect the client to the server
             client.connectClient();
         }));
 
@@ -270,7 +284,7 @@ public class ChatController implements Initializable, IController {
         return clientChatOutput;
     }
 
-    public Client getClient(){return client;}
+    public Client getClient() {return client;}
 
     /**
      * Check if IP String is a valid IP Address and contains IP and Port
