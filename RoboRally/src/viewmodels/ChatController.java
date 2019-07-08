@@ -57,6 +57,7 @@ public class ChatController implements Initializable, IController {
     private int serverPort;
 
     private Stage primaryStage;
+    private StageController stageController;
 
     private StringProperty serverAddress;
     private StringProperty name;
@@ -221,7 +222,10 @@ public class ChatController implements Initializable, IController {
             fieldFigure.requestFocus();
             final Tooltip tooltipFieldFigure = new Tooltip("Choose a figur by entering a number 1 to 6");
             fieldFigure.setTooltip(tooltipFieldFigure);
-            //TODO enable visibility choose robot / disable visibility start
+
+            //disabling StartScreen enable ChooseRobot
+            this.stageController.getStartScreen().setVisible(false);
+            this.stageController.getChooseRobot().setVisible(true);
         }));
 
         //Enable fieldName after figure setting is finished
@@ -424,6 +428,7 @@ public class ChatController implements Initializable, IController {
 
     @Override
     public IController setPrimaryController(StageController stageController) {
+        this.stageController = stageController;
         return this;
     }
 }

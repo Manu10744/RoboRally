@@ -24,19 +24,44 @@ public class StageController implements Initializable, IController {
      */
 
     @FXML
-    GridPane stage;
+    private GridPane stage;
     @FXML
-    GridPane startScreen;
+    private GridPane startScreen;
     @FXML
-    GridPane chooseRobot;
+    private GridPane chooseRobot;
     @FXML
-    GridPane opponentMat;
+    private GridPane opponentMat;
     @FXML
-    GridPane map;
+    private GridPane map;
     @FXML
-    GridPane playerMat;
+    private GridPane playerMat;
+
+    public GridPane getStartScreen() {
+        return startScreen;
+    }
+
+    public GridPane getChooseRobot() {
+        return chooseRobot;
+    }
+
+    public GridPane getOpponentMat() {
+        return opponentMat;
+    }
+
+    public GridPane getMap() {
+        return map;
+    }
+
+    public GridPane getPlayerMat() {
+        return playerMat;
+    }
+
+    public GridPane getChat() {
+        return chat;
+    }
+
     @FXML
-    GridPane chat;
+    private GridPane chat;
 
     @FXML
     private ChatController chatController;
@@ -71,7 +96,7 @@ public class StageController implements Initializable, IController {
             controllerMap.put("Map", mapController.setPrimaryController(this));
         }
         if (chatController != null) {
-            controllerMap.put("Chat", chatController);
+            controllerMap.put("Chat", chatController.setPrimaryController(this));
         }
         if (opponentMatController != null){
             controllerMap.put("OpponentMap", opponentMatController);
