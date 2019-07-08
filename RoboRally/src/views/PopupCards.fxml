@@ -9,7 +9,7 @@
 
 <GridPane fx:id="popupCards" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.PlayerMatController">
     <HBox fx:id="cards">
-        <ImageView onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragDropped="#onDragDropped2" onDragOver="#onDragOver2">
+        <ImageView onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/move1-blue100x100.png" />
             </image>

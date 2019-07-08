@@ -108,7 +108,7 @@ public class PlayerMatController implements  IController{
     }
 
     @FXML
-    void onDragDetected() {
+    void onDragDetectedPopUp() {
         for (Node card: cards.getChildren()) {
             card.setOnDragDetected(new EventHandler<MouseEvent>(){
                 @Override
@@ -124,7 +124,7 @@ public class PlayerMatController implements  IController{
         }
 
     @FXML
-    void onDragOver() {
+    void onDragOverRegister() {
         for (Node register : playerRegister.getChildren()) {
             register.setOnDragOver(new EventHandler<DragEvent>() {
                 @Override
@@ -141,7 +141,7 @@ public class PlayerMatController implements  IController{
     }
 
     @FXML
-    void onDragDropped() {
+    void onDragDroppedRegister() {
         for (Node register : playerRegister.getChildren()) {
             register.setOnDragDropped(new EventHandler<DragEvent>() {
                 @Override
@@ -175,7 +175,7 @@ public class PlayerMatController implements  IController{
     }
 
     @FXML
-    void onDragDone() {
+    void onDragDonePopUp() {
         for (Node card : cards.getChildren()) {
             card.setOnDragDone(new EventHandler<DragEvent>() {
                 @Override
@@ -190,7 +190,7 @@ public class PlayerMatController implements  IController{
     }
 
     @FXML
-    void onDragDetected2() {
+    void onDragDetectedRegister() {
         for (Node register: playerRegister.getChildren()) {
             register.setOnDragDetected(new EventHandler<MouseEvent>(){
                 @Override
@@ -206,7 +206,7 @@ public class PlayerMatController implements  IController{
     }
 
     @FXML
-    void onDragOver2() {
+    void onDragOverPopUp() {
         for (Node card : cards.getChildren()) {
             card.setOnDragOver(new EventHandler<DragEvent>() {
                 @Override
@@ -220,7 +220,7 @@ public class PlayerMatController implements  IController{
         }
     }
     @FXML
-    void onDragDropped2() {
+    void onDragDroppedPopUp() {
             for (Node card : cards.getChildren()) {
                 cards.setOnDragDropped(new EventHandler<DragEvent>() {
                     @Override
