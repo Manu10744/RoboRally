@@ -80,6 +80,11 @@ public class Tile {
                 path.append(("normal1.png"));
                 break;
             }
+
+            case "Reboot": {
+                path.append(("reboot.png"));
+                break;
+            }
             case "Antenna": {
                 path.append("priority-antenna.png");
                 break;
@@ -408,7 +413,6 @@ public class Tile {
                     }
                 }
                 //Green conveyor belts
-                //Todo Verena: green belts that are crossing are missing (blue equivalent bluecv-top-left (example) are there; We need them still in green
             } else if (speed == (int) Parameter.GREEN_BELT_SPEED) {
                 if (isCrossing) {
                     switch (curvedBeltOrientationBefore) {

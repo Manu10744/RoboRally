@@ -13,7 +13,7 @@ public class Antenna extends Tile {
 
     /**
      * This is the constructor for the default antenna that is used in any of the predefined maps. Because all values are fixed,
-     * the constructor does not need anyarguments
+     * the constructor does not need any arguments
      */
     public Antenna(){
         super();

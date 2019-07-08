@@ -30,7 +30,8 @@ import java.util.ArrayList;
  */
 public class JSONDecoder {
 
-    /** This method deserializes a JSON String into a Java Object. It makes use of a
+    /**
+     * This method deserializes a JSON String into a Java Object. It makes use of a
      * customized Gson instance that decides how to properly parse the messageBody object.
      *
      * @param jsonString The JSON String that needs to be deserialized.
@@ -50,10 +51,11 @@ public class JSONDecoder {
         return messageObj;
     }
 
-    /** This is a custom deserializer for Gson. Gson needs a way to decide how to deserialize JSON Arrays containg cards.
-     *  This is where this deserializer comes into action. It deserializes every card that occurs inside JSON into its
-     *  equivalent Java object.
-     *  For deserializing <b>single</b> cards, see {@link JSONDecoder#deserializeCards(JsonObject, String)}.
+    /**
+     * This is a custom deserializer for Gson. Gson needs a way to decide how to deserialize JSON Arrays containg cards.
+     * This is where this deserializer comes into action. It deserializes every card that occurs inside JSON into its
+     * equivalent Java object.
+     * For deserializing <b>single</b> cards, see {@link JSONDecoder#deserializeCards(JsonObject, String)}.
      */
     public static JsonDeserializer<ArrayList<Card>> cardArrayDeserializer = new JsonDeserializer<ArrayList<Card>>() {
         @Override
@@ -102,427 +104,433 @@ public class JSONDecoder {
      * messageBody variable of a {@link JSONMessage} is of type {@link java.lang.Object} which can contain any other
      * object type. This Deserializer tells Gson how to parse it by checking the messageType property of the JSON String.
      */
-     public static JsonDeserializer<JSONMessage> customDeserializer = new JsonDeserializer<JSONMessage>() {
-         @Override
-         public JSONMessage deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-             // Get the overall JSON String with type and body
-             JsonObject jsonMessage = jsonElement.getAsJsonObject();
+    public static JsonDeserializer<JSONMessage> customDeserializer = new JsonDeserializer<JSONMessage>() {
+        @Override
+        public JSONMessage deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            // Get the overall JSON String with type and body
+            JsonObject jsonMessage = jsonElement.getAsJsonObject();
 
-             // Get only the messageBody part of the JSON String so we can access its variables
-             JsonObject messageBody = jsonMessage.get("messageBody").getAsJsonObject();
+            // Get only the messageBody part of the JSON String so we can access its variables
+            JsonObject messageBody = jsonMessage.get("messageBody").getAsJsonObject();
 
-             // Get the messageType of the JSON String
-             String messageType = jsonMessage.get("messageType").getAsString();
+            // Get the messageType of the JSON String
+            String messageType = jsonMessage.get("messageType").getAsString();
 
-             // For parsing JSON Arrays into Java ArrayLists<?>
-             Gson cardArrayListParser = new GsonBuilder()
-                     .excludeFieldsWithoutExposeAnnotation()
-                     .registerTypeAdapter(ArrayList.class, cardArrayDeserializer)
-                     .create();
+            // For parsing JSON Arrays into Java ArrayLists<?>
+            Gson cardArrayListParser = new GsonBuilder()
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .registerTypeAdapter(ArrayList.class, cardArrayDeserializer)
+                    .create();
 
-             Gson tileArrayListParser = new GsonBuilder()
-                     .registerTypeAdapter(Tile.class, tileJsonDeserializer)
-                     .excludeFieldsWithoutExposeAnnotation()
-                     .create();
+            Gson tileArrayListParser = new GsonBuilder()
+                    .registerTypeAdapter(Tile.class, tileJsonDeserializer)
+                    .excludeFieldsWithoutExposeAnnotation()
+                    .create();
 
-             if (messageType.equals("HelloClient")) {
-                 HelloClientBody helloClientBody = new HelloClientBody(
-                         messageBody.get("protocol").getAsString()
-                 );
+            if (messageType.equals("HelloClient")) {
+                HelloClientBody helloClientBody = new HelloClientBody(
+                        messageBody.get("protocol").getAsString()
+                );
 
                 return new JSONMessage("HelloClient", helloClientBody);
-             } else if (messageType.equals("HelloServer")) {
-                 HelloServerBody helloServerBody = new HelloServerBody(
-                         messageBody.get("group").getAsString(),
-                         messageBody.get("isAI").getAsBoolean(),
-                         messageBody.get("protocol").getAsString()
-                 );
+            } else if (messageType.equals("HelloServer")) {
+                HelloServerBody helloServerBody = new HelloServerBody(
+                        messageBody.get("group").getAsString(),
+                        messageBody.get("isAI").getAsBoolean(),
+                        messageBody.get("protocol").getAsString()
+                );
 
-                 return new JSONMessage("HelloServer", helloServerBody);
-             } else if (messageType.equals("Welcome")) {
+                return new JSONMessage("HelloServer", helloServerBody);
+            } else if (messageType.equals("Welcome")) {
 
-                 WelcomeBody welcomeBody = new WelcomeBody(
-                         messageBody.get("playerID").getAsInt()
-                 );
+                WelcomeBody welcomeBody = new WelcomeBody(
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("Welcome", welcomeBody);
-             } else if (messageType.equals("PlayerValues")) {
+                return new JSONMessage("Welcome", welcomeBody);
+            } else if (messageType.equals("PlayerValues")) {
 
-                 PlayerValuesBody playerValuesBody = new PlayerValuesBody(
-                         messageBody.get("name").getAsString(),
-                         messageBody.get("figure").getAsInt()
-                 );
+                PlayerValuesBody playerValuesBody = new PlayerValuesBody(
+                        messageBody.get("name").getAsString(),
+                        messageBody.get("figure").getAsInt()
+                );
 
-                 return new JSONMessage("PlayerValues", playerValuesBody);
-             } else if (messageType.equals("PlayerAdded")) {
+                return new JSONMessage("PlayerValues", playerValuesBody);
+            } else if (messageType.equals("PlayerAdded")) {
 
-                 PlayerAddedBody playerAddedBody = new PlayerAddedBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("name").getAsString(),
-                         messageBody.get("figure").getAsInt()
-                 );
+                PlayerAddedBody playerAddedBody = new PlayerAddedBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("name").getAsString(),
+                        messageBody.get("figure").getAsInt()
+                );
 
-                 return new JSONMessage("PlayerAdded", playerAddedBody);
-             } else if (messageType.equals("SetStatus")) {
+                return new JSONMessage("PlayerAdded", playerAddedBody);
+            } else if (messageType.equals("SetStatus")) {
 
-                 SetStatusBody setStatusBody = new SetStatusBody(
-                         messageBody.get("ready").getAsBoolean()
-                 );
+                SetStatusBody setStatusBody = new SetStatusBody(
+                        messageBody.get("ready").getAsBoolean()
+                );
 
-                 return new JSONMessage("SetStatus", setStatusBody);
-             } else if (messageType.equals("PlayerStatus")) {
+                return new JSONMessage("SetStatus", setStatusBody);
+            } else if (messageType.equals("PlayerStatus")) {
 
-                 PlayerStatusBody playerStatusBody = new PlayerStatusBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("ready").getAsBoolean()
-                 );
+                PlayerStatusBody playerStatusBody = new PlayerStatusBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("ready").getAsBoolean()
+                );
 
-                 return new JSONMessage("PlayerStatus", playerStatusBody);
-             } else if (messageType.equals("SendChat")) {
+                return new JSONMessage("PlayerStatus", playerStatusBody);
+            } else if (messageType.equals("SendChat")) {
 
-                 SendChatBody sendChatBody = new SendChatBody(
-                         messageBody.get("message").getAsString(),
-                         messageBody.get("to").getAsInt()
-                 );
+                SendChatBody sendChatBody = new SendChatBody(
+                        messageBody.get("message").getAsString(),
+                        messageBody.get("to").getAsInt()
+                );
 
-                 return new JSONMessage("SendChat", sendChatBody);
-             } else if (messageType.equals("ReceivedChat")) {
+                return new JSONMessage("SendChat", sendChatBody);
+            } else if (messageType.equals("ReceivedChat")) {
 
-                 ReceivedChatBody receivedChatBody = new ReceivedChatBody(
-                         messageBody.get("message").getAsString(),
-                         messageBody.get("from").getAsInt(),
-                         messageBody.get("isPrivate").getAsBoolean()
-                 );
+                ReceivedChatBody receivedChatBody = new ReceivedChatBody(
+                        messageBody.get("message").getAsString(),
+                        messageBody.get("from").getAsInt(),
+                        messageBody.get("isPrivate").getAsBoolean()
+                );
 
-                 return new JSONMessage("ReceivedChat", receivedChatBody);
-             } else if (messageType.equals("Error")) {
+                return new JSONMessage("ReceivedChat", receivedChatBody);
+            } else if (messageType.equals("Error")) {
 
-                 ErrorBody errorBody = new ErrorBody(
-                         messageBody.get("error").getAsString()
-                 );
+                ErrorBody errorBody = new ErrorBody(
+                        messageBody.get("error").getAsString()
+                );
 
-                 return new JSONMessage("Error", errorBody);
-             } else if (messageType.equals("PlayCard")) {
-                 String cardName = messageBody.get("card").getAsString();
+                return new JSONMessage("Error", errorBody);
+            } else if (messageType.equals("PlayCard")) {
+                String cardName = messageBody.get("card").getAsString();
 
-                 PlayCardBody playCardBody = new PlayCardBody(
+                PlayCardBody playCardBody = new PlayCardBody(
                         deserializeCards(jsonMessage, cardName)
-                 );
-                 return new JSONMessage("PlayCard", playCardBody);
-             } else if (messageType.equals("CardPlayed")) {
-                 String cardName = messageBody.get("card").getAsString();
+                );
+                return new JSONMessage("PlayCard", playCardBody);
+            } else if (messageType.equals("CardPlayed")) {
+                String cardName = messageBody.get("card").getAsString();
 
-                 CardPlayedBody cardPlayedBody = new CardPlayedBody(
-                         messageBody.get("playerID").getAsInt(),
-                         deserializeCards(jsonMessage, cardName)
-                 );
+                CardPlayedBody cardPlayedBody = new CardPlayedBody(
+                        messageBody.get("playerID").getAsInt(),
+                        deserializeCards(jsonMessage, cardName)
+                );
 
-                 return new JSONMessage("CardPlayed", cardPlayedBody);
-             } else if (messageType.equals("CurrentPlayer")) {
+                return new JSONMessage("CardPlayed", cardPlayedBody);
+            } else if (messageType.equals("CurrentPlayer")) {
 
-                 CurrentPlayerBody currentPlayerBody = new CurrentPlayerBody(
-                         messageBody.get("playerID").getAsInt()
-                 );
+                CurrentPlayerBody currentPlayerBody = new CurrentPlayerBody(
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("CurrentPlayer", currentPlayerBody);
-             } else if (messageType.equals("ActivePhase")) {
+                return new JSONMessage("CurrentPlayer", currentPlayerBody);
+            } else if (messageType.equals("ActivePhase")) {
 
-                 ActivePhaseBody activePhaseBody = new ActivePhaseBody(
-                         messageBody.get("phase").getAsInt()
-                 );
+                ActivePhaseBody activePhaseBody = new ActivePhaseBody(
+                        messageBody.get("phase").getAsInt()
+                );
 
-                 return new JSONMessage("ActivePhase", activePhaseBody);
-             } else if (messageType.equals("SetStartingPoint")) {
+                return new JSONMessage("ActivePhase", activePhaseBody);
+            } else if (messageType.equals("SetStartingPoint")) {
 
-                 SetStartingPointBody setStartingPointBody = new SetStartingPointBody(
-                         messageBody.get("x").getAsInt(),
-                         messageBody.get("y").getAsInt()
-                 );
+                SetStartingPointBody setStartingPointBody = new SetStartingPointBody(
+                        messageBody.get("x").getAsInt(),
+                        messageBody.get("y").getAsInt()
+                );
 
-                 return new JSONMessage("SetStartingPoint", setStartingPointBody);
-             } else if (messageType.equals("StartingPointTaken")) {
+                return new JSONMessage("SetStartingPoint", setStartingPointBody);
+            } else if (messageType.equals("StartingPointTaken")) {
 
-                 StartingPointTakenBody startingPointTakenBody = new StartingPointTakenBody(
-                         messageBody.get("x").getAsInt(),
-                         messageBody.get("y").getAsInt(),
-                         messageBody.get("playerID").getAsInt()
-                 );
+                StartingPointTakenBody startingPointTakenBody = new StartingPointTakenBody(
+                        messageBody.get("x").getAsInt(),
+                        messageBody.get("y").getAsInt(),
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("StartingPointTaken", startingPointTakenBody);
-             } else if (messageType.equals("YourCards")) {
-                 ArrayList<Card> cardsInHand = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
+                return new JSONMessage("StartingPointTaken", startingPointTakenBody);
+            } else if (messageType.equals("YourCards")) {
+                ArrayList<Card> cardsInHand = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
-                 YourCardsBody yourCardsBody = new YourCardsBody(
-                           cardsInHand,
-                           messageBody.get("cardsInPile").getAsInt()
-                 );
-                 return new JSONMessage("YourCards", yourCardsBody);
-             } else if (messageType.equals("NotYourCards")) {
+                YourCardsBody yourCardsBody = new YourCardsBody(
+                        cardsInHand,
+                        messageBody.get("cardsInPile").getAsInt()
+                );
+                return new JSONMessage("YourCards", yourCardsBody);
+            } else if (messageType.equals("NotYourCards")) {
 
-                 NotYourCardsBody notYourCardsBody = new NotYourCardsBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("cardsInHand").getAsInt(),
-                         messageBody.get("cardsInPile").getAsInt()
-                 );
+                NotYourCardsBody notYourCardsBody = new NotYourCardsBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("cardsInHand").getAsInt(),
+                        messageBody.get("cardsInPile").getAsInt()
+                );
 
-                 return new JSONMessage("NotYourCards", notYourCardsBody);
-             } else if (messageType.equals("ShuffleCoding")) {
+                return new JSONMessage("NotYourCards", notYourCardsBody);
+            } else if (messageType.equals("ShuffleCoding")) {
 
-                 ShuffleCodingBody shuffleCodingBody = new ShuffleCodingBody(
-                         messageBody.get("playerID").getAsInt()
-                 );
+                ShuffleCodingBody shuffleCodingBody = new ShuffleCodingBody(
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("ShuffleCoding", shuffleCodingBody);
-             } else if (messageType.equals("SelectCard")) {
-                 String cardName = messageBody.get("card").getAsString();
+                return new JSONMessage("ShuffleCoding", shuffleCodingBody);
+            } else if (messageType.equals("SelectCard")) {
+                String cardName = messageBody.get("card").getAsString();
 
-                 SelectCardBody selectCardBody = new SelectCardBody(
-                         deserializeCards(jsonMessage, cardName),
-                         messageBody.get("register").getAsInt()
-                 );
+                SelectCardBody selectCardBody = new SelectCardBody(
+                        deserializeCards(jsonMessage, cardName),
+                        messageBody.get("register").getAsInt()
+                );
 
-                 return new JSONMessage("SelectCard", selectCardBody);
-             } else if (messageType.equals("CardSelected")) {
+                return new JSONMessage("SelectCard", selectCardBody);
+            } else if (messageType.equals("CardSelected")) {
 
-                 CardSelectedBody cardSelectedBody = new CardSelectedBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("register").getAsInt()
-                 );
+                CardSelectedBody cardSelectedBody = new CardSelectedBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("register").getAsInt()
+                );
 
-                 return new JSONMessage("CardSelected", cardSelectedBody);
-             } else if (messageType.equals("SelectionFinished")) {
+                return new JSONMessage("CardSelected", cardSelectedBody);
+            } else if (messageType.equals("SelectionFinished")) {
 
-                 SelectionFinishedBody selectionFinishedBody = new SelectionFinishedBody(
-                         messageBody.get("playerID").getAsInt()
-                 );
+                SelectionFinishedBody selectionFinishedBody = new SelectionFinishedBody(
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("SelectionFinished", selectionFinishedBody);
-             } else if (messageType.equals("TimerStarted")) {
+                return new JSONMessage("SelectionFinished", selectionFinishedBody);
+            } else if (messageType.equals("TimerStarted")) {
 
-                 TimerStartedBody timerStartedBody = new TimerStartedBody();
-                 return new JSONMessage("TimerStarted", timerStartedBody);
-             } else if (messageType.equals("TimerEnded")) {
-                 // Get the JSON Array containing the IDs
-                 JsonArray jsonIDArray = messageBody.get("playerIDs").getAsJsonArray();
+                TimerStartedBody timerStartedBody = new TimerStartedBody();
+                return new JSONMessage("TimerStarted", timerStartedBody);
+            } else if (messageType.equals("TimerEnded")) {
+                // Get the JSON Array containing the IDs
+                JsonArray jsonIDArray = messageBody.get("playerIDs").getAsJsonArray();
 
-                 ArrayList<Integer> result = new ArrayList<Integer>();
+                ArrayList<Integer> result = new ArrayList<Integer>();
 
-                 // Deserialize each ID as int and add to list
-                 for (JsonElement id : jsonIDArray) {
-                     result.add(id.getAsInt());
-                 }
+                // Deserialize each ID as int and add to list
+                for (JsonElement id : jsonIDArray) {
+                    result.add(id.getAsInt());
+                }
 
-                 TimerEndedBody timerEndedBody = new TimerEndedBody(
-                    result
-                 );
-                 return new JSONMessage("TimerEnded", timerEndedBody);
-             } else if (messageType.equals("CardsYouGotNow")) {
-                 ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
+                TimerEndedBody timerEndedBody = new TimerEndedBody(
+                        result
+                );
+                return new JSONMessage("TimerEnded", timerEndedBody);
+            } else if (messageType.equals("CardsYouGotNow")) {
+                ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
-                 CardsYouGotNowBody cardsYouGotNowBody = new CardsYouGotNowBody(
-                         cards
-                 );
+                CardsYouGotNowBody cardsYouGotNowBody = new CardsYouGotNowBody(
+                        cards
+                );
 
-                 return new JSONMessage("CardsYouGotNow", cardsYouGotNowBody);
-             } else if (messageType.equals("CurrentCards")) {
-                 // Array containing the objects that contain playerID and card
-                 JsonArray activeCardsObjectArray = messageBody.get("activeCards").getAsJsonArray();
+                return new JSONMessage("CardsYouGotNow", cardsYouGotNowBody);
+            } else if (messageType.equals("CurrentCards")) {
+                // Array containing the objects that contain playerID and card
+                JsonArray activeCardsObjectArray = messageBody.get("activeCards").getAsJsonArray();
 
-                 ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
-                 for (JsonElement object : activeCardsObjectArray) {
+                ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
+                for (JsonElement object : activeCardsObjectArray) {
                      /* Cast each JsonElement (being a JSON object containing playerID and card) to
                         a JsonObject so we can enter the playerID and card properties
                       */
-                     JsonObject activeCardsObject = object.getAsJsonObject();
-                     String cardName = activeCardsObject.get("card").getAsString();
-                     // For each JSON object, create a Java object and get the properties in the correct format
-                     activeCards.add(
-                         new CurrentCardsBody.ActiveCardsObject(
-                                 activeCardsObject.get("playerID").getAsInt(),
-                                 deserializeCards(activeCardsObject, cardName)
-                         )
-                     );
-                 }
+                    JsonObject activeCardsObject = object.getAsJsonObject();
+                    String cardName = activeCardsObject.get("card").getAsString();
+                    // For each JSON object, create a Java object and get the properties in the correct format
+                    activeCards.add(
+                            new CurrentCardsBody.ActiveCardsObject(
+                                    activeCardsObject.get("playerID").getAsInt(),
+                                    deserializeCards(activeCardsObject, cardName)
+                            )
+                    );
+                }
 
-                 CurrentCardsBody currentCardsBody = new CurrentCardsBody(
-                         activeCards
-                 );
+                CurrentCardsBody currentCardsBody = new CurrentCardsBody(
+                        activeCards
+                );
 
-                 return new JSONMessage("CurrentCards", currentCardsBody);
-             } else if (messageType.equals("Movement")) {
+                return new JSONMessage("CurrentCards", currentCardsBody);
+            } else if (messageType.equals("Movement")) {
 
-                 MovementBody movementBody = new MovementBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("x").getAsInt(),
-                         messageBody.get("y").getAsInt()
-                 );
+                MovementBody movementBody = new MovementBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("x").getAsInt(),
+                        messageBody.get("y").getAsInt()
+                );
 
-                 return new JSONMessage("Movement", movementBody);
-             } else if (messageType.equals("DrawDamage")) {
-                 ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
+                return new JSONMessage("Movement", movementBody);
+            } else if (messageType.equals("DrawDamage")) {
+                ArrayList<Card> cards = cardArrayListParser.fromJson(jsonElement, ArrayList.class);
 
-                 DrawDamageBody drawDamageBody = new DrawDamageBody(
-                         messageBody.get("playerID").getAsInt(),
-                         cards
-                 );
+                DrawDamageBody drawDamageBody = new DrawDamageBody(
+                        messageBody.get("playerID").getAsInt(),
+                        cards
+                );
 
-                 return new JSONMessage("DrawDamage", drawDamageBody);
-             } else if (messageType.equals("PlayerShooting")) {
-                 PlayerShootingBody playerShootingBody = new PlayerShootingBody();
-                 return new JSONMessage("PlayerShooting", playerShootingBody);
-             } else if (messageType.equals("Reboot")) {
+                return new JSONMessage("DrawDamage", drawDamageBody);
+            } else if (messageType.equals("PlayerShooting")) {
+                PlayerShootingBody playerShootingBody = new PlayerShootingBody();
+                return new JSONMessage("PlayerShooting", playerShootingBody);
+            } else if (messageType.equals("Reboot")) {
 
-                 RebootBody rebootBody = new RebootBody(
-                         messageBody.get("playerID").getAsInt()
-                 );
+                RebootBody rebootBody = new RebootBody(
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("Reboot", rebootBody);
-             } else if (messageType.equals("PlayerTurning")) {
+                return new JSONMessage("Reboot", rebootBody);
+            } else if (messageType.equals("PlayerTurning")) {
 
-                 PlayerTurningBody playerTurningBody = new PlayerTurningBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("direction").getAsString()
-                 );
+                PlayerTurningBody playerTurningBody = new PlayerTurningBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("direction").getAsString()
+                );
 
-                 return new JSONMessage("PlayerTurning", playerTurningBody);
-             } else if (messageType.equals("Energy")) {
+                return new JSONMessage("PlayerTurning", playerTurningBody);
+            } else if (messageType.equals("Energy")) {
 
-                 EnergyBody energyBody = new EnergyBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("count").getAsInt(),
-                         messageBody.get("source").getAsString()
-                 );
+                EnergyBody energyBody = new EnergyBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("count").getAsInt(),
+                        messageBody.get("source").getAsString()
+                );
 
-                 return new JSONMessage("Energy", energyBody);
-             } else if (messageType.equals("CheckPointReached")) {
+                return new JSONMessage("Energy", energyBody);
+            } else if (messageType.equals("CheckPointReached")) {
 
-                 CheckPointReachedBody checkPointReachedBody = new CheckPointReachedBody(
-                         messageBody.get("playerID").getAsInt(),
-                         messageBody.get("number").getAsInt()
-                 );
+                CheckPointReachedBody checkPointReachedBody = new CheckPointReachedBody(
+                        messageBody.get("playerID").getAsInt(),
+                        messageBody.get("number").getAsInt()
+                );
 
-                 return new JSONMessage("CheckPointReached", checkPointReachedBody);
-             } else if (messageType.equals("GameFinished")) {
-                 GameFinishedBody gameFinishedBody = new GameFinishedBody(
-                         messageBody.get("playerID").getAsInt()
-                 );
+                return new JSONMessage("CheckPointReached", checkPointReachedBody);
+            } else if (messageType.equals("GameFinished")) {
+                GameFinishedBody gameFinishedBody = new GameFinishedBody(
+                        messageBody.get("playerID").getAsInt()
+                );
 
-                 return new JSONMessage("GameFinished", gameFinishedBody);
-             } else if (messageType.equals("GameStarted")) {
-                 JsonElement tripleNestedArray = messageBody.get("gameMap").getAsJsonArray();
+                return new JSONMessage("GameFinished", gameFinishedBody);
+            } else if (messageType.equals("GameStarted")) {
+                JsonElement tripleNestedArray = messageBody.get("gameMap").getAsJsonArray();
 
-                 // Tell Gson the exact type of list that has to be used while deserializing
-                 Type listType = new TypeToken<ArrayList<ArrayList<ArrayList<Tile>>>>() {}.getType();
+                // Tell Gson the exact type of list that has to be used while deserializing
+                Type listType = new TypeToken<ArrayList<ArrayList<ArrayList<Tile>>>>() {
+                }.getType();
 
-                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = tileArrayListParser.fromJson(tripleNestedArray, listType);
+                ArrayList<ArrayList<ArrayList<Tile>>> mapBody = tileArrayListParser.fromJson(tripleNestedArray, listType);
 
-                 System.out.println("SIZE OF X ARRAY: " + mapBody.size());
-                 System.out.println("SIZE OF FIRST DOUBLE IN X ARRAY: " + mapBody.get(0).size());
-                 System.out.println("SIZE OF SECOND DOUBLE IN X ARRAY " + mapBody.get(1).size());
+                System.out.println("SIZE OF X ARRAY: " + mapBody.size());
+                System.out.println("SIZE OF FIRST DOUBLE IN X ARRAY: " + mapBody.get(0).size());
+                System.out.println("SIZE OF SECOND DOUBLE IN X ARRAY " + mapBody.get(1).size());
 
-                 GameStartedBody gameStartedBody = new GameStartedBody(
-                         mapBody
-                 );
-                 return new JSONMessage("GameStarted", gameStartedBody);
-             }
-             // Something went wrong, could not deserialize!
-             return new JSONMessage("Error", new ErrorBody("Fatal error: Could not resolve message." +
-                     "Something went wrong while deserializing."));
-         }
-     };
+                GameStartedBody gameStartedBody = new GameStartedBody(
+                        mapBody
+                );
+                return new JSONMessage("GameStarted", gameStartedBody);
+            }
+            // Something went wrong, could not deserialize!
+            return new JSONMessage("Error", new ErrorBody("Fatal error: Could not resolve message." +
+                    "Something went wrong while deserializing."));
+        }
+    };
 
     /**
      * This is a custom Deserializer for Gson. Gson needs a way to decide how to parse the tiles of a JSON
      * 'GameStarted' message as the equivalent java object representation. This can't be done by Gson itself because
      * {@link Tile} has various child classes. This Deserializer tells Gson how to parse each Tile correctly.
      */
-     public static JsonDeserializer<Tile> tileJsonDeserializer = new JsonDeserializer<Tile>() {
-         @Override
-         public Tile deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-             JsonObject tileObject = jsonElement.getAsJsonObject();
-             String tileType = tileObject.get("type").getAsString();
+    public static JsonDeserializer<Tile> tileJsonDeserializer = new JsonDeserializer<Tile>() {
+        @Override
+        public Tile deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+            JsonObject tileObject = jsonElement.getAsJsonObject();
+            String tileType = tileObject.get("type").getAsString();
 
-             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-             if (tileType.equals("Antenna")) {
-                 Antenna result = gson.fromJson(jsonElement, Antenna.class);
-                 return result;
-             } else if (tileType.equals("Belt")) {
-                 Belt result = gson.fromJson(jsonElement, Belt.class);
-                 return result;
-             } else if (tileType.equals("CheckPoint")) {
-                 CheckPoint result = gson.fromJson(jsonElement, CheckPoint.class);
-                 return result;
-             } else if (tileType.equals("Empty")) {
-                 Empty result = gson.fromJson(jsonElement, Empty.class);
-                 return result;
-             } else if (tileType.equals("EnergySpace")) {
-                 EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
-                 return result;
-             } else if (tileType.equals("Gear")) {
-                 Gear result = gson.fromJson(jsonElement, Gear.class);
-                 return result;
-             } else if (tileType.equals("Laser")) {
-                 Laser result = gson.fromJson(jsonElement, Laser.class);
-                 return result;
-             } else if (tileType.equals("Pit")) {
-                 Pit result = gson.fromJson(jsonElement, Pit.class);
-                 return result;
-             } else if (tileType.equals("PushPanel")) {
-                 PushPanel result = gson.fromJson(jsonElement, PushPanel.class);
-                 return result;
-             } else if (tileType.equals("RotatingBelt")) {
-                 RotatingBelt result = gson.fromJson(jsonElement, RotatingBelt.class);
-                 return result;
-             } else if (tileType.equals("StartPoint")) {
-                 StartPoint result = gson.fromJson(jsonElement, StartPoint.class);
-                 return result;
-             } else if (tileType.equals("Wall")) {
-                 Wall result = gson.fromJson(jsonElement, Wall.class);
-                 return result;
-             }
-             return null; // Error
-         }
-     };
+            if (tileType.equals("Reboot")) {
+                Reboot result = gson.fromJson(jsonElement, Reboot.class);
+                return result;
+            } else if (tileType.equals("Antenna")) {
+                Antenna result = gson.fromJson(jsonElement, Antenna.class);
+                return result;
+            } else if (tileType.equals("Belt")) {
+                Belt result = gson.fromJson(jsonElement, Belt.class);
+                return result;
+            } else if (tileType.equals("CheckPoint")) {
+                CheckPoint result = gson.fromJson(jsonElement, CheckPoint.class);
+                return result;
+            } else if (tileType.equals("Empty")) {
+                Empty result = gson.fromJson(jsonElement, Empty.class);
+                return result;
+            } else if (tileType.equals("EnergySpace")) {
+                EnergySpace result = gson.fromJson(jsonElement, EnergySpace.class);
+                return result;
+            } else if (tileType.equals("Gear")) {
+                Gear result = gson.fromJson(jsonElement, Gear.class);
+                return result;
+            } else if (tileType.equals("Laser")) {
+                Laser result = gson.fromJson(jsonElement, Laser.class);
+                return result;
+            } else if (tileType.equals("Pit")) {
+                Pit result = gson.fromJson(jsonElement, Pit.class);
+                return result;
+            } else if (tileType.equals("PushPanel")) {
+                PushPanel result = gson.fromJson(jsonElement, PushPanel.class);
+                return result;
+            } else if (tileType.equals("RotatingBelt")) {
+                RotatingBelt result = gson.fromJson(jsonElement, RotatingBelt.class);
+                return result;
+            } else if (tileType.equals("StartPoint")) {
+                StartPoint result = gson.fromJson(jsonElement, StartPoint.class);
+                return result;
+            } else if (tileType.equals("Wall")) {
+                Wall result = gson.fromJson(jsonElement, Wall.class);
+                return result;
+            }
+            return null; // Error
+        }
+    };
 
-    /** This method deserializes a single JSON card into the equivalent Java object.
+    /**
+     * This method deserializes a single JSON card into the equivalent Java object.
+     *
      * @param jsonMessageBody A part of JSON containing the card that need to be deserialized. Only needed for Gson
      *                        to know the context.
-     * @param cardName The name of the card that needs to be deserialized.
+     * @param cardName        The name of the card that needs to be deserialized.
      * @return The exact card-subclass of {@link Card} that corresponds to the name of the card.
      */
-     public static Card deserializeCards(JsonObject jsonMessageBody, String cardName) {
-         Gson gson = new Gson();
-         if (cardName.equals("MoveI")) {
-             MoveI result = gson.fromJson(jsonMessageBody, MoveI.class);
-             return result;
-         } else if (cardName.equals("MoveII")) {
-             MoveII result = gson.fromJson(jsonMessageBody, MoveII.class);
-             return result;
-         } else if (cardName.equals("MoveIII")) {
-             MoveIII result = gson.fromJson(jsonMessageBody, MoveIII.class);
-             return result;
-         } else if (cardName.equals("TurnLeft")) {
-             TurnLeft result = gson.fromJson(jsonMessageBody, TurnLeft.class);
-             return result;
-         } else if (cardName.equals("TurnRight")) {
-             TurnRight result = gson.fromJson(jsonMessageBody, TurnRight.class);
-             return result;
-         } else if (cardName.equals("UTurn")) {
-             UTurn result = gson.fromJson(jsonMessageBody, UTurn.class);
-             return result;
-         } else if (cardName.equals("BackUp")) {
-             BackUp result = gson.fromJson(jsonMessageBody, BackUp.class);
-             return result;
-         } else if (cardName.equals("PowerUp")) {
-             PowerUp result = gson.fromJson(jsonMessageBody, PowerUp.class);
-             return result;
-         } else if (cardName.equals("Again")) {
-             Again result = gson.fromJson(jsonMessageBody, Again.class);
-             return result;
-         }
-         return null; // Error
-     }
+    public static Card deserializeCards(JsonObject jsonMessageBody, String cardName) {
+        Gson gson = new Gson();
+        if (cardName.equals("MoveI")) {
+            MoveI result = gson.fromJson(jsonMessageBody, MoveI.class);
+            return result;
+        } else if (cardName.equals("MoveII")) {
+            MoveII result = gson.fromJson(jsonMessageBody, MoveII.class);
+            return result;
+        } else if (cardName.equals("MoveIII")) {
+            MoveIII result = gson.fromJson(jsonMessageBody, MoveIII.class);
+            return result;
+        } else if (cardName.equals("TurnLeft")) {
+            TurnLeft result = gson.fromJson(jsonMessageBody, TurnLeft.class);
+            return result;
+        } else if (cardName.equals("TurnRight")) {
+            TurnRight result = gson.fromJson(jsonMessageBody, TurnRight.class);
+            return result;
+        } else if (cardName.equals("UTurn")) {
+            UTurn result = gson.fromJson(jsonMessageBody, UTurn.class);
+            return result;
+        } else if (cardName.equals("BackUp")) {
+            BackUp result = gson.fromJson(jsonMessageBody, BackUp.class);
+            return result;
+        } else if (cardName.equals("PowerUp")) {
+            PowerUp result = gson.fromJson(jsonMessageBody, PowerUp.class);
+            return result;
+        } else if (cardName.equals("Again")) {
+            Again result = gson.fromJson(jsonMessageBody, Again.class);
+            return result;
+        }
+        return null; // Error
+    }
 
     // NOTE: This code is pure example code to show how deserialization works! Will be deleted later.
     // ONLY FOR TESTING!!!
@@ -563,41 +571,76 @@ public class JSONDecoder {
 
 
         ArrayList<JSONMessage> messages = new ArrayList<JSONMessage>();
-        /*0*/ messages.add(new JSONMessage("HelloClient", new HelloClientBody("Version 1.0")));
-        /*1*/ messages.add(new JSONMessage("HelloServer", new HelloServerBody("TolleTrolle", false, "Version 1.0")));
-        /*2*/ messages.add(new JSONMessage("Welcome", new WelcomeBody(42)));
-        /*3*/ messages.add(new JSONMessage("PlayerValues", new PlayerValuesBody("Nr. 5", 5)));
-        /*4*/ messages.add(new JSONMessage("PlayerAdded", new PlayerAddedBody(42, "Nr. 5",5)));
-        /*5*/ messages.add(new JSONMessage("SetStatus", new SetStatusBody(true)));
-        /*6*/ messages.add(new JSONMessage("PlayerStatus", new PlayerStatusBody(42, true)));
-        /*7*/ messages.add(new JSONMessage("SendChat", new SendChatBody("Yoh Bob! How are you?", 42)));
-        /*8*/ messages.add(new JSONMessage("ReceivedChat", new ReceivedChatBody("Yoh Bob! How are you?", 43, true)));
-        /*9*/ messages.add(new JSONMessage("Error", new ErrorBody("SOMETHING WENT WRONG!!")));
-        /*10*/ messages.add(new JSONMessage("PlayCard", new PlayCardBody(new TurnLeft())));
-        /*11*/ messages.add(new JSONMessage("CardPlayed", new CardPlayedBody(2, new MoveI())));
-        /*12*/ messages.add(new JSONMessage("CurrentPlayer", new CurrentPlayerBody(7)));
-        /*13*/ messages.add(new JSONMessage("ActivePhase", new ActivePhaseBody(3)));
-        /*14*/ messages.add(new JSONMessage("SetStartingPoint", new SetStartingPointBody(4, 2)));
-        /*15*/ messages.add(new JSONMessage("StartingPointTaken", new StartingPointTakenBody(4,2,42)));
-        /*16*/ messages.add(new JSONMessage("YourCards", new YourCardsBody(cards, 9001)));
-        /*17*/ messages.add(new JSONMessage("NotYourCards", new NotYourCardsBody(42, 9, 9001)));
-        /*18*/ messages.add(new JSONMessage("ShuffleCoding", new ShuffleCodingBody(42)));
-        /*19*/ messages.add(new JSONMessage("SelectCard", new SelectCardBody(new Again(), 5)));
-        /*20*/ messages.add(new JSONMessage("CardSelected", new CardSelectedBody(42, 5)));
-        /*21*/ messages.add(new JSONMessage("SelectionFinished", new SelectionFinishedBody(42)));
-        /*22*/ messages.add(new JSONMessage("TimerStarted", new TimerStartedBody()));
-        /*23*/ messages.add(new JSONMessage("TimerEnded", new TimerEndedBody(IDs)));
-        /*24*/ messages.add(new JSONMessage("CardsYouGotNow", new CardsYouGotNowBody(cards)));
-        /*25*/ messages.add(new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards)));
-        /*26*/ messages.add(new JSONMessage("Movement", new MovementBody(42,4,2)));
-        /*27*/ messages.add(new JSONMessage("DrawDamage", new DrawDamageBody(42, cards)));
-        /*28*/ messages.add(new JSONMessage("PlayerShooting", new PlayerShootingBody()));
-        /*29*/ messages.add(new JSONMessage("Reboot", new RebootBody(42)));
-        /*30*/ messages.add(new JSONMessage("PlayerTurning", new PlayerTurningBody(42, "left")));
-        /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
-        /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
-        /*33*/ messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
-        /*34*/ messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
+        /*0*/
+        messages.add(new JSONMessage("HelloClient", new HelloClientBody("Version 1.0")));
+        /*1*/
+        messages.add(new JSONMessage("HelloServer", new HelloServerBody("TolleTrolle", false, "Version 1.0")));
+        /*2*/
+        messages.add(new JSONMessage("Welcome", new WelcomeBody(42)));
+        /*3*/
+        messages.add(new JSONMessage("PlayerValues", new PlayerValuesBody("Nr. 5", 5)));
+        /*4*/
+        messages.add(new JSONMessage("PlayerAdded", new PlayerAddedBody(42, "Nr. 5", 5)));
+        /*5*/
+        messages.add(new JSONMessage("SetStatus", new SetStatusBody(true)));
+        /*6*/
+        messages.add(new JSONMessage("PlayerStatus", new PlayerStatusBody(42, true)));
+        /*7*/
+        messages.add(new JSONMessage("SendChat", new SendChatBody("Yoh Bob! How are you?", 42)));
+        /*8*/
+        messages.add(new JSONMessage("ReceivedChat", new ReceivedChatBody("Yoh Bob! How are you?", 43, true)));
+        /*9*/
+        messages.add(new JSONMessage("Error", new ErrorBody("SOMETHING WENT WRONG!!")));
+        /*10*/
+        messages.add(new JSONMessage("PlayCard", new PlayCardBody(new TurnLeft())));
+        /*11*/
+        messages.add(new JSONMessage("CardPlayed", new CardPlayedBody(2, new MoveI())));
+        /*12*/
+        messages.add(new JSONMessage("CurrentPlayer", new CurrentPlayerBody(7)));
+        /*13*/
+        messages.add(new JSONMessage("ActivePhase", new ActivePhaseBody(3)));
+        /*14*/
+        messages.add(new JSONMessage("SetStartingPoint", new SetStartingPointBody(4, 2)));
+        /*15*/
+        messages.add(new JSONMessage("StartingPointTaken", new StartingPointTakenBody(4, 2, 42)));
+        /*16*/
+        messages.add(new JSONMessage("YourCards", new YourCardsBody(cards, 9001)));
+        /*17*/
+        messages.add(new JSONMessage("NotYourCards", new NotYourCardsBody(42, 9, 9001)));
+        /*18*/
+        messages.add(new JSONMessage("ShuffleCoding", new ShuffleCodingBody(42)));
+        /*19*/
+        messages.add(new JSONMessage("SelectCard", new SelectCardBody(new Again(), 5)));
+        /*20*/
+        messages.add(new JSONMessage("CardSelected", new CardSelectedBody(42, 5)));
+        /*21*/
+        messages.add(new JSONMessage("SelectionFinished", new SelectionFinishedBody(42)));
+        /*22*/
+        messages.add(new JSONMessage("TimerStarted", new TimerStartedBody()));
+        /*23*/
+        messages.add(new JSONMessage("TimerEnded", new TimerEndedBody(IDs)));
+        /*24*/
+        messages.add(new JSONMessage("CardsYouGotNow", new CardsYouGotNowBody(cards)));
+        /*25*/
+        messages.add(new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards)));
+        /*26*/
+        messages.add(new JSONMessage("Movement", new MovementBody(42, 4, 2)));
+        /*27*/
+        messages.add(new JSONMessage("DrawDamage", new DrawDamageBody(42, cards)));
+        /*28*/
+        messages.add(new JSONMessage("PlayerShooting", new PlayerShootingBody()));
+        /*29*/
+        messages.add(new JSONMessage("Reboot", new RebootBody(42)));
+        /*30*/
+        messages.add(new JSONMessage("PlayerTurning", new PlayerTurningBody(42, "left")));
+        /*31*/
+        messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
+        /*32*/
+        messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));
+        /*33*/
+        messages.add(new JSONMessage("GameFinished", new GameFinishedBody(42)));
+        /*34*/
+        messages.add(new JSONMessage("GameStarted", new GameStartedBody(gameMap)));
 
         String s = JSONEncoder.serializeJSON(messages.get(34));
         System.out.println("THIS NEEDS TO BE DESERIALIZED: ");
