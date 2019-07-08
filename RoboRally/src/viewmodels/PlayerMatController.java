@@ -105,6 +105,7 @@ public class PlayerMatController implements  IController{
 
     public static void setStage(Stage origStage){
         stage = origStage;
+        stage.setAlwaysOnTop(true);
     }
 
     @FXML
