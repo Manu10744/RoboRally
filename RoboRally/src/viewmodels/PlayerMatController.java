@@ -65,7 +65,6 @@ public class PlayerMatController implements  IController{
     private ImageView emptyIcon06;
     @FXML
     private ImageView emptyIcon07;
-
     @FXML
     private ImageView permaUpdate1;
     @FXML
@@ -80,7 +79,6 @@ public class PlayerMatController implements  IController{
     private ImageView tempUpdate2;
     @FXML
     private ImageView tempUpdate3;
-
     @FXML
     private ImageView register1;
     @FXML
@@ -91,13 +89,154 @@ public class PlayerMatController implements  IController{
     private ImageView register4;
     @FXML
     private ImageView register5;
-
-
+    @FXML
+    private ImageView emptyIcon20;
+    @FXML
+    private ImageView emptyIcon21;
     @FXML
     HBox cards;
-
     @FXML
     GridPane popupCards;
+
+    Stage rootStage;
+
+    public HBox getPlayerIcons() {
+        return playerIcons;
+    }
+
+    public HBox getPlayerDrawDiscardCards() {
+        return playerDrawDiscardCards;
+    }
+
+    public HBox getPlayerUpdates() {
+        return playerUpdates;
+    }
+
+    public HBox getPlayerRegister() {
+        return playerRegister;
+    }
+
+    public ImageView getOwnRobotIcon() {
+        return ownRobotIcon;
+    }
+
+    public ImageView getEmptyIcon() {
+        return emptyIcon;
+    }
+
+    public ImageView getClockIcon() {
+        return clockIcon;
+    }
+
+    public ImageView getEmptyIcon2() {
+        return emptyIcon2;
+    }
+
+    public ImageView getEmptyIcon3() {
+        return emptyIcon3;
+    }
+
+    public ImageView getEmptyIcon4() {
+        return emptyIcon4;
+    }
+
+    public ImageView getEmptyIcon5() {
+        return emptyIcon5;
+    }
+
+    public ImageView getEmptyIcon6() {
+        return emptyIcon6;
+    }
+
+    public ImageView getEmptyIcon0() {
+        return emptyIcon0;
+    }
+
+    public ImageView getEmptyIcon01() {
+        return emptyIcon01;
+    }
+
+    public ImageView getEmptyIcon02() {
+        return emptyIcon02;
+    }
+
+    public ImageView getEmptyIcon03() {
+        return emptyIcon03;
+    }
+
+    public ImageView getEmptyIcon04() {
+        return emptyIcon04;
+    }
+
+    public ImageView getEmptyIcon05() {
+        return emptyIcon05;
+    }
+
+    public ImageView getEmptyIcon06() {
+        return emptyIcon06;
+    }
+
+    public ImageView getEmptyIcon07() {
+        return emptyIcon07;
+    }
+
+    public ImageView getPermaUpdate1() {
+        return permaUpdate1;
+    }
+
+    public ImageView getPermaUpdate2() {
+        return permaUpdate2;
+    }
+
+    public ImageView getPermaUpdate3() {
+        return permaUpdate3;
+    }
+
+    public ImageView getEmptyIcon00() {
+        return emptyIcon00;
+    }
+
+    public ImageView getTempUpdate1() {
+        return tempUpdate1;
+    }
+
+    public ImageView getTempUpdate2() {
+        return tempUpdate2;
+    }
+
+    public ImageView getTempUpdate3() {
+        return tempUpdate3;
+    }
+
+    public ImageView getRegister1() {
+        return register1;
+    }
+
+    public ImageView getRegister2() {
+        return register2;
+    }
+
+    public ImageView getRegister3() {
+        return register3;
+    }
+
+    public ImageView getRegister4() {
+        return register4;
+    }
+
+    public ImageView getRegister5() {
+        return register5;
+    }
+
+    public ImageView getEmptyIcon20() {
+        return emptyIcon20;
+    }
+
+    public ImageView getEmptyIcon21() {
+        return emptyIcon21;
+    }
+
+
 
     // only for testing --> usually the playermat isn't called wire the chatController, so for now we need a static
     // reference for the card popup that is initialized in the chatcontroller at the moment.
@@ -124,6 +263,9 @@ public class PlayerMatController implements  IController{
         }
         }
 
+
+
+    private StageController stageController;
     @FXML
     void onDragOverRegister() {
         for (Node register : playerRegister.getChildren()) {
@@ -255,6 +397,7 @@ public class PlayerMatController implements  IController{
 
     @Override
     public IController setPrimaryController(StageController stageController) {
+        this.stageController = stageController;
         return this;
     }
 }
