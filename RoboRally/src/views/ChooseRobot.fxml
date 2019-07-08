@@ -34,7 +34,7 @@
       </font>
    </Label>
 
-    <HBox fx:id="chooseRobotBox1" alignment="CENTER" minHeight="0.0" minWidth="0.0">
+    <HBox fx:id="chooseRobotBox1" alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="50">
 
       <VBox alignment="CENTER">
          <ImageView fx:id="hammerBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
@@ -77,7 +77,7 @@
 
     </HBox>
 
-    <HBox fx:id="chooseRobotBox2" alignment="CENTER" minHeight="0.0" minWidth="0.0">
+    <HBox fx:id="chooseRobotBox2" alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="50">
 
          <VBox alignment="CENTER">
                <ImageView fx:id="spinBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
