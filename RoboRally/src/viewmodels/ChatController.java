@@ -38,8 +38,6 @@ public class ChatController implements Initializable, IController {
     @FXML
     private TextField fieldName;
     @FXML
-    private TextField fieldFigure;
-    @FXML
     private TextField fieldServer;
     @FXML
     private TextArea chatOutput;
@@ -162,13 +160,6 @@ public class ChatController implements Initializable, IController {
                 }
         });
 
-        // FIGUREINPUT: Set Enter-Event
-        fieldFigure.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                figure.set(Integer.parseInt(fieldFigure.getText()));
-            }
-        });
-
         // Inform server about ready status changes
         getReadyProperty().addListener((observableValue, oldvalue, newValue) -> {
             // If property changes, inform the server
@@ -215,14 +206,8 @@ public class ChatController implements Initializable, IController {
             }
         });
 
-        //Enable fieldFigure after server setting is finished
+        //Show ChooseRobot after server setting is finished
         serverSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
-            fieldServer.disableProperty().set(true);
-            fieldFigure.disableProperty().set(false);
-            fieldFigure.requestFocus();
-            final Tooltip tooltipFieldFigure = new Tooltip("Choose a figur by entering a number 1 to 6");
-            fieldFigure.setTooltip(tooltipFieldFigure);
-
             //disabling StartScreen enable ChooseRobot
             this.stageController.getStartScreen().setVisible(false);
             this.stageController.getChooseRobot().setVisible(true);
@@ -230,7 +215,6 @@ public class ChatController implements Initializable, IController {
 
         //Enable fieldName after figure setting is finished
         figureSettingFinishedProperty().addListener(((observableValue, oldValue, newValue) -> {
-            fieldFigure.disableProperty().set(true);
             fieldName.disableProperty().set(false);
             fieldName.requestFocus();
             final Tooltip tooltipFieldName = new Tooltip("Choose any player name");
@@ -408,8 +392,6 @@ public class ChatController implements Initializable, IController {
 
     /**
      * This method opens the popup for the nine cards on the player's hand
-     * It is actually called within the MessageDistributer in handleYourCards via the PlayerMatController but for testing reasons its is
-     * saved additionally here (at the moment)
      * @author Verena Sadtler
      * @author Jessica Gerlach
      */

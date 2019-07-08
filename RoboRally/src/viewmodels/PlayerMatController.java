@@ -266,8 +266,6 @@ public class PlayerMatController implements IController {
     public void openPopupCards(ArrayList<Card> deck) {
         Stage rootStage;
         Parent root1;
-
-
         try {
             root1 = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
             Stage stage = new Stage();

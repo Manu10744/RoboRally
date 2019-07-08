@@ -36,15 +36,9 @@
       </HBox>
 
       <HBox prefHeight="52.0" prefWidth="340.0">
-         <TextField fx:id="fieldFigure" disable="true" prefHeight="30.0" prefWidth="150.0" promptText="Enter figure 1-6">
+           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="340.0" promptText="Enter name...">
             <HBox.margin>
-               <Insets bottom="20.0" left="20.0" right="20.0" />
-            </HBox.margin>
-         </TextField>
-
-         <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="250.0" promptText="Enter name...">
-            <HBox.margin>
-               <Insets bottom="20.0" right="20.0" />
+               <Insets bottom="20.0" right="20.0" left="20.0"/>
             </HBox.margin>
          </TextField>
       </HBox>
