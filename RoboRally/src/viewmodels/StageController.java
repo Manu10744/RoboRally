@@ -79,7 +79,6 @@ public class StageController implements Initializable, IController {
     // Hashmap for the controller references
     private Map<String, IController> controllerMap = new HashMap<>();
 
-
     /**
      * If a new Controller is initialized, this method adds it then to the HasMap from which is given to the
      * {@link MessageDistributer} so that the controllers can be referenced statically there.

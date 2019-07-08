@@ -7,3 +7,7 @@
     -fx-cursor: hand;
 }
 
+#dragImage1:hover, #dragImage2:hover, #dragImage3:hover, #dragImage4:hover, #dragImage5:hover, #dragImage6:hover,
+#dragImage7:hover, #dragImage8:hover, #dragImage9:hover {
+    -fx-cursor: hand;
+}
