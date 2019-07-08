@@ -145,10 +145,10 @@ public class MessageDistributer {
             task.getWriter().flush();
 
             //Inform new client with private chat message about all current active clients(without own entry)
-            for(Server.ClientWrapper client : server.getConnectedClients()){
-                if(playerValueName.equals(client.getName())){
-                    for(Server.ClientWrapper otherClient : server.getConnectedClients()){
-                        if(!playerValueName.equals(otherClient.getName())){
+            for(Server.ClientWrapper client : server.getConnectedClients()) {
+                if(playerValueName.equals(client.getName())) {
+                    for(Server.ClientWrapper otherClient : server.getConnectedClients()) {
+                        if(!playerValueName.equals(otherClient.getName())) {
                             String content = "Active player " + otherClient.getName() + " has ID " + otherClient.getPlayerID()
                                     + " and figure " + otherClient.getFigure();
                             JSONMessage jsonMessageAlreadyConnectedPlayers = new JSONMessage("ReceivedChat",

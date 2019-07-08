@@ -1,16 +1,5 @@
-
-@font-face {
-    font-family: Digital-Serial-ExtraBold;
-    src: url("/resources/css/Roborally.ttf");
-}
-
-
 #hammerBot, #hulkX90, #smashBot, #spinBot, #twonky, #zoomBot{
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 10, 10, 10);
-}
-
-#headline, #hammerBotLabel, #hulkX90Label, #smashBotLabel, #spinBotLabel, #twonkyLabel, #zoomBotLabel {
-    -fx-font-family: 'Digital-Serial-ExtraBold';
 }
 
 #hammerBot:hover, #hulkX90:hover, #smashBot:hover, #spinBot:hover, #twonky:hover, #zoomBot:hover {
