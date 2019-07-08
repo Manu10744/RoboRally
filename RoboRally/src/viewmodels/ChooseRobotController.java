@@ -82,28 +82,42 @@ public class ChooseRobotController implements Initializable,IController{
     public void mouseClicked() {
         System.out.println("CHATCONTROLLER:" + this.stageController);
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
+        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+        PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
        hammerBot.setOnMousePressed(event ->{
            chatController.figure.setValue(1);
+           Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
+           playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
        hulkX90.setOnMousePressed(event ->{
            chatController.figure.setValue(2);
+           Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
+           playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
        smashBot.setOnMousePressed(event ->{
            chatController.figure.setValue(3);
+           Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
+           playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
        twonky.setOnMousePressed(event ->{
            chatController.figure.setValue(4);
+           Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
+           playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
        spinBot.setOnMousePressed(event ->{
            chatController.figure.setValue(5);
+           Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
+           playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
        zoomBot.setOnMousePressed(event ->{
            chatController.figure.setValue(6);
+           Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
+           playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
 
