@@ -423,6 +423,8 @@ public class ChatController implements Initializable, IController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
             stage.show();
+            PlayerMatController.setStage(stage);
+
         }
     }
 

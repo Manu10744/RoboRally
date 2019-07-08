@@ -1,21 +1,15 @@
 package viewmodels;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PopupControl;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.stage.Stage;
+
 
 /**
  * This class has full control over the playermat views.
@@ -23,6 +17,8 @@ import java.util.ResourceBundle;
  * the upgrade cards and tbe register of the player.
  *
  * @author Jessica Gerlach
+ * @author Verena Sadtler
+ * @author Mia Brandtner
  */
 
 public class PlayerMatController implements  IController{
@@ -95,36 +91,166 @@ public class PlayerMatController implements  IController{
     private ImageView register4;
     @FXML
     private ImageView register5;
-    @FXML
-    private ImageView emptyIcon20;
-    @FXML
-    private ImageView emptyIcon21;
 
 
-    Stage rootStage;
+    @FXML
+    HBox cards;
+
     @FXML
     GridPane popupCards;
 
-    public void start(Stage stage) {
-        this.rootStage = stage;
+    // only for testing --> usually the playermat isn't called wire the chatController, so for now we need a static
+    // reference for the card popup that is initialized in the chatcontroller at the moment.
+    static Stage stage;
 
-        initStage();
+    public static void setStage(Stage origStage){
+        stage = origStage;
     }
 
-    private void initStage() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(WikiController.class.getResource("/views/Wiki.fxml"));
-            popupCards= loader.load();
-            Scene scene = new Scene(popupCards);
-            rootStage.setScene(scene);
+    @FXML
+    void onDragDetected() {
+        for (Node card: cards.getChildren()) {
+            card.setOnDragDetected(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                    Dragboard db = card.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(((ImageView) card).getImage());
+                    db.setContent(content);
+                    event.consume();
+                }
+            });
+        }
+        }
 
-            rootStage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+    @FXML
+    void onDragOver() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getGestureSource() != register && dragEvent.getDragboard().hasImage()) {
+                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                    dragEvent.consume();
+
+                }
+            });
+        }
+
+    }
+
+    @FXML
+    void onDragDropped() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    Dragboard db = dragEvent.getDragboard();
+                    boolean success = false;
+                    if (db.hasImage()) {
+                        if (((ImageView) register).getImage() == null) {
+                            ((ImageView) register).setImage(db.getImage());
+
+                            System.out.println("Test image? " + ((ImageView) register).getImage());
+                            success = true;
+                        }
+                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null ) {
+                           stage.close();
+                            register1.setDisable(true);
+                            register2.setDisable(true);
+                            register3.setDisable(true);
+                            register4.setDisable(true);
+                            register5.setDisable(true);
+                        }
+                    }
+                    dragEvent.setDropCompleted(success);
+                    dragEvent.consume();
+                }
+            });
+
+
+        }
+
+    }
+
+    @FXML
+    void onDragDone() {
+        for (Node card : cards.getChildren()) {
+            card.setOnDragDone(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                        ((ImageView) card).setImage(null);
+                    }
+                    dragEvent.consume();
+                }
+            });
         }
     }
 
+    @FXML
+    void onDragDetected2() {
+        for (Node register: playerRegister.getChildren()) {
+            register.setOnDragDetected(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                    Dragboard db = register.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(((ImageView) register).getImage());
+                    db.setContent(content);
+                    event.consume();
+                }
+            });
+        }
+    }
+
+    @FXML
+    void onDragOver2() {
+        for (Node card : cards.getChildren()) {
+            card.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getGestureSource() != card && dragEvent.getDragboard().hasImage()) {
+                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                    dragEvent.consume();
+                }
+            });
+        }
+    }
+    @FXML
+    void onDragDropped2() {
+            for (Node card : cards.getChildren()) {
+                cards.setOnDragDropped(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        Dragboard db = dragEvent.getDragboard();
+                        boolean success = false;
+                        if (db.hasImage()) {
+                            ((ImageView) card).setImage(db.getImage());
+                            success = true;
+                        }
+                        dragEvent.setDropCompleted(success);
+                        dragEvent.consume();
+                    }
+                });
+            }
+        }
+        @FXML
+        void onDragDoneRegister() {
+            for (Node register : playerRegister.getChildren()) {
+                register.setOnDragDone(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                            ((ImageView) register).setImage(null);
+                        }
+                        dragEvent.consume();
+                    }
+                });
+            }
+        }
 
     @Override
     public IController setPrimaryController(StageController stageController) {

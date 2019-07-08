@@ -1,36 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:id="popupCards" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="viewmodels.PlayerMatController" >
-    <HBox>
-        <ImageView fx:id="card1" fitWidth="100" fitHeight="100" >
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="popupCards" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.PlayerMatController">
+    <HBox fx:id="cards">
+        <ImageView onDragDetected="#onDragDetected" onDragDone="#onDragDone" onDragDropped="#onDragDropped2" onDragOver="#onDragOver2">
             <image>
-                <Image url="@../resources/images/robots/choose-robot-hammerbot.png"/>
+                <Image url="@../resources/images/cards/move1-blue100x100.png" />
             </image>
         </ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/move2-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/moveback-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/powerup-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/rightturn-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/again-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/move1-blue100x100.png" />
+         </image></ImageView>
         <ImageView>
-        </ImageView>
+         <image>
+            <Image url="@../resources/images/cards/move3-blue100x100.png" />
+         </image></ImageView>
     </HBox>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
 
 </GridPane>
