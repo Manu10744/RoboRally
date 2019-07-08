@@ -142,7 +142,7 @@
                                     </ImageView>
                                     <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../resources/images/mapelements/laser-onebeam-start-left.png" />
+                                          <Image url="@../resources/images/mapelements/laser-onebeam-left-right.png" />
                                        </image>
                                        <VBox.margin>
                                           <Insets top="10.0" />
@@ -166,7 +166,7 @@
                                     </ImageView>
                                     <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../resources/images/mapelements/bluecvb-curved-sharp-bottom-right.png" />
+                                          <Image url="@../resources/images/mapelements/bluecvb-curved-sharp-right-top.png" />
                                        </image>
                                        <VBox.margin>
                                           <Insets top="10.0" />
