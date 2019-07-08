@@ -108,6 +108,7 @@ public class StageController implements Initializable, IController {
         if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null){
             MessageDistributer.setControllerMap(controllerMap);
         }
+
     }
 
     public Map<String, IController> getControllerMap() {

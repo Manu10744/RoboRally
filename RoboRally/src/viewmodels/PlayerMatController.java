@@ -1,14 +1,23 @@
 package viewmodels;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import javafx.stage.Stage;
+import server.game.Card;
+import server.game.decks.DeckDraw;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 /**
@@ -21,7 +30,7 @@ import javafx.stage.Stage;
  * @author Mia Brandtner
  */
 
-public class PlayerMatController implements  IController{
+public class PlayerMatController implements IController {
 
     @FXML
     private HBox playerIcons;
@@ -65,6 +74,7 @@ public class PlayerMatController implements  IController{
     private ImageView emptyIcon06;
     @FXML
     private ImageView emptyIcon07;
+
     @FXML
     private ImageView permaUpdate1;
     @FXML
@@ -79,6 +89,7 @@ public class PlayerMatController implements  IController{
     private ImageView tempUpdate2;
     @FXML
     private ImageView tempUpdate3;
+
     @FXML
     private ImageView register1;
     @FXML
@@ -95,10 +106,9 @@ public class PlayerMatController implements  IController{
     private ImageView emptyIcon21;
     @FXML
     HBox cards;
+
     @FXML
     GridPane popupCards;
-
-    Stage rootStage;
 
     public HBox getPlayerIcons() {
         return playerIcons;
@@ -237,20 +247,43 @@ public class PlayerMatController implements  IController{
     }
 
 
-
     // only for testing --> usually the playermat isn't called wire the chatController, so for now we need a static
     // reference for the card popup that is initialized in the chatcontroller at the moment.
     static Stage stage;
 
-    public static void setStage(Stage origStage){
+    public static void setStage(Stage origStage) {
         stage = origStage;
         stage.setAlwaysOnTop(true);
     }
 
+    /**
+     * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
+     * This method fulfills two functions: first, all the hboxes are made responsive, second the drag and drop method is envocked
+     *
+     * @param deck: The cards one draws for choosing their programming
+     */
+    @FXML
+    public void openPopupCards(ArrayList<Card> deck) {
+        Stage rootStage;
+        Parent root1;
+
+
+        try {
+            root1 = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.setAlwaysOnTop(true);
+            stage.show();
+            PlayerMatController.setStage(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     void onDragDetectedPopUp() {
-        for (Node card: cards.getChildren()) {
-            card.setOnDragDetected(new EventHandler<MouseEvent>(){
+        for (Node card : cards.getChildren()) {
+            card.setOnDragDetected(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     Dragboard db = card.startDragAndDrop(TransferMode.ANY);
@@ -261,11 +294,8 @@ public class PlayerMatController implements  IController{
                 }
             });
         }
-        }
+    }
 
-
-
-    private StageController stageController;
     @FXML
     void onDragOverRegister() {
         for (Node register : playerRegister.getChildren()) {
@@ -298,8 +328,8 @@ public class PlayerMatController implements  IController{
                             System.out.println("Test image? " + ((ImageView) register).getImage());
                             success = true;
                         }
-                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null ) {
-                           stage.close();
+                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null) {
+                            stage.close();
                             register1.setDisable(true);
                             register2.setDisable(true);
                             register3.setDisable(true);
@@ -334,8 +364,8 @@ public class PlayerMatController implements  IController{
 
     @FXML
     void onDragDetectedRegister() {
-        for (Node register: playerRegister.getChildren()) {
-            register.setOnDragDetected(new EventHandler<MouseEvent>(){
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragDetected(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     Dragboard db = register.startDragAndDrop(TransferMode.ANY);
@@ -362,42 +392,43 @@ public class PlayerMatController implements  IController{
             });
         }
     }
+
     @FXML
     void onDragDroppedPopUp() {
-            for (Node card : cards.getChildren()) {
-                cards.setOnDragDropped(new EventHandler<DragEvent>() {
-                    @Override
-                    public void handle(DragEvent dragEvent) {
-                        Dragboard db = dragEvent.getDragboard();
-                        boolean success = false;
-                        if (db.hasImage()) {
-                            ((ImageView) card).setImage(db.getImage());
-                            success = true;
-                        }
-                        dragEvent.setDropCompleted(success);
-                        dragEvent.consume();
+        for (Node card : cards.getChildren()) {
+            cards.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    Dragboard db = dragEvent.getDragboard();
+                    boolean success = false;
+                    if (db.hasImage()) {
+                        ((ImageView) card).setImage(db.getImage());
+                        success = true;
                     }
-                });
-            }
+                    dragEvent.setDropCompleted(success);
+                    dragEvent.consume();
+                }
+            });
         }
-        @FXML
-        void onDragDoneRegister() {
-            for (Node register : playerRegister.getChildren()) {
-                register.setOnDragDone(new EventHandler<DragEvent>() {
-                    @Override
-                    public void handle(DragEvent dragEvent) {
-                        if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                            ((ImageView) register).setImage(null);
-                        }
-                        dragEvent.consume();
+    }
+
+    @FXML
+    void onDragDoneRegister() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragDone(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                        ((ImageView) register).setImage(null);
                     }
-                });
-            }
+                    dragEvent.consume();
+                }
+            });
         }
+    }
 
     @Override
     public IController setPrimaryController(StageController stageController) {
-        this.stageController = stageController;
         return this;
     }
 }

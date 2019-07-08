@@ -408,6 +408,8 @@ public class ChatController implements Initializable, IController {
 
     /**
      * This method opens the popup for the nine cards on the player's hand
+     * It is actually called within the MessageDistributer in handleYourCards via the PlayerMatController but for testing reasons its is
+     * saved additionally here (at the moment)
      * @author Verena Sadtler
      * @author Jessica Gerlach
      */

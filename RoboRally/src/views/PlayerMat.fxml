@@ -57,7 +57,8 @@
         <ImageView fx:id="register3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="register4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="register5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-
+        <ImageView fx:id="emptyReg0" fitHeight="100.0" fitWidth="100.0" onDragDropped="#onDragDroppedRegister" onDragOver="#onDragOverRegister" onDragDetected="#onDragDetectedRegister" onDragDone="#onDragDoneRegister" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+        <ImageView fx:id="emptyReg1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
   </HBox>
 
 </GridPane>
