@@ -409,6 +409,8 @@ public class ChatController implements Initializable, IController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
             stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setX(Parameter.POPUP_CARDS_X_COORDINATE);
+            stage.setY(Parameter.POPUP_CARDS_Y_COORDINATE);
             stage.show();
             PlayerMatController.setStage(stage);
 
