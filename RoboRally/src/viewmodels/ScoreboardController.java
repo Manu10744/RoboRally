@@ -2,8 +2,10 @@ package viewmodels;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import utils.Parameter;
 
 import java.net.URL;
@@ -29,6 +31,14 @@ public class ScoreboardController implements Initializable {
     ImageView spinBot;
     @FXML
     ImageView zoomBot;
+    @FXML
+    Label headlineScore;
+    @FXML
+    Label fourthPlace;
+    @FXML
+    Label fifthPlace;
+    @FXML
+    Label sixthPlace;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         background.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_RATIO_WIDTH));
@@ -49,6 +59,13 @@ public class ScoreboardController implements Initializable {
         spinBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT));
         zoomBot.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_WIDTH));
         zoomBot.fitHeightProperty().bind(scoreboard.heightProperty().divide(Parameter.SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT));
+
+        // Loading font each time because loading fonts in CSS is buggy in JavaFX
+        // Font can't be loaded if theres a space in path
+        headlineScore.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 40));
+        fourthPlace.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 30));
+        fifthPlace.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 30));
+        sixthPlace.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 30));
     }
 
 }

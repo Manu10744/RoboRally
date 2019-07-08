@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -7,49 +8,52 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/11.0.1"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ScoreboardController">
+<GridPane fx:id="scoreboard" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ScoreboardController">
     <columnConstraints>
-        <ColumnConstraints minWidth="0.0"/>
+        <ColumnConstraints minWidth="0.0" />
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0" />
     </rowConstraints>
 
     <ImageView fx:id="background">
         <image>
-            <Image url="@../resources/images/others/Entwurf Hintergrund Scoreboard.png"/>
+            <Image url="@../resources/images/others/Entwurf Hintergrund Scoreboard.png" />
         </image>
     </ImageView>
-    <ImageView fx:id="siegertreppe" fitHeight="262.0" fitWidth="381.0" GridPane.halignment="CENTER"
-               GridPane.valignment="BOTTOM">
+
+    <ImageView fx:id="siegertreppe" fitHeight="262.0" fitWidth="381.0" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
         <image>
-            <Image url="@../resources/images/others/siegertreppchen2.png"/>
+            <Image url="@../resources/images/others/siegertreppchen2.png" />
         </image>
     </ImageView>
-    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0" alignment="CENTER">
+
+    <VBox alignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <children>
+            <Label fx:id="headlineScore" text="score" textFill="#ebe1e1">
+                <font>
+                    <Font name="System Bold" size="58" />
+                </font>
+            </Label>
             <HBox alignment="CENTER">
                 <ImageView fx:id="hammerBot" fitHeight="200.0" fitWidth="200.0">
                     <image>
-                        <Image url="@../resources/images/robots/choose-robot-hammerbot.png"/>
+                        <Image url="@../resources/images/robots/choose-robot-hammerbot.png" />
                     </image>
                 </ImageView>
             </HBox>
             <HBox alignment="CENTER" spacing="180">
-
                 <ImageView fx:id="smashBot" fitHeight="200.0" fitWidth="200.0">
                     <image>
-                        <Image url="@../resources/images/robots/choose-robot-smashbot.png"/>
+                        <Image url="@../resources/images/robots/choose-robot-smashbot.png" />
                     </image>
                 </ImageView>
                 <ImageView fx:id="hulkX90" fitHeight="200.0" fitWidth="200.0">
                     <image>
-                        <Image url="@../resources/images/robots/choose-robot-hulkX90.png"/>
+                        <Image url="@../resources/images/robots/choose-robot-hulkX90.png" />
                     </image>
                 </ImageView>
             </HBox>
@@ -58,41 +62,40 @@
     <HBox alignment="BOTTOM_RIGHT">
 
         <VBox alignment="BOTTOM_LEFT">
-            <Label text="4" textFill="#ebe1e1">
+            <Label fx:id="fourthPlace" text="4" textFill="#ebe1e1">
                 <font>
-                    <Font name="System Bold" size="24"/>
+                    <Font name="System Bold" size="24" />
                 </font>
             </Label>
             <ImageView fx:id="spinBot" fitHeight="100.0" fitWidth="100.0">
                 <image>
-                    <Image url="@../resources/images/robots/choose-robot-spinbot.png"/>
+                    <Image url="@../resources/images/robots/choose-robot-spinbot.png" />
                 </image>
             </ImageView>
-
         </VBox>
 
         <VBox alignment="BOTTOM_LEFT">
-            <Label text="5" textFill="#ebe1e1">
+            <Label fx:id="fifthPlace" text="5" textFill="#ebe1e1">
                 <font>
-                    <Font name="System Bold" size="24"/>
+                    <Font name="System Bold" size="24" />
                 </font>
             </Label>
             <ImageView fx:id="twonky" fitHeight="100.0" fitWidth="100.0">
                 <image>
-                    <Image url="@../resources/images/robots/choose-robot-twonky.png"/>
+                    <Image url="@../resources/images/robots/choose-robot-twonky.png" />
                 </image>
             </ImageView>
         </VBox>
 
         <VBox alignment="BOTTOM_LEFT">
-            <Label text="6" textFill="#ebe1e1">
+            <Label fx:id="sixthPlace" text="6" textFill="#ebe1e1">
                 <font>
-                    <Font name="System Bold" size="24"/>
+                    <Font name="System Bold" size="24" />
                 </font>
             </Label>
             <ImageView fx:id="zoomBot" fitHeight="100.0" fitWidth="100.0">
                 <image>
-                    <Image url="@../resources/images/robots/choose-robot-zoombot.png"/>
+                    <Image url="@../resources/images/robots/choose-robot-zoombot.png" />
                 </image>
             </ImageView>
         </VBox>
