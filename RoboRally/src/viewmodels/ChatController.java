@@ -105,6 +105,7 @@ public class ChatController implements Initializable, IController {
                 Socket checkConnectionSocket = new Socket(serverIP, serverPort);
                 checkConnectionSocket.close();
                 serverSettingFinished.set(true);
+                fieldServer.setDisable(true);
             } catch (UnknownHostException | ConnectException e) {
                 showInvalidServerAddressAlert();
             } catch (IOException e) {
@@ -389,30 +390,6 @@ public class ChatController implements Initializable, IController {
 
         }
 
-    }
-
-    /**
-     * This method opens the popup for the nine cards on the player's hand
-     * @author Verena Sadtler
-     * @author Jessica Gerlach
-     */
-
-    @FXML
-    void openPopupCards(ActionEvent event) throws IOException {
-        Stage rootStage;
-        Parent root1;
-
-        if (event.getSource() == buttonReady) {
-
-            root1 = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
-            root1.getStylesheets().add("/resources/css/main.css");
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));
-            stage.initStyle(StageStyle.TRANSPARENT);
-            stage.show();
-            PlayerMatController.setStage(stage);
-
-        }
     }
 
     @Override
