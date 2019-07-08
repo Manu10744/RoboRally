@@ -392,6 +392,32 @@ public class ChatController implements Initializable, IController {
 
     }
 
+    /**
+     * This method opens the popup for the nine cards on the player's hand
+     * @author Verena Sadtler
+     * @author Jessica Gerlach
+     */
+
+    @FXML
+    void openPopupCards(ActionEvent event) throws IOException {
+        Stage rootStage;
+        Parent root1;
+
+        if (event.getSource() == buttonReady) {
+
+            root1 = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+            root1.getStylesheets().add("/resources/css/main.css");
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root1));
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setX(Parameter.POPUP_CARDS_X_COORDINATE);
+            stage.setY(Parameter.POPUP_CARDS_Y_COORDINATE);
+            stage.show();
+            PlayerMatController.setStage(stage);
+
+        }
+    }
+
     @Override
     public IController setPrimaryController(StageController stageController) {
         this.stageController = stageController;
