@@ -4,6 +4,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.stage.Screen?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+
 
 <!-- Stage contains board and chat -->
 <GridPane fx:id="stage"
@@ -35,6 +39,12 @@
          <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="70.0"/> <!-- Map -->
          <RowConstraints  vgrow="ALWAYS" minHeight="0.0" percentHeight="20.0"/> <!-- PlayerMat -->
       </rowConstraints>
+
+      <ImageView fx:id="lobbyBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <image>
+            <Image url="@../resources/images/others/background-lobby2.png" />
+         </image>
+      </ImageView>
 
 
       <!-- Map -->
