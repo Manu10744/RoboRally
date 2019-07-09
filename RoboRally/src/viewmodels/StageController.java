@@ -62,6 +62,8 @@ public class StageController implements Initializable, IController {
         return chat;
     }
 
+    public GridPane getStage() { return stage; }
+
     @FXML
     private GridPane chat;
 

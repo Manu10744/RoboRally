@@ -145,9 +145,6 @@ public class Parameter {
     public static final int SCOREBOARD_ROBOT_LOSER_RATIO_WIDTH = 10;
     public static final int SCOREBOARD_ROBOT_LOSER_RATIO_HEIGHT = 5;
 
-    // CardsPopup
-    public static final int POPUP_CARDS_X_COORDINATE = 631;
-    public static final int POPUP_CARDS_Y_COORDINATE = 832;
 
     //Lobby
     public static final int LOBBY_RATIO_WIDTH_BGR = 1;
