@@ -1,23 +1,25 @@
 ### Known Issues
 * Ability to choose map not implemented yet
-* Disabling robot image for the next client after choosing robot needs to be implemented
-* After robot has been chosen maybe implement a lobby view until game starts
-* Figure textfield needs to be removed from the view, is now redundant
 * Ready Button's width is not correct
-* Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard)
+* (Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard))
 * Program is not terminated when all windows are closed
-* Dont allow two clients to choose same username and same figure
+* Dont allow two clients to choose same username
 * Drag and Drop must be fixed (Bugs)
 * New connecting clients are not informed about ready status of already connected players
 * Connection of player, game and robot class missing
 * Remaining maps are missing
+* Timer before map starts
+* Responsivnes playermat and opponentmat
 
 ## Version [0.3.1] 
 ### New Features 
 * Robot can now be set by clicking on robots in the chooseRobot view - *(Verena, Jessi)*
 * Player avatars are now set after choosing robot - *(Verena)*
+* Already assigned robots are disabled now - *(Manu)*
+* Lobby background view - *(Verena)*
 
 ### Changes
+* Replaced font to RoboRally font - *(Verena)*
 
 ### Bugfixes
 
@@ -33,7 +35,7 @@
 
 ### Changes
 * Private messages implemented - *(Ivan)*
-* GridPane of Map now contains one group per field to achieve more convenient editing of map - *(Mia*
+* GridPane of Map now contains one group per field to achieve more convenient editing of map - *(Mia)*
 * Each group is stored in a HashMap to access each field efficiently - *(Mia)*
 * Basic Game Logic removed from Cards and they were made non-static - *(Vincent)*
 
