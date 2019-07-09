@@ -427,8 +427,6 @@ public class ChatController implements Initializable, IController {
             stage.setX(Parameter.POPUP_CARDS_X_COORDINATE);
             stage.setY(Parameter.POPUP_CARDS_Y_COORDINATE);
             stage.show();
-            PlayerMatController.setStage(stage);
-
         }
     }
 

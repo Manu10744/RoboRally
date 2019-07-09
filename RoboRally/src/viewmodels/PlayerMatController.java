@@ -1,5 +1,8 @@
 package viewmodels;
 
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,8 +16,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import server.game.Card;
 import server.game.decks.DeckDraw;
+import utils.Parameter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -247,15 +252,8 @@ public class PlayerMatController implements IController {
         return emptyIcon21;
     }
 
+    private boolean allRegistersSet;
 
-    // only for testing --> usually the playermat isn't called wire the chatController, so for now we need a static
-    // reference for the card popup that is initialized in the chatcontroller at the moment.
-    static Stage stage;
-
-    public static void setStage(Stage origStage) {
-        stage = origStage;
-        stage.setAlwaysOnTop(true);
-    }
 
     /**
      * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
@@ -263,20 +261,37 @@ public class PlayerMatController implements IController {
      *
      * @param deck: The cards one draws for choosing their programming
      */
-    @FXML
+
     public void openPopupCards(ArrayList<Card> deck) {
-        Stage rootStage;
-        Parent root1;
-        try {
-            root1 = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root1));
-            stage.setAlwaysOnTop(true);
-            stage.show();
-            PlayerMatController.setStage(stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Stage rootStage = new Stage();
+
+                Parent root;
+                if (allRegistersSet) {
+                    rootStage.close();
+                }
+                else{
+                    try {
+                        root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+                        rootStage.setScene(new Scene(root));
+                        rootStage.setAlwaysOnTop(true);
+                        rootStage.initStyle(StageStyle.TRANSPARENT);
+                        rootStage.setX(Parameter.POPUP_CARDS_X_COORDINATE);
+                        rootStage.setY(Parameter.POPUP_CARDS_Y_COORDINATE);
+
+                        rootStage.show();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
     }
 
     @FXML
@@ -322,18 +337,22 @@ public class PlayerMatController implements IController {
                     boolean success = false;
                     if (db.hasImage()) {
                         if (((ImageView) register).getImage() == null) {
+                            //Todo images are cut off when dragged to register
                             ((ImageView) register).setImage(db.getImage());
-
-                            System.out.println("Test image? " + ((ImageView) register).getImage());
+                            ((ImageView) register).setPreserveRatio(true);
+                            ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(7));
                             success = true;
                         }
-                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null) {
-                            stage.close();
+                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null){
                             register1.setDisable(true);
                             register2.setDisable(true);
                             register3.setDisable(true);
                             register4.setDisable(true);
                             register5.setDisable(true);
+
+                            //closes popup
+                            allRegistersSet = true;
+                            openPopupCards(null);
                         }
                     }
                     dragEvent.setDropCompleted(success);
@@ -426,8 +445,9 @@ public class PlayerMatController implements IController {
         }
     }
 
+
     @Override
-    public IController setPrimaryController(StageController stageController) {
-        return this;
+        public IController setPrimaryController (StageController stageController){
+            return this;
+        }
     }
-}

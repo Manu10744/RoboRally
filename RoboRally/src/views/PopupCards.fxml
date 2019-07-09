@@ -15,43 +15,43 @@
             </image>
         </ImageView>
         <ImageView fx:id="dragImage2">
-         <image>
-            <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage3">
-         <image>
-            <Image url="@../resources/images/cards/move2-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/move2-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage4">
-         <image>
-            <Image url="@../resources/images/cards/moveback-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/moveback-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage5">
-         <image>
-            <Image url="@../resources/images/cards/powerup-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/powerup-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage6">
-         <image>
-            <Image url="@../resources/images/cards/rightturn-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/rightturn-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage7">
-         <image>
-            <Image url="@../resources/images/cards/again-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/again-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage8">
-         <image>
-            <Image url="@../resources/images/cards/move1-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/move1-blue100x100.png" />
+            </image></ImageView>
         <ImageView fx:id="dragImage9">
-         <image>
-            <Image url="@../resources/images/cards/move3-blue100x100.png" />
-         </image></ImageView>
+            <image>
+                <Image url="@../resources/images/cards/move3-blue100x100.png" />
+            </image></ImageView>
     </HBox>
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-   </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+    </rowConstraints>
 
 </GridPane>

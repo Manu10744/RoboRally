@@ -439,6 +439,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
         ((MapController) controllerMap.get("Map")).fillGridPaneWithMap(gameStartedBody);
+        ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null);
 
         // fillMapWithImageViews(tiles);
     }
