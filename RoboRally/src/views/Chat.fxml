@@ -28,7 +28,7 @@
                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </HBox.margin>
          </Button>
-         <TextField fx:id="fieldServer" prefHeight="25.0" prefWidth="370.0" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
+         <TextField fx:id="fieldServer" prefHeight="25.0" prefWidth="1000" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
             <HBox.margin>
                <Insets bottom="20.0" right="20.0" top="20.0" />
             </HBox.margin>
@@ -36,7 +36,7 @@
       </HBox>
 
       <HBox prefHeight="52.0" prefWidth="340.0">
-           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="340.0" promptText="Enter name...">
+           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name...">
             <HBox.margin>
                <Insets bottom="20.0" right="20.0" left="20.0"/>
             </HBox.margin>
@@ -57,7 +57,7 @@
          </TextArea>
       </VBox>
 
-      <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Ready">
+      <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="1000" text="Ready">
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </VBox.margin>
