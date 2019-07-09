@@ -53,10 +53,10 @@
 
     <HBox fx:id="playerRegister" minHeight="0.0" minWidth="0.0" style="-fx-background-color: red" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <ImageView fx:id="register1" fitHeight="100.0" fitWidth="100.0" onDragDropped="#onDragDroppedRegister" onDragOver="#onDragOverRegister" onDragDetected="#onDragDetectedRegister" onDragDone="#onDragDoneRegister" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <ImageView fx:id="register2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <ImageView fx:id="register3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <ImageView fx:id="register4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <ImageView fx:id="register5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+        <ImageView fx:id="register2" fitHeight="100.0" fitWidth="100.0" onDragDropped="#onDragDroppedRegister" onDragOver="#onDragOverRegister" onDragDetected="#onDragDetectedRegister" onDragDone="#onDragDoneRegister" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+        <ImageView fx:id="register3" fitHeight="100.0" fitWidth="100.0" onDragDropped="#onDragDroppedRegister" onDragOver="#onDragOverRegister" onDragDetected="#onDragDetectedRegister" onDragDone="#onDragDoneRegister" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+        <ImageView fx:id="register4" fitHeight="100.0" fitWidth="100.0" onDragDropped="#onDragDroppedRegister" onDragOver="#onDragOverRegister" onDragDetected="#onDragDetectedRegister" onDragDone="#onDragDoneRegister" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+        <ImageView fx:id="register5" fitHeight="100.0" fitWidth="100.0" onDragDropped="#onDragDroppedRegister" onDragOver="#onDragOverRegister" onDragDetected="#onDragDetectedRegister" onDragDone="#onDragDoneRegister" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
     </HBox>
 
 </GridPane>

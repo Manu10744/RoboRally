@@ -14,35 +14,35 @@
                 <Image url="@../resources/images/cards/move1-blue100x100.png" />
             </image>
         </ImageView>
-        <ImageView fx:id="dragImage2">
+        <ImageView fx:id="dragImage2" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage3">
+        <ImageView fx:id="dragImage3" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/move2-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage4">
+        <ImageView fx:id="dragImage4" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/moveback-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage5">
+        <ImageView fx:id="dragImage5" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/powerup-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage6">
+        <ImageView fx:id="dragImage6" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/rightturn-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage7">
+        <ImageView fx:id="dragImage7" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/again-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage8">
+        <ImageView fx:id="dragImage8" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/move1-blue100x100.png" />
             </image></ImageView>
-        <ImageView fx:id="dragImage9">
+        <ImageView fx:id="dragImage9" onDragDetected="#onDragDetectedPopUp" onDragDone="#onDragDonePopUp" onDragDropped="#onDragDroppedPopUp" onDragOver="#onDragOverPopUp">
             <image>
                 <Image url="@../resources/images/cards/move3-blue100x100.png" />
             </image></ImageView>
