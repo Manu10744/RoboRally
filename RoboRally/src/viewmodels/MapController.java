@@ -5,6 +5,9 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -16,6 +19,7 @@ import utils.json.protocol.GameStartedBody;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -215,7 +219,23 @@ public class MapController implements IController {
                         robot.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                         robot.preserveRatioProperty().set(true);
 
-                        robot.rotateProperty().setValue(90);
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("RoboRally");
+                        alert.setHeaderText("Choose your desired direction");
+                        alert.setContentText("In what direction do you want your robot to look?");
+
+                        ButtonType north = new ButtonType("North");
+                        ButtonType east = new ButtonType("East");
+                        ButtonType south = new ButtonType("South");
+                        ButtonType west = new ButtonType("West");
+                        alert.getButtonTypes().setAll(north, east, south, west);
+
+                        Optional<ButtonType> result = alert.showAndWait();
+
+                        if (result.get() == north) robot.rotateProperty().setValue(0);
+                        if (result.get() == east) robot.rotateProperty().setValue(90);
+                        if (result.get() == south) robot.rotateProperty().setValue(180);
+                        if (result.get() == west) robot.rotateProperty().setValue(270);
 
                         startpoint.getChildren().add(robot);
 
