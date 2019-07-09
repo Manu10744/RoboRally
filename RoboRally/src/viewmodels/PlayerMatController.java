@@ -164,10 +164,10 @@ public class PlayerMatController implements IController {
                 public void handle(MouseEvent event) {
                     Dragboard db = card.startDragAndDrop(TransferMode.ANY);
                     ClipboardContent content = new ClipboardContent();
-                    content.putImage(((ImageView) card).getImage());
-                    db.setContent(content);
-                    event.consume();
-                }
+                        content.putImage(((ImageView) card).getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
             });
         }
     }
@@ -202,7 +202,7 @@ public class PlayerMatController implements IController {
                             //Todo images are cut off when dragged to register
                             ((ImageView) register).setImage(db.getImage());
                             ((ImageView) register).setPreserveRatio(true);
-                            ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(7));
+                            ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
 
                             success = true;
                         }
@@ -282,8 +282,10 @@ public class PlayerMatController implements IController {
                     Dragboard db = dragEvent.getDragboard();
                     boolean success = false;
                     if (db.hasImage()) {
-                        ((ImageView) card).setImage(db.getImage());
-                        success = true;
+                        if (((ImageView) card).getImage() == null) {
+                            ((ImageView) card).setImage(db.getImage());
+                            success = true;
+                        }
                     }
                     dragEvent.setDropCompleted(success);
                     dragEvent.consume();
