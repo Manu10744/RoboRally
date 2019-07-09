@@ -20,6 +20,7 @@ import server.game.Tiles.Tile;
 import server.game.decks.DeckDraw;
 import utils.Parameter;
 import utils.json.protocol.*;
+import viewmodels.ChooseRobotController;
 import viewmodels.IController;
 import viewmodels.MapController;
 import viewmodels.PlayerMatController;
@@ -75,6 +76,17 @@ public class MessageDistributer {
                 JSONMessage jsonMessage = new JSONMessage("Welcome", new WelcomeBody(server.getCounterPlayerID()));
                 task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 task.getWriter().flush();
+
+                // Inform about already connected clients, also to disable already assigned robots before loading the chooseRobot view
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    int playerID = clientWrapper.getPlayerID();
+                    String name = clientWrapper.getName();
+                    int figure = clientWrapper.getFigure();
+
+                    JSONMessage informerMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(playerID, name, figure));
+                    task.getWriter().println(JSONEncoder.serializeJSON(informerMessage));
+                    task.getWriter().flush();
+                }
 
                 // Save the playerID before incrementing the counter so the proper ID is given to the ClientWrapper
                 server.setSetterPlayerID(server.getCounterPlayerID());
@@ -366,6 +378,30 @@ public class MessageDistributer {
             client.getActiveClientsProperty().add(String.valueOf(playerAddedBody.getPlayerID()));
             Client.OtherPlayer newPlayer = client.new OtherPlayer(playerAddedBody.getPlayerID());
             client.getOtherActivePlayers().add(client.getOtherActivePlayers().size(), newPlayer);
+
+            int figure = playerAddedBody.getFigure();
+            ChooseRobotController chooseRobotController = client.getChooseRobotController();
+
+            // Update the chooseRobot view because a robot has been assigned
+            if (figure == 1) {
+                chooseRobotController.getHammerBot().setDisable(true);
+                chooseRobotController.getHammerBot().setOpacity(0.5);
+            } else if (figure == 2) {
+                chooseRobotController.getHulkX90().setDisable(true);
+                chooseRobotController.getHulkX90().setOpacity(0.5);
+            } else if (figure == 3) {
+                chooseRobotController.getSmashBot().setDisable(true);
+                chooseRobotController.getSmashBot().setOpacity(0.5);
+            } else if (figure == 4) {
+                chooseRobotController.getSpinBot().setDisable(true);
+                chooseRobotController.getSpinBot().setOpacity(0.5);
+            } else if (figure == 5) {
+                chooseRobotController.getTwonky().setDisable(true);
+                chooseRobotController.getTwonky().setOpacity(0.5);
+            } else if (figure == 6) {
+                chooseRobotController.getZoomBot().setDisable(true);
+                chooseRobotController.getZoomBot().setOpacity(0.5);
+            }
         });
     }
 

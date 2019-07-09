@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.protocol.*;
+import viewmodels.*;
 
 import java.net.Socket;
 
@@ -35,6 +36,61 @@ public class Client {
     private ListProperty<String> activeClients;
     private ListProperty<OtherPlayer> otherActivePlayers;
     private static final Logger logger = Logger.getLogger(Client.class.getName());
+
+    private StageController stageController;
+    private ChatController chatController;
+    private MapController mapController;
+    private PlayerMatController playerMatController;
+    private OpponentMatController opponentMatController;
+    private ChooseRobotController chooseRobotController;
+
+    public StageController getStageController() {
+        return stageController;
+    }
+
+    public void setStageController(StageController stageController) {
+        this.stageController = stageController;
+    }
+
+    public ChatController getChatController() {
+        return chatController;
+    }
+
+    public void setChatController(ChatController chatController) {
+        this.chatController = chatController;
+    }
+
+    public MapController getMapController() {
+        return mapController;
+    }
+
+    public void setMapController(MapController mapController) {
+        this.mapController = mapController;
+    }
+
+    public PlayerMatController getPlayerMatController() {
+        return playerMatController;
+    }
+
+    public void setPlayerMatController(PlayerMatController playerMatController) {
+        this.playerMatController = playerMatController;
+    }
+
+    public OpponentMatController getOpponentMatController() {
+        return opponentMatController;
+    }
+
+    public void setOpponentMatController(OpponentMatController opponentMatController) {
+        this.opponentMatController = opponentMatController;
+    }
+
+    public ChooseRobotController getChooseRobotController() {
+        return chooseRobotController;
+    }
+
+    public void setChooseRobotController(ChooseRobotController chooseRobotController) {
+        this.chooseRobotController = chooseRobotController;
+    }
 
     //TODO  public Client(String name, String serverIP, int serverPort) {
     public Client(String serverIP, int serverPort) {

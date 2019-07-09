@@ -19,19 +19,19 @@ public class ChooseRobotController implements Initializable,IController{
     @FXML
     GridPane chooseRobot;
     @FXML
-    ImageView hammerBot;
+    private ImageView hammerBot;
     @FXML
-    ImageView hulkX90;
+    private ImageView hulkX90;
     @FXML
-    ImageView smashBot;
+    private ImageView smashBot;
     @FXML
-    ImageView twonky;
+    private ImageView twonky;
     @FXML
-    ImageView spinBot;
+    private ImageView spinBot;
     @FXML
-    ImageView zoomBot;
+    private ImageView zoomBot;
     @FXML
-    ImageView chooseRobotBackground;
+    private ImageView chooseRobotBackground;
 
     @FXML
     Label headline;
@@ -49,6 +49,30 @@ public class ChooseRobotController implements Initializable,IController{
     Label zoomBotLabel;
 
     private StageController stageController;
+
+    public ImageView getHammerBot() {
+        return hammerBot;
+    }
+
+    public ImageView getHulkX90() {
+        return hulkX90;
+    }
+
+    public ImageView getSmashBot() {
+        return smashBot;
+    }
+
+    public ImageView getTwonky() {
+        return twonky;
+    }
+
+    public ImageView getSpinBot() {
+        return spinBot;
+    }
+
+    public ImageView getZoomBot() {
+        return zoomBot;
+    }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         smashBot.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH));
@@ -102,15 +126,15 @@ public class ChooseRobotController implements Initializable,IController{
            playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
-       twonky.setOnMousePressed(event ->{
+       spinBot.setOnMousePressed(event ->{
            chatController.figure.setValue(4);
-           Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
+           Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
            playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });
-       spinBot.setOnMousePressed(event ->{
+       twonky.setOnMousePressed(event ->{
            chatController.figure.setValue(5);
-           Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
+           Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
            playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
        });

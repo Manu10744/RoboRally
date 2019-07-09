@@ -1,6 +1,7 @@
 package viewmodels;
 
 
+import client.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
@@ -78,33 +79,29 @@ public class StageController implements Initializable, IController {
 
     // Hashmap for the controller references
     private Map<String, IController> controllerMap = new HashMap<>();
-
     /**
      * If a new Controller is initialized, this method adds it then to the HasMap from which is given to the
      * {@link MessageDistributer} so that the controllers can be referenced statically there.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // HERE WE GET THE CONTROLLERS OF THE INCLUDED FXML FILES, THEY WILL BE INSTANTIATED BY INITIALIZE
-        // BUT ONLY IF THEIR VARIABLES ARE TAGGED WITH @FXML!
-        // AS SOON AS THEY ARE INSTANTIATED, ADD THEM TO THE HASHMAP!
         if (chooseRobotController != null) {
             controllerMap.put("ChooseRobot", chooseRobotController.setPrimaryController(this));
         }
-        if (mapController != null){
+        if (mapController != null) {
             controllerMap.put("Map", mapController.setPrimaryController(this));
         }
         if (chatController != null) {
             controllerMap.put("Chat", chatController.setPrimaryController(this));
         }
         if (opponentMatController != null){
-            controllerMap.put("OpponentMap", opponentMatController);
+            controllerMap.put("OpponentMat", opponentMatController);
         }
         if (playerMatController != null){
             controllerMap.put("PlayerMat", playerMatController.setPrimaryController(this));
         }
         // Sends the HasMap to the MessageDistributer after adding all controllers
-        if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null){
+        if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null) {
             MessageDistributer.setControllerMap(controllerMap);
         }
 
