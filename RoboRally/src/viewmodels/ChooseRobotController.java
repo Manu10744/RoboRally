@@ -104,10 +104,12 @@ public class ChooseRobotController implements Initializable,IController{
 
 
     public void mouseClicked() {
-        System.out.println("CHATCONTROLLER:" + this.stageController);
+        // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
         MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+
+
        hammerBot.setOnMousePressed(event ->{
            chatController.figure.setValue(1);
            Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");

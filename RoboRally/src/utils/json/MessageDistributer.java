@@ -442,24 +442,26 @@ public class MessageDistributer {
     public static void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
-        ((MapController) controllerMap.get("Map")).fillGridPaneWithMap(gameStartedBody);
+        MapController mapController = (MapController) controllerMap.get("Map");
+        mapController.fillGridPaneWithMap(gameStartedBody);
         //Todo: Those two method calls have to deleted when the game logic progresses to the right method in the distributer according to protocol
+
+        // Popup of 9 cards to choose from
         ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards
         System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
 
-        //choose Starting point, send message setStartingpoint
-         int figure = client.getFigure();
-         while(!((MapController) controllerMap.get("Map")).isAllowSetStart()) {
-             System.out.println("Biste heier????");
-             if (((MapController) controllerMap.get("Map")).isAllowSetStart()) {
-                 ((MapController) controllerMap.get("Map")).setStartingPoint(figure);
-                 ((MapController) controllerMap.get("Map")).setAllowStart(false);
-             }
-         }
+        // Choose Starting point, send message setStartingpoint
+        int figure = client.getFigure();
 
+        // NOTE: THIS IS A TEMPORARY SOLUTION. EVENT MAP_LOADED NEEDED
+        // Make the thread wait a second so setting StartPoint happens definitely after map has been loaded...
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mapController.setStartingPoint(figure);
     }
-
-
 
 
     /**

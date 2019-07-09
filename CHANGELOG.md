@@ -17,6 +17,7 @@
 * Player avatars are now set after choosing robot - *(Verena)*
 * Already assigned robots are disabled now - *(Manu)*
 * Lobby background view - *(Verena)*
+* Player can now set his StartPoint individually - *(Mia, Verena, Manu)*
 
 ### Changes
 * Replaced font to RoboRally font - *(Verena)*

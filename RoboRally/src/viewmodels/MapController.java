@@ -45,9 +45,6 @@ public class MapController implements IController {
     private Map<String, Group> fieldMap = new HashMap<String, Group>();
     private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
 
-
-
-
     @Override
     public IController setPrimaryController(StageController stageController) {
         this.stageController = stageController;
@@ -154,10 +151,9 @@ public class MapController implements IController {
                         mapPane.getChildren().add(imageGroup);
                     }
                 }
-                allowSetStart = true;
-
             }
         });
+        this.allowSetStart = true;
     }
 
     public ImageView getImageByFigure(int figure) {
@@ -190,94 +186,45 @@ public class MapController implements IController {
     }
 
     public void setStartingPoint(int figure) {
-        if (allowSetStart) {
-            Platform.runLater(new Runnable() {
+        // The startinPoints in order according to y-position
+        Group startPoint1 = fieldMap.get("0-3");
+        Group startPoint2 = fieldMap.get("0-6");
+        Group startPoint3 = fieldMap.get("1-1");
+        Group startPoint4 = fieldMap.get("1-4");
+        Group startPoint5 = fieldMap.get("1-5");
+        Group startPoint6 = fieldMap.get("1-8");
+
+        ArrayList<Group> startPoints = new ArrayList<>();
+        startPoints.add(startPoint1);
+        startPoints.add(startPoint2);
+        startPoints.add(startPoint3);
+        startPoints.add(startPoint4);
+        startPoints.add(startPoint5);
+        startPoints.add(startPoint6);
+
+        for (Group startpoint : startPoints) {
+            startpoint.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                // We need the map controller here because Event Handlers create an anonymous inner class (!)
+                MapController mapController = (MapController) stageController.getControllerMap().get("Map");
+
                 @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mapController.isAllowedToSetStart()) {
+                        ImageView robot = getImageByFigure(figure);
+                        robot.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                        robot.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                        robot.preserveRatioProperty().set(true);
 
-                public void run() {
-                    //the startinPoints in order according to y-position
-                    Group startPoint1 = fieldMap.get("0-3");
-                    Group startPoint2 = fieldMap.get("0-6");
-                    Group startPoint3 = fieldMap.get("1-1");
-                    Group startPoint4 = fieldMap.get("1-4");
-                    Group startPoint5 = fieldMap.get("1-5");
-                    Group startPoint6 = fieldMap.get("1-8");
+                        robot.rotateProperty().setValue(90);
 
-                    ArrayList<Group> startPoints = new ArrayList<>();
-                    startPoints.add(startPoint1);
-                    startPoints.add(startPoint2);
-                    startPoints.add(startPoint3);
-                    startPoints.add(startPoint4);
-                    startPoints.add(startPoint5);
-                    startPoints.add(startPoint6);
+                        startpoint.getChildren().add(robot);
 
-                    for (Group startpoint : startPoints) {
-                        startpoint.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                            @Override
-                            public void handle(MouseEvent mouseEvent) {
-                                System.out.println("Clicked on StartPoint " + startpoint.getId());
-                                // startpoint.getChildren().add(!!!); //add Figure
-                                ImageView robot = getImageByFigure(figure);
-                                robot.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                robot.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                robot.preserveRatioProperty().set(true);
-
-                                robot.rotateProperty().setValue(90);
-
-                                startpoint.getChildren().add(robot);
-                                allowSetStart = false;
-                            }
-
-                        });
+                        mapController.setAllowedToSetStart(false);
                     }
                 }
-
             });
-
         }
     }
-
-    public ImageView getImageByFigureNumber (int figure){
-
-        ImageView robotImageView = new ImageView();
-
-        switch (figure) {
-            case 1: {
-                Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
-                robotImageView.setImage(avatar);
-                break;
-            }
-            case 2: {
-                Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
-                robotImageView.setImage(avatar);
-                break;
-            }
-            case 3: {
-                Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
-                robotImageView.setImage(avatar);
-                break;
-            }
-            case 4: {
-                Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
-                robotImageView.setImage(avatar);
-                break;
-            }
-            case 5: {
-                Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
-                robotImageView.setImage(avatar);
-                break;
-            }
-            case 6: {
-                Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
-                robotImageView.setImage(avatar);
-                break;
-            }
-
-        }
-        return robotImageView;
-    }
-
-
 
     /**
      * This method controls robotlaser in activation phase
@@ -285,11 +232,12 @@ public class MapController implements IController {
     public void robotLaser() {
 
     }
-    public boolean isAllowSetStart() {
+
+    public boolean isAllowedToSetStart() {
         return allowSetStart;
     }
 
-    public void setAllowStart(Boolean allowStart){
+    public void setAllowedToSetStart(Boolean allowStart) {
         this.allowSetStart = allowStart;
     }
 
