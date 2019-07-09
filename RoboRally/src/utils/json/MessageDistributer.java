@@ -165,7 +165,8 @@ public class MessageDistributer {
                     for (Server.ClientWrapper otherClient : server.getConnectedClients()) {
                         if (!playerValueName.equals(otherClient.getName())) {
                             String content = "Active player " + otherClient.getName() + " has ID " + otherClient.getPlayerID()
-                                    + " and figure " + otherClient.getFigure();
+                                    + " and figure " + otherClient.getFigure() + ". \n"
+                                    + otherClient.getName() + " is ready to play: " + otherClient.isReady() + "!\n";
                             JSONMessage jsonMessageAlreadyConnectedPlayers = new JSONMessage("ReceivedChat",
                                     new ReceivedChatBody(content, otherClient.getPlayerID(), true));
                             client.getWriter().println(JSONEncoder.serializeJSON(jsonMessageAlreadyConnectedPlayers));
