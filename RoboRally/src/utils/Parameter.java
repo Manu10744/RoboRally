@@ -47,7 +47,7 @@ public class Parameter {
 
         //amount of players
     public static final int MAX_PLAYERSIZE = 6;
-    public static final int MIN_PLAYERSIZE = 2;
+    public static final int MIN_PLAYERSIZE = 1;
 
         //Register numbers
     public static final int REGISTER_ONE = 1;
@@ -57,7 +57,7 @@ public class Parameter {
     public static final int REGISTER_FIVE = 5;
 
     //Amount of usual imageViews in each PlayerMat hBox
-    public static final int CARDS_WIDTH = 7;
+    public static final int CARDS_WIDTH = 8;
 
 
     //Tiles

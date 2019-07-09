@@ -185,7 +185,7 @@ public class PlayerMatController implements IController {
     }
     private Stage rootStage;
 
-
+    BooleanProperty allRegistersSet;
 
 
 
@@ -283,6 +283,10 @@ public class PlayerMatController implements IController {
 
                             //closes popup
                              rootStage.close();
+
+                             //Boolean Property for Server so that server knows when a player has finished their programming
+                             allRegistersSet = new SimpleBooleanProperty();
+                             allRegistersSet.setValue(true);
                         }
                     }
                     dragEvent.setDropCompleted(success);
@@ -375,6 +379,7 @@ public class PlayerMatController implements IController {
             });
         }
     }
+
 
 
     @Override

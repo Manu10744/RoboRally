@@ -309,10 +309,13 @@ public class MessageDistributer {
      * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
      */
     public static void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
-        System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
 
 
-        // TODO: Write code here
+        /*
+        (
+        // TODO: should work here! But we do not have client, we have server
+
+         */
     }
 
     /**
@@ -439,10 +442,23 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
 
         ((MapController) controllerMap.get("Map")).fillGridPaneWithMap(gameStartedBody);
-        ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null);
+        //Todo: Those two method calls have to deleted when the game logic progresses to the right method in the distributer according to protocol
+        ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards
+        System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
 
-        // fillMapWithImageViews(tiles);
+        //choose Starting point, send message setStartingpoint
+         int figure = client.getFigure();
+         while(!((MapController) controllerMap.get("Map")).isAllowSetStart()) {
+             System.out.println("Biste heier????");
+             if (((MapController) controllerMap.get("Map")).isAllowSetStart()) {
+                 ((MapController) controllerMap.get("Map")).setStartingPoint(figure);
+                 ((MapController) controllerMap.get("Map")).setAllowStart(false);
+             }
+         }
+
     }
+
+
 
 
     /**
