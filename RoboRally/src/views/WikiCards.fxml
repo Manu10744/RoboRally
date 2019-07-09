@@ -38,7 +38,7 @@
                <children>
                   <VBox minHeight="1545.0" minWidth="145.0" prefWidth="145.0">
                      <children>
-                        <Label maxHeight="30.0" prefHeight="30.0" text="Programming Cards">
+                        <Label fx:id="headingWiki" maxHeight="30.0" prefHeight="30.0" text="Programming Cards">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" top="10.0" />
                            </VBox.margin>
@@ -121,7 +121,7 @@
                               <Insets bottom="5.0" left="20.0" top="15.0" />
                            </VBox.margin>
                         </ImageView>
-                        <Label prefHeight="30.0" prefWidth="125.0" text="Damage Cards">
+                        <Label font="${headingWiki.font}" text="Damage Cards">
                            <VBox.margin>
                               <Insets left="25.0" top="45.0" />
                            </VBox.margin>
@@ -168,7 +168,7 @@
                   </VBox>
                   <VBox layoutX="135.0" layoutY="24.0" minHeight="1536.0" minWidth="655.0" prefWidth="640.0" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <Label prefWidth="650.0" text="Move 1">
+                        <Label fx:id="subheadingWiki" prefWidth="650.0" text="Move 1">
                            <VBox.margin>
                               <Insets left="15.0" top="40.0" />
                            </VBox.margin>
@@ -176,7 +176,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label lineSpacing="5.0" prefHeight="50.0" prefWidth="665.0" text="Move your robot one space in the direction it is facing." wrapText="true">
+                        <Label fx:id="textWiki" lineSpacing="5.0" prefHeight="50.0" prefWidth="665.0" text="Move your robot one space in the direction it is facing." wrapText="true">
                            <VBox.margin>
                               <Insets bottom="25.0" left="15.0" />
                            </VBox.margin>
@@ -184,7 +184,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Move 2">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Move 2">
                            <VBox.margin>
                               <Insets left="15.0" top="10.0" />
                            </VBox.margin>
@@ -192,7 +192,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Move your robot two spaces in the direction it is facing.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Move your robot two spaces in the direction it is facing.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -200,7 +200,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Move 3">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Move 3">
                            <VBox.margin>
                               <Insets left="15.0" top="35.0" />
                            </VBox.margin>
@@ -208,7 +208,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Move your robot three spaces in the direction it is facing.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Move your robot three spaces in the direction it is facing.">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -216,7 +216,7 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Turn Right">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Turn Right">
                            <VBox.margin>
                               <Insets left="15.0" top="35.0" />
                            </VBox.margin>
@@ -224,7 +224,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 90 degrees to the right.&#10;The robot remains in its current space.&#10;">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Turn your robot 90 degrees to the right.&#10;The robot remains in its current space.&#10;">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -232,7 +232,7 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Turn Left">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Turn Left">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -240,7 +240,7 @@
                               <Insets left="15.0" top="35.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 90 degrees to the left.&#10;The robot remains in its current space.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Turn your robot 90 degrees to the left.&#10;The robot remains in its current space.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -248,7 +248,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="U-Turn">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="U-Turn">
                            <VBox.margin>
                               <Insets left="15.0" top="30.0" />
                            </VBox.margin>
@@ -256,12 +256,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Back Up">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Back Up">
                            <VBox.margin>
                               <Insets left="15.0" top="30.0" />
                            </VBox.margin>
@@ -269,7 +269,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Move your robot one space back.&#10;The robot doesn't change the direction it is facing.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Move your robot one space back.&#10;The robot doesn't change the direction it is facing.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -277,7 +277,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Power Up">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Power Up">
                            <VBox.margin>
                               <Insets left="15.0" top="30.0" />
                            </VBox.margin>
@@ -285,7 +285,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Take one energie cube, and place it on your player mat.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Take one energie cube, and place it on your player mat.">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -293,7 +293,7 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="650.0" text="Again">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Again">
                            <VBox.margin>
                               <Insets left="15.0" top="30.0" />
                            </VBox.margin>
@@ -301,7 +301,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="100.0" prefWidth="650.0" text="Repeat the programming in your previous register.&#10;If your previous register was a damage card, draw a card from the top of your deck, &#10;and play that card this register.&#10;If you used an update in your previous register that allowed you to play multiple programming cards,&#10;re-execute the second card. This card can't be played in the first register.">
+                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="650.0" text="Repeat the programming in your previous register.&#10;If your previous register was a damage card, draw a card from the top of your deck, &#10;and play that card this register.&#10;If you used an update in your previous register that allowed you to play multiple programming cards,&#10;re-execute the second card. This card can't be played in the first register.">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -309,7 +309,7 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="655.0" text="Spam">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="655.0" text="Spam">
                            <VBox.margin>
                               <Insets left="15.0" top="70.0" />
                            </VBox.margin>
@@ -317,7 +317,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="640.0" text="This is the simplest form of damage.&#10;Robots must take a spam damage card when they are shot by a board or robot laser.&#10;">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="640.0" text="This is the simplest form of damage.&#10;Robots must take a spam damage card when they are shot by a board or robot laser.&#10;">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -325,7 +325,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="640.0" text="Trojan Horse">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="640.0" text="Trojan Horse">
                            <VBox.margin>
                               <Insets left="15.0" top="35.0" />
                            </VBox.margin>
@@ -333,7 +333,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="640.0" text="When you program a trojan horse damage card, you must immediatly take two spam damage cards.&#10;">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="640.0" text="When you program a trojan horse damage card, you must immediatly take two spam damage cards.&#10;">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -341,7 +341,7 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="640.0" text="Worm">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="640.0" text="Worm">
                            <VBox.margin>
                               <Insets left="15.0" top="35.0" />
                            </VBox.margin>
@@ -349,7 +349,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="640.0" text="When you program a worm damage card, you must immediatly reboot your robot.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="640.0" text="When you program a worm damage card, you must immediatly reboot your robot.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -357,7 +357,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="27.0" prefWidth="640.0" text="Virus">
+                        <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="640.0" text="Virus">
                            <VBox.margin>
                               <Insets left="15.0" top="35.0" />
                            </VBox.margin>
@@ -365,7 +365,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="60.0" prefWidth="640.0" text="When you program a virus damage card,&#10;any robot on the board within a six-space radius of you must immediatly take a virus card &#10;of the draw pile.&#10;">
+                        <Label font="${textWiki.font}" prefHeight="60.0" prefWidth="640.0" text="When you program a virus damage card,&#10;any robot on the board within a six-space radius of you must immediatly take a virus card &#10;of the draw pile.&#10;">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -384,9 +384,9 @@
       </ScrollPane>
       <HBox blendMode="MULTIPLY" prefHeight="25.0" prefWidth="933.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <children>
-            <Button mnemonicParsing="false" prefHeight="28.0" text="Cards" />
-            <Button fx:id="buttonRobots" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Robots" />
-            <Button fx:id="buttonRules" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Rules" />
+            <Button fx:id="buttonCard" mnemonicParsing="false" prefHeight="28.0" text="Cards" />
+            <Button fx:id="buttonRobot" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Robots" />
+            <Button fx:id="buttonRule" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Rules" />
          </children>
       </HBox>
    </children>
