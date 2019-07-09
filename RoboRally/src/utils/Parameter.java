@@ -147,5 +147,8 @@ public class Parameter {
     public static final int POPUP_CARDS_X_COORDINATE = 631;
     public static final int POPUP_CARDS_Y_COORDINATE = 832;
 
+    //Lobby
+    public static final int LOBBY_RATIO_WIDTH_BGR = 1;
+    public static final int LOBBY_RATIO_HEIGHT_BGR = 1;
 
 }

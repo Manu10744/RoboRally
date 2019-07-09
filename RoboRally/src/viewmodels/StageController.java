@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import utils.Parameter;
 import utils.json.MessageDistributer;
 import java.net.URL;
 import java.util.HashMap;
@@ -76,6 +77,8 @@ public class StageController implements Initializable, IController {
     private WikiController wikiController;
     @FXML
     private ChooseRobotController chooseRobotController;
+    @FXML
+    private ImageView lobbyBackground;
 
     // Hashmap for the controller references
     private Map<String, IController> controllerMap = new HashMap<>();
@@ -85,6 +88,9 @@ public class StageController implements Initializable, IController {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        lobbyBackground.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.LOBBY_RATIO_HEIGHT_BGR));
+        lobbyBackground.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.LOBBY_RATIO_HEIGHT_BGR));
+
         if (chooseRobotController != null) {
             controllerMap.put("ChooseRobot", chooseRobotController.setPrimaryController(this));
         }
