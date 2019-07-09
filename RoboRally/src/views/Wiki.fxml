@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="wiki" alignment="CENTER" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="615.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="viewmodels.WikiController">
+<GridPane fx:id="wiki" alignment="CENTER" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.WikiController">
 
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0" />

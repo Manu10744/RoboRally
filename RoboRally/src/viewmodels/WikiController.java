@@ -1,17 +1,23 @@
 package viewmodels;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -36,11 +42,25 @@ public class WikiController extends Application {
     @FXML
     private Button buttonRules;
     @FXML
+    private Button buttonCard;
+    @FXML
+    private Button buttonRobot;
+    @FXML
+    private Button buttonRule;
+    @FXML
     private ImageView imageCards;
     @FXML
     private ImageView imageRobots;
     @FXML
     private ImageView imageRules;
+    @FXML
+    Label headingWiki;
+    @FXML
+    Label subheadingWiki;
+    @FXML
+    Label textWiki;
+    @FXML
+    private Label headline;
 
 
     /**
@@ -53,13 +73,37 @@ public class WikiController extends Application {
     public void start(Stage stage) {
         this.rootStage = stage;
         initStage();
+
     }
 
+    @FXML
+    private void initialize() throws IOException {
+        if (buttonRules != null && buttonCards != null && buttonRobots != null) {
+            // Set RoboRally font as soon as elements are initialized
+            buttonRules.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+            buttonCards.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+            buttonRobots.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+        }
+        if (buttonRule != null && buttonCard != null && buttonRobot != null) {
+            // Set RoboRally font as soon as elements are initialized
+            buttonRule.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"),14));
+            buttonCard.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
+            buttonRobot.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
+        }
+
+        if (headingWiki != null && subheadingWiki != null && textWiki != null) {
+            // Set RoboRally font as soon as elements are initialized
+            headingWiki.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 30));
+            subheadingWiki.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+            textWiki.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/RoborallyRegular.ttf"), 15));
+        }
+    }
     /**
      * This method inits the stage of the wiki
      */
 
     private void initStage() {
+
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(WikiController.class.getResource("/views/Wiki.fxml"));
@@ -74,10 +118,13 @@ public class WikiController extends Application {
                 }
             });
             rootStage.show();
-            //rootStage.getStylesheets().addAll(getClass().getResource("/css/app.css").toExternalForm())
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
     }
 
     /**
@@ -89,31 +136,50 @@ public class WikiController extends Application {
 
     @FXML
     public void buttonClicked(ActionEvent event) throws IOException {
-
-        Stage rootStage;
         Parent root;
 
         if (event.getSource() == buttonCards) {
-            rootStage = (Stage) buttonCards.getScene().getWindow();
+            this.rootStage = (Stage) buttonCards.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/views/WikiCards.fxml"));
             Scene scene = new Scene(root);
-            rootStage.setScene(scene);
-            rootStage.show();
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
         }
         if (event.getSource() == buttonRobots) {
-            rootStage = (Stage) buttonRobots.getScene().getWindow();
+            this.rootStage = (Stage) buttonRobots.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/views/WikiRobots.fxml"));
             Scene scene = new Scene(root);
-            rootStage.setScene(scene);
-            rootStage.show();
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
         }
         if (event.getSource() == buttonRules) {
-            rootStage = (Stage) buttonRules.getScene().getWindow();
+            this.rootStage = (Stage) buttonRules.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/views/WikiRules.fxml"));
             Scene scene = new Scene(root);
-            rootStage.setScene(scene);
-            rootStage.show();
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
         }
-    }
+        if (event.getSource() == buttonCard) {
+            this.rootStage = (Stage) buttonCard.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiCards.fxml"));
+            Scene scene = new Scene(root);
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
+        }
+        if (event.getSource() == buttonRobot) {
+            this.rootStage = (Stage) buttonRobot.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiRobots.fxml"));
+            Scene scene = new Scene(root);
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
+        }
+        if (event.getSource() == buttonRule) {
+            this.rootStage = (Stage) buttonRule.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiRules.fxml"));
+            Scene scene = new Scene(root);
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
+        }
 
+    }
 }
