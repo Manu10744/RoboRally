@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
@@ -22,6 +23,7 @@ import server.game.decks.DeckDraw;
 import utils.Parameter;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 
@@ -116,204 +118,7 @@ public class PlayerMatController implements IController {
     @FXML
     GridPane popupCards;
 
-    private Stage rootStage;
-
-
-
-
-
-    /**
-     * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
-     * This method fulfills two functions: first, all the hboxes are made responsive, second the drag and drop method is envocked
-     *
-     * @param deck: The cards one draws for choosing their programming
-     */
-
-    public void openPopupCards(ArrayList<Card> deck) {
-
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                rootStage = new Stage();
-                Parent root;
-
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
-                        rootStage.setScene(new Scene(root));
-                        rootStage.setAlwaysOnTop(true);
-                        rootStage.initStyle(StageStyle.TRANSPARENT);
-                        rootStage.setX(Parameter.POPUP_CARDS_X_COORDINATE);
-                        rootStage.setY(Parameter.POPUP_CARDS_Y_COORDINATE);
-
-                        rootStage.show();
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-        });
-
-    }
-
-    @FXML
-    void onDragDetectedPopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragDetected(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Dragboard db = card.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                        content.putImage(((ImageView) card).getImage());
-                        db.setContent(content);
-                        event.consume();
-                    }
-            });
-        }
-    }
-
-    @FXML
-    void onDragOverRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getGestureSource() != register && dragEvent.getDragboard().hasImage()) {
-                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                    }
-                    dragEvent.consume();
-
-                }
-            });
-        }
-
-    }
-
-    @FXML
-    void onDragDroppedRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    Dragboard db = dragEvent.getDragboard();
-                    boolean success = false;
-                    if (db.hasImage()) {
-                        if (((ImageView) register).getImage() == null) {
-                            //Todo images are cut off when dragged to register
-                            ((ImageView) register).setImage(db.getImage());
-                            ((ImageView) register).setPreserveRatio(true);
-                            ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-
-                            success = true;
-                        }
-
-                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null){
-                            register1.setDisable(true);
-                            register2.setDisable(true);
-                            register3.setDisable(true);
-                            register4.setDisable(true);
-                            register5.setDisable(true);
-                            //closes popup
-                             rootStage.close();
-                        }
-                    }
-                    dragEvent.setDropCompleted(success);
-                    dragEvent.consume();
-                }
-            });
-
-
-        }
-
-    }
-
-    @FXML
-    void onDragDonePopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragDone(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                        ((ImageView) card).setImage(null);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDetectedRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragDetected(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Dragboard db = register.startDragAndDrop(TransferMode.ANY);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(((ImageView) register).getImage());
-                    db.setContent(content);
-                    event.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragOverPopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getGestureSource() != card && dragEvent.getDragboard().hasImage()) {
-                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDroppedPopUp() {
-        for (Node card : cards.getChildren()) {
-            cards.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    Dragboard db = dragEvent.getDragboard();
-                    boolean success = false;
-                    if (db.hasImage()) {
-                        if (((ImageView) card).getImage() == null) {
-                            ((ImageView) card).setImage(db.getImage());
-                            success = true;
-                        }
-                    }
-                    dragEvent.setDropCompleted(success);
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDoneRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragDone(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                        ((ImageView) register).setImage(null);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-
-    @Override
-        public IController setPrimaryController (StageController stageController){
-            return this;
-        }
+    private StageController stageController;
 
     public HBox getPlayerIcons() {
         return playerIcons;
@@ -378,76 +183,203 @@ public class PlayerMatController implements IController {
     public ImageView getEmptyIcon03() {
         return emptyIcon03;
     }
+    private Stage rootStage;
 
-    public ImageView getEmptyIcon04() {
-        return emptyIcon04;
+
+
+
+
+    /**
+     * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
+     * This method fulfills two functions: first, all the hboxes are made responsive, second the drag and drop method is envocked
+     *
+     * @param deck: The cards one draws for choosing their programming
+     */
+
+    public void openPopupCards(ArrayList<Card> deck) {
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                rootStage = new Stage();
+                Parent root;
+
+                    try {
+                        root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+                        rootStage.setScene(new Scene(root));
+                        rootStage.setAlwaysOnTop(true);
+                        rootStage.initStyle(StageStyle.TRANSPARENT);
+                        rootStage.setX(stageController.getPlayerMat().getLayoutX() + playerUpdates.getLayoutX() - register1.getFitWidth());
+                        rootStage.setY(stageController.getPlayerMat().getLayoutY() + playerUpdates.getLayoutY());
+
+                        rootStage.show();
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+        });
+
     }
 
-    public ImageView getEmptyIcon05() {
-        return emptyIcon05;
+    @FXML
+    void onDragDetectedPopUp() {
+        for (Node card : cards.getChildren()) {
+            card.setOnDragDetected(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Dragboard db = card.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                        content.putImage(((ImageView) card).getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
+            });
+        }
     }
 
-    public ImageView getEmptyIcon06() {
-        return emptyIcon06;
+    @FXML
+    void onDragOverRegister() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getGestureSource() != register && dragEvent.getDragboard().hasImage()) {
+                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                    dragEvent.consume();
+
+                }
+            });
+        }
+
     }
 
-    public ImageView getEmptyIcon07() {
-        return emptyIcon07;
+    @FXML
+    void onDragDroppedRegister() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    Dragboard db = dragEvent.getDragboard();
+                    boolean success = false;
+                    if (db.hasImage()) {
+                        if (((ImageView) register).getImage() == null) {
+                            //Todo images are cut off when dragged to register
+                            ((ImageView) register).setImage(db.getImage());
+                            ((ImageView) register).setPreserveRatio(true);
+                            ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                            success = true;
+                        }
+
+                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null){
+                            register1.setDisable(true);
+                            register2.setDisable(true);
+                            register3.setDisable(true);
+                            register4.setDisable(true);
+                            register5.setDisable(true);
+
+                            //closes popup
+                             rootStage.close();
+                        }
+                    }
+                    dragEvent.setDropCompleted(success);
+                    dragEvent.consume();
+                }
+            });
+
+
+        }
+
     }
 
-    public ImageView getPermaUpdate1() {
-        return permaUpdate1;
+    @FXML
+    void onDragDonePopUp() {
+        for (Node card : cards.getChildren()) {
+            card.setOnDragDone(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                            ((ImageView) card).setImage(null);
+                    }
+                    dragEvent.consume();
+                }
+            });
+        }
     }
 
-    public ImageView getPermaUpdate2() {
-        return permaUpdate2;
+    @FXML
+    void onDragDetectedRegister() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragDetected(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Dragboard db = register.startDragAndDrop(TransferMode.ANY);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(((ImageView) register).getImage());
+                    db.setContent(content);
+                    event.consume();
+                }
+            });
+        }
     }
 
-    public ImageView getPermaUpdate3() {
-        return permaUpdate3;
+    @FXML
+    void onDragOverPopUp() {
+        for (Node card : cards.getChildren()) {
+            card.setOnDragOver(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getGestureSource() != card && dragEvent.getDragboard().hasImage()) {
+                        dragEvent.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                    dragEvent.consume();
+                }
+            });
+        }
     }
 
-    public ImageView getEmptyIcon00() {
-        return emptyIcon00;
+    @FXML
+    void onDragDroppedPopUp() {
+        for (Node card : cards.getChildren()) {
+            cards.setOnDragDropped(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    Dragboard db = dragEvent.getDragboard();
+                    boolean success = false;
+                    if (db.hasImage()) {
+                        ((ImageView) card).setImage(db.getImage());
+                        success = true;
+                    }
+                    dragEvent.setDropCompleted(success);
+                    dragEvent.consume();
+                }
+            });
+        }
     }
 
-    public ImageView getTempUpdate1() {
-        return tempUpdate1;
+    @FXML
+    void onDragDoneRegister() {
+        for (Node register : playerRegister.getChildren()) {
+            register.setOnDragDone(new EventHandler<DragEvent>() {
+                @Override
+                public void handle(DragEvent dragEvent) {
+                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                            ((ImageView) register).setImage(null);
+
+                    }
+                    dragEvent.consume();
+                }
+            });
+        }
     }
 
-    public ImageView getTempUpdate2() {
-        return tempUpdate2;
-    }
 
-    public ImageView getTempUpdate3() {
-        return tempUpdate3;
-    }
-
-    public ImageView getRegister1() {
-        return register1;
-    }
-
-    public ImageView getRegister2() {
-        return register2;
-    }
-
-    public ImageView getRegister3() {
-        return register3;
-    }
-
-    public ImageView getRegister4() {
-        return register4;
-    }
-
-    public ImageView getRegister5() {
-        return register5;
-    }
-
-    public ImageView getEmptyIcon20() {
-        return emptyIcon20;
-    }
-
-    public ImageView getEmptyIcon21() {
-        return emptyIcon21;
-    }
+    @Override
+        public IController setPrimaryController (StageController stageController){
+            this.stageController = stageController;
+            return this;
+        }
     }
