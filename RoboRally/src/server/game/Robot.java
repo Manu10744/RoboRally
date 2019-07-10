@@ -16,6 +16,13 @@ public class Robot {
     private int xPosition;
     private int yPosition;
 
+    public Robot(Image robotImage, String lineOfSight, int xPosition, int yPosition) {
+        this.robotImage = robotImage;
+        this.lineOfSight = lineOfSight;
+        this.xPosition = xPosition;
+        this.yPosition = yPosition;
+    }
+
     /**
      * Get the line of sight of the robot
      * @return lineOfSight The lineOfSight of th robot
