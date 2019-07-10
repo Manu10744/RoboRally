@@ -210,7 +210,8 @@ public class MessageDistributer {
 
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
+
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
