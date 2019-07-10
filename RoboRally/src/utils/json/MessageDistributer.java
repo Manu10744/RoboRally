@@ -517,7 +517,7 @@ public class MessageDistributer {
                 alert.setTitle("Error occured");
                 alert.setHeaderText("Figure already taken!");
                 alert.setContentText(errorMessage);
-
+                alert.show();
 
                 //TODO write code here for proper reaction
             }
