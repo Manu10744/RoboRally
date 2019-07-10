@@ -22,8 +22,8 @@ public class ReceivedChatBody implements ServerMessageAction<ReceivedChatBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, ReceivedChatBody bodyObject) {
-        MessageDistributer.handleReceivedChat(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, ReceivedChatBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleReceivedChat(client, task, bodyObject);
     }
 
     public String getMessage() {

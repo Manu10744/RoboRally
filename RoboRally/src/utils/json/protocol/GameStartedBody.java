@@ -30,8 +30,8 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
 
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, GameStartedBody bodyObject) {
-        MessageDistributer.handleGameStarted(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, GameStartedBody bodyObject, MessageDistributer messageDistributer) {
+       messageDistributer.handleGameStarted(client, task, bodyObject);
     }
 
 }

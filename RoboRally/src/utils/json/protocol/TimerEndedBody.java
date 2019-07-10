@@ -18,8 +18,8 @@ public class TimerEndedBody implements ServerMessageAction<TimerEndedBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, TimerEndedBody bodyObject) {
-        MessageDistributer.handleTimerEnded(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, TimerEndedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleTimerEnded(client, task, bodyObject);
     }
 
     public ArrayList<Integer> getPlayerIDs() {

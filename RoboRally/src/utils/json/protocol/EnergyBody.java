@@ -22,8 +22,8 @@ public class EnergyBody implements ServerMessageAction<EnergyBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, EnergyBody bodyObject) {
-        MessageDistributer.handleEnergy(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, EnergyBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleEnergy(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

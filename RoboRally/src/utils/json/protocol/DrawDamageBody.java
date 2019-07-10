@@ -22,8 +22,8 @@ public class DrawDamageBody implements ServerMessageAction<DrawDamageBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, DrawDamageBody bodyObject) {
-        MessageDistributer.handleDrawDamage(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, DrawDamageBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleDrawDamage(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

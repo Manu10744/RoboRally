@@ -22,8 +22,8 @@ public class StartingPointTakenBody implements ServerMessageAction<StartingPoint
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, StartingPointTakenBody bodyObject) {
-        MessageDistributer.handleStartingPointTaken(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, StartingPointTakenBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleStartingPointTaken(client, task, bodyObject);
     }
 
     public Integer getX() {

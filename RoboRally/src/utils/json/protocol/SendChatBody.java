@@ -19,8 +19,8 @@ public class SendChatBody implements ClientMessageAction<SendChatBody> {
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, SendChatBody bodyObject) {
-        MessageDistributer.handleSendChat(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, SendChatBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleSendChat(server, task, messageBodyObject);
     }
 
     public String getMessage() {

@@ -20,8 +20,8 @@ public class SelectCardBody implements ClientMessageAction<SelectCardBody> {
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, SelectCardBody bodyObject) {
-        MessageDistributer.handleSelectCard(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, SelectCardBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleSelectCard(server, task, messageBodyObject);
     }
 
     public Card getCard() {

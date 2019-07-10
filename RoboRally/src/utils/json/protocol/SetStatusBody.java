@@ -16,8 +16,8 @@ public class SetStatusBody implements ClientMessageAction<SetStatusBody> {
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, SetStatusBody bodyObject) {
-        MessageDistributer.handleSetStatus(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, SetStatusBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleSetStatus(server, task, messageBodyObject);
     }
 
     public Boolean isReady() {

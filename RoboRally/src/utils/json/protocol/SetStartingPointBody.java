@@ -19,8 +19,8 @@ public class SetStartingPointBody implements ClientMessageAction<SetStartingPoin
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, SetStartingPointBody bodyObject) {
-        MessageDistributer.handleSetStartingPoint(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, SetStartingPointBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleSetStartingPoint(server, task, messageBodyObject);
     }
 
     public Integer getX() {

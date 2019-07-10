@@ -8,6 +8,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
+import utils.json.MessageDistributer;
 import utils.json.protocol.*;
 import viewmodels.*;
 
@@ -20,6 +21,8 @@ import java.net.Socket;
  * @author Ivan Dovecar
  */
 public class Client {
+
+    private MessageDistributer messageDistributer;
     private String name;
     private String serverIP;
     private String protocolVersion = "Version 0.1";
@@ -195,22 +198,6 @@ public class Client {
         writer.flush();
     }
 
-    //TODO This part has to be adapted to RoboRally needs - should handle the ChooseRobot part
-
-    /**
-     * This method is responsible for submitting player values to the server. It is triggered by
-     * clicking on the chosen robot image during registration process which represents the player figure.
-     * It submits the players' name along with the selected robot (player figure).
-     *
-     * @author Ivan Dovecar, Mia
-     */
-    public void join(String name, int figure) { //TODO check how player figure is submitted Sring Int aso
-        JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
-
-        writer.println(JSONEncoder.serializeJSON(jsonMessage));
-        writer.flush();
-
-    }
 
     /**
      * This method is responsible for sending the players ready status to the server.
@@ -239,6 +226,7 @@ public class Client {
     }
 
 
+    //Todo check if needed
     private void addOtherPlayer(int playerID) {
         otherActivePlayers.add(new OtherPlayer(playerID));
     }
@@ -247,6 +235,7 @@ public class Client {
      * Adds an client to activeClients
      * @param playerID of joining client
      */
+    //Todo check if needed
     private void addActiveClient(String playerID) {
         activeClients.add(playerID);
     }
@@ -255,6 +244,7 @@ public class Client {
      * Remove client from list
      * @param name Name of leaving client
      */
+    //Todo check if needed
     private void removeActiveClient(Player name) {
         activeClients.remove(name);
 /*
@@ -337,7 +327,7 @@ public class Client {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ServerMessageAction msg = (ServerMessageAction) jsonMessage.getMessageBody();
-                    msg.triggerAction(client, this, messageBodyObject);
+                    msg.triggerAction(client, this, messageBodyObject, messageDistributer);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

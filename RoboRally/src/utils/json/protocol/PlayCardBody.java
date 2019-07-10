@@ -17,8 +17,8 @@ public class PlayCardBody implements ClientMessageAction<PlayCardBody> {
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, PlayCardBody bodyObject) {
-        MessageDistributer.handlePlayCard(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, PlayCardBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handlePlayCard(server, task, messageBodyObject);
     }
 
     public Card getCard() {

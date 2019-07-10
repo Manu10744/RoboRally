@@ -16,8 +16,8 @@ public class GameFinishedBody implements ServerMessageAction<GameFinishedBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, GameFinishedBody bodyObject) {
-        MessageDistributer.handleGameFinished(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, GameFinishedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleGameFinished(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

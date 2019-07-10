@@ -1,5 +1,7 @@
 package server.game;
 
+import javafx.scene.image.Image;
+
 import static utils.Parameter.*;
 
 /**
@@ -9,6 +11,7 @@ import static utils.Parameter.*;
  */
 public class Robot {
 
+    private Image robotImage;
     private String lineOfSight;
     private int xPosition;
     private int yPosition;
@@ -49,5 +52,13 @@ public class Robot {
      */
     public void rotate() {
         //TODO not needed
+    }
+
+    public Image getRobotImage() {
+        return robotImage;
+    }
+
+    public void setRobotImage(Image robotImage) {
+        this.robotImage = robotImage;
     }
 }

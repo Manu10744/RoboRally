@@ -22,8 +22,8 @@ public class MovementBody implements ServerMessageAction<MovementBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, MovementBody bodyObject) {
-        MessageDistributer.handleMovement(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, MovementBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleMovement(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

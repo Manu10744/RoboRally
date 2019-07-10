@@ -19,8 +19,8 @@ public class PlayerStatusBody implements ServerMessageAction<PlayerStatusBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, PlayerStatusBody bodyObject) {
-        MessageDistributer.handlePlayerStatus(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, PlayerStatusBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handlePlayerStatus(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

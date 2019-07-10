@@ -22,8 +22,8 @@ public class YourCardsBody implements ServerMessageAction<YourCardsBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, YourCardsBody bodyObject) {
-        MessageDistributer.handleYourCards(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, YourCardsBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleYourCards(client, task, bodyObject);
     }
 
     public ArrayList<Card> getCardsInHand() {

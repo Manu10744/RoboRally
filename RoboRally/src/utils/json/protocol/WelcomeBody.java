@@ -20,7 +20,7 @@ public class WelcomeBody implements ServerMessageAction<WelcomeBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, WelcomeBody bodyObject) {
-        MessageDistributer.handleWelcome(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, WelcomeBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleWelcome(client, task, bodyObject);
     }
 }

@@ -1,6 +1,7 @@
 package utils.json.protocol;
 
 import client.Client;
+import utils.json.MessageDistributer;
 
 /**
  * This interface is implemented by each class in {@link utils.json.protocol} that represents the message body of
@@ -10,5 +11,5 @@ import client.Client;
  * @author Manuel Neumayer
  */
 public interface ServerMessageAction<T> {
-    void triggerAction(Client client, Client.ClientReaderTask task, T bodyObject);
+    void triggerAction(Client client, Client.ClientReaderTask task, T bodyObject, MessageDistributer messageDistributer);
 }

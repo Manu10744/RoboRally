@@ -12,7 +12,7 @@ public class PlayerShootingBody implements ServerMessageAction<PlayerShootingBod
     public PlayerShootingBody() { }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, PlayerShootingBody bodyObject) {
-        MessageDistributer.handlePlayerShooting(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, PlayerShootingBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handlePlayerShooting(client, task, bodyObject);
     }
 }

@@ -16,8 +16,8 @@ public class ShuffleCodingBody implements ServerMessageAction<ShuffleCodingBody>
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, ShuffleCodingBody bodyObject) {
-        MessageDistributer.handleShuffleCoding(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, ShuffleCodingBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleShuffleCoding(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

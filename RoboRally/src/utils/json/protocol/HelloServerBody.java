@@ -1,6 +1,5 @@
 package utils.json.protocol;
 
-import client.Client;
 import com.google.gson.annotations.Expose;
 import server.Server;
 import utils.json.MessageDistributer;
@@ -23,8 +22,8 @@ public class HelloServerBody implements ClientMessageAction<HelloServerBody> {
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, HelloServerBody bodyObject) {
-        MessageDistributer.handleHelloServer(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, HelloServerBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleHelloServer(server, task, messageBodyObject);
     }
 
     public String getGroup() {

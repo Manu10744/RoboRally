@@ -19,8 +19,8 @@ public class CheckPointReachedBody implements ServerMessageAction<CheckPointReac
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, CheckPointReachedBody bodyObject) {
-        MessageDistributer.handleCheckPointReached(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, CheckPointReachedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleCheckPointReached(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

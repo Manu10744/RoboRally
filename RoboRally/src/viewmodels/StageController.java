@@ -110,7 +110,8 @@ public class StageController implements Initializable, IController {
         }
         // Sends the HasMap to the MessageDistributer after adding all controllers
         if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null) {
-            MessageDistributer.setControllerMap(controllerMap);
+            MessageDistributer messageDistributer = new MessageDistributer();
+            messageDistributer.setControllerMap(controllerMap);
         }
 
     }

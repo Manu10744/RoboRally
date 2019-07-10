@@ -15,8 +15,8 @@ public class CardPlayedBody implements ServerMessageAction<CardPlayedBody> {
     private Card card;
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, CardPlayedBody bodyObject) {
-        MessageDistributer.handleCardPlayed(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, CardPlayedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleCardPlayed(client, task, bodyObject);
     }
 
     public CardPlayedBody(Integer playerID, Card card) {

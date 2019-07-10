@@ -19,8 +19,8 @@ public class CurrentCardsBody implements ServerMessageAction<CurrentCardsBody>{
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, CurrentCardsBody bodyObject) {
-        MessageDistributer.handleCurrentCards(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, CurrentCardsBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleCurrentCards(client, task, bodyObject);
     }
 
     public ArrayList<ActiveCardsObject> getActiveCards() {

@@ -19,8 +19,8 @@ public class CardSelectedBody implements ServerMessageAction<CardSelectedBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, CardSelectedBody bodyObject) {
-        MessageDistributer.handleCardSelected(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, CardSelectedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleCardSelected(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

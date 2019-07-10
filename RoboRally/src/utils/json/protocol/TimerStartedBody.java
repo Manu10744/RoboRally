@@ -11,7 +11,7 @@ public class TimerStartedBody implements ServerMessageAction<TimerStartedBody> {
     public TimerStartedBody() { }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, TimerStartedBody bodyObject) {
-        MessageDistributer.handleTimerStarted(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, TimerStartedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleTimerStarted(client, task, bodyObject);
     }
 }

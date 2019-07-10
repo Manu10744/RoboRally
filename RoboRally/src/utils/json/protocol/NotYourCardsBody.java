@@ -22,8 +22,8 @@ public class NotYourCardsBody implements ServerMessageAction<NotYourCardsBody> {
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, NotYourCardsBody bodyObject) {
-        MessageDistributer.handleNotYourCards(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, NotYourCardsBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleNotYourCards(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

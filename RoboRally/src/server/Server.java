@@ -4,8 +4,14 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import server.game.Game;
 import server.game.Player;
+import server.game.Robot;
+import server.game.decks.DeckDiscard;
+import server.game.decks.DeckDraw;
+import server.game.decks.DeckHand;
+import server.game.decks.DeckRegister;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
+import utils.json.MessageDistributer;
 import utils.json.protocol.*;
 
 import java.io.*;
@@ -32,6 +38,7 @@ public class Server extends Application {
     private int setterPlayerID;
     private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
+    private MessageDistributer messageDistributer;
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
     @Override
@@ -139,7 +146,7 @@ public class Server extends Application {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ClientMessageAction msg = (ClientMessageAction) jsonMessage.getMessageBody();
-                    msg.triggerAction(this.server, this, messageBodyObject);
+                    msg.triggerAction(this.server, this, messageBodyObject, messageDistributer);
                 }
             } catch (SocketException exp) {
                 if (exp.getMessage().contains("Socket closed"))
@@ -214,5 +221,69 @@ public class ClientWrapper {
             this.isReady = isReady;
         }
     }
-}
+
+    public class PlayerWrapper{
+
+
+        private int playerID;
+        private int figure;
+        private Robot playerRobot;
+        private boolean isReady;
+        private DeckDraw deckDraw;
+        private DeckDiscard deckDiscard;
+        private DeckHand deckHand;
+
+        public DeckDraw getDeckDraw() {
+            return deckDraw;
+        }
+
+        public void setDeckDraw(DeckDraw deckDraw) {
+            this.deckDraw = deckDraw;
+        }
+
+        public DeckDiscard getDeckDiscard() {
+            return deckDiscard;
+        }
+
+        public void setDeckDiscard(DeckDiscard deckDiscard) {
+            this.deckDiscard = deckDiscard;
+        }
+
+        public DeckHand getDeckHand() {
+            return deckHand;
+        }
+
+        public void setDeckHand(DeckHand deckHand) {
+            this.deckHand = deckHand;
+        }
+
+        public DeckRegister getDeckRegister() {
+            return deckRegister;
+        }
+
+        public void setDeckRegister(DeckRegister deckRegister) {
+            this.deckRegister = deckRegister;
+        }
+
+        private DeckRegister deckRegister;
+
+        public int getFigure() {
+            return figure;
+        }
+
+        public int getPlayerID(){
+            return playerID;
+        }
+
+        public boolean isReady() { return isReady; }
+
+        public void setReady(boolean isReady) {
+            this.isReady = isReady;
+        }
+    }
+
+
+
+    }
+
 

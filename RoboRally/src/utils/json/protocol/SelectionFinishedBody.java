@@ -16,8 +16,8 @@ public class SelectionFinishedBody implements ServerMessageAction<SelectionFinis
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, SelectionFinishedBody bodyObject) {
-        MessageDistributer.handleSelectionFinished(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, SelectionFinishedBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleSelectionFinished(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

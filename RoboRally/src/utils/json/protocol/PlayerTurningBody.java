@@ -19,8 +19,8 @@ public class PlayerTurningBody implements ServerMessageAction<PlayerTurningBody>
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, PlayerTurningBody bodyObject) {
-        MessageDistributer.handlePlayerTurning(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, PlayerTurningBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handlePlayerTurning(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

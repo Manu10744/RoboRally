@@ -16,8 +16,8 @@ public class CurrentPlayerBody implements ServerMessageAction<CurrentPlayerBody>
     }
 
     @Override
-    public void triggerAction(Client client, Client.ClientReaderTask task, CurrentPlayerBody bodyObject) {
-        MessageDistributer.handleCurrentPlayer(client, task, bodyObject);
+    public void triggerAction(Client client, Client.ClientReaderTask task, CurrentPlayerBody bodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleCurrentPlayer(client, task, bodyObject);
     }
 
     public Integer getPlayerID() {

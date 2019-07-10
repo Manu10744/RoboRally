@@ -1,6 +1,5 @@
 package utils.json.protocol;
 
-import client.Client;
 import com.google.gson.annotations.Expose;
 import server.Server;
 import utils.json.MessageDistributer;
@@ -20,8 +19,8 @@ public class PlayerValuesBody implements ClientMessageAction<PlayerValuesBody> {
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, PlayerValuesBody bodyObject) {
-        MessageDistributer.handlePlayerValues(server, task, bodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, PlayerValuesBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handlePlayerValues(server, task, messageBodyObject);
     }
 
     public String getName() {
