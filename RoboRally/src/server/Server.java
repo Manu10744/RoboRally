@@ -146,6 +146,7 @@ public class Server extends Application {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ClientMessageAction msg = (ClientMessageAction) jsonMessage.getMessageBody();
+                    messageDistributer = new MessageDistributer();
                     msg.triggerAction(this.server, this, messageBodyObject, messageDistributer);
                 }
             } catch (SocketException exp) {

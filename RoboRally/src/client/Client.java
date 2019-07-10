@@ -327,6 +327,7 @@ public class Client {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ServerMessageAction msg = (ServerMessageAction) jsonMessage.getMessageBody();
+                    messageDistributer = new MessageDistributer();
                     msg.triggerAction(client, this, messageBodyObject, messageDistributer);
                 }
             } catch (IOException e) {
