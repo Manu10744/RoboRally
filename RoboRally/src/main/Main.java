@@ -106,7 +106,13 @@ public class Main extends Application {
 
                     // Show primaryStage
                     primaryStage.show();
-                } catch (IOException e) {
+
+                    // Kill thread on close request
+                    primaryStage.setOnCloseRequest(event -> {
+                        System.out.println("Executing System.exit(0) on close request " + primaryStage.getTitle());
+                        System.exit(0);
+                    });
+                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
