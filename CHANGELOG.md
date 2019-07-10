@@ -10,7 +10,7 @@
 
 ## Version [0.3.2] 
 ### New Features 
-* Added new Maps (highOctane, corridorBlitz) - *(Jessie, Vincent)*
+* Added new Maps (highOctane, corridorBlitz, riskyCrossing) - *(Jessie, Verena, Vincent)*
 
 ### Changes
 
