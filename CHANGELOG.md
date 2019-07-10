@@ -1,11 +1,9 @@
 ### Known Issues
 * Ability to choose map not implemented yet
-* Ready Button's width is not correct
 * (Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard))
 * Program is not terminated when all windows are closed
 * Dont allow two clients to choose same username
 * Drag and Drop must be fixed (Bugs)
-* New connecting clients are not informed about ready status of already connected players
 * Connection of player, game and robot class missing
 * Remaining maps are missing
 * Timer before map starts
@@ -23,6 +21,8 @@
 * Replaced font to RoboRally font - *(Verena)*
 
 ### Bugfixes
+* Ready Button's width is now correct - *(Ivan)*
+* New connecting clients are now informed about ready status of already connected players - *(Ivan)*
 
 ## Version [0.3.0] 
 ### New Features
