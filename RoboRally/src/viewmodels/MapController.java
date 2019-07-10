@@ -224,18 +224,8 @@ public class MapController implements IController {
                         alert.setHeaderText("Choose your desired direction");
                         alert.setContentText("In what direction do you want your robot to look?");
 
-                        ButtonType north = new ButtonType("North");
-                        ButtonType east = new ButtonType("East");
-                        ButtonType south = new ButtonType("South");
-                        ButtonType west = new ButtonType("West");
-                        alert.getButtonTypes().setAll(north, east, south, west);
-
-                        Optional<ButtonType> result = alert.showAndWait();
-
-                        if (result.get() == north) robot.rotateProperty().setValue(0);
-                        if (result.get() == east) robot.rotateProperty().setValue(90);
-                        if (result.get() == south) robot.rotateProperty().setValue(180);
-                        if (result.get() == west) robot.rotateProperty().setValue(270);
+                        // Works only for maps where startpoints are on the left side at the moment
+                        robot.rotateProperty().setValue(90);
 
                         startpoint.getChildren().add(robot);
 
