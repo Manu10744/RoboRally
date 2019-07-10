@@ -16,10 +16,9 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
 
     @Expose @SerializedName("gameMap")
     private ArrayList<ArrayList<ArrayList<Tile>>> mapBody;
-    @Expose
-    private ArrayList<ArrayList<Tile>> doubledNestedArray;
-    @Expose
-    private ArrayList<Tile> tileList;
+
+
+
 
     public GameStartedBody(ArrayList<ArrayList<ArrayList<Tile>>> mapBody) {
         this.mapBody = mapBody;
@@ -30,36 +29,9 @@ public class GameStartedBody implements ServerMessageAction<GameStartedBody> {
     }
 
 
-    public ArrayList<Tile> getTileArrayFromMapBody(int posX, int posY) {
-        ArrayList<Tile> tileList = new ArrayList<>();
-        try {
-            if (this.mapBody.get(posX).get(posY).isEmpty()) {
-                doubledNestedArray.add(tileList);
-                mapBody.add(doubledNestedArray);
-                tileList = mapBody.get(posX).get(posY);
-            } else if (!this.mapBody.get(posX).get(posY).isEmpty()) {
-                tileList = this.mapBody.get(posX).get(posY);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        return tileList;
-    }
-
     @Override
     public void triggerAction(Client client, Client.ClientReaderTask task, GameStartedBody bodyObject) {
         MessageDistributer.handleGameStarted(client, task, bodyObject);
     }
 
-    public ArrayList<ArrayList<ArrayList<Tile>>> getMapBody() {
-        return mapBody;
-    }
-
-    public ArrayList<ArrayList<Tile>> getDoubledNestedArray() {
-        return doubledNestedArray;
-    }
-
-    public ArrayList<Tile> getTileList() {
-        return tileList;
-    }
 }
