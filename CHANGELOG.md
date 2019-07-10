@@ -1,7 +1,6 @@
 ### Known Issues
 * Ability to choose map not implemented yet
 * (Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard))
-* Program is not terminated when all windows are closed
 * Dont allow two clients to choose same username
 * Drag and Drop must be fixed (Bugs)
 * Connection of player, game and robot class missing
@@ -23,6 +22,7 @@
 * Ready Button's width is now correct - *(Ivan)*
 * New connecting clients are now informed about ready status of already connected players - *(Ivan)*
 * Responsivnes for playermat (completely implemented) and opponentmat (detailed example code and description) - *(Ivan)*
+* Program terminates by set on close request when windows are closed - *(Ivan)*
 
 ## Version [0.3.0] 
 ### New Features
