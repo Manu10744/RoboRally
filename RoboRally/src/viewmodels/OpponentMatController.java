@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
  * the update cards of each player and the icons of the players.
  *
  * @author Jessica Gerlach
+ * @author Ivan Dovecar
  */
 
 public class OpponentMatController implements  IController{
@@ -168,6 +169,25 @@ public class OpponentMatController implements  IController{
     private ImageView player5PermUpdates2;
     @FXML
     private ImageView player5PermUpdates3;
+
+
+
+    /* TODO
+        ************************************************************************
+        * Here is an example code to make the ImageViews fully responsive!!    *
+        * Just adapt the necessary values:                                     *
+        *   - image ID  -> here: player1Icon                                   *
+        *   - HBox ID   -> here: player1Register                               *
+        * The image views' height and width are bind to the HBox which         *
+        * contains the image views and thereby to its' Values!! Enjoy, Ivan    *
+        ************************************************************************
+        public ImageView getPlayer1Icon() {
+            player1Icon.setPreserveRatio(true);
+            player1Icon.fitWidthProperty().bind(player1Register.widthProperty());
+            player1Icon.fitHeightProperty().bind(player1Register.heightProperty());
+            return player1Icon;
+         }
+     */
 
     @Override
     public IController setPrimaryController(StageController stageController) {
