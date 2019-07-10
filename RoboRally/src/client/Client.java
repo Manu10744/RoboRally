@@ -47,6 +47,14 @@ public class Client {
     private OpponentMatController opponentMatController;
     private ChooseRobotController chooseRobotController;
 
+    public MessageDistributer getMessageDistributer() {
+        return messageDistributer;
+    }
+
+    public void setMessageDistributer(MessageDistributer messageDistributer) {
+        this.messageDistributer = messageDistributer;
+    }
+
     public StageController getStageController() {
         return stageController;
     }
@@ -161,6 +169,19 @@ public class Client {
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
         logger.info("Submitted player values");
+    }
+
+    public void sendStartingPoint(String id){
+        logger.info("Submitting startinpoint coordinates");
+
+        int x = Character.getNumericValue(id.charAt(0));
+        int y = Character.getNumericValue(id.charAt(2));
+
+        JSONMessage jsonMessage = new JSONMessage("SetStartingPoint", new SetStartingPointBody(x,y));
+        writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        writer.flush();
+        logger.info("Submitted StartingPoint coordinates");
+
     }
 
     /**

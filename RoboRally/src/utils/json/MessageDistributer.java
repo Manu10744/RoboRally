@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import server.Server;
 import server.game.Card;
+import server.game.Robot;
 import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
@@ -32,11 +33,6 @@ public class MessageDistributer {
     public static Map<String, IController> controllerMap;
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
-    private Server distributerServer;
-
-    public void setDistributerServer(Server distributerServer) {
-        this.distributerServer = distributerServer;
-    }
 
     private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
@@ -70,8 +66,6 @@ public class MessageDistributer {
     public void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "Entered handleHelloServer()" + ANSI_RESET);
 
-
-        System.out.println("Manu" + this.distributerServer);
         try {
             if (helloServerBody.getProtocol().equals(server.getProtocolVersion())) {
                 logger.info("Protocol version test succeeded");
@@ -119,7 +113,7 @@ public class MessageDistributer {
      * @author Ivan Dovecar
      * @author Manu
      */
-    public void handlePlayerValues(Server server, Server.ServerReaderTask task, PlayerValuesBody playerValuesBody) {
+    public static void handlePlayerValues(Server server, Server.ServerReaderTask task, PlayerValuesBody playerValuesBody) {
         System.out.println(ANSI_CYAN + "Entered handlePlayerValues()" + ANSI_RESET);
 
         String playerValueName = playerValuesBody.getName();
@@ -155,10 +149,17 @@ public class MessageDistributer {
 
         // If by PLAYER_VALUES received name and figure are valid...
         if (playerValueSuccess) {
-            logger.info("Client " + playerValueName + " successfully registered");
+            logger.info(playerValueName + " successfully registered");
             //TODO: A client should already exist after helloClient message -> here too late
             //Add new Client to list connected clients
             server.getConnectedClients().add(server.new ClientWrapper(task.getClientSocket(), playerValueName, task.getWriter(), playerValueFigure, server.getSetterPlayerID(), false));
+
+            // Here the player gets their name and figure
+            Server.PlayerWrapper player = server.new PlayerWrapper();
+            player.initRobotByFigure(playerValueFigure);
+            player.setName(playerValueName);
+            server.getPlayers().add(player);
+
 
             //Send message to all active clients
             JSONMessage jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(server.getCounterPlayerID(), playerValueName, playerValueFigure));
@@ -318,13 +319,32 @@ public class MessageDistributer {
      */
     public void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
 
+        System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
+
+        MapController mapController = (MapController) controllerMap.get("Map");
+        // Choose Starting point, send message setStartingpoint
+        /*
+        for(Server.ClientWrapper client : server.getConnectedClients()) {
+            Robot playerRobot = server();
+            int x = setStartingPointBody.getX();
+            int y = setStartingPointBody.getY();
+            String startPosition = x + "-" + y;
+
+
+            // NOTE: THIS IS A TEMPORARY SOLUTION. EVENT MAP_LOADED NEEDED
+            // Make the thread wait a second so setting StartPoint happens definitely after map has been loaded...
+            mapController.setStartingPoint(playerRobot, startPosition);
+
+         */
 
         /*
         (
         // TODO: should work here! But we do not have client, we have distributerServer
-
+}
          */
-    }
+
+        }
+
 
     /**
      * This method contains the logic that comes into action when a 'SelectCard' protocol message was received and
@@ -372,13 +392,7 @@ public class MessageDistributer {
         logger.info("PlayerID: " + welcomeBody.getPlayerID());
 
         task.setPlayerID(welcomeBody.getPlayerID());
-/*
-        System.out.println("Srver bist du null?? " + distributerServer);
-        Server.PlayerWrapper player = distributerServer.new PlayerWrapper();  //Todo Mia: inform yourself bout this!
-        player.setPlayerID(welcomeBody.getPlayerID());
-        distributerServer.getPlayers().add(player);
 
- */
     }
 
     /**
@@ -458,23 +472,18 @@ public class MessageDistributer {
 
         MapController mapController = (MapController) controllerMap.get("Map");
         mapController.fillGridPaneWithMap(gameStartedBody);
-        //Todo: Those two method calls have to deleted when the game logic progresses to the right method in the distributer according to protocol
 
-        // Popup of 9 cards to choose from
-        ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards
-        System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
 
-        // Choose Starting point, send message setStartingpoint
-        int figure = client.getFigure();
-
-        // NOTE: THIS IS A TEMPORARY SOLUTION. EVENT MAP_LOADED NEEDED
-        // Make the thread wait a second so setting StartPoint happens definitely after map has been loaded...
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mapController.setStartingPoint(figure);
+
+        mapController.sendStartPoint();
+        // Popup of 9 cards to choose from
+        ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards
+
     }
 
 

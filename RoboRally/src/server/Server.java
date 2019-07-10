@@ -1,6 +1,8 @@
 package server;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.Deck;
 import server.game.Game;
@@ -10,6 +12,7 @@ import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
 import server.game.decks.DeckRegister;
+import utils.Parameter;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
@@ -256,8 +259,28 @@ public class ClientWrapper {
             return figure;
         }
 
-        public void setFigure(int figure) {
+        //Initialises Robot through setting the figure
+        public void initRobotByFigure(int figure){
             this.figure = figure;
+
+            Image robotImage;
+
+            if (figure == 1) {
+                robotImage= new Image("/resources/images/robots/HammerBot.PNG");
+            } else if (figure == 2) {
+                robotImage = new Image("/resources/images/robots/HulkX90.PNG");
+            } else if (figure == 3) {
+                robotImage = new Image("/resources/images/robots/SmashBot.PNG");
+            } else if (figure == 4) {
+                robotImage = new Image("/resources/images/robots/Twonky.PNG");
+            } else if (figure == 5) {
+                robotImage = new Image("/resources/images/robots/Spinbot.PNG");
+            } else {
+                robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
+            }
+
+            this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
+
         }
 
         public int getPlayerID(){
@@ -280,6 +303,14 @@ public class ClientWrapper {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public Robot getPlayerRobot() {
+            return playerRobot;
+        }
+
+        public void setPlayerRobot(Robot playerRobot) {
+            this.playerRobot = playerRobot;
         }
     }
 

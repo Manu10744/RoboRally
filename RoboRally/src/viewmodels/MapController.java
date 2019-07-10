@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import server.game.Robot;
 import server.game.Tiles.*;
 import utils.Parameter;
 import utils.json.protocol.GameStartedBody;
@@ -134,10 +135,12 @@ public class MapController implements IController {
                         Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                            System.out.println(tile);
                             Image image = tile.getTileImage();
                             ImageView imageView = new ImageView();
                             imageView.setImage(image);
+                            if(tile.getTileType().equals("StartPoint")){
+                                imageView.setId(xPos + "-" + yPos);
+                            }
 
                             // Necessary for making map fields responsive
                             imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
@@ -160,44 +163,21 @@ public class MapController implements IController {
         });
         this.allowSetStart = true;
     }
+    public void sendStartPoint() {
 
-    public ImageView getImageByFigure(int figure) {
-        if (figure == 1) {
-            Image HammerBot = new Image("/resources/images/robots/HammerBot.PNG");
-            ImageView HammerBotView = new ImageView(HammerBot);
-            return HammerBotView;
-        } else if (figure == 2) {
-            Image HulkX90 = new Image("/resources/images/robots/HulkX90.PNG");
-            ImageView HulkX90View = new ImageView(HulkX90);
-            return HulkX90View;
-        } else if (figure == 3) {
-            Image SmashBot = new Image("/resources/images/robots/SmashBot.PNG");
-            ImageView SmashBotView = new ImageView(SmashBot);
-            return SmashBotView;
-        } else if (figure == 4) {
-            Image Twonky = new Image("/resources/images/robots/Twonky.PNG");
-            ImageView TwonkyView = new ImageView(Twonky);
-            return TwonkyView;
-        } else if (figure == 5) {
-            Image Spinbot = new Image("/resources/images/robots/Spinbot.PNG");
-            ImageView SpinbotView = new ImageView(Spinbot);
-            return SpinbotView;
-        } else if (figure == 6) {
-            Image ZoomBot = new Image("/resources/images/robots/ZoomBot.PNG");
-            ImageView ZoomBotView = new ImageView(ZoomBot);
-            return ZoomBotView;
-        }
-        return null;
-    }
-
-    public void setStartingPoint(int figure) {
         // The startinPoints in order according to y-position
         Group startPoint1 = fieldMap.get("0-3");
+        startPoint1.setId("0-3");
         Group startPoint2 = fieldMap.get("0-6");
+        startPoint2.setId("0-6");
         Group startPoint3 = fieldMap.get("1-1");
+        startPoint3.setId("1-1");
         Group startPoint4 = fieldMap.get("1-4");
+        startPoint4.setId("1-4");
         Group startPoint5 = fieldMap.get("1-5");
+        startPoint5.setId("1-5");
         Group startPoint6 = fieldMap.get("1-8");
+        startPoint6.setId("1-8");
 
         ArrayList<Group> startPoints = new ArrayList<>();
         startPoints.add(startPoint1);
@@ -214,22 +194,22 @@ public class MapController implements IController {
 
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if (mapController.isAllowedToSetStart()) {
-                        ImageView robot = getImageByFigure(figure);
-                        robot.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                        robot.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                        robot.preserveRatioProperty().set(true);
+                    String id = startpoint.getId();
 
-                        // Works only for maps where startpoints are on the left side at the moment
-                        robot.rotateProperty().setValue(90);
-
-                        startpoint.getChildren().add(robot);
-
-                        mapController.setAllowedToSetStart(false);
-                    }
+                    ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
+                    chatController.getClient().sendStartingPoint(id);
                 }
+
             });
+
+
+
         }
+    }
+
+
+    public void setStartingPoint(Robot playerRobot, String startingPoint) {
+        fieldMap.get(startingPoint).getChildren().add(new ImageView(playerRobot.getRobotImage()));
     }
 
     /**
