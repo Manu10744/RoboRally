@@ -134,6 +134,7 @@ public class MapController implements IController {
                         Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
+                            System.out.println(tile);
                             Image image = tile.getTileImage();
                             ImageView imageView = new ImageView();
                             imageView.setImage(image);

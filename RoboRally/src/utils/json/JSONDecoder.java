@@ -3,13 +3,11 @@ package utils.json;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import server.game.Card;
-import server.game.Game;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import utils.json.protocol.*;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -372,13 +370,13 @@ public class JSONDecoder {
             } else if (messageType.equals("PlayerShooting")) {
                 PlayerShootingBody playerShootingBody = new PlayerShootingBody();
                 return new JSONMessage("PlayerShooting", playerShootingBody);
-            } else if (messageType.equals("Reboot")) {
+            } else if (messageType.equals("RestartPoint")) {
 
                 RebootBody rebootBody = new RebootBody(
                         messageBody.get("playerID").getAsInt()
                 );
 
-                return new JSONMessage("Reboot", rebootBody);
+                return new JSONMessage("RestartPoint", rebootBody);
             } else if (messageType.equals("PlayerTurning")) {
 
                 PlayerTurningBody playerTurningBody = new PlayerTurningBody(
@@ -447,8 +445,8 @@ public class JSONDecoder {
 
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-            if (tileType.equals("Reboot")) {
-                Reboot result = gson.fromJson(jsonElement, Reboot.class);
+            if (tileType.equals("RestartPoint")) {
+                RestartPoint result = gson.fromJson(jsonElement, RestartPoint.class);
                 return result;
             } else if (tileType.equals("Antenna")) {
                 Antenna result = gson.fromJson(jsonElement, Antenna.class);
@@ -630,7 +628,7 @@ public class JSONDecoder {
         /*28*/
         messages.add(new JSONMessage("PlayerShooting", new PlayerShootingBody()));
         /*29*/
-        messages.add(new JSONMessage("Reboot", new RebootBody(42)));
+        messages.add(new JSONMessage("RestartPoint", new RebootBody(42)));
         /*30*/
         messages.add(new JSONMessage("PlayerTurning", new PlayerTurningBody(42, "left")));
         /*31*/
@@ -655,9 +653,10 @@ public class JSONDecoder {
             JSONMessage msg = JSONDecoder.deserializeJSON(content);
             GameStartedBody msgbody = (GameStartedBody) msg.getMessageBody();
 
-            for (int i = 0; i < msgbody.getXArray().size(); i++) {
-                // Checking if everything gets deserialized correctly
-                System.out.println(msgbody.getXArray().get(i));
+            for (int i = 0; i < msgbody.getXArray().get(i).size(); i++) {
+                for (int j = 0; j < msgbody.getXArray().get(j).size(); j++) {
+                    System.out.println("(" + i + "|" + j + ")" + msgbody.getXArray().get(i).get(j));
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
