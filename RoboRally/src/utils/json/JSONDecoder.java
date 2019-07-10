@@ -511,7 +511,7 @@ public class JSONDecoder {
         } else if (cardName.equals("TurnLeft")) {
             TurnLeft result = gson.fromJson(jsonMessageBody, TurnLeft.class);
             return result;
-        } else if (cardName.equals("TurnRight")) {
+        } else if (cardName.equals("TurnRightRight")) {
             TurnRight result = gson.fromJson(jsonMessageBody, TurnRight.class);
             return result;
         } else if (cardName.equals("UTurn")) {
@@ -646,7 +646,7 @@ public class JSONDecoder {
 
         // Read dizzyHighway.json and deserialize it into a GameStarted message object
         try {
-            Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
             String content = Files.readString(path, StandardCharsets.UTF_8);
             System.out.println(content);
 

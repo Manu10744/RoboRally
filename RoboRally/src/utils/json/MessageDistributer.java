@@ -229,7 +229,7 @@ public class MessageDistributer {
 
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
 
 
                 try {
