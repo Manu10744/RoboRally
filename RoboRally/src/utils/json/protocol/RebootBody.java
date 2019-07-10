@@ -4,7 +4,7 @@ import client.Client;
 import com.google.gson.annotations.Expose;
 import utils.json.MessageDistributer;
 
-/** This is the wrapper class for the message body of the 'Reboot' protocol JSON message.
+/** This is the wrapper class for the message body of the 'RestartPoint' protocol JSON message.
  * @author Manuel Neumayer
  */
 public class RebootBody implements ServerMessageAction<RebootBody> {

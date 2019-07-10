@@ -113,7 +113,7 @@ public class JSONEncoder {
         /*26*/ messages.add(new JSONMessage("Movement", new MovementBody(42,4,2)));
         /*27*/ messages.add(new JSONMessage("DrawDamage", new DrawDamageBody(42, cards)));
         /*28*/ messages.add(new JSONMessage("PlayerShooting", new PlayerShootingBody()));
-        /*29*/ messages.add(new JSONMessage("Reboot", new RebootBody(42)));
+        /*29*/ messages.add(new JSONMessage("RestartPoint", new RebootBody(42)));
         /*30*/ messages.add(new JSONMessage("PlayerTurning", new PlayerTurningBody(42, "left")));
         /*31*/ messages.add(new JSONMessage("Energy", new EnergyBody(42, 1, "Field")));
         /*32*/ messages.add(new JSONMessage("CheckPointReached", new CheckPointReachedBody(42, 3)));

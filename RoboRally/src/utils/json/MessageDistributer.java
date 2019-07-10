@@ -765,7 +765,7 @@ public class MessageDistributer {
     }
 
     /**
-     * This method contains the logic that comes into action when a 'Reboot' protocol message was received and
+     * This method contains the logic that comes into action when a 'RestartPoint' protocol message was received and
      * deserialized by the {@link Client}. It is triggered by {@link RebootBody#triggerAction(Client, client.Client.ClientReaderTask, RebootBody)}.
      *
      * @param client     The Client itself.

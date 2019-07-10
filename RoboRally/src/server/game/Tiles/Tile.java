@@ -81,7 +81,7 @@ public class Tile {
                 break;
             }
 
-            case "Reboot": {
+            case "RestartPoint": {
                 path.append(("reboot.png"));
                 break;
             }
@@ -225,6 +225,22 @@ public class Tile {
                             break;
                         } else {
                             path.append("wall-two-bottom-left.png");
+                            break;
+                        }
+                    } else if (wallOrientation1.equals(Parameter.ORIENTATION_LEFT)) {
+                        if (wallOrientation2.equals(Parameter.ORIENTATION_TOP)) {
+                            path.append("wall-two-left-top.png");
+                            break;
+                        } else {
+                            path.append("wall-two-bottom-left.png");
+                            break;
+                        }
+                    } else if (wallOrientation1.equals(Parameter.ORIENTATION_RIGHT)) {
+                        if (wallOrientation2.equals(Parameter.ORIENTATION_TOP)) {
+                            path.append("wall-two-top-right.png");
+                            break;
+                        } else {
+                            path.append("wall-two-bottom-right.png");
                             break;
                         }
                     }

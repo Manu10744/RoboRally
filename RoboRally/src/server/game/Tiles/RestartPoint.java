@@ -3,12 +3,12 @@ package server.game.Tiles;
 import com.google.gson.annotations.Expose;
 import javafx.scene.image.Image;
 
-public class Reboot extends Tile {
+public class RestartPoint extends Tile {
     @Expose
     String type;
 
-    public Reboot(){
-        this.type = "Reboot";
+    public RestartPoint(){
+        this.type = "RestartPoint";
     }
 
     @Override
