@@ -64,8 +64,8 @@ public class Parameter {
        //Orientation
     public static final String ORIENTATION_RIGHT = "right";
     public static final String ORIENTATION_LEFT = "left";
-    public static final String ORIENTATION_BOTTOM = "down";
-    public static final String ORIENTATION_TOP = "up";
+    public static final String ORIENTATION_DOWN = "down";
+    public static final String ORIENTATION_UP = "up";
 
         //Count number for amount of lasers
     public static final int LASER_ONE = 1;

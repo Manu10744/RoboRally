@@ -1,13 +1,9 @@
 package server.game.Tiles;
 
-import com.google.gson.annotations.Expose;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import utils.Parameter;
 import viewmodels.ChatController;
-import viewmodels.ChatController;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -144,12 +140,12 @@ public class Tile {
                 //Two registers are filled, on our maps this is always register 2 and 4, therefor only one switch case works
                 if (registers.size() == Parameter.REGISTER_TWO) {
                     switch (orientation) {
-                        case Parameter.ORIENTATION_BOTTOM: {
-                            path.append("pushpanel-24-bottom.png");
+                        case Parameter.ORIENTATION_DOWN: {
+                            path.append("pushpanel-24-down.png");
                             break;
                         }
-                        case Parameter.ORIENTATION_TOP: {
-                            path.append("pushpanel-24-top.png");
+                        case Parameter.ORIENTATION_UP: {
+                            path.append("pushpanel-24-up.png");
                             break;
                         }
                         case Parameter.ORIENTATION_LEFT: {
@@ -164,12 +160,12 @@ public class Tile {
                     //Three registers are filled, on our maps this is always register 1, 3 and 5, therefor only one switch case works
                 } else if (registers.size() == Parameter.REGISTER_THREE) {
                     switch (orientation) {
-                        case Parameter.ORIENTATION_BOTTOM: {
-                            path.append("pushpanel-135-bottom.png");
+                        case Parameter.ORIENTATION_DOWN: {
+                            path.append("pushpanel-135-down.png");
                             break;
                         }
-                        case Parameter.ORIENTATION_TOP: {
-                            path.append("pushpanel-135-top.png");
+                        case Parameter.ORIENTATION_UP: {
+                            path.append("pushpanel-135-up.png");
                             break;
                         }
                         case Parameter.ORIENTATION_LEFT: {
@@ -190,12 +186,12 @@ public class Tile {
                 //single walls
                 if (wallOrientations.size() == Parameter.ONE_WALL) {
                     switch (wallOrientations.get(Parameter.FIRST_ELEMENT_POS)) {
-                        case Parameter.ORIENTATION_BOTTOM: {
-                            path.append("wall-one-bottom.png");
+                        case Parameter.ORIENTATION_DOWN: {
+                            path.append("wall-one-down.png");
                             break;
                         }
-                        case Parameter.ORIENTATION_TOP: {
-                            path.append("wall-one-top.png");
+                        case Parameter.ORIENTATION_UP: {
+                            path.append("wall-one-up.png");
                             break;
                         }
                         case Parameter.ORIENTATION_LEFT: {
@@ -211,24 +207,24 @@ public class Tile {
                 } else if (wallOrientations.size() == Parameter.TWO_WALLS) {
                     String wallOrientation1 = wallOrientations.get(Parameter.FIRST_ELEMENT_POS);
                     String wallOrientation2 = wallOrientations.get(Parameter.SECOND_ELEMENT_POS);
-                    if (wallOrientation1.equals(Parameter.ORIENTATION_TOP)) {
+                    if (wallOrientation1.equals(Parameter.ORIENTATION_UP)) {
                         if (wallOrientation2.equals(Parameter.ORIENTATION_RIGHT)) {
-                            path.append("wall-two-top-right.png");
+                            path.append("wall-two-up-right.png");
                             break;
                         } else {
-                            path.append("wall-two-left-top.png");
+                            path.append("wall-two-left-up.png");
                             break;
                         }
-                    } else if (wallOrientation1.equals(Parameter.ORIENTATION_BOTTOM)) {
+                    } else if (wallOrientation1.equals(Parameter.ORIENTATION_DOWN)) {
                         if (wallOrientation2.equals(Parameter.ORIENTATION_RIGHT)) {
-                            path.append("wall-two-bottom-right.png");
+                            path.append("wall-two-down-right.png");
                             break;
                         } else {
-                            path.append("wall-two-bottom-left.png");
+                            path.append("wall-two-down-left.png");
                             break;
                         }
                     } else if (wallOrientation1.equals(Parameter.ORIENTATION_LEFT)) {
-                        if (wallOrientation2.equals(Parameter.ORIENTATION_TOP)) {
+                        if (wallOrientation2.equals(Parameter.ORIENTATION_UP)) {
                             path.append("wall-two-left-top.png");
                             break;
                         } else {
@@ -236,7 +232,7 @@ public class Tile {
                             break;
                         }
                     } else if (wallOrientation1.equals(Parameter.ORIENTATION_RIGHT)) {
-                        if (wallOrientation2.equals(Parameter.ORIENTATION_TOP)) {
+                        if (wallOrientation2.equals(Parameter.ORIENTATION_UP)) {
                             path.append("wall-two-top-right.png");
                             break;
                         } else {
@@ -258,7 +254,7 @@ public class Tile {
                             path.append("laser-onebeam-left-right.png");
                             break;
                         } else {
-                            path.append("laser-onebeam-top-bottom.png");
+                            path.append("laser-onebeam-up-down.png");
                             break;
                         }
                     }
@@ -267,7 +263,7 @@ public class Tile {
                             path.append("laser-twobeam-left-right.png");
                             break;
                         } else {
-                            path.append("laser-twobeam-top-bottom.png");
+                            path.append("laser-twobeam-up-down.png");
                             break;
                         }
                         //Todo Verena: we need images of threebeam lasers without walls
@@ -276,7 +272,7 @@ public class Tile {
                             path.append("laser-threebeam-left-right.png");
                             break;
                         } else {
-                            path.append("laser-threebeam-top-bottom.png");
+                            path.append("laser-threebeam-up-down.png");
                             break;
                         }
                     }
@@ -291,12 +287,12 @@ public class Tile {
             //The Conveyor belts differ mainly in speed: blue speed = 2, green speed = 1
             if (beltSpeed == (int) Parameter.BLUE_BELT_SPEED) {
                 switch (beltOrientation) {
-                    case Parameter.ORIENTATION_BOTTOM: {
-                        path.append("bluecvb-straight-bottom.png");
+                    case Parameter.ORIENTATION_DOWN: {
+                        path.append("bluecvb-straight-down.png");
                         break;
                     }
-                    case Parameter.ORIENTATION_TOP: {
-                        path.append("bluecvb-straight-top.png");
+                    case Parameter.ORIENTATION_UP: {
+                        path.append("bluecvb-straight-up.png");
                         break;
                     }
                     case Parameter.ORIENTATION_LEFT: {
@@ -311,12 +307,12 @@ public class Tile {
                 // green belts
             } else {
                 switch (beltOrientation) {
-                    case Parameter.ORIENTATION_BOTTOM: {
-                        path.append("greencvb-straight-bottom.png");
+                    case Parameter.ORIENTATION_DOWN: {
+                        path.append("greencvb-straight-down.png");
                         break;
                     }
-                    case Parameter.ORIENTATION_TOP: {
-                        path.append("greencvb-straight-top.png");
+                    case Parameter.ORIENTATION_UP: {
+                        path.append("greencvb-straight-up.png");
                         break;
                     }
                     case Parameter.ORIENTATION_LEFT: {
@@ -347,40 +343,40 @@ public class Tile {
                 //Crossings
                 if (isCrossing) {
                     switch (curvedBeltOrientationBefore) {
-                        case Parameter.ORIENTATION_BOTTOM: {
+                        case Parameter.ORIENTATION_DOWN: {
                             //from each direction the belt could either go top or down starting from either left or right (4*2) hence the if else
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("bluecvb-curved-bottom-right.png");
+                                path.append("bluecvb-curved-down-right.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-bottom-left.png");
+                                path.append("bluecvb-curved-down-left.png");
                                 break;
                             }
                         }
-                        case Parameter.ORIENTATION_TOP: {
+                        case Parameter.ORIENTATION_UP: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
                                 path.append("bluecvb-curved-top-right.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-top-left.png");
+                                path.append("bluecvb-curved-up-left.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_LEFT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_TOP)) {
-                                path.append("bluecvb-curved-left-top.png");
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
+                                path.append("bluecvb-curved-left-up.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-left-bottom.png");
+                                path.append("bluecvb-curved-left-down.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_RIGHT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_TOP)) {
-                                path.append("bluecvb-curved-right-top.png");
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
+                                path.append("bluecvb-curved-right-up.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-right-bottom.png");
+                                path.append("bluecvb-curved-right-down.png");
                                 break;
                             }
                         }
@@ -389,40 +385,40 @@ public class Tile {
                 //just curved ones
                 else {
                     switch (curvedBeltOrientationBefore) {
-                        case Parameter.ORIENTATION_BOTTOM: {
+                        case Parameter.ORIENTATION_DOWN: {
                             //Here the same holds true as in the cases above: the belt can either go left or right starting from top or bottom and so on...
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("bluecvb-curved-sharp-bottom-right.png");
+                                path.append("bluecvb-curved-sharp-down-right.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-sharp-bottom-left.png");
+                                path.append("bluecvb-curved-sharp-down-left.png");
                                 break;
                             }
                         }
-                        case Parameter.ORIENTATION_TOP: {
+                        case Parameter.ORIENTATION_UP: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("bluecvb-curved-sharp-top-right.png");
+                                path.append("bluecvb-curved-sharp-up-right.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-sharp-top-left.png");
+                                path.append("bluecvb-curved-sharp-up-left.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_LEFT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_BOTTOM)) {
-                                path.append("bluecvb-curved-sharp-left-bottom.png");
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_DOWN)) {
+                                path.append("bluecvb-curved-sharp-left-down.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-sharp-left-top.png");
+                                path.append("bluecvb-curved-sharp-left-up.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_RIGHT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_TOP)) {
-                                path.append("bluecvb-curved-sharp-right-top.png");
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
+                                path.append("bluecvb-curved-sharp-right-up.png");
                                 break;
                             } else {
-                                path.append("bluecvb-curved-sharp-left-bottom.png");
+                                path.append("bluecvb-curved-sharp-right-down.png");
                                 break;
                             }
                         }
@@ -432,7 +428,7 @@ public class Tile {
             } else if (speed == (int) Parameter.GREEN_BELT_SPEED) {
                 if (isCrossing) {
                     switch (curvedBeltOrientationBefore) {
-                        case Parameter.ORIENTATION_BOTTOM: {
+                        case Parameter.ORIENTATION_DOWN: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
                                 path.append("greencvb-curved-bottom-right.png");
                                 break;
@@ -441,7 +437,7 @@ public class Tile {
                                 break;
                             }
                         }
-                        case Parameter.ORIENTATION_TOP: {
+                        case Parameter.ORIENTATION_UP: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
                                 path.append("greencvb-curved-top-right.png");
                                 break;
@@ -451,7 +447,7 @@ public class Tile {
                             }
                         }
                         case Parameter.ORIENTATION_LEFT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_TOP)) {
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
                                 path.append("greencvb-curved-left-top.png");
                                 break;
                             } else {
@@ -460,7 +456,7 @@ public class Tile {
                             }
                         }
                         case Parameter.ORIENTATION_RIGHT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_TOP)) {
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
                                 path.append("greencvb-curved-right-top.png");
                                 break;
                             } else {
@@ -473,39 +469,39 @@ public class Tile {
                 //just green curved ones
                 else {
                     switch (curvedBeltOrientationBefore) {
-                        case Parameter.ORIENTATION_BOTTOM: {
+                        case Parameter.ORIENTATION_DOWN: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("greencvb-curved-sharp-bottom-right.png");
+                                path.append("greencvb-curved-sharp-down-right.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-sharp-bottom-left.png");
+                                path.append("greencvb-curved-sharp-down-left.png");
                                 break;
                             }
                         }
-                        case Parameter.ORIENTATION_TOP: {
+                        case Parameter.ORIENTATION_UP: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("greencvb-curved-sharp-top-right.png");
+                                path.append("greencvb-curved-sharp-up-right.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-sharp-top-left.png");
+                                path.append("greencvb-curved-sharp-up-left.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_LEFT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_BOTTOM)) {
-                                path.append("greencvb-curved-sharp-left-bottom.png");
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_DOWN)) {
+                                path.append("greencvb-curved-sharp-left-down.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-sharp-left-top.png");
+                                path.append("greencvb-curved-sharp-left-up.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_RIGHT: {
-                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_TOP)) {
-                                path.append("greencvb-curved-sharp-right-top.png");
+                            if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
+                                path.append("greencvb-curved-sharp-right-up.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-sharp-left-bottom.png");
+                                path.append("greencvb-curved-sharp-left-down.png");
                                 break;
                             }
                         }
