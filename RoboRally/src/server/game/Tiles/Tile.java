@@ -225,18 +225,18 @@ public class Tile {
                         }
                     } else if (wallOrientation1.equals(Parameter.ORIENTATION_LEFT)) {
                         if (wallOrientation2.equals(Parameter.ORIENTATION_UP)) {
-                            path.append("wall-two-left-top.png");
+                            path.append("wall-two-left-up.png");
                             break;
                         } else {
-                            path.append("wall-two-bottom-left.png");
+                            path.append("wall-two-down-left.png");
                             break;
                         }
                     } else if (wallOrientation1.equals(Parameter.ORIENTATION_RIGHT)) {
                         if (wallOrientation2.equals(Parameter.ORIENTATION_UP)) {
-                            path.append("wall-two-top-right.png");
+                            path.append("wall-two-up-right.png");
                             break;
                         } else {
-                            path.append("wall-two-bottom-right.png");
+                            path.append("wall-two-down-right.png");
                             break;
                         }
                     }
@@ -355,7 +355,7 @@ public class Tile {
                         }
                         case Parameter.ORIENTATION_UP: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("bluecvb-curved-top-right.png");
+                                path.append("bluecvb-curved-up-right.png");
                                 break;
                             } else {
                                 path.append("bluecvb-curved-up-left.png");
