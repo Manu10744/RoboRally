@@ -14,6 +14,14 @@ import javax.swing.event.ChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class allows the player to choose a figure by clicking on a robot picture
+ *
+ * @author Verena
+ * @author Jessie
+ * @author Ivan Dovecar
+ */
+
 public class ChooseRobotController implements Initializable,IController{
 
     @FXML
@@ -74,6 +82,7 @@ public class ChooseRobotController implements Initializable,IController{
         return zoomBot;
     }
 
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         smashBot.fitWidthProperty().bind(chooseRobot.widthProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_WIDTH));
         smashBot.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT));
@@ -103,50 +112,82 @@ public class ChooseRobotController implements Initializable,IController{
     }
 
 
-    public void mouseClicked() {
+    public void hammerBotClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
         MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
-
-       hammerBot.setOnMousePressed(event ->{
-           chatController.figure.setValue(1);
+        // Execute figure setting
+        chatController.figure.setValue(1);
            Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
            playerMatController.getOwnRobotIcon().setImage(avatar);
            chooseRobot.setVisible(false);
-       });
-       hulkX90.setOnMousePressed(event ->{
-           chatController.figure.setValue(2);
-           Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
-           playerMatController.getOwnRobotIcon().setImage(avatar);
-           chooseRobot.setVisible(false);
-       });
-       smashBot.setOnMousePressed(event ->{
-           chatController.figure.setValue(3);
-           Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
-           playerMatController.getOwnRobotIcon().setImage(avatar);
-           chooseRobot.setVisible(false);
-       });
-       spinBot.setOnMousePressed(event ->{
-           chatController.figure.setValue(4);
-           Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
-           playerMatController.getOwnRobotIcon().setImage(avatar);
-           chooseRobot.setVisible(false);
-       });
-       twonky.setOnMousePressed(event ->{
-           chatController.figure.setValue(5);
-           Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
-           playerMatController.getOwnRobotIcon().setImage(avatar);
-           chooseRobot.setVisible(false);
-       });
-       zoomBot.setOnMousePressed(event ->{
-           chatController.figure.setValue(6);
-           Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
-           playerMatController.getOwnRobotIcon().setImage(avatar);
-           chooseRobot.setVisible(false);
-       });
+    }
 
+    public void hulkX90Clicked() {
+        // Get needed controllers
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
+        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+        PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+
+        // Execute figure setting
+        chatController.figure.setValue(2);
+        Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
+        playerMatController.getOwnRobotIcon().setImage(avatar);
+        chooseRobot.setVisible(false);
+    }
+
+    public void smashBotClicked() {
+        // Get needed controllers
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
+        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+        PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+
+        // Execute figure setting
+        chatController.figure.setValue(3);
+        Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
+        playerMatController.getOwnRobotIcon().setImage(avatar);
+        chooseRobot.setVisible(false);
+    }
+
+    public void spinBotClicked() {
+        // Get needed controllers
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
+        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+        PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+
+        // Execute figure setting
+        chatController.figure.setValue(4);
+        Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
+        playerMatController.getOwnRobotIcon().setImage(avatar);
+        chooseRobot.setVisible(false);
+    }
+
+    public void twonkyClicked() {
+        // Get needed controllers
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
+        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+        PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+
+        // Execute figure setting
+        chatController.figure.setValue(5);
+        Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
+        playerMatController.getOwnRobotIcon().setImage(avatar);
+        chooseRobot.setVisible(false);
+    }
+
+    public void zoomBotClicked() {
+        // Get needed controllers
+        ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
+        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
+        PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
+
+        // Execute figure setting
+        chatController.figure.setValue(6);
+        Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
+        playerMatController.getOwnRobotIcon().setImage(avatar);
+        chooseRobot.setVisible(false);
     }
 
     @Override
@@ -155,6 +196,4 @@ public class ChooseRobotController implements Initializable,IController{
         return this;
 
     }
-
-
 }
