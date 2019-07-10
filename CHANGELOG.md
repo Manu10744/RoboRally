@@ -1,11 +1,23 @@
 ### Known Issues
 * Ability to choose map not implemented yet
-* (Proper view sequence needs to be implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard))
 * Dont allow two clients to choose same username
 * Drag and Drop must be fixed (Bugs)
 * Connection of player, game and robot class missing
 * Remaining maps are missing
 * Timer before map starts
+
+
+
+## Version [0.3.2] 
+### New Features 
+
+
+### Changes
+
+
+### Bugfixes
+
+
 
 ## Version [0.3.1] 
 ### New Features 
@@ -17,6 +29,7 @@
 
 ### Changes
 * Replaced font to RoboRally font - *(Verena)*
+* Proper view sequence implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard) - *(A-Team)*
 
 ### Bugfixes
 * Ready Button's width is now correct - *(Ivan)*
