@@ -316,6 +316,9 @@ public class Client {
                 //Reads input stream from server
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+                // Client Distributer for message logic
+                messageDistributer = new MessageDistributer();
+
                 String jsonString;
                 while ((jsonString = reader.readLine()) != null) {
                     // Deserialize the received JSON String into a JSON object
@@ -327,7 +330,6 @@ public class Client {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ServerMessageAction msg = (ServerMessageAction) jsonMessage.getMessageBody();
-                    messageDistributer = new MessageDistributer();
                     msg.triggerAction(client, this, messageBodyObject, messageDistributer);
                 }
             } catch (IOException e) {

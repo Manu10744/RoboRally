@@ -130,6 +130,9 @@ public class Server extends Application {
                 //READER:
                 reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
+                // Server Distributer for message logic
+                messageDistributer = new MessageDistributer();
+
                 //Server submits protocol version to client
                 jsonMessage = new JSONMessage("HelloClient", new HelloClientBody(protocolVersion));
                 writer.println(JSONEncoder.serializeJSON(jsonMessage));
@@ -146,7 +149,7 @@ public class Server extends Application {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ClientMessageAction msg = (ClientMessageAction) jsonMessage.getMessageBody();
-                    messageDistributer = new MessageDistributer();
+
                     msg.triggerAction(this.server, this, messageBodyObject, messageDistributer);
                 }
             } catch (SocketException exp) {

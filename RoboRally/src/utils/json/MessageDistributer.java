@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import client.Client;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import server.Server;
 import server.game.Card;
 import utils.Parameter;
@@ -498,12 +499,26 @@ public class MessageDistributer {
         String errorMessage = errorBody.getError();
 
         Platform.runLater(() -> {
-            if (errorMessage.equals("Error: name already exists")) {
+            if (errorMessage.equals("Error: Name already exists")) {
                 logger.info(errorMessage);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error occured");
+                alert.setHeaderText("Username already taken!");
+                alert.setContentText(errorMessage);
+                alert.show();
+
                 //TODO write code here for proper reaction
             }
-            if (errorMessage.equals("Error: figure already exists")) {
+            if (errorMessage.equals("Error: Figure already exists")) {
                 logger.info(errorMessage);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error occured");
+                alert.setHeaderText("Figure already taken!");
+                alert.setContentText(errorMessage);
+
+
                 //TODO write code here for proper reaction
             }
         });

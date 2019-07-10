@@ -220,11 +220,6 @@ public class MapController implements IController {
                         robot.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                         robot.preserveRatioProperty().set(true);
 
-                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("RoboRally");
-                        alert.setHeaderText("Choose your desired direction");
-                        alert.setContentText("In what direction do you want your robot to look?");
-
                         // Works only for maps where startpoints are on the left side at the moment
                         robot.rotateProperty().setValue(90);
 
