@@ -7,7 +7,6 @@
 * Connection of player, game and robot class missing
 * Remaining maps are missing
 * Timer before map starts
-* Responsivnes playermat and opponentmat
 
 ## Version [0.3.1] 
 ### New Features 
@@ -23,6 +22,7 @@
 ### Bugfixes
 * Ready Button's width is now correct - *(Ivan)*
 * New connecting clients are now informed about ready status of already connected players - *(Ivan)*
+* Responsivnes for playermat (completely implemented) and opponentmat (detailed example code and description) - *(Ivan)*
 
 ## Version [0.3.0] 
 ### New Features
