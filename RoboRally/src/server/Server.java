@@ -2,6 +2,7 @@ package server;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import server.game.Deck;
 import server.game.Game;
 import server.game.Player;
 import server.game.Robot;
@@ -31,14 +32,14 @@ import static utils.Parameter.*;
  */
 public class Server extends Application {
     private ArrayList<ClientWrapper> connectedClients;
-    private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<PlayerWrapper> players = new ArrayList<>();
 
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
     private int setterPlayerID;
     private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
-    private MessageDistributer messageDistributer;
+    private MessageDistributer messageDistributer = new MessageDistributer();
     private static final Logger logger = Logger.getLogger( Server.class.getName() );
 
     @Override
@@ -69,10 +70,8 @@ public class Server extends Application {
         logger.info("Server shut down.");
     }
 
-    private void startGame() {
-        Game game = new Game(this);
-        game.startGame(players);
-        gameIsRunning = true;
+    public MessageDistributer getMessageDistributer() {
+        return messageDistributer;
     }
 
     public ArrayList<ClientWrapper> getConnectedClients() {
@@ -107,6 +106,10 @@ public class Server extends Application {
         this.numberOfReadyClients = number;
     }
 
+    public ArrayList<PlayerWrapper> getPlayers() {
+        return players;
+    }
+
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
         private Server server;
@@ -130,8 +133,6 @@ public class Server extends Application {
                 //READER:
                 reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-                // Server Distributer for message logic
-                messageDistributer = new MessageDistributer();
 
                 //Server submits protocol version to client
                 jsonMessage = new JSONMessage("HelloClient", new HelloClientBody(protocolVersion));
@@ -149,7 +150,6 @@ public class Server extends Application {
                     Object messageBodyObject = reflection.cast(jsonMessage.getMessageBody());
 
                     ClientMessageAction msg = (ClientMessageAction) jsonMessage.getMessageBody();
-
                     msg.triggerAction(this.server, this, messageBodyObject, messageDistributer);
                 }
             } catch (SocketException exp) {
@@ -228,61 +228,58 @@ public class ClientWrapper {
 
     public class PlayerWrapper{
 
-
+        private String name;
+        private int energy;
         private int playerID;
         private int figure;
-        private Robot playerRobot;
         private boolean isReady;
+
+        private Robot playerRobot;
+
         private DeckDraw deckDraw;
         private DeckDiscard deckDiscard;
         private DeckHand deckHand;
-
-        public DeckDraw getDeckDraw() {
-            return deckDraw;
-        }
-
-        public void setDeckDraw(DeckDraw deckDraw) {
-            this.deckDraw = deckDraw;
-        }
-
-        public DeckDiscard getDeckDiscard() {
-            return deckDiscard;
-        }
-
-        public void setDeckDiscard(DeckDiscard deckDiscard) {
-            this.deckDiscard = deckDiscard;
-        }
-
-        public DeckHand getDeckHand() {
-            return deckHand;
-        }
-
-        public void setDeckHand(DeckHand deckHand) {
-            this.deckHand = deckHand;
-        }
-
-        public DeckRegister getDeckRegister() {
-            return deckRegister;
-        }
-
-        public void setDeckRegister(DeckRegister deckRegister) {
-            this.deckRegister = deckRegister;
-        }
-
         private DeckRegister deckRegister;
+
+
+        public PlayerWrapper(){
+            this.deckDraw = new DeckDraw();
+            deckDraw.initializeDeckDraw();
+
+            this.deckDiscard = new DeckDiscard();
+            this.deckHand = new DeckHand();
+            this.deckRegister = new DeckRegister();
+        }
+
 
         public int getFigure() {
             return figure;
+        }
+
+        public void setFigure(int figure) {
+            this.figure = figure;
         }
 
         public int getPlayerID(){
             return playerID;
         }
 
+        public void setPlayerID(int playerID) {
+            this.playerID = playerID;
+        }
+
         public boolean isReady() { return isReady; }
 
         public void setReady(boolean isReady) {
             this.isReady = isReady;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 

@@ -22,7 +22,7 @@ import java.net.Socket;
  */
 public class Client {
 
-    private MessageDistributer messageDistributer;
+    private MessageDistributer messageDistributer = new MessageDistributer();
     private String name;
     private String serverIP;
     private String protocolVersion = "Version 0.1";
@@ -315,9 +315,6 @@ public class Client {
             try {
                 //Reads input stream from server
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                // Client Distributer for message logic
-                messageDistributer = new MessageDistributer();
 
                 String jsonString;
                 while ((jsonString = reader.readLine()) != null) {

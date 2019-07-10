@@ -32,7 +32,11 @@ public class MessageDistributer {
     public static Map<String, IController> controllerMap;
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_RESET = "\u001B[0m";
-    private Server server;
+    private Server distributerServer;
+
+    public void setDistributerServer(Server distributerServer) {
+        this.distributerServer = distributerServer;
+    }
 
     private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
@@ -45,8 +49,8 @@ public class MessageDistributer {
      * This method contains the logic that comes into action when a 'HelloServer' protocol message was received and
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
-     * @param server          The Server itself.
-     * @param task            The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param distributerServer          The Server itself.
+     * @param task            The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
      *
      * @author Ivan Dovecar
@@ -66,15 +70,28 @@ public class MessageDistributer {
     public void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "Entered handleHelloServer()" + ANSI_RESET);
 
+
+        System.out.println("Manu" + this.distributerServer);
         try {
             if (helloServerBody.getProtocol().equals(server.getProtocolVersion())) {
                 logger.info("Protocol version test succeeded");
 
-                server = server;
 
                 JSONMessage jsonMessage = new JSONMessage("Welcome", new WelcomeBody(server.getCounterPlayerID()));
                 task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 task.getWriter().flush();
+
+
+                // Inform about already connected clients, also to disable already assigned robots before loading the chooseRobot view
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    int playerID = clientWrapper.getPlayerID();
+                    String name = clientWrapper.getName();
+                    int figure = clientWrapper.getFigure();
+
+                    JSONMessage informerMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(playerID, name, figure));
+                    task.getWriter().println(JSONEncoder.serializeJSON(informerMessage));
+                    task.getWriter().flush();
+                }
 
 
                 // Save the playerID before incrementing the counter so the proper ID is given to the ClientWrapper
@@ -97,7 +114,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
      * @param server           The Server itself.
-     * @param task             The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param task             The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param playerValuesBody The message body of the message which is of type {@link PlayerValuesBody}.
      * @author Ivan Dovecar
      * @author Manu
@@ -110,10 +127,10 @@ public class MessageDistributer {
 
         boolean playerValueSuccess = true;
 
-        for (Server.ClientWrapper client : server.getConnectedClients()) {
+        for (Server.PlayerWrapper player : server.getPlayers()) {
             // Checks if by PLAYER-VALUES received client' name is available
-            if (client.getName().equals(playerValueName)) {
-                logger.info("Client " + playerValueName + " refused (name already exists)");
+            if (player.getName().equals(playerValueName)) {
+                logger.info("Player " + playerValueName + " refused (name already exists)");
 
                 JSONMessage jsonMessage = new JSONMessage("Error", new ErrorBody("Error: name already exists"));
                 task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -124,8 +141,8 @@ public class MessageDistributer {
             }
 
             // Checks if by PLAYER-VALUES received client' figure is available
-            else if (client.getFigure() == playerValueFigure) {
-                logger.info("Client " + playerValueName + " refused (figure already exists)");
+            else if (player.getFigure() == playerValueFigure) {
+                logger.info("Player " + playerValueName + " refused (figure already exists)");
 
                 JSONMessage jsonMessage = new JSONMessage("Error", new ErrorBody("Error: figure already exists"));
                 task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -139,7 +156,7 @@ public class MessageDistributer {
         // If by PLAYER_VALUES received name and figure are valid...
         if (playerValueSuccess) {
             logger.info("Client " + playerValueName + " successfully registered");
-
+            //TODO: A client should already exist after helloClient message -> here too late
             //Add new Client to list connected clients
             server.getConnectedClients().add(server.new ClientWrapper(task.getClientSocket(), playerValueName, task.getWriter(), playerValueFigure, server.getSetterPlayerID(), false));
 
@@ -172,7 +189,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
      * @param server        The Server itself.
-     * @param task          The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param task          The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param setStatusBody The message body of the message which is of type {@link SetStatusBody}.
      */
     public void handleSetStatus(Server server, Server.ServerReaderTask task, SetStatusBody setStatusBody) {
@@ -232,7 +249,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
      * @param server       The Server itself.
-     * @param task         The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param task         The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param sendChatBody The message body of the message which is of type {@link SendChatBody}.
      * @author Ivan Dovecar
      * @author Manu
@@ -282,7 +299,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
      * @param server       The Server itself.
-     * @param task         The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param task         The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param playCardBody The message body of the message which is of type {@link PlayCardBody}.
      */
     public void handlePlayCard(Server server, Server.ServerReaderTask task, PlayCardBody playCardBody) {
@@ -296,7 +313,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
      * @param server               The Server itself.
-     * @param task                 The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param task                 The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
      */
     public void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
@@ -304,7 +321,7 @@ public class MessageDistributer {
 
         /*
         (
-        // TODO: should work here! But we do not have client, we have server
+        // TODO: should work here! But we do not have client, we have distributerServer
 
          */
     }
@@ -314,7 +331,7 @@ public class MessageDistributer {
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
      *
      * @param server         The Server itself.
-     * @param task           The ReaderTask of the server (Gives access to the PrintWriter).
+     * @param task           The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param selectCardBody The message body of the message which is of type {@link SelectCardBody}.
      */
     public void handleSelectCard(Server server, Server.ServerReaderTask task, SelectCardBody selectCardBody) {
@@ -355,20 +372,13 @@ public class MessageDistributer {
         logger.info("PlayerID: " + welcomeBody.getPlayerID());
 
         task.setPlayerID(welcomeBody.getPlayerID());
+/*
+        System.out.println("Srver bist du null?? " + distributerServer);
+        Server.PlayerWrapper player = distributerServer.new PlayerWrapper();  //Todo Mia: inform yourself bout this!
+        player.setPlayerID(welcomeBody.getPlayerID());
+        distributerServer.getPlayers().add(player);
 
-        // Inform about already connected clients, also to disable already assigned robots before loading the chooseRobot view
-        /*for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-            int playerID = clientWrapper.getPlayerID();
-            String name = clientWrapper.getName();
-            int figure = clientWrapper.getFigure();
-
-            JSONMessage informerMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(playerID, name, figure));
-            task.getWriter().println(JSONEncoder.serializeJSON(informerMessage));
-            task.getWriter().flush();
-        }
-
-         */
-
+ */
     }
 
     /**
