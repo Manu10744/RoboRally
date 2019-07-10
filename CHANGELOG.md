@@ -16,7 +16,7 @@
 
 
 ### Bugfixes
-
+* Choosing robot by one click enabled - *(Ivan)*
 
 
 ## Version [0.3.1] 

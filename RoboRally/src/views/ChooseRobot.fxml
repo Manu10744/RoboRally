@@ -37,7 +37,7 @@
     <HBox fx:id="chooseRobotBox1" alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="50">
 
       <VBox alignment="CENTER">
-         <ImageView fx:id="hammerBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+         <ImageView fx:id="hammerBot" onMouseClicked="#hammerBotClicked" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../resources/images/robots/choose-robot-hammerbot.png" />
             </image>
@@ -50,7 +50,7 @@
       </VBox>
 
       <VBox alignment="CENTER">
-            <ImageView fx:id="hulkX90" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="hulkX90" onMouseClicked="#hulkX90Clicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/images/robots/choose-robot-hulkX90.png" />
                </image>
@@ -63,7 +63,7 @@
       </VBox>
 
       <VBox alignment="CENTER">
-            <ImageView fx:id="smashBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="smashBot" onMouseClicked="#smashBotClicked" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../resources/images/robots/choose-robot-smashbot.png" />
                </image>
@@ -80,7 +80,7 @@
     <HBox fx:id="chooseRobotBox2" alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="50">
 
          <VBox alignment="CENTER">
-               <ImageView fx:id="spinBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="spinBot" onMouseClicked="#spinBotClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../resources/images/robots/choose-robot-spinbot.png" />
                   </image>
@@ -94,7 +94,7 @@
          </VBox>
 
          <VBox alignment="CENTER">
-               <ImageView fx:id="twonky" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="twonky" onMouseClicked="#twonkyClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../resources/images/robots/choose-robot-twonky.png" />
                   </image>
@@ -107,7 +107,7 @@
          </VBox>
 
          <VBox alignment="CENTER">
-               <ImageView fx:id="zoomBot" onMouseClicked="#mouseClicked" pickOnBounds="true" preserveRatio="true">
+               <ImageView fx:id="zoomBot" onMouseClicked="#zoomBotClicked" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@../resources/images/robots/choose-robot-zoombot.png" />
                   </image>
