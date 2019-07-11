@@ -14,7 +14,7 @@
 * Added new Maps (riskyCrossing, highOctane, sprintCramp, corridorBlitz, fractionation, burnout, lostBearings, twister, dodgeThis, heavyMergeArea, deathTrap, passingLane) - *(Jessie, Verena, Vincent)*
 
 ### Changes
-* Parameters were set for the bigger passingLane map - *(Vincent)*
+* There is Parameter support for passingLane map - *(Vincent)*
 
 ### Bugfixes
 * Choosing robot by one click enabled - *(Ivan)*
