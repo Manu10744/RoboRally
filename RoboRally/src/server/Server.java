@@ -152,7 +152,6 @@ public class Server extends Application {
                 //READER:
                 reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-
                 //Server submits protocol version to client
                 jsonMessage = new JSONMessage("HelloClient", new HelloClientBody(protocolVersion));
                 writer.println(JSONEncoder.serializeJSON(jsonMessage));

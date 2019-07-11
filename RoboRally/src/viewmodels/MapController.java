@@ -63,6 +63,7 @@ public class MapController implements IController {
 
         System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
 
+        /*
         // Popup for performing actions on robot
         Platform.runLater(new Runnable() {
             @Override
@@ -86,17 +87,18 @@ public class MapController implements IController {
                 while (true) {
                     Optional<ButtonType> result = alert.showAndWait();
 
-                    if (result.get() == moveI) { /* Function moveI() */ }
-                    if (result.get() == moveII) { /* Function moveII() */ }
-                    if (result.get() == moveIII) { /* Function moveIII() */ }
-                    if (result.get() == turnRight) { /* Function turnRight() */ }
-                    if (result.get() == turnLeft) { /* Function turnLeft() */ }
-                    if (result.get() == backup) { /* Function backUp() */ }
-                    if (result.get() == uTurn) { /* Function uTurn() */ }
-                    if (result.get() == again) { /* Function again() */ }
+                    if (result.get() == moveI) {  }
+                    if (result.get() == moveII) {  }
+                    if (result.get() == moveIII) {  }
+                    if (result.get() == turnRight) {  }
+                    if (result.get() == turnLeft) {  }
+                    if (result.get() == backup) {  }
+                    if (result.get() == uTurn) {  }
+                    if (result.get() == again) {  }
                 }
             }
         });
+         */
 
         // Scrolling, zooming and filling of Map
         Platform.runLater(new Runnable() {
@@ -255,8 +257,10 @@ public class MapController implements IController {
 
 
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
-        System.out.println("Bist du hier????");
-        fieldMap.get(startingPoint).getChildren().add(new ImageView(playerRobot.getRobotImage()));
+        logger.info("ENTERED SETSTARTINGPOINT WITH STARTPOINT " + startingPoint);
+
+        ImageView imageView = new ImageView(playerRobot.getRobotImage());
+        fieldMap.get(startingPoint).getChildren().add(imageView);
     }
 
     /**

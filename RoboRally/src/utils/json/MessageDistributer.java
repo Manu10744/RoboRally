@@ -316,30 +316,24 @@ public class MessageDistributer {
     public void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
         int x = setStartingPointBody.getX();
         int y = setStartingPointBody.getY();
-        int playerID = 0;
-
-        for (Server.ClientWrapper client : server.getConnectedClients()){
-            if (client.getClientSocket().equals(task.getClientSocket())){
-               //Todo: get PlayerID from OwnPlayer in client
-            }
-        }
-
 
         String desiredStartPoint = x + "-" + y;
+        int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket()
+                .equals(task.getClientSocket())).findFirst().get().getPlayerID();
 
-        for (String startpoint : server.getTakenStartingPoints()) {
-            if (startpoint.equals(desiredStartPoint)) {
-                //inform clients that startingpoint is taken
-                JSONMessage jsonMessage = new JSONMessage("Error", new ErrorBody("This StartingPoint is already chosen, sorry!"));
-            } else {
-                server.getTakenStartingPoints().add(desiredStartPoint);
+        if (server.getTakenStartingPoints().contains(desiredStartPoint)) {
+            JSONMessage jsonMessage = new JSONMessage("Error", new ErrorBody("Sorry, this StartingPoint is already taken!"));
+            task.getWriter().print(JSONEncoder.serializeJSON(jsonMessage));
+            task.getWriter().flush();
+        } else {
+            // StartingPoint is available
+            for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, playerID));
+                client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                client.getWriter().flush();
             }
         }
-
-
-
-        }
+    }
 
 
         /**
@@ -596,27 +590,23 @@ public class MessageDistributer {
          * @param task                   The ReaderTask of the client (Gives access to the PrintWriter).
          * @param startingPointTakenBody The message body of the message which is of type {@link StartingPointTakenBody}.
          */
-        public void handleStartingPointTaken (Client client, Client.ClientReaderTask task, StartingPointTakenBody
-        startingPointTakenBody){
+        public void handleStartingPointTaken (Client client, Client.ClientReaderTask task, StartingPointTakenBody startingPointTakenBody) {
             System.out.println(ANSI_CYAN + "Entered handleStartingPointTaken()" + ANSI_RESET);
 
+            System.out.println("OWN PLAYER ID: " + client.getPlayer().getPlayerID());
             Platform.runLater(() -> {
-
                 MapController mapController = (MapController) controllerMap.get("Map");
-                // Choose Starting point, send message setStartingpoint
+                String startPosition = startingPointTakenBody.getX() + "-" + startingPointTakenBody.getY();
 
-
-                Robot playerRobot = client.getOwnPlayer().getPlayerRobot();
-                int x = startingPointTakenBody.getX();
-                int y = startingPointTakenBody.getY();
-                String startPosition = x + "-" + y;
-
-
-                // NOTE: THIS IS A TEMPORARY SOLUTION. EVENT MAP_LOADED NEEDED
-                // Make the thread wait a second so setting StartPoint happens definitely after map has been loaded...
-                mapController.setStartingPoint(playerRobot, startPosition);
-
-
+                // For client that chose that StartPoint
+                if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
+                    mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
+                } else {
+                    // For everyone else
+                    Robot robot = client.getOtherPlayers().stream().filter(player -> player.getPlayerID()
+                            == client.getPlayer().getPlayerID()).findFirst().get().getPlayerRobot();
+                    mapController.setStartingPoint(robot, startPosition);
+                }
             });
         }
 

@@ -32,7 +32,6 @@ public class Player implements Serializable {
     private DeckHand deckHand;
     private DeckRegister deckRegister;
 
-
     public Player(){
         this.deckDraw = new DeckDraw();
         deckDraw.initializeDeckDraw();
@@ -60,9 +59,9 @@ public class Player implements Serializable {
         } else if (figure == 3) {
             robotImage = new Image("/resources/images/robots/SmashBot.PNG");
         } else if (figure == 4) {
-            robotImage = new Image("/resources/images/robots/Twonky.PNG");
-        } else if (figure == 5) {
             robotImage = new Image("/resources/images/robots/Spinbot.PNG");
+        } else if (figure == 5) {
+            robotImage = new Image("/resources/images/robots/Twonky.PNG");
         } else { // figure == 6
             robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
         }

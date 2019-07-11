@@ -4,15 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import javafx.scene.image.Image;
 import server.game.Player;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import server.game.Robot;
-import server.game.decks.DeckDiscard;
-import server.game.decks.DeckDraw;
-import server.game.decks.DeckHand;
-import server.game.decks.DeckRegister;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
@@ -20,8 +14,6 @@ import utils.json.protocol.*;
 import viewmodels.*;
 
 import java.net.Socket;
-
-import static utils.Parameter.ORIENTATION_RIGHT;
 
 /**
  * This class implements the clients. <br>
@@ -37,8 +29,8 @@ public class Client {
     private String protocolVersion = "Version 0.1";
     private String group = "AstreineBarsche";
 
-    private Player ownPlayer;
-    private ArrayList<Player> otherPlayers;
+    private Player player;
+    private ArrayList<Player> otherPlayers = new ArrayList<>();
 
     private int figure;
     private int serverPort;
@@ -63,6 +55,17 @@ public class Client {
         return messageDistributer;
     }
 
+    public Client(String serverIP, int serverPort) {
+        logger.info("Starting registration process...");
+        this.serverIP = serverIP;
+        this.serverPort = serverPort;
+
+        chatHistory = new SimpleStringProperty("");
+        activeClients = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+        //GAME:
+        otherActivePlayers = new SimpleListProperty<>(FXCollections.observableArrayList());
+    }
     public void setMessageDistributer(MessageDistributer messageDistributer) {
         this.messageDistributer = messageDistributer;
     }
@@ -115,12 +118,12 @@ public class Client {
         this.chooseRobotController = chooseRobotController;
     }
 
-    public Player getOwnPlayer() {
-        return ownPlayer;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setOwnPlayer(Player ownPlayer) {
-        this.ownPlayer = ownPlayer;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public ArrayList<Player> getOtherPlayers() {
@@ -130,32 +133,6 @@ public class Client {
     public void setOtherPlayers(ArrayList<Player> otherPlayers) {
         this.otherPlayers = otherPlayers;
     }
-
-    public class OtherPlayer {
-        //  StringProperty name;
-        IntegerProperty playerID;
-
-        public OtherPlayer(int playerID) {
-            this.playerID = new SimpleIntegerProperty(playerID);
-        }
-
-        //  public String getName() { return name.get();}
-    }
-
-
-    //TODO  public Client(String name, String serverIP, int serverPort) {
-    public Client(String serverIP, int serverPort) {
-        logger.info("Starting registration process...");
-        this.serverIP = serverIP;
-        this.serverPort = serverPort;
-
-        chatHistory = new SimpleStringProperty("");
-        activeClients = new SimpleListProperty<>(FXCollections.observableArrayList());
-
-        //GAME:
-        otherActivePlayers = new SimpleListProperty<>(FXCollections.observableArrayList());
-    }
-
 
     /**
      * This method is responsible for connecting the client to the specified server.
@@ -205,11 +182,6 @@ public class Client {
      */
     public void sendPlayerValues(String name, int figure) {
         logger.info("Submitting player values");
-
-        // Here the server gets the name and figure of a newly initialised playerServer
-        ownPlayer = new Player();
-        ownPlayer.setName(name);
-        ownPlayer.initRobotByFigure(figure);
 
         JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
@@ -348,6 +320,18 @@ public class Client {
     public int getFigure(){return figure;}
 
     public void setFigure(int figure){this.figure = figure;}
+
+
+    public class OtherPlayer {
+        //  StringProperty name;
+        IntegerProperty playerID;
+
+        public OtherPlayer(int playerID) {
+            this.playerID = new SimpleIntegerProperty(playerID);
+        }
+
+        //  public String getName() { return name.get();}
+    }
 
     /**
      * Inner class to define ReaderTask with Server
