@@ -174,6 +174,7 @@ public class Client {
     public void sendStartingPoint(String id){
         logger.info("Submitting startinpoint coordinates");
 
+        // Get the x and y coordinates of the StartPoint by its ID
         int x = Character.getNumericValue(id.charAt(0));
         int y = Character.getNumericValue(id.charAt(2));
 

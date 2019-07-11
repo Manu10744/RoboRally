@@ -17,7 +17,7 @@
 
 ### Bugfixes
 * Choosing robot by one click enabled - *(Ivan)*
-
+* Lasers are now properly displayed inside maps. - *(Manu)*
 
 ## Version [0.3.1] 
 ### New Features 

@@ -77,7 +77,6 @@ public class MapController implements IController {
                     }
                 });
 
-
                 mapPane.setOnScroll(new EventHandler<ScrollEvent>() {
                     @Override
                     public void handle(ScrollEvent event) {
@@ -128,26 +127,83 @@ public class MapController implements IController {
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
                         // Add a normal tile to each non-empty field to prevent whitespace
-                        if (!tileArray.contains(new Empty())) {
+                        if (!containsInstance(tileArray, Empty.class)) {
+                            System.out.println("Doesnt contain empty, so i will add one!");
                             tileArray.add(0, new Empty());
                         }
 
                         Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                            Image image = tile.getTileImage();
-                            ImageView imageView = new ImageView();
-                            imageView.setImage(image);
-                            if(tile.getTileType().equals("StartPoint")){
-                                imageView.setId(xPos + "-" + yPos);
+                            // If the field contains a Laser and Wall, only display a picture for wall which already contains the laser,
+                            // Correct image is provided by considering orientation of wall
+                                if (containsInstance(tileArray, Laser.class) && containsInstance(tileArray, Wall.class)) {
+                                    if (tile instanceof Wall) {
+                                        String wallOrientation = tile.getOrientations().get(0);
+                                        if (wallOrientation.equals(Parameter.ORIENTATION_LEFT)) {
+                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-left.png");
+                                            ImageView imageView = new ImageView(image);
+
+                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                            imageView.setPreserveRatio(true);
+
+                                            imageGroup.getChildren().add(imageView);
+                                        } else if (wallOrientation.equals(Parameter.ORIENTATION_RIGHT)) {
+                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-right.png");
+                                            ImageView imageView = new ImageView(image);
+
+                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                            imageView.setPreserveRatio(true);
+
+                                            imageGroup.getChildren().add(imageView);
+                                        } else if (wallOrientation.equals(Parameter.ORIENTATION_DOWN)) {
+                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-bottom.png");
+                                            ImageView imageView = new ImageView(image);
+
+                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                            imageView.setPreserveRatio(true);
+
+                                            imageGroup.getChildren().add(imageView);
+                                        } else if (wallOrientation.equals(Parameter.ORIENTATION_UP)) {
+                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-top.png");
+                                            ImageView imageView = new ImageView(image);
+
+                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                            imageView.setPreserveRatio(true);
+
+                                            imageGroup.getChildren().add(imageView);
+                                        }
+                                    }
+                                    // If tile is Laser, don't provide an image
+                                    if (tile instanceof Laser) break;
+                                    if (tile instanceof Empty) {
+                                        Image image = new Image("resources/images/mapelements/normal1.png");
+                                        ImageView imageView = new ImageView(image);
+
+                                        imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                        imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                        imageView.setPreserveRatio(true);
+
+                                        imageGroup.getChildren().add(imageView);
+                                    }
+                            } else {
+                                Image image = tile.getTileImage();
+                                ImageView imageView = new ImageView();
+                                imageView.setImage(image);
+
+                                // TODO: For each Tile of type StartPoint set an ID dynamically consisting out of the coordinates!
+
+                                // Necessary for making map fields responsive
+                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                imageView.setPreserveRatio(true);
+
+                                imageGroup.getChildren().add(imageView);
                             }
-
-                            // Necessary for making map fields responsive
-                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                            imageView.setPreserveRatio(true);
-
-                            imageGroup.getChildren().add(imageView);
                         }
                         // Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
@@ -163,8 +219,23 @@ public class MapController implements IController {
         });
         this.allowSetStart = true;
     }
-    public void sendStartPoint() {
 
+    /**
+     * This method checks if an ArrayList<Tile> contains an element which is an instance of a given class.
+     * @param listToCheck The ArrayList that gets iterated and checked.
+     * @param target The class of the desired object that is searched inside the ArrayList
+     * @return <code>true</code> if that ArrayList contains an object of the given class
+     */
+    public boolean containsInstance(ArrayList<Tile> listToCheck, Class<?> target) {
+        for (Tile listItem : listToCheck) {
+            if (listItem.getClass().equals(target)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void sendStartPoint() {
         // The startinPoints in order according to y-position
         Group startPoint1 = fieldMap.get("0-3");
         startPoint1.setId("0-3");
@@ -199,11 +270,7 @@ public class MapController implements IController {
                     ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
                     chatController.getClient().sendStartingPoint(id);
                 }
-
             });
-
-
-
         }
     }
 
