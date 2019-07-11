@@ -83,7 +83,7 @@ public class MapController implements IController {
 
                 alert.getButtonTypes().addAll(moveI, moveII, moveIII, turnRight, turnLeft, backup, uTurn, again);
 
-                while (alert.isResizable()) {
+                while (true) {
                     Optional<ButtonType> result = alert.showAndWait();
 
                     if (result.get() == moveI) { /* Function moveI() */ }
@@ -94,13 +94,6 @@ public class MapController implements IController {
                     if (result.get() == backup) { /* Function backUp() */ }
                     if (result.get() == uTurn) { /* Function uTurn() */ }
                     if (result.get() == again) { /* Function again() */ }
-
-                    alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-                        @Override
-                        public void handle(DialogEvent dialogEvent) {
-                            alert.setResizable(false);
-                        }
-                    });
                 }
             }
         });
