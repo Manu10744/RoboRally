@@ -20,7 +20,6 @@ public class Player implements Serializable {
     private ArrayList<Card> deckDiscard;
     private ArrayList<Card> deckDraw;
 
-
     /**
      * Player constructor
      */
