@@ -3,14 +3,15 @@
 * Dont allow two clients to choose same username
 * Drag and Drop must be fixed (Bugs)
 * Connection of player, game and robot class missing
-* Remaining maps are missing
+* Remaining maps are missing (12/18)
 * Timer before map starts
+
 
 
 
 ## Version [0.3.2] 
 ### New Features 
-* Added new Maps (highOctane, corridorBlitz, riskyCrossing, burnout, passingLane) - *(Jessie, Verena, Vincent)*
+* Added new Maps (riskyCrossing, highOctane, sprintCramp, corridorBlitz, fractionation, burnout, lostBearings, twister, dodgeThis, heavyMergeArea, deathTrap, passingLane) - *(Jessie, Verena, Vincent)*
 
 ### Changes
 * Parameters were set for the bigger passingLane map - *(Vincent)*
