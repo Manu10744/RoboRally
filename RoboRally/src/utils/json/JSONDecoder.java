@@ -646,7 +646,7 @@ public class JSONDecoder {
 
         // Read dizzyHighway.json and deserialize it into a GameStarted message object
         try {
-            Path path = Paths.get("RoboRally/src/resources/maps/lostBearings.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
             String content = Files.readString(path, StandardCharsets.UTF_8);
             System.out.println(content);
 

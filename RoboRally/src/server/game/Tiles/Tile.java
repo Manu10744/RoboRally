@@ -266,7 +266,6 @@ public class Tile {
                             path.append("laser-twobeam-up-down.png");
                             break;
                         }
-                        //Todo Verena: we need images of threebeam lasers without walls
                     case (Parameter.LASER_THREE): {
                         if ((laserOrientation.equals(Parameter.ORIENTATION_RIGHT) || (laserOrientation.equals(Parameter.ORIENTATION_LEFT)))) {
                             path.append("laser-threebeam-left-right.png");
