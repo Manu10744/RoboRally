@@ -171,60 +171,6 @@ public class MapController implements IController {
                         for (Tile tile : tileArray) {
                             // If the field contains a Laser and Wall, only display a picture for wall which already contains the laser,
                             // Correct image is provided by considering orientation of wall
-                                if (containsInstance(tileArray, Laser.class) && containsInstance(tileArray, Wall.class)) {
-                                    if (tile instanceof Wall) {
-                                        String wallOrientation = tile.getOrientations().get(0);
-                                        if (wallOrientation.equals(Parameter.ORIENTATION_LEFT)) {
-                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-left.png");
-                                            ImageView imageView = new ImageView(image);
-
-                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                            imageView.setPreserveRatio(true);
-
-                                            imageGroup.getChildren().add(imageView);
-                                        } else if (wallOrientation.equals(Parameter.ORIENTATION_RIGHT)) {
-                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-right.png");
-                                            ImageView imageView = new ImageView(image);
-
-                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                            imageView.setPreserveRatio(true);
-
-                                            imageGroup.getChildren().add(imageView);
-                                        } else if (wallOrientation.equals(Parameter.ORIENTATION_DOWN)) {
-                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-bottom.png");
-                                            ImageView imageView = new ImageView(image);
-
-                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                            imageView.setPreserveRatio(true);
-
-                                            imageGroup.getChildren().add(imageView);
-                                        } else if (wallOrientation.equals(Parameter.ORIENTATION_UP)) {
-                                            Image image = new Image("resources/images/mapelements/laser-onebeam-start-top.png");
-                                            ImageView imageView = new ImageView(image);
-
-                                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                            imageView.setPreserveRatio(true);
-
-                                            imageGroup.getChildren().add(imageView);
-                                        }
-                                    }
-                                    // If tile is Laser, don't provide an image
-                                    if (tile instanceof Laser) break;
-                                    if (tile instanceof Empty) {
-                                        Image image = new Image("resources/images/mapelements/normal1.png");
-                                        ImageView imageView = new ImageView(image);
-
-                                        imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                        imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                                        imageView.setPreserveRatio(true);
-
-                                        imageGroup.getChildren().add(imageView);
-                                    }
-                            } else {
                                 Image image = tile.getTileImage();
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
@@ -237,7 +183,6 @@ public class MapController implements IController {
                                 imageView.setPreserveRatio(true);
 
                                 imageGroup.getChildren().add(imageView);
-                            }
                         }
                         // Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
