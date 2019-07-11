@@ -5,9 +5,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -39,7 +37,6 @@ import java.util.logging.Logger;
  * @author Manu
  */
 
-
 public class MapController implements IController {
 
     private StageController stageController;
@@ -63,8 +60,52 @@ public class MapController implements IController {
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
+
         System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
 
+        // Popup for performing actions on robot
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Robot Actions");
+                alert.setContentText("Make your robot perform actions!");
+                alert.setResizable(true);
+
+                ButtonType moveI = new ButtonType("MoveI");
+                ButtonType moveII = new ButtonType("MoveII");
+                ButtonType moveIII = new ButtonType("MoveII");
+                ButtonType turnRight = new ButtonType("TurnRight");
+                ButtonType turnLeft = new ButtonType("TurnLeft");
+                ButtonType backup = new ButtonType("Backup");
+                ButtonType uTurn = new ButtonType("UTurn");
+                ButtonType again = new ButtonType("Again");
+
+                alert.getButtonTypes().addAll(moveI, moveII, moveIII, turnRight, turnLeft, backup, uTurn, again);
+
+                while (alert.isResizable()) {
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == moveI) { /* Function moveI() */ }
+                    if (result.get() == moveII) { /* Function moveII() */ }
+                    if (result.get() == moveIII) { /* Function moveIII() */ }
+                    if (result.get() == turnRight) { /* Function turnRight() */ }
+                    if (result.get() == turnLeft) { /* Function turnLeft() */ }
+                    if (result.get() == backup) { /* Function backUp() */ }
+                    if (result.get() == uTurn) { /* Function uTurn() */ }
+                    if (result.get() == again) { /* Function again() */ }
+
+                    alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
+                        @Override
+                        public void handle(DialogEvent dialogEvent) {
+                            alert.setResizable(false);
+                        }
+                    });
+                }
+            }
+        });
+
+        // Scrolling, zooming and filling of Map
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
