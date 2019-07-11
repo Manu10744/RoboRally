@@ -160,13 +160,12 @@ public class MessageDistributer {
             playerServer.setName(playerValueName);
             server.getPlayers().add(playerServer);
 
-
-            //Send message to all active clients
+            // Send message to all active clients
             JSONMessage jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(server.getCounterPlayerID(), playerValueName, playerValueFigure));
             task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
             task.getWriter().flush();
 
-            //Inform new client with private chat message about all current active clients(without own entry)
+            // Inform new client with private chat message about all current active clients(without own entry)
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 if (playerValueName.equals(client.getName())) {
                     for (Server.ClientWrapper otherClient : server.getConnectedClients()) {
@@ -227,10 +226,8 @@ public class MessageDistributer {
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
-
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
-
+                Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -239,9 +236,7 @@ public class MessageDistributer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
     }
 

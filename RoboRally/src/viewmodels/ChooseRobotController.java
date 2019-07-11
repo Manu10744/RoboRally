@@ -6,11 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import utils.Parameter;
-
-import javax.swing.event.ChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -100,7 +97,7 @@ public class ChooseRobotController implements Initializable,IController{
         chooseRobotBackground.fitHeightProperty().bind(chooseRobot.heightProperty().divide(Parameter.CHOOSE_ROBOT_RATIO_HEIGHT_BGR));
 
         // Loading font each time because loading fonts in CSS is buggy in JavaFX
-        // Font can't be loaded if theres a space in path
+        // Font can't be loaded if there is a space in path
         headline.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 40));
         smashBotLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
         hammerBotLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
@@ -111,24 +108,21 @@ public class ChooseRobotController implements Initializable,IController{
         chooseRobot.getStylesheets().add("/resources/css/main.css");
     }
 
-
     public void hammerBotClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
-        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
         // Execute figure setting
         chatController.figure.setValue(1);
-           Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
-           playerMatController.getOwnRobotIcon().setImage(avatar);
-           chooseRobot.setVisible(false);
+        Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
+        playerMatController.getOwnRobotIcon().setImage(avatar);
+        chooseRobot.setVisible(false);
     }
 
     public void hulkX90Clicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
-        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
         // Execute figure setting
@@ -141,7 +135,6 @@ public class ChooseRobotController implements Initializable,IController{
     public void smashBotClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
-        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
         // Execute figure setting
@@ -154,7 +147,6 @@ public class ChooseRobotController implements Initializable,IController{
     public void spinBotClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
-        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
         // Execute figure setting
@@ -167,7 +159,6 @@ public class ChooseRobotController implements Initializable,IController{
     public void twonkyClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
-        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
         // Execute figure setting
@@ -180,7 +171,6 @@ public class ChooseRobotController implements Initializable,IController{
     public void zoomBotClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
-        MapController mapController = (MapController) this.stageController.getControllerMap().get("Map");
         PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
 
         // Execute figure setting

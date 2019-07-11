@@ -252,7 +252,6 @@ public class ClientWrapper {
         private int playerID;
         private int figure;
         private boolean isReady;
-
         private Robot playerRobot;
 
         private DeckDraw deckDraw;
@@ -275,12 +274,12 @@ public class ClientWrapper {
             return figure;
         }
 
-        //Initialises Robot through setting the figure
-        public void initRobotByFigure(int figure){
+        // Initialises Robot by processing figure property
+        public void initRobotByFigure(int figure) {
+            // Set figure for this player
             this.figure = figure;
 
             Image robotImage;
-
             if (figure == 1) {
                 robotImage= new Image("/resources/images/robots/HammerBot.PNG");
             } else if (figure == 2) {
@@ -291,12 +290,12 @@ public class ClientWrapper {
                 robotImage = new Image("/resources/images/robots/Twonky.PNG");
             } else if (figure == 5) {
                 robotImage = new Image("/resources/images/robots/Spinbot.PNG");
-            } else {
+            } else { // figure == 6
                 robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
             }
 
+            // Set robot for this player
             this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
-
         }
 
         public int getPlayerID(){
@@ -329,9 +328,6 @@ public class ClientWrapper {
             this.playerRobot = playerRobot;
         }
     }
-
-
-
-    }
+}
 
 

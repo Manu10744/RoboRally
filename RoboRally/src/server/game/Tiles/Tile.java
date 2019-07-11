@@ -266,7 +266,6 @@ public class Tile {
                             path.append("laser-twobeam-up-down.png");
                             break;
                         }
-                        //Todo Verena: we need images of threebeam lasers without walls
                     case (Parameter.LASER_THREE): {
                         if ((laserOrientation.equals(Parameter.ORIENTATION_RIGHT) || (laserOrientation.equals(Parameter.ORIENTATION_LEFT)))) {
                             path.append("laser-threebeam-left-right.png");
@@ -430,37 +429,37 @@ public class Tile {
                     switch (curvedBeltOrientationBefore) {
                         case Parameter.ORIENTATION_DOWN: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("greencvb-curved-bottom-right.png");
+                                path.append("greencvb-curved-down-right.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-bottom-left.png");
+                                path.append("greencvb-curved-down-left.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_UP: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_RIGHT)) {
-                                path.append("greencvb-curved-top-right.png");
+                                path.append("greencvb-curved-up-right.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-top-left.png");
+                                path.append("greencvb-curved-up-left.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_LEFT: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
-                                path.append("greencvb-curved-left-top.png");
+                                path.append("greencvb-curved-left-up.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-left-bottom.png");
+                                path.append("greencvb-curved-left-down.png");
                                 break;
                             }
                         }
                         case Parameter.ORIENTATION_RIGHT: {
                             if (curvedBeltOrientationAfter.equals(Parameter.ORIENTATION_UP)) {
-                                path.append("greencvb-curved-right-top.png");
+                                path.append("greencvb-curved-right-up.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-right-bottom.png");
+                                path.append("greencvb-curved-right-down.png");
                                 break;
                             }
                         }
@@ -501,7 +500,7 @@ public class Tile {
                                 path.append("greencvb-curved-sharp-right-up.png");
                                 break;
                             } else {
-                                path.append("greencvb-curved-sharp-left-down.png");
+                                path.append("greencvb-curved-sharp-right-down.png");
                                 break;
                             }
                         }

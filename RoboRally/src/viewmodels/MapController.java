@@ -5,9 +5,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -39,7 +37,6 @@ import java.util.logging.Logger;
  * @author Manu
  */
 
-
 public class MapController implements IController {
 
     private StageController stageController;
@@ -63,8 +60,45 @@ public class MapController implements IController {
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
+
         System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
 
+        // Popup for performing actions on robot
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Robot Actions");
+                alert.setContentText("Make your robot perform actions!");
+                alert.setResizable(true);
+
+                ButtonType moveI = new ButtonType("MoveI");
+                ButtonType moveII = new ButtonType("MoveII");
+                ButtonType moveIII = new ButtonType("MoveII");
+                ButtonType turnRight = new ButtonType("TurnRight");
+                ButtonType turnLeft = new ButtonType("TurnLeft");
+                ButtonType backup = new ButtonType("Backup");
+                ButtonType uTurn = new ButtonType("UTurn");
+                ButtonType again = new ButtonType("Again");
+
+                alert.getButtonTypes().addAll(moveI, moveII, moveIII, turnRight, turnLeft, backup, uTurn, again);
+
+                while (true) {
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == moveI) { /* Function moveI() */ }
+                    if (result.get() == moveII) { /* Function moveII() */ }
+                    if (result.get() == moveIII) { /* Function moveIII() */ }
+                    if (result.get() == turnRight) { /* Function turnRight() */ }
+                    if (result.get() == turnLeft) { /* Function turnLeft() */ }
+                    if (result.get() == backup) { /* Function backUp() */ }
+                    if (result.get() == uTurn) { /* Function uTurn() */ }
+                    if (result.get() == again) { /* Function again() */ }
+                }
+            }
+        });
+
+        // Scrolling, zooming and filling of Map
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -76,7 +110,6 @@ public class MapController implements IController {
                         mapPane.requestFocus();
                     }
                 });
-
 
                 mapPane.setOnScroll(new EventHandler<ScrollEvent>() {
                     @Override
@@ -128,26 +161,28 @@ public class MapController implements IController {
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
                         // Add a normal tile to each non-empty field to prevent whitespace
-                        if (!tileArray.contains(new Empty())) {
+                        if (!containsInstance(tileArray, Empty.class)) {
+                            System.out.println("Doesnt contain empty, so i will add one!");
                             tileArray.add(0, new Empty());
                         }
 
                         Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                            Image image = tile.getTileImage();
-                            ImageView imageView = new ImageView();
-                            imageView.setImage(image);
-                            if(tile.getTileType().equals("StartPoint")){
-                                imageView.setId(xPos + "-" + yPos);
-                            }
+                            // If the field contains a Laser and Wall, only display a picture for wall which already contains the laser,
+                            // Correct image is provided by considering orientation of wall
+                                Image image = tile.getTileImage();
+                                ImageView imageView = new ImageView();
+                                imageView.setImage(image);
 
-                            // Necessary for making map fields responsive
-                            imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                            imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
-                            imageView.setPreserveRatio(true);
+                                // TODO: For each Tile of type StartPoint set an ID dynamically consisting out of the coordinates!
 
-                            imageGroup.getChildren().add(imageView);
+                                // Necessary for making map fields responsive
+                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                imageView.setPreserveRatio(true);
+
+                                imageGroup.getChildren().add(imageView);
                         }
                         // Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
@@ -163,8 +198,23 @@ public class MapController implements IController {
         });
         this.allowSetStart = true;
     }
-    public void sendStartPoint() {
 
+    /**
+     * This method checks if an ArrayList<Tile> contains an element which is an instance of a given class.
+     * @param listToCheck The ArrayList that gets iterated and checked.
+     * @param target The class of the desired object that is searched inside the ArrayList
+     * @return <code>true</code> if that ArrayList contains an object of the given class
+     */
+    public boolean containsInstance(ArrayList<Tile> listToCheck, Class<?> target) {
+        for (Tile listItem : listToCheck) {
+            if (listItem.getClass().equals(target)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void sendStartPoint() {
         // The startinPoints in order according to y-position
         Group startPoint1 = fieldMap.get("0-3");
         startPoint1.setId("0-3");
@@ -199,11 +249,7 @@ public class MapController implements IController {
                     ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
                     chatController.getClient().sendStartingPoint(id);
                 }
-
             });
-
-
-
         }
     }
 
