@@ -10,10 +10,10 @@
 
 ## Version [0.3.2] 
 ### New Features 
-* Added new Maps (highOctane, corridorBlitz, riskyCrossing, burnout) - *(Jessie, Verena, Vincent)*
+* Added new Maps (highOctane, corridorBlitz, riskyCrossing, burnout, passingLane) - *(Jessie, Verena, Vincent)*
 
 ### Changes
-
+* Parameters were set for the bigger passingLane map - *(Vincent)*
 
 ### Bugfixes
 * Choosing robot by one click enabled - *(Ivan)*
