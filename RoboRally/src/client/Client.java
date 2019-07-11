@@ -1,11 +1,18 @@
 package client;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import javafx.scene.image.Image;
 import server.game.Player;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import server.game.Robot;
+import server.game.decks.DeckDiscard;
+import server.game.decks.DeckDraw;
+import server.game.decks.DeckHand;
+import server.game.decks.DeckRegister;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
@@ -13,6 +20,8 @@ import utils.json.protocol.*;
 import viewmodels.*;
 
 import java.net.Socket;
+
+import static utils.Parameter.ORIENTATION_RIGHT;
 
 /**
  * This class implements the clients. <br>
@@ -27,6 +36,9 @@ public class Client {
     private String serverIP;
     private String protocolVersion = "Version 0.1";
     private String group = "AstreineBarsche";
+
+    private PlayerWrapper ownPlayer;
+    private ArrayList<PlayerWrapper> otherPlayers;
 
     private int figure;
     private int serverPort;
@@ -165,6 +177,12 @@ public class Client {
      */
     public void sendPlayerValues(String name, int figure) {
         logger.info("Submitting player values");
+
+        // Here the server gets the name and figure of a newly initialised playerServer
+        ownPlayer = new PlayerWrapper();
+        ownPlayer.setName(name);
+        ownPlayer.initRobotByFigure(figure);
+
         JSONMessage jsonMessage = new JSONMessage("PlayerValues", new PlayerValuesBody(name, figure));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
@@ -358,6 +376,22 @@ public class Client {
         }
     }
 
+    public PlayerWrapper getOwnPlayer() {
+        return ownPlayer;
+    }
+
+    public void setOwnPlayer(PlayerWrapper ownPlayer) {
+        this.ownPlayer = ownPlayer;
+    }
+
+    public ArrayList<PlayerWrapper> getOtherPlayers() {
+        return otherPlayers;
+    }
+
+    public void setOtherPlayers(ArrayList<PlayerWrapper> otherPlayers) {
+        this.otherPlayers = otherPlayers;
+    }
+
     public class OtherPlayer {
         //  StringProperty name;
         IntegerProperty playerID;
@@ -368,4 +402,90 @@ public class Client {
 
         //  public String getName() { return name.get();}
     }
+
+    public class PlayerWrapper{
+
+        private String name;
+        private int energy;
+        private int playerID;
+        private int figure;
+        private boolean isReady;
+
+        private Robot playerRobot;
+
+        private DeckDraw deckDraw;
+        private DeckDiscard deckDiscard;
+        private DeckHand deckHand;
+        private DeckRegister deckRegister;
+
+
+        public PlayerWrapper(){
+            this.deckDraw = new DeckDraw();
+            deckDraw.initializeDeckDraw();
+
+            this.deckDiscard = new DeckDiscard();
+            this.deckHand = new DeckHand();
+            this.deckRegister = new DeckRegister();
+        }
+
+
+        public int getFigure() {
+            return figure;
+        }
+
+        //Initialises Robot through setting the figure
+        public void initRobotByFigure(int figure){
+            this.figure = figure;
+
+            Image robotImage;
+
+            if (figure == 1) {
+                robotImage= new Image("/resources/images/robots/HammerBot.PNG");
+            } else if (figure == 2) {
+                robotImage = new Image("/resources/images/robots/HulkX90.PNG");
+            } else if (figure == 3) {
+                robotImage = new Image("/resources/images/robots/SmashBot.PNG");
+            } else if (figure == 4) {
+                robotImage = new Image("/resources/images/robots/Twonky.PNG");
+            } else if (figure == 5) {
+                robotImage = new Image("/resources/images/robots/Spinbot.PNG");
+            } else {
+                robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
+            }
+
+            this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
+
+        }
+
+        public int getPlayerID(){
+            return playerID;
+        }
+
+        public void setPlayerID(int playerID) {
+            this.playerID = playerID;
+        }
+
+        public boolean isReady() { return isReady; }
+
+        public void setReady(boolean isReady) {
+            this.isReady = isReady;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Robot getPlayerRobot() {
+            return playerRobot;
+        }
+
+        public void setPlayerRobot(Robot playerRobot) {
+            this.playerRobot = playerRobot;
+        }
+    }
+
 }

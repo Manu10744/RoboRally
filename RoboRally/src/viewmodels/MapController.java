@@ -209,6 +209,7 @@ public class MapController implements IController {
 
 
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
+        System.out.println("Bist du hier????");
         fieldMap.get(startingPoint).getChildren().add(new ImageView(playerRobot.getRobotImage()));
     }
 

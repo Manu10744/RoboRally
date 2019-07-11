@@ -23,6 +23,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static utils.Parameter.*;
@@ -36,6 +38,8 @@ import static utils.Parameter.*;
 public class Server extends Application {
     private ArrayList<ClientWrapper> connectedClients;
     private ArrayList<PlayerWrapper> players = new ArrayList<>();
+
+    private ArrayList<String> takenStartingPoints = new ArrayList<>();
 
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
@@ -107,6 +111,18 @@ public class Server extends Application {
 
     public void setNumberOfReadyClients(int number) {
         this.numberOfReadyClients = number;
+    }
+
+    public void setPlayers(ArrayList<PlayerWrapper> players) {
+        this.players = players;
+    }
+
+    public ArrayList<String> getTakenStartingPoints() {
+        return takenStartingPoints;
+    }
+
+    public void setTakenStartingPoints(ArrayList<String> takenStartingPoints) {
+        this.takenStartingPoints = takenStartingPoints;
     }
 
     public ArrayList<PlayerWrapper> getPlayers() {
