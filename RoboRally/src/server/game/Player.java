@@ -1,7 +1,15 @@
 package server.game;
 
+import javafx.scene.image.Image;
+import server.game.decks.DeckDiscard;
+import server.game.decks.DeckDraw;
+import server.game.decks.DeckHand;
+import server.game.decks.DeckRegister;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import static utils.Parameter.ORIENTATION_RIGHT;
 
 /**
  * Each player will have most of the important attributes handled in an array.
@@ -12,76 +20,84 @@ import java.util.ArrayList;
  */
 public class Player implements Serializable {
 
-    private int playerID;
     private String name;
+    private int energy;
+    private int playerID;
     private int figure;
-    private Card[] cardHand;
-    private Card[] cardRegister;
-    private ArrayList<Card> deckDiscard;
-    private ArrayList<Card> deckDraw;
+    private boolean isReady;
+    private Robot playerRobot;
 
-    /**
-     * Player constructor
-     */
-    public Player(int playerID, String name, int figure) {
-        this.playerID = playerID;
-        this.name = name;
+    private DeckDraw deckDraw;
+    private DeckDiscard deckDiscard;
+    private DeckHand deckHand;
+    private DeckRegister deckRegister;
+
+
+    public Player(){
+        this.deckDraw = new DeckDraw();
+        deckDraw.initializeDeckDraw();
+
+        this.deckDiscard = new DeckDiscard();
+        this.deckHand = new DeckHand();
+        this.deckRegister = new DeckRegister();
+    }
+
+
+    public int getFigure() {
+        return figure;
+    }
+
+    // Initialises Robot by processing figure property
+    public void initRobotByFigure(int figure) {
+        // Set figure for this player
         this.figure = figure;
+
+        Image robotImage;
+        if (figure == 1) {
+            robotImage= new Image("/resources/images/robots/HammerBot.PNG");
+        } else if (figure == 2) {
+            robotImage = new Image("/resources/images/robots/HulkX90.PNG");
+        } else if (figure == 3) {
+            robotImage = new Image("/resources/images/robots/SmashBot.PNG");
+        } else if (figure == 4) {
+            robotImage = new Image("/resources/images/robots/Twonky.PNG");
+        } else if (figure == 5) {
+            robotImage = new Image("/resources/images/robots/Spinbot.PNG");
+        } else { // figure == 6
+            robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
+        }
+
+        // Set robot for this player
+        this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
     }
 
-    /**
-     * Get the playerID of a player
-     * @return ID of the player
-     */
-    public int getPlayerID() {
-        return this.playerID;
+    public int getPlayerID(){
+        return playerID;
     }
 
-    /**
-     * Get the name of a player
-     * @return name of the player
-     */
+    public void setPlayerID(int playerID) {
+        this.playerID = playerID;
+    }
+
+    public boolean isReady() { return isReady; }
+
+    public void setReady(boolean isReady) {
+        this.isReady = isReady;
+    }
+
     public String getName() {
         return name;
     }
 
-    /**
-     * Get the chosen robot of a player
-     * @return robot of the player
-     */
-    public int getRobot() {
-        return this.figure;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    /**
-     * Getter for the array the hand cards of a player are stored in
-     * @return cardHand The cardHand of a player
-     */
-    public Card[] getCardHand() {
-        return cardHand;
+    public Robot getPlayerRobot() {
+        return playerRobot;
     }
 
-    /**
-     * Getter for the array the cards which are in the register of a player are stored in
-     * @return cardRegister The cardRegister of a player
-     */
-    public Card[] getCardRegister() {
-        return cardRegister;
-    }
-
-    /**
-     * Getter for the array list the cards of the discard deck are stored in
-     * @return deckDiscard The deckDiscard of a player
-     */
-    public ArrayList<Card> getDeckDiscard() {
-        return deckDiscard;
-    }
-
-    /**
-     * Getter for the array list the cards of the draw deck are stored in
-     * @return deckDraw The deckDraw of a player
-     */
-    public ArrayList<Card> getDeckDraw() {
-        return deckDraw;
+    public void setPlayerRobot(Robot playerRobot) {
+        this.playerRobot = playerRobot;
     }
 }

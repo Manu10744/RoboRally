@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import server.Server;
 import server.game.Card;
+import server.game.Player;
 import server.game.Robot;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -121,7 +122,7 @@ public class MessageDistributer {
 
         boolean playerValueSuccess = true;
 
-        for (Server.PlayerWrapper player : server.getPlayers()) {
+        for (Player player : server.getPlayers()) {
             // Checks if by PLAYER-VALUES received client' name is available
             if (player.getName().equals(playerValueName)) {
                 logger.info("Player " + playerValueName + " refused (name already exists)");
@@ -155,7 +156,7 @@ public class MessageDistributer {
             server.getConnectedClients().add(server.new ClientWrapper(task.getClientSocket(), playerValueName, task.getWriter(), playerValueFigure, server.getSetterPlayerID(), false));
 
             // Here the server gets the name and figure of a newly initialised playerServer
-            Server.PlayerWrapper playerServer = server.new PlayerWrapper();
+            Player playerServer = new Player();
             playerServer.initRobotByFigure(playerValueFigure);
             playerServer.setName(playerValueName);
             server.getPlayers().add(playerServer);
@@ -319,7 +320,7 @@ public class MessageDistributer {
 
         for (Server.ClientWrapper client : server.getConnectedClients()){
             if (client.getClientSocket().equals(task.getClientSocket())){
-               //Todo read playerId from Client
+               //Todo: get PlayerID from OwnPlayer in client
             }
         }
 

@@ -37,8 +37,8 @@ public class Client {
     private String protocolVersion = "Version 0.1";
     private String group = "AstreineBarsche";
 
-    private PlayerWrapper ownPlayer;
-    private ArrayList<PlayerWrapper> otherPlayers;
+    private Player ownPlayer;
+    private ArrayList<Player> otherPlayers;
 
     private int figure;
     private int serverPort;
@@ -115,6 +115,34 @@ public class Client {
         this.chooseRobotController = chooseRobotController;
     }
 
+    public Player getOwnPlayer() {
+        return ownPlayer;
+    }
+
+    public void setOwnPlayer(Player ownPlayer) {
+        this.ownPlayer = ownPlayer;
+    }
+
+    public ArrayList<Player> getOtherPlayers() {
+        return otherPlayers;
+    }
+
+    public void setOtherPlayers(ArrayList<Player> otherPlayers) {
+        this.otherPlayers = otherPlayers;
+    }
+
+    public class OtherPlayer {
+        //  StringProperty name;
+        IntegerProperty playerID;
+
+        public OtherPlayer(int playerID) {
+            this.playerID = new SimpleIntegerProperty(playerID);
+        }
+
+        //  public String getName() { return name.get();}
+    }
+
+
     //TODO  public Client(String name, String serverIP, int serverPort) {
     public Client(String serverIP, int serverPort) {
         logger.info("Starting registration process...");
@@ -179,7 +207,7 @@ public class Client {
         logger.info("Submitting player values");
 
         // Here the server gets the name and figure of a newly initialised playerServer
-        ownPlayer = new PlayerWrapper();
+        ownPlayer = new Player();
         ownPlayer.setName(name);
         ownPlayer.initRobotByFigure(figure);
 
@@ -377,116 +405,6 @@ public class Client {
         }
     }
 
-    public PlayerWrapper getOwnPlayer() {
-        return ownPlayer;
-    }
 
-    public void setOwnPlayer(PlayerWrapper ownPlayer) {
-        this.ownPlayer = ownPlayer;
-    }
-
-    public ArrayList<PlayerWrapper> getOtherPlayers() {
-        return otherPlayers;
-    }
-
-    public void setOtherPlayers(ArrayList<PlayerWrapper> otherPlayers) {
-        this.otherPlayers = otherPlayers;
-    }
-
-    public class OtherPlayer {
-        //  StringProperty name;
-        IntegerProperty playerID;
-
-        public OtherPlayer(int playerID) {
-            this.playerID = new SimpleIntegerProperty(playerID);
-        }
-
-        //  public String getName() { return name.get();}
-    }
-
-    public class PlayerWrapper{
-
-        private String name;
-        private int energy;
-        private int playerID;
-        private int figure;
-        private boolean isReady;
-
-        private Robot playerRobot;
-
-        private DeckDraw deckDraw;
-        private DeckDiscard deckDiscard;
-        private DeckHand deckHand;
-        private DeckRegister deckRegister;
-
-
-        public PlayerWrapper(){
-            this.deckDraw = new DeckDraw();
-            deckDraw.initializeDeckDraw();
-
-            this.deckDiscard = new DeckDiscard();
-            this.deckHand = new DeckHand();
-            this.deckRegister = new DeckRegister();
-        }
-
-
-        public int getFigure() {
-            return figure;
-        }
-
-        //Initialises Robot through setting the figure
-        public void initRobotByFigure(int figure){
-            this.figure = figure;
-
-            Image robotImage;
-
-            if (figure == 1) {
-                robotImage= new Image("/resources/images/robots/HammerBot.PNG");
-            } else if (figure == 2) {
-                robotImage = new Image("/resources/images/robots/HulkX90.PNG");
-            } else if (figure == 3) {
-                robotImage = new Image("/resources/images/robots/SmashBot.PNG");
-            } else if (figure == 4) {
-                robotImage = new Image("/resources/images/robots/Twonky.PNG");
-            } else if (figure == 5) {
-                robotImage = new Image("/resources/images/robots/Spinbot.PNG");
-            } else {
-                robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
-            }
-
-            this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
-
-        }
-
-        public int getPlayerID(){
-            return playerID;
-        }
-
-        public void setPlayerID(int playerID) {
-            this.playerID = playerID;
-        }
-
-        public boolean isReady() { return isReady; }
-
-        public void setReady(boolean isReady) {
-            this.isReady = isReady;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Robot getPlayerRobot() {
-            return playerRobot;
-        }
-
-        public void setPlayerRobot(Robot playerRobot) {
-            this.playerRobot = playerRobot;
-        }
-    }
 
 }

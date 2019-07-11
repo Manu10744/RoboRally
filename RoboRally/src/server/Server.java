@@ -37,7 +37,7 @@ import static utils.Parameter.*;
  */
 public class Server extends Application {
     private ArrayList<ClientWrapper> connectedClients;
-    private ArrayList<PlayerWrapper> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
 
     private ArrayList<String> takenStartingPoints = new ArrayList<>();
 
@@ -113,7 +113,7 @@ public class Server extends Application {
         this.numberOfReadyClients = number;
     }
 
-    public void setPlayers(ArrayList<PlayerWrapper> players) {
+    public void setPlayers(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -125,7 +125,7 @@ public class Server extends Application {
         this.takenStartingPoints = takenStartingPoints;
     }
 
-    public ArrayList<PlayerWrapper> getPlayers() {
+    public ArrayList<Player> getPlayers() {
         return players;
     }
 
@@ -245,89 +245,7 @@ public class ClientWrapper {
         }
     }
 
-    public class PlayerWrapper{
 
-        private String name;
-        private int energy;
-        private int playerID;
-        private int figure;
-        private boolean isReady;
-        private Robot playerRobot;
-
-        private DeckDraw deckDraw;
-        private DeckDiscard deckDiscard;
-        private DeckHand deckHand;
-        private DeckRegister deckRegister;
-
-
-        public PlayerWrapper(){
-            this.deckDraw = new DeckDraw();
-            deckDraw.initializeDeckDraw();
-
-            this.deckDiscard = new DeckDiscard();
-            this.deckHand = new DeckHand();
-            this.deckRegister = new DeckRegister();
-        }
-
-
-        public int getFigure() {
-            return figure;
-        }
-
-        // Initialises Robot by processing figure property
-        public void initRobotByFigure(int figure) {
-            // Set figure for this player
-            this.figure = figure;
-
-            Image robotImage;
-            if (figure == 1) {
-                robotImage= new Image("/resources/images/robots/HammerBot.PNG");
-            } else if (figure == 2) {
-                robotImage = new Image("/resources/images/robots/HulkX90.PNG");
-            } else if (figure == 3) {
-                robotImage = new Image("/resources/images/robots/SmashBot.PNG");
-            } else if (figure == 4) {
-                robotImage = new Image("/resources/images/robots/Twonky.PNG");
-            } else if (figure == 5) {
-                robotImage = new Image("/resources/images/robots/Spinbot.PNG");
-            } else { // figure == 6
-                robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
-            }
-
-            // Set robot for this player
-            this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
-        }
-
-        public int getPlayerID(){
-            return playerID;
-        }
-
-        public void setPlayerID(int playerID) {
-            this.playerID = playerID;
-        }
-
-        public boolean isReady() { return isReady; }
-
-        public void setReady(boolean isReady) {
-            this.isReady = isReady;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public Robot getPlayerRobot() {
-            return playerRobot;
-        }
-
-        public void setPlayerRobot(Robot playerRobot) {
-            this.playerRobot = playerRobot;
-        }
-    }
 }
 
 
