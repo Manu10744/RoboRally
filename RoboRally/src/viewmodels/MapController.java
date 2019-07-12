@@ -206,6 +206,20 @@ public class MapController implements IController {
                         for (Tile tile : tileArray) {
                             // If the field contains a Laser and Wall, only display a picture for wall which already contains the laser,
                             // Correct image is provided by considering orientation of wall
+
+                            if(tile == null){
+                                ImageView imageView = new ImageView();
+                                imageView.setFitWidth(100.0);
+                                imageView.setFitHeight(100.0);
+
+                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                imageView.setPreserveRatio(true);
+
+                                imageGroup.getChildren().add(imageView);
+
+                            } else {
+
                                 Image image = tile.getTileImage();
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
@@ -217,8 +231,11 @@ public class MapController implements IController {
                                 imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                                 imageView.setPreserveRatio(true);
 
-                                imageGroup.getChildren().add(imageView);
+                                imageGroup.getChildren().add(imageView);}
+
+
                         }
+
                         // Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
                         fieldMap.put(groupID, imageGroup);
