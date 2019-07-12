@@ -33,6 +33,7 @@ import viewmodels.PlayerMatController;
 public class MessageDistributer {
     public static Map<String, IController> controllerMap;
     public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
 
     private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
@@ -71,11 +72,10 @@ public class MessageDistributer {
             if (helloServerBody.getProtocol().equals(server.getProtocolVersion())) {
                 logger.info("Protocol version test succeeded");
 
-
+                // First, assign the client a playerID
                 JSONMessage jsonMessage = new JSONMessage("Welcome", new WelcomeBody(server.getCounterPlayerID()));
                 task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 task.getWriter().flush();
-
 
                 // Inform about already connected clients, also to disable already assigned robots before loading the chooseRobot view
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
@@ -87,6 +87,19 @@ public class MessageDistributer {
                     task.getWriter().println(JSONEncoder.serializeJSON(informerMessage));
                     task.getWriter().flush();
                 }
+
+                // Server creates his player instance
+                Player newPlayer = new Player();
+                newPlayer.setPlayerID(server.getCounterPlayerID());
+                server.getPlayers().add(newPlayer);
+
+                // Create a ClientWrapper containing the player object in order to keep track and update later on
+                Server.ClientWrapper newClientWrapper = server.new ClientWrapper();
+                newClientWrapper.setPlayer(newPlayer);
+                newClientWrapper.setClientSocket(task.getClientSocket());
+                server.getConnectedClients().add(newClientWrapper);
+
+                logger.info("SERVER CREATED HIS PLAYER WITH PLAYER ID: " + newPlayer.getPlayerID());
 
 
                 // Save the playerID before incrementing the counter so the proper ID is given to the ClientWrapper
@@ -152,19 +165,38 @@ public class MessageDistributer {
         if (playerValueSuccess) {
             logger.info(playerValueName + " successfully registered");
             //TODO: A client should already exist after helloClient message -> here too late
-            //Add new Client to list connected clients
-            server.getConnectedClients().add(server.new ClientWrapper(task.getClientSocket(), playerValueName, task.getWriter(), playerValueFigure, server.getSetterPlayerID(), false));
 
-            // Here the server gets the name and figure of a newly initialised playerServer
-            Player playerServer = new Player();
-            playerServer.initRobotByFigure(playerValueFigure);
-            playerServer.setName(playerValueName);
-            server.getPlayers().add(playerServer);
+            // Update the ClientWrapper
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    clientWrapper.setName(playerValueName);
+                    clientWrapper.setWriter(task.getWriter());
+                    clientWrapper.setFigure(playerValueFigure);
+                    clientWrapper.setPlayerID(server.getSetterPlayerID());
+                    clientWrapper.setReady(false);
+                }
+            }
 
-            // Send message to all active clients
-            JSONMessage jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(server.getCounterPlayerID(), playerValueName, playerValueFigure));
-            task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-            task.getWriter().flush();
+            // Server needs to update his player instance
+            Player playerToUpdate;
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    playerToUpdate = clientWrapper.getPlayer();
+                    playerToUpdate.setName(playerValueName);
+                    playerToUpdate.setFigure(playerValueFigure);
+                    playerToUpdate.initRobotByFigure(playerValueFigure);
+
+                    logger.info("SERVER UPDATED HIS PLAYER WITH PLAYERID " + clientWrapper.getPlayerID()
+                        + ". UPDATES: FIGURE: " + playerValueFigure + ", NAME: " + playerValueName);
+                }
+            }
+
+            // Inform every connected client about new added player
+            for (Server.ClientWrapper client : server.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(server.getSetterPlayerID(), playerValueName, playerValueFigure));
+                client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                client.getWriter().flush();
+            }
 
             // Inform new client with private chat message about all current active clients(without own entry)
             for (Server.ClientWrapper client : server.getConnectedClients()) {
@@ -381,6 +413,13 @@ public class MessageDistributer {
             System.out.println(ANSI_CYAN + "Entered handleWelcome()" + ANSI_RESET);
             logger.info("PlayerID: " + welcomeBody.getPlayerID());
 
+            // Client creates his player instance
+            Player player = new Player();
+            player.setPlayerID(welcomeBody.getPlayerID());
+            client.setPlayer(player);
+
+            logger.info("CLIENT CREATED HIS PLAYER WITH PLAYER ID: " + player.getPlayerID());
+
             task.setPlayerID(welcomeBody.getPlayerID());
 
         }
@@ -401,28 +440,55 @@ public class MessageDistributer {
                 Client.OtherPlayer newPlayer = client.new OtherPlayer(playerAddedBody.getPlayerID());
                 client.getOtherActivePlayers().add(client.getOtherActivePlayers().size(), newPlayer);
 
-                int figure = playerAddedBody.getFigure();
-                ChooseRobotController chooseRobotController = client.getChooseRobotController();
+                // Extracting message content
+                String messageName = playerAddedBody.getName();
+                int messageFigure = playerAddedBody.getFigure();
+                int messagePlayerID = playerAddedBody.getPlayerID();
 
-                // Update the chooseRobot view because a robot has been assigned
-                if (figure == 1) {
-                    chooseRobotController.getHammerBot().setDisable(true);
-                    chooseRobotController.getHammerBot().setOpacity(0.5);
-                } else if (figure == 2) {
-                    chooseRobotController.getHulkX90().setDisable(true);
-                    chooseRobotController.getHulkX90().setOpacity(0.5);
-                } else if (figure == 3) {
-                    chooseRobotController.getSmashBot().setDisable(true);
-                    chooseRobotController.getSmashBot().setOpacity(0.5);
-                } else if (figure == 4) {
-                    chooseRobotController.getSpinBot().setDisable(true);
-                    chooseRobotController.getSpinBot().setOpacity(0.5);
-                } else if (figure == 5) {
-                    chooseRobotController.getTwonky().setDisable(true);
-                    chooseRobotController.getTwonky().setOpacity(0.5);
-                } else if (figure == 6) {
-                    chooseRobotController.getZoomBot().setDisable(true);
-                    chooseRobotController.getZoomBot().setOpacity(0.5);
+                if (playerAddedBody.getPlayerID() == client.getPlayer().getPlayerID()) {
+                    // PlayerAdded message due to own player has been added
+                    client.getPlayer().setName(messageName);
+                    client.getPlayer().initRobotByFigure(messageFigure);
+
+                    logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET + " UPDATED HIS OWN PLAYER. UPDATES: "
+                            + "FIGURE: " + messageFigure + ", ROBOT: " + client.getPlayer().getPlayerRobot() + ", NAME: " + messageName);
+                } else {
+                    // PlayerAdded message due to other player has been added
+                    Player otherPlayer = new Player();
+                    otherPlayer.setPlayerID(messagePlayerID);
+                    otherPlayer.setName(messageName);
+                    otherPlayer.initRobotByFigure(messageFigure);
+
+                    if (client.getPlayer().getName() == "") {
+                        logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET - " + ANSI_RESET
+                                + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
+                    } else {
+                        logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                                + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
+                    }
+
+                    ChooseRobotController chooseRobotController = client.getChooseRobotController();
+
+                    // Update the chooseRobot view because a robot has been assigned
+                    if (messageFigure == 1) {
+                        chooseRobotController.getHammerBot().setDisable(true);
+                        chooseRobotController.getHammerBot().setOpacity(0.5);
+                    } else if (messageFigure == 2) {
+                        chooseRobotController.getHulkX90().setDisable(true);
+                        chooseRobotController.getHulkX90().setOpacity(0.5);
+                    } else if (messageFigure == 3) {
+                        chooseRobotController.getSmashBot().setDisable(true);
+                        chooseRobotController.getSmashBot().setOpacity(0.5);
+                    } else if (messageFigure == 4) {
+                        chooseRobotController.getSpinBot().setDisable(true);
+                        chooseRobotController.getSpinBot().setOpacity(0.5);
+                    } else if (messageFigure == 5) {
+                        chooseRobotController.getTwonky().setDisable(true);
+                        chooseRobotController.getTwonky().setOpacity(0.5);
+                    } else if (messageFigure == 6) {
+                        chooseRobotController.getZoomBot().setDisable(true);
+                        chooseRobotController.getZoomBot().setOpacity(0.5);
+                    }
                 }
             });
         }
@@ -529,6 +595,15 @@ public class MessageDistributer {
                     alert.show();
 
                     //TODO write code here for proper reaction
+                }
+                if (errorMessage.equals("Sorry, this StartingPoint is already taken!")) {
+                    logger.info(errorMessage);
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error occured");
+                    alert.setHeaderText("StartPoint already taken!");
+                    alert.setContentText(errorMessage);
+                    alert.show();
                 }
             });
         }

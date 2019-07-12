@@ -33,6 +33,9 @@ public class Player implements Serializable {
     private DeckRegister deckRegister;
 
     public Player(){
+        this.name = "";
+
+        // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
         deckDraw.initializeDeckDraw();
 
@@ -41,15 +44,16 @@ public class Player implements Serializable {
         this.deckRegister = new DeckRegister();
     }
 
-
     public int getFigure() {
         return figure;
     }
 
+    public void setFigure(int figure) {
+        this.figure = figure;
+    }
+
     // Initialises Robot by processing figure property
     public void initRobotByFigure(int figure) {
-        // Set figure for this player
-        this.figure = figure;
 
         Image robotImage;
         if (figure == 1) {

@@ -47,7 +47,7 @@ public class Server extends Application {
     private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
     private MessageDistributer messageDistributer = new MessageDistributer();
-    private static final Logger logger = Logger.getLogger( Server.class.getName() );
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -59,7 +59,7 @@ public class Server extends Application {
         connectedClients = new ArrayList<>();
         boolean isAcceptingNewClients = true;
 
-        while(isAcceptingNewClients) { // Runs forever at the moment
+        while (isAcceptingNewClients) { // Runs forever at the moment
             logger.info("Waiting for new client...");
             //New client connects: (accept() waits for new client)
             Socket clientSocket = serverSocket.accept();
@@ -197,16 +197,20 @@ public class Server extends Application {
         }
     }
 
-/**
- * Inner class to wrap the information from the client (socket + name)
- */
-public class ClientWrapper {
-    private Socket socket;
-    private String name;
-    private PrintWriter writer;
-    private int playerID;
-    private int figure;
-    private boolean isReady;
+    /**
+     * Inner class to wrap the information from the client (socket + name)
+     */
+    public class ClientWrapper {
+        private PrintWriter writer;
+        private Socket socket;
+
+        private Player player;
+        private String name;
+        private int playerID;
+        private int figure;
+        private boolean isReady;
+
+        public ClientWrapper() { }
 
         public ClientWrapper(Socket socket, String name, PrintWriter writer, int figure, int playerID, boolean isReady) {
             this.socket = socket;
@@ -215,36 +219,63 @@ public class ClientWrapper {
             this.figure = figure;
             this.playerID = playerID;
             this.isReady = isReady;
+            this.player = player;
         }
 
         public Socket getClientSocket() {
             return socket;
         }
 
+        public void setClientSocket(Socket clientSocket) {
+            this.socket = clientSocket;
+        }
+
         public String getName() {
             return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
 
         public PrintWriter getWriter() {
             return writer;
         }
 
+        public void setWriter(PrintWriter writer) {
+            this.writer = writer;
+        }
+
         public int getFigure() {
             return figure;
         }
 
-        public int getPlayerID(){
+        public void setFigure(int figure) {
+            this.figure = figure;
+        }
+
+        public int getPlayerID() {
             return playerID;
         }
 
-        public boolean isReady() { return isReady; }
+        public void setPlayerID(int playerID) {
+            this.playerID = playerID;
+        }
+
+        public boolean isReady() {
+            return isReady;
+        }
 
         public void setReady(boolean isReady) {
             this.isReady = isReady;
         }
+
+        public Player getPlayer() { return player; }
+
+        public void setPlayer(Player player) {
+            this.player = player;
+        }
     }
-
-
 }
 
 

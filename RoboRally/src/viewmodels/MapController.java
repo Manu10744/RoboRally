@@ -2,9 +2,11 @@ package viewmodels;
 
 import client.Client;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,10 +49,36 @@ public class MapController implements IController {
     private Map<String, Group> fieldMap = new HashMap<String, Group>();
     private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
 
+    public int mapChangeCounter;
+    private ArrayList<ArrayList<ArrayList<Tile>>> map;
+
     @Override
     public IController setPrimaryController(StageController stageController) {
         this.stageController = stageController;
         return this;
+    }
+
+    public ArrayList<ArrayList<ArrayList<Tile>>> getMap() { return map; }
+
+    @FXML
+    public void initialize() {
+        // This Listener fires an event after the map has been completely loaded
+        mapPane.getChildren().addListener(new ListChangeListener<Node>() {
+            @Override
+            public void onChanged(Change<? extends Node> change) {
+                MapController mapController = (MapController) stageController.getControllerMap().get("Map");
+                mapChangeCounter++;
+                logger.info("MAP CHANGE COUNTER: " + mapChangeCounter);
+
+                // Map size = Height * Width + 1(Group containing all the fields)
+                int mapSizeAfterLoad = (mapController.map.size() * mapController.map.get(0).size()) + 1;
+
+                // Fire event
+                if (mapChangeCounter == mapSizeAfterLoad) {
+                    System.out.println("MAP IS COMPLETELY LOADED!");
+                }
+            }
+        });
     }
 
     /**
@@ -60,8 +88,10 @@ public class MapController implements IController {
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
-
         System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
+
+        // Set map so the Listener on the map can determine the size of map after it has been completely loaded
+        this.map = gameStartedBody.getXArray();
 
         /*
         // Popup for performing actions on robot
