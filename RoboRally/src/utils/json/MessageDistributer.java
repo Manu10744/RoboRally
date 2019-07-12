@@ -187,7 +187,7 @@ public class MessageDistributer {
                     playerToUpdate.initRobotByFigure(playerValueFigure);
 
                     logger.info("SERVER UPDATED HIS PLAYER WITH PLAYERID " + clientWrapper.getPlayerID()
-                        + ". UPDATES: FIGURE: " + playerValueFigure + ", NAME: " + playerValueName);
+                        + ". UPDATES: FIGURE: " + playerValueFigure + ", ROBOT: " + playerToUpdate.getPlayerRobot() + ", NAME: " + playerValueName);
                 }
             }
 
@@ -196,6 +196,15 @@ public class MessageDistributer {
                 JSONMessage jsonMessage = new JSONMessage("PlayerAdded", new PlayerAddedBody(server.getSetterPlayerID(), playerValueName, playerValueFigure));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
+            }
+
+            // TODO: SEND READY STATUS OF ALREADY CONNECTED CLIENTS TO NEW CONNECTED CLIENT
+
+            for (Player player : server.getPlayers()) {
+                System.out.println("PLAYERID: " + player.getPlayerID());
+                System.out.println("NAME: " + player.getName());
+                System.out.println("FIGURE: " + player.getFigure());
+                System.out.println("ROBOT: " + player.getPlayerRobot());
             }
 
             // Inform new client with private chat message about all current active clients(without own entry)
@@ -233,9 +242,23 @@ public class MessageDistributer {
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket().equals(task.getClientSocket()))
                 .findFirst().get().getPlayerID();
 
+        // TODO: probably not needed anymore
         // Update the ClientWrapper due to the ready status change
         server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket().equals(task.getClientSocket())).findFirst().get().setReady(clientReady);
 
+        // Update the server's corresponding player instance
+        Player playerToUpdate;
+        for (Server.ClientWrapper client : server.getConnectedClients()) {
+            if (client.getClientSocket().equals(task.getClientSocket())) {
+                playerToUpdate = client.getPlayer();
+                playerToUpdate.setReady(clientReady);
+
+                logger.info("SERVER UPDATED HIS PLAYER WITH PLAYERID " + client.getPlayerID()
+                        + ". UPDATES: " + "READY STATUS: " + clientReady);
+            }
+        }
+
+        // Inform every connected client about changed ready status
         for (Server.ClientWrapper client : server.getConnectedClients()) {
             logger.info("READY STATUS OF PLAYER " + client.getName() + ": " + client.isReady());
             logger.info("PLAYER ID: " + client.getPlayerID());
@@ -245,7 +268,7 @@ public class MessageDistributer {
             client.getWriter().flush();
         }
 
-        // Increase number of ready clients when true
+        // Increase number of ready clients when true, else decrease
         int numberOfReadyClients = server.getNumberOfReadyClients();
         if (clientReady) {
             server.setNumberOfReadyClients(++numberOfReadyClients);
@@ -459,6 +482,8 @@ public class MessageDistributer {
                     otherPlayer.setName(messageName);
                     otherPlayer.initRobotByFigure(messageFigure);
 
+                    client.getOtherPlayers().add(otherPlayer);
+
                     if (client.getPlayer().getName() == "") {
                         logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET - " + ANSI_RESET
                                 + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
@@ -504,7 +529,26 @@ public class MessageDistributer {
         public void handlePlayerStatus (Client client, Client.ClientReaderTask task, PlayerStatusBody playerStatusBody){
             System.out.println(ANSI_CYAN + "Entered handlePlayerStatus()" + ANSI_RESET);
 
+            int messagePlayerID = playerStatusBody.getPlayerID();
             boolean readyStatus = playerStatusBody.isReady();
+
+            // Update client's player instance (either own or corresponding OtherPlayer)
+            if (client.getPlayer().getPlayerID() == playerStatusBody.getPlayerID()) {
+                client.getPlayer().setReady(readyStatus);
+
+                logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                        + " UPDATED HIS OWN PLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+            } else {
+                // Ready status of other player has changed
+                for (Player otherPlayer : client.getOtherPlayers()) {
+                    if (otherPlayer.getPlayerID() == messagePlayerID) {
+                        otherPlayer.setReady(readyStatus);
+
+                        logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                                + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+                    }
+                }
+            }
 
             Platform.runLater(() -> {
                 if (readyStatus) {
@@ -574,7 +618,7 @@ public class MessageDistributer {
             String errorMessage = errorBody.getError();
 
             Platform.runLater(() -> {
-                if (errorMessage.equals("Error: Name already exists")) {
+                if (errorMessage.equals("Error: name already exists")) {
                     logger.info(errorMessage);
 
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -585,7 +629,7 @@ public class MessageDistributer {
 
                     //TODO write code here for proper reaction
                 }
-                if (errorMessage.equals("Error: Figure already exists")) {
+                if (errorMessage.equals("Error: figure already exists")) {
                     logger.info(errorMessage);
 
                     Alert alert = new Alert(Alert.AlertType.ERROR);
