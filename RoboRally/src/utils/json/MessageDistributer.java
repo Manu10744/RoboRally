@@ -380,7 +380,7 @@ public class MessageDistributer {
      * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
      */
     public void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
-        System.out.println(ANSI_CYAN + "Entered handleSendChat()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
 
         int x = setStartingPointBody.getX();
         int y = setStartingPointBody.getY();
@@ -607,7 +607,11 @@ public class MessageDistributer {
                 e.printStackTrace();
             }
 
-            mapController.sendStartPoint();
+            // commented this out because it will throw errors on many maps as startpoints are still hardcoded
+            // + charAt(2) will only return 1 when y coordinate is 10.
+            // TODO: FIX!
+            // mapController.sendStartPoint();
+
             // Popup of 9 cards to choose from
             ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards
 
