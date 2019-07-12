@@ -2,19 +2,22 @@
 * Ability to choose map not implemented yet
 * Take the client back when he tried to enter a username that is already taken
 * Drag and Drop must be fixed (Bugs)
-* Remaining maps are missing (12/18)
+* Remaining maps are missing (16/18)
 * Timer before map starts
 * Event for INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS needed because informer message about ready status of already connected players comes in too fast -
   information of already connected players is not 100% processed at that time.
  * Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
 
-## Version [0.4] 
+## Version [0.4.0] 
 ### New Features 
 * Freshly connected clients are now informed about ready status of already connected clients, but only by a workaround (making the Thread sleep). - *(Manu)*
 * Map can now callback when it was completely loaded by an Event which still needs to be implemented. - *(Manu)*
 
+
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
+* Map sizes are detected without using parameters - (*Verena*)
+* Gaps in maps can now be displayed - (*Jessie, Verena*)
 
 ### Bugfixes
 
