@@ -294,7 +294,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);

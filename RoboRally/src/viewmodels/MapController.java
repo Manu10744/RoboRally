@@ -37,6 +37,7 @@ import java.util.logging.Logger;
  * @author Ivan Dovecar
  * @author Mia
  * @author Manu
+ * @author Verena
  */
 
 public class MapController implements IController {
@@ -53,6 +54,9 @@ public class MapController implements IController {
 
     public int mapChangeCounter;
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
+
+    public int mapWidth;
+    public int mapHeight;
 
     @Override
     public IController setPrimaryController(StageController stageController) {
@@ -190,8 +194,11 @@ public class MapController implements IController {
 
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
 
-                for (int xPos = Parameter.DIZZY_HIGHWAY_WIDTH - 1; xPos >= 0; xPos--) {
-                    for (int yPos = Parameter.DIZZY_HIGHWAY_HEIGHT - 1; yPos >= 0; yPos--) {
+                int mapWidth = map.size();
+                int mapHeight = map.get(0).size();
+
+                for (int xPos = mapWidth - 1; xPos >= 0; xPos--) {
+                    for (int yPos = mapHeight - 1; yPos >= 0; yPos--) {
                         // Each field on the map is represented by a single Array of Tiles
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
@@ -218,8 +225,8 @@ public class MapController implements IController {
                                 // TODO: For each Tile of type StartPoint set an ID dynamically consisting out of the coordinates!
 
                                 // Necessary for making map fields responsive
-                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+                                imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
+                                imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
                                 imageView.setPreserveRatio(true);
 
                                 imageGroup.getChildren().add(imageView);}
@@ -231,7 +238,7 @@ public class MapController implements IController {
                         fieldMap.put(groupID, imageGroup);
 
                         // Set new Y-position to avoid the map getting displayed inverted (!)
-                        int newYPos = Parameter.DIZZY_HIGHWAY_HEIGHT - (yPos + 1);
+                        int newYPos = mapHeight - (yPos + 1);
                         mapPane.setConstraints(imageGroup, xPos, newYPos);
                         mapPane.getChildren().add(imageGroup);
                     }
@@ -303,8 +310,8 @@ public class MapController implements IController {
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
 
         ImageView imageView = new ImageView(playerRobot.getRobotImage());
-        imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
-        imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+        imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
+        imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
         imageView.setPreserveRatio(true);
 
         fieldMap.get(startingPoint).getChildren().add(imageView);
