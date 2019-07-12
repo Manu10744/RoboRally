@@ -510,7 +510,7 @@ public class Tile {
             break;
         }
         //for empty tiles in case the board si not rectangular
-        default:
+            default:
         return null;
     }
 

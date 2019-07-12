@@ -117,8 +117,8 @@ public class Parameter {
 
     //Map
         //size
-    public static final int DIZZY_HIGHWAY_HEIGHT = 10;
-    public static final int DIZZY_HIGHWAY_WIDTH = 13;
+    public static final int DIZZY_HIGHWAY_HEIGHT = 20;
+    public static final int DIZZY_HIGHWAY_WIDTH = 23;
     public static final int PASSING_LANE_HEIGHT = 10;
     public static final int PASSING_LANE_WIDTH = 23;
 

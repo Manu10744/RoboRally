@@ -204,8 +204,13 @@ public class MapController implements IController {
                         Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                            // If the field contains a Laser and Wall, only display a picture for wall which already contains the laser,
-                            // Correct image is provided by considering orientation of wall
+                            if (tile == null){
+                                ImageView imageView = new ImageView();
+
+                                imageView.setPreserveRatio(true);
+                                imageGroup.getChildren().add(imageView);
+                            } else {
+
                                 Image image = tile.getTileImage();
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
@@ -217,8 +222,10 @@ public class MapController implements IController {
                                 imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
                                 imageView.setPreserveRatio(true);
 
-                                imageGroup.getChildren().add(imageView);
+                                imageGroup.getChildren().add(imageView);}
+
                         }
+
                         // Groups are added to HashMap
                         String groupID = xPos + "-" + yPos;
                         fieldMap.put(groupID, imageGroup);
@@ -242,6 +249,10 @@ public class MapController implements IController {
      */
     public boolean containsInstance(ArrayList<Tile> listToCheck, Class<?> target) {
         for (Tile listItem : listToCheck) {
+            if (listItem == null) {
+                // Return true so no Empty tile is added to the field
+                return true;
+            }
             if (listItem.getClass().equals(target)) {
                 return true;
             }
@@ -261,8 +272,8 @@ public class MapController implements IController {
         startPoint4.setId("1-4");
         Group startPoint5 = fieldMap.get("1-5");
         startPoint5.setId("1-5");
-        Group startPoint6 = fieldMap.get("1-8");
-        startPoint6.setId("1-8");
+        Group startPoint6 = fieldMap.get("1-10");
+        startPoint6.setId("1-10");
 
         ArrayList<Group> startPoints = new ArrayList<>();
         startPoints.add(startPoint1);
