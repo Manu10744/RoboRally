@@ -366,6 +366,7 @@ public class PlayerMatController implements IController {
                     rootStage.setX(stageController.getPlayerMat().getLayoutX() + playerUpdates.getLayoutX() - register1.getFitWidth());
                     rootStage.setY(stageController.getPlayerMat().getLayoutY() + playerUpdates.getLayoutY());
                     rootStage.show();
+                    root.getStylesheets().add("/resources/css/main.css");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
