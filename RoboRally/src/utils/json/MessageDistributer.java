@@ -253,7 +253,6 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "Entered handleSetStatus()" + ANSI_RESET);
 
         boolean clientReady = setStatusBody.isReady();
-        logger.info("IS READY STATUS :" + clientReady);
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket().equals(task.getClientSocket()))
                 .findFirst().get().getPlayerID();
 
@@ -275,9 +274,6 @@ public class MessageDistributer {
 
         // Inform every connected client about changed ready status
         for (Server.ClientWrapper client : server.getConnectedClients()) {
-            logger.info("READY STATUS OF PLAYER " + client.getName() + ": " + client.isReady());
-            logger.info("PLAYER ID: " + client.getPlayerID());
-
             JSONMessage jsonMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, clientReady));
             client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
             client.getWriter().flush();
@@ -384,6 +380,8 @@ public class MessageDistributer {
      * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
      */
     public void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
+        System.out.println(ANSI_CYAN + "Entered handleSendChat()" + ANSI_RESET);
+
         int x = setStartingPointBody.getX();
         int y = setStartingPointBody.getY();
 
@@ -391,17 +389,26 @@ public class MessageDistributer {
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket()
                 .equals(task.getClientSocket())).findFirst().get().getPlayerID();
 
+        logger.info("PLAYER WITH ID " + playerID + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )");
+
         if (server.getTakenStartingPoints().contains(desiredStartPoint)) {
+            logger.info(ANSI_GREEN + "ERROR: STARTPOINT IS ALREADY TAKEN. REQUEST DENIED." + ANSI_RESET);
+
             JSONMessage jsonMessage = new JSONMessage("Error", new ErrorBody("Sorry, this StartingPoint is already taken!"));
-            task.getWriter().print(JSONEncoder.serializeJSON(jsonMessage));
+            task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
             task.getWriter().flush();
         } else {
             // StartingPoint is available
+            logger.info(ANSI_GREEN + "STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
+
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, playerID));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
+
+            // Startpoint is now taken
+            server.getTakenStartingPoints().add(desiredStartPoint);
         }
     }
 
@@ -559,8 +566,13 @@ public class MessageDistributer {
                     if (otherPlayer.getPlayerID() == messagePlayerID) {
                         otherPlayer.setReady(readyStatus);
 
-                        logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
-                                + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+                        if (client.getPlayer().getName() == "") {
+                            logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET -" + ANSI_RESET
+                                    + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+                        } else {
+                            logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                                    + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+                        }
                     }
                 }
             }
@@ -737,9 +749,14 @@ public class MessageDistributer {
                     mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
                 } else {
                     // For everyone else
-                    Robot robot = client.getOtherPlayers().stream().filter(player -> player.getPlayerID()
-                            == client.getPlayer().getPlayerID()).findFirst().get().getPlayerRobot();
-                    mapController.setStartingPoint(robot, startPosition);
+                    Robot otherPlayerRobot;
+
+                    for (Player otherPlayer : client.getOtherPlayers()) {
+                        if (otherPlayer.getPlayerID() == startingPointTakenBody.getPlayerID()) {
+                            otherPlayerRobot = otherPlayer.getPlayerRobot();
+                            mapController.setStartingPoint(otherPlayerRobot, startPosition);
+                        }
+                    }
                 }
             });
         }

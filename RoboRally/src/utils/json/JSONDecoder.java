@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * This class is responsible for the deserialization (JSON -> Java) of JSON Messages being in their String representation.<br>
@@ -27,6 +28,10 @@ import java.util.ArrayList;
  * @author Mia
  */
 public class JSONDecoder {
+
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
     /**
      * This method deserializes a JSON String into a Java Object. It makes use of a
@@ -417,9 +422,7 @@ public class JSONDecoder {
 
                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = tileArrayListParser.fromJson(tripleNestedArray, listType);
 
-                System.out.println("SIZE OF X ARRAY: " + mapBody.size());
-                System.out.println("SIZE OF FIRST DOUBLE IN X ARRAY: " + mapBody.get(0).size());
-                System.out.println("SIZE OF SECOND DOUBLE IN X ARRAY " + mapBody.get(1).size());
+                logger.info(ANSI_GREEN + "( JSONDECODER ): MAP SIZE CALCULATION IN FINISHED: " + mapBody.size() * mapBody.get(0).size() + " FIELDS." + ANSI_RESET + "\n");
 
                 GameStartedBody gameStartedBody = new GameStartedBody(
                         mapBody

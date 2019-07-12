@@ -40,6 +40,8 @@ import java.util.logging.Logger;
  */
 
 public class MapController implements IController {
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     private StageController stageController;
     private boolean allowSetStart;
@@ -75,7 +77,7 @@ public class MapController implements IController {
 
                 // Fire event
                 if (mapChangeCounter == mapSizeAfterLoad) {
-                    System.out.println("MAP IS COMPLETELY LOADED!");
+                    logger.info(ANSI_GREEN + "( MAPCONTROLLER ): MAP LOADING FINISHED!" + ANSI_RESET);
                 }
             }
         });
@@ -88,7 +90,6 @@ public class MapController implements IController {
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
-        System.out.println("MAPPANE CHILDREN START: " + mapPane.getChildren().size());
 
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
@@ -184,6 +185,8 @@ public class MapController implements IController {
                         mapPane.requestFocus();
                     }
                 });
+
+                logger.info(ANSI_GREEN + "( MAPCONTROLLER ): MAP LOADING WAS STARTED..." + ANSI_RESET);
 
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
 
@@ -287,9 +290,12 @@ public class MapController implements IController {
 
 
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
-        logger.info("ENTERED SETSTARTINGPOINT WITH STARTPOINT " + startingPoint);
 
         ImageView imageView = new ImageView(playerRobot.getRobotImage());
+        imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(Parameter.DIZZY_HIGHWAY_WIDTH));
+        imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(Parameter.DIZZY_HIGHWAY_HEIGHT));
+        imageView.setPreserveRatio(true);
+
         fieldMap.get(startingPoint).getChildren().add(imageView);
     }
 
