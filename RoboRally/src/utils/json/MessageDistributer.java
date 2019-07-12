@@ -73,8 +73,8 @@ public class MessageDistributer {
                 logger.info("Protocol version test succeeded");
 
                 // First, assign the client a playerID
-                JSONMessage jsonMessage = new JSONMessage("Welcome", new WelcomeBody(server.getCounterPlayerID()));
-                task.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                JSONMessage welcomeMessage = new JSONMessage("Welcome", new WelcomeBody(server.getCounterPlayerID()));
+                task.getWriter().println(JSONEncoder.serializeJSON(welcomeMessage));
                 task.getWriter().flush();
 
                 // Inform about already connected clients, also to disable already assigned robots before loading the chooseRobot view
@@ -87,6 +87,21 @@ public class MessageDistributer {
                     task.getWriter().println(JSONEncoder.serializeJSON(informerMessage));
                     task.getWriter().flush();
                 }
+
+                // TODO: REPLACE THIS WITH AN EVENT INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS
+                Thread.sleep(300);
+
+                // Inform every freshly connected client about ready status of already connected players
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
+                    int playerID = client.getPlayer().getPlayerID();
+                    boolean isReady = client.getPlayer().isReady();
+
+                    JSONMessage readyMessage = new JSONMessage("PlayerStatus", new PlayerStatusBody(playerID, isReady));
+                    task.getWriter().println(JSONEncoder.serializeJSON(readyMessage));
+                    task.getWriter().flush();
+                }
+
+                // TODO: MAYBE CREATE AN EVENT INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_CLIENTS
 
                 // Server creates his player instance
                 Player newPlayer = new Player();
@@ -113,6 +128,8 @@ public class MessageDistributer {
                 logger.info("Server connection terminated");
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -197,8 +214,6 @@ public class MessageDistributer {
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
-
-            // TODO: SEND READY STATUS OF ALREADY CONNECTED CLIENTS TO NEW CONNECTED CLIENT
 
             for (Player player : server.getPlayers()) {
                 System.out.println("PLAYERID: " + player.getPlayerID());
@@ -526,7 +541,7 @@ public class MessageDistributer {
          * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
          * @param playerStatusBody The message body of the message which is of type {@link PlayerStatusBody}.
          */
-        public void handlePlayerStatus (Client client, Client.ClientReaderTask task, PlayerStatusBody playerStatusBody){
+        public void handlePlayerStatus(Client client, Client.ClientReaderTask task, PlayerStatusBody playerStatusBody){
             System.out.println(ANSI_CYAN + "Entered handlePlayerStatus()" + ANSI_RESET);
 
             int messagePlayerID = playerStatusBody.getPlayerID();
