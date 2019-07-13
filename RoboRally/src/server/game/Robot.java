@@ -39,12 +39,19 @@ public class Robot {
         return xPosition;
     }
 
+    public void setxPosition(int x) {
+        this.xPosition = x;
+    }
     /**
      * Get the y position of the robot
      * @return yPosition The yPosition of the robot
      */
     public int getyPosition() {
         return yPosition;
+    }
+
+    public void setyPosition(int y) {
+        this.yPosition = y;
     }
 
     /**

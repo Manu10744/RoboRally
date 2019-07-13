@@ -390,7 +390,7 @@ public class MessageDistributer {
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket()
                 .equals(task.getClientSocket())).findFirst().get().getPlayerID();
 
-        logger.info("PLAYER WITH ID " + playerID + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )");
+        logger.info(ANSI_GREEN + "PLAYER WITH ID " + playerID + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )" + ANSI_RESET);
 
         if (server.getTakenStartingPoints().contains(desiredStartPoint)) {
             logger.info(ANSI_GREEN + "ERROR: STARTPOINT IS ALREADY TAKEN. REQUEST DENIED." + ANSI_RESET);
@@ -739,7 +739,9 @@ public class MessageDistributer {
                 // For client that chose that StartPoint
                 if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
                     mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
+
                     mapController.setAllowedToSetStart(false);
+                    logger.info(ANSI_GREEN + "( MESSAGEDISTRIBUTER ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
                 } else {
                     // For everyone else
                     Robot otherPlayerRobot;
@@ -753,7 +755,6 @@ public class MessageDistributer {
                 }
             });
         }
-
         /**
          * This method contains the logic that comes into action when a 'YourCards' protocol message was received and
          * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.

@@ -82,7 +82,8 @@ public class MapController implements IController {
                     logger.info(ANSI_GREEN + "( MAPCONTROLLER ): MAP LOADING FINISHED!" + ANSI_RESET);
 
                     mapController.initEventsOnStartpoints();
-
+                    logger.info("Initialized MouseClick Events on all StartPoints");
+                    
                     // Popup of 9 cards to choose from
                     ((PlayerMatController) stageController.getControllerMap().get("PlayerMat")).openPopupCards(null); //handleYourCards
                 }
