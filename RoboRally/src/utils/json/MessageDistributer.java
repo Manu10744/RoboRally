@@ -601,21 +601,6 @@ public class MessageDistributer {
 
             MapController mapController = (MapController) controllerMap.get("Map");
             mapController.fillGridPaneWithMap(gameStartedBody);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            // commented this out because it will throw errors on many maps as startpoints are still hardcoded
-            // + charAt(2) will only return 1 when y coordinate is 10.
-            // TODO: FIX!
-            mapController.initEventsOnStartpoints();
-
-            // Popup of 9 cards to choose from
-            ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards
-
         }
 
 
