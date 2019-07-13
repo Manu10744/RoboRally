@@ -369,39 +369,43 @@ public class ChatController implements Initializable, IController {
         }
     }
 
-    private StringProperty nameProperty() {
+    public StringProperty nameProperty() {
         return name;
     }
 
-    private StringProperty serverAddressProperty() {
+    public StringProperty serverAddressProperty() {
         return serverAddress;
     }
 
-    private BooleanProperty serverSettingFinishedProperty() {
+    public BooleanProperty serverSettingFinishedProperty() {
         return serverSettingFinished;
     }
 
-    private BooleanProperty figureSettingFinishedProperty() {
+    public BooleanProperty figureSettingFinishedProperty() {
         return figureSettingFinished;
     }
 
-    private BooleanProperty nameSettingFinishedProperty() {
+    public BooleanProperty nameSettingFinishedProperty() {
         return nameSettingFinished;
     }
 
-    private BooleanProperty getReadyProperty() {
+    public BooleanProperty getReadyProperty() {
         return isReadyProperty;
     }
 
-    private StringProperty messageProperty() {
+    public StringProperty messageProperty() {
         return message;
     }
 
-    private StringProperty clientChatOutputProperty() {
+    public StringProperty clientChatOutputProperty() {
         return clientChatOutput;
     }
 
     public Client getClient() {return client;}
+
+    public TextField getFieldName() {
+        return fieldName;
+    }
 
     @Override
     public IController setPrimaryController(StageController stageController) {

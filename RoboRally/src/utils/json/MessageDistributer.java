@@ -295,7 +295,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/riskyCrossing.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -659,6 +659,8 @@ public class MessageDistributer {
                     alert.setContentText(errorMessage);
                     alert.show();
 
+                    client.getChatController().nameSettingFinishedProperty().setValue(false);
+                    client.getChatController().getFieldName().setDisable(false);
                     //TODO write code here for proper reaction
                 }
                 if (errorMessage.equals("Error: figure already exists")) {

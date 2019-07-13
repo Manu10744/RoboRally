@@ -311,6 +311,7 @@ public class MapController implements IController {
         imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
         imageView.setPreserveRatio(true);
 
+
         fieldMap.get(startingPoint).getChildren().add(imageView);
     }
 

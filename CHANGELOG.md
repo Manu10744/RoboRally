@@ -1,6 +1,5 @@
 ### Known Issues
 * Ability to choose map not implemented yet
-* Take the client back when he tried to enter a username that is already taken
 * Drag and Drop must be fixed (Bugs)
 * Remaining maps are missing (16/18)
 * Timer before map starts
@@ -21,6 +20,7 @@
 
 ### Bugfixes
 * Fixed bug that happened when player was disallowed to set StartPoint after trying to set an already taken StartPoint - *(Manu)*
+* Player is now able to enter a username again after trying to choose an already taken username. - *(Manu)*
 
 ## Version [0.3.2] 
 ### New Features 
