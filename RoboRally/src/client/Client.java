@@ -253,6 +253,7 @@ public class Client {
         writer.flush();
     }
 
+
     /**
      * This method is responsible for printing a message to the chat history.
      *
@@ -387,4 +388,7 @@ public class Client {
             }
         }
     }
+
+
+
 }
