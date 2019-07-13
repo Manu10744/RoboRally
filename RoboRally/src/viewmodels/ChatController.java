@@ -253,6 +253,40 @@ public class ChatController implements Initializable, IController {
         }));
     }
 
+    private StringProperty nameProperty() {
+        return name;
+    }
+
+    private StringProperty serverAddressProperty() {
+        return serverAddress;
+    }
+
+    private BooleanProperty serverSettingFinishedProperty() {
+        return serverSettingFinished;
+    }
+
+    private BooleanProperty figureSettingFinishedProperty() {
+        return figureSettingFinished;
+    }
+
+    private BooleanProperty nameSettingFinishedProperty() {
+        return nameSettingFinished;
+    }
+
+    private BooleanProperty getReadyProperty() {
+        return isReadyProperty;
+    }
+
+    private StringProperty messageProperty() {
+        return message;
+    }
+
+    private StringProperty clientChatOutputProperty() {
+        return clientChatOutput;
+    }
+
+    public Client getClient() {return client;}
+
     /**
      * Check if IP String is a valid IP Address and contains IP and Port
      *
@@ -349,7 +383,9 @@ public class ChatController implements Initializable, IController {
      * opens the RoboRally Wiki when button is clicked
      * @param event
      * @throws IOException
+     * @author Verena Sadtler
      */
+
     @FXML
     void openWiki(ActionEvent event) throws IOException{
         Stage rootStage;
@@ -367,41 +403,8 @@ public class ChatController implements Initializable, IController {
             stage.setResizable(false);
 
         }
-    }
 
-    private StringProperty nameProperty() {
-        return name;
     }
-
-    private StringProperty serverAddressProperty() {
-        return serverAddress;
-    }
-
-    private BooleanProperty serverSettingFinishedProperty() {
-        return serverSettingFinished;
-    }
-
-    private BooleanProperty figureSettingFinishedProperty() {
-        return figureSettingFinished;
-    }
-
-    private BooleanProperty nameSettingFinishedProperty() {
-        return nameSettingFinished;
-    }
-
-    private BooleanProperty getReadyProperty() {
-        return isReadyProperty;
-    }
-
-    private StringProperty messageProperty() {
-        return message;
-    }
-
-    private StringProperty clientChatOutputProperty() {
-        return clientChatOutput;
-    }
-
-    public Client getClient() {return client;}
 
     @Override
     public IController setPrimaryController(StageController stageController) {

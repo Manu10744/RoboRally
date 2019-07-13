@@ -37,10 +37,35 @@ public class StageController implements Initializable, IController {
     private GridPane map;
     @FXML
     private GridPane playerMat;
+
+    public GridPane getStartScreen() {
+        return startScreen;
+    }
+
+    public GridPane getChooseRobot() {
+        return chooseRobot;
+    }
+
+    public GridPane getOpponentMat() {
+        return opponentMat;
+    }
+
+    public GridPane getMap() {
+        return map;
+    }
+
+    public GridPane getPlayerMat() {
+        return playerMat;
+    }
+
+    public GridPane getChat() {
+        return chat;
+    }
+
+    public GridPane getStage() { return stage; }
+
     @FXML
     private GridPane chat;
-    @FXML
-    private ImageView lobbyBackground;
 
     @FXML
     private ChatController chatController;
@@ -54,6 +79,8 @@ public class StageController implements Initializable, IController {
     private WikiController wikiController;
     @FXML
     private ChooseRobotController chooseRobotController;
+    @FXML
+    private ImageView lobbyBackground;
 
     // Hashmap for the controller references
     private Map<String, IController> controllerMap = new HashMap<>();
@@ -81,7 +108,6 @@ public class StageController implements Initializable, IController {
         if (playerMatController != null){
             controllerMap.put("PlayerMat", playerMatController.setPrimaryController(this));
         }
-
         // Sends the HasMap to the MessageDistributer after adding all controllers
         if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null) {
             MessageDistributer messageDistributer = new MessageDistributer();
@@ -93,32 +119,6 @@ public class StageController implements Initializable, IController {
     public Map<String, IController> getControllerMap() {
         return controllerMap;
     }
-
-    public GridPane getStartScreen() {
-        return startScreen;
-    }
-
-    public GridPane getChooseRobot() {
-        return chooseRobot;
-    }
-
-    public GridPane getOpponentMat() {
-        return opponentMat;
-    }
-
-    public GridPane getMap() {
-        return map;
-    }
-
-    public GridPane getPlayerMat() {
-        return playerMat;
-    }
-
-    public GridPane getChat() {
-        return chat;
-    }
-
-    public GridPane getStage() { return stage; }
 
     @Override
     public IController setPrimaryController(StageController stageController) {

@@ -41,27 +41,30 @@ import java.util.logging.Logger;
  */
 
 public class MapController implements IController {
-    @FXML
-    private GridPane mapPane;
-
-    private boolean allowSetStart;
-    public int mapChangeCounter;
-    public int mapWidth;
-    public int mapHeight;
-
-    private Map<String, Group> fieldMap = new HashMap<String, Group>();
-    private ArrayList<ArrayList<ArrayList<Tile>>> map;
-    private StageController stageController;
-
-    private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
+
+    private StageController stageController;
+    private boolean allowSetStart;
+
+    @FXML
+    private GridPane mapPane;
+    private Map<String, Group> fieldMap = new HashMap<String, Group>();
+    private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
+
+    public int mapChangeCounter;
+    private ArrayList<ArrayList<ArrayList<Tile>>> map;
+
+    public int mapWidth;
+    public int mapHeight;
 
     @Override
     public IController setPrimaryController(StageController stageController) {
         this.stageController = stageController;
         return this;
     }
+
+    public ArrayList<ArrayList<ArrayList<Tile>>> getMap() { return map; }
 
     @FXML
     public void initialize() {
@@ -298,14 +301,14 @@ public class MapController implements IController {
 
                     ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
                     chatController.getClient().sendStartingPoint(id);
-
-                    mapController.setAllowedToSetStart(false);
                 }
             });
         }
     }
 
+
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
+
         ImageView imageView = new ImageView(playerRobot.getRobotImage());
         imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
         imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
@@ -321,8 +324,6 @@ public class MapController implements IController {
 
     }
 
-    public ArrayList<ArrayList<ArrayList<Tile>>> getMap() { return map; }
-
     public boolean isAllowedToSetStart() {
         return allowSetStart;
     }
@@ -330,4 +331,5 @@ public class MapController implements IController {
     public void setAllowedToSetStart(Boolean allowStart) {
         this.allowSetStart = allowStart;
     }
+
 }
