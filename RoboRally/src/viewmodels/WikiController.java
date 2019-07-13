@@ -29,6 +29,7 @@ import java.io.IOException;
 public class WikiController extends Application {
 
     private Stage rootStage;
+
     @FXML
     private GridPane wiki;
     @FXML
@@ -54,21 +55,17 @@ public class WikiController extends Application {
     @FXML
     private ImageView imageRules;
     @FXML
-    Label headingWiki;
+    private Label headingWiki;
     @FXML
-    Label subheadingWiki;
+    private Label subheadingWiki;
     @FXML
-    Label textWiki;
-    @FXML
-    private Label headline;
-
+    private Label textWiki;
 
     /**
      * This method starts the wiki
      *
      * @param stage
      */
-
     @Override
     public void start(Stage stage) {
         this.rootStage = stage;
@@ -103,7 +100,6 @@ public class WikiController extends Application {
      */
 
     private void initStage() {
-
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(WikiController.class.getResource("/views/Wiki.fxml"));
@@ -122,13 +118,11 @@ public class WikiController extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
     /**
-     * this method handles button klicks inside the wiki stage to get from one to another scene
+     * This method handles button clicks inside the wiki stage to switch tabs by changing the
+     * corresponding scenes.
      *
      * @param event
      * @throws IOException
@@ -180,6 +174,5 @@ public class WikiController extends Application {
             this.rootStage.setScene(scene);
             this.rootStage.show();
         }
-
     }
 }
