@@ -21,5 +21,4 @@ public class StartScreenController implements Initializable {
         imageView.fitHeightProperty().bind(startScreen.heightProperty().divide(Parameter.START_SCREEN_RATIO_HEIGHT));
 
     }
-
 }

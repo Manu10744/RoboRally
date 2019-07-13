@@ -32,29 +32,12 @@ import viewmodels.PlayerMatController;
  */
 public class MessageDistributer {
     public static Map<String, IController> controllerMap;
+
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
-
     private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    //                           HANDLERS FOR CLIENT MESSAGES                                        //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * This method contains the logic that comes into action when a 'HelloServer' protocol message was received and
-     * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
-     *
-     * @param distributerServer          The Server itself.
-     * @param task            The ReaderTask of the distributerServer (Gives access to the PrintWriter).
-     * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
-     *
-     * @author Ivan Dovecar
-     * @author Manu
-     * @author Mia
-     */
 
     /**
      * This method is used to get all the controllers that are saved in the stage. With those, the individual gui-elements, e.g. chat and map can be referenced
@@ -65,8 +48,24 @@ public class MessageDistributer {
         controllerMap = stageControllerMap;
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    //                           HANDLERS FOR CLIENT MESSAGES                                        //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * This method contains the logic that comes into action when a 'HelloServer' protocol message was received and
+     * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
+     *
+     * @param server          The Server itself.
+     * @param task            The ReaderTask of the distributerServer (Gives access to the PrintWriter).
+     * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
+     *
+     * @author Ivan Dovecar
+     * @author Manu
+     * @author Mia
+     */
     public void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
-        System.out.println(ANSI_CYAN + "Entered handleHelloServer()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleHelloServer()" + ANSI_RESET);
 
         try {
             if (helloServerBody.getProtocol().equals(server.getProtocolVersion())) {
@@ -145,7 +144,7 @@ public class MessageDistributer {
      * @author Manu
      */
     public static void handlePlayerValues(Server server, Server.ServerReaderTask task, PlayerValuesBody playerValuesBody) {
-        System.out.println(ANSI_CYAN + "Entered handlePlayerValues()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerValues()" + ANSI_RESET);
 
         String playerValueName = playerValuesBody.getName();
         int playerValueFigure = playerValuesBody.getFigure();
@@ -165,6 +164,7 @@ public class MessageDistributer {
                 break;
             }
 
+            // TODO: CHECKING FIGURE PROBABLY MADE REDUNDANT BY DISABLING ALREADY ASSIGNED ROBOTS
             // Checks if by PLAYER-VALUES received client' figure is available
             else if (player.getFigure() == playerValueFigure) {
                 logger.info("Player " + playerValueName + " refused (figure already exists)");
@@ -181,7 +181,6 @@ public class MessageDistributer {
         // If by PLAYER_VALUES received name and figure are valid...
         if (playerValueSuccess) {
             logger.info(playerValueName + " successfully registered");
-            //TODO: A client should already exist after helloClient message -> here too late
 
             // Update the ClientWrapper
             for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
@@ -215,6 +214,8 @@ public class MessageDistributer {
                 client.getWriter().flush();
             }
 
+            // Only for testing reasons to see if server keeps track of all players and updates them
+            // TODO: Remove when not needed anymore
             for (Player player : server.getPlayers()) {
                 System.out.println("PLAYERID: " + player.getPlayerID());
                 System.out.println("NAME: " + player.getName());
@@ -250,7 +251,7 @@ public class MessageDistributer {
      * @param setStatusBody The message body of the message which is of type {@link SetStatusBody}.
      */
     public void handleSetStatus(Server server, Server.ServerReaderTask task, SetStatusBody setStatusBody) {
-        System.out.println(ANSI_CYAN + "Entered handleSetStatus()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSetStatus()" + ANSI_RESET);
 
         boolean clientReady = setStatusBody.isReady();
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket().equals(task.getClientSocket()))
@@ -294,7 +295,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -318,7 +319,7 @@ public class MessageDistributer {
      * @author Manu
      */
     public void handleSendChat(Server server, Server.ServerReaderTask task, SendChatBody sendChatBody) {
-        System.out.println(ANSI_CYAN + "Entered handleSendChat()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSendChat()" + ANSI_RESET);
 
         // Stream to get client's playerID (because atm only the socket is known)
         int senderID = server.getConnectedClients().stream().
@@ -366,7 +367,7 @@ public class MessageDistributer {
      * @param playCardBody The message body of the message which is of type {@link PlayCardBody}.
      */
     public void handlePlayCard(Server server, Server.ServerReaderTask task, PlayCardBody playCardBody) {
-        System.out.println(ANSI_CYAN + "Entered handlePlayCard()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayCard()" + ANSI_RESET);
 
         // TODO: Write code here
     }
@@ -380,7 +381,7 @@ public class MessageDistributer {
      * @param setStartingPointBody The message body of the message which is of type {@link PlayerValuesBody}.
      */
     public void handleSetStartingPoint(Server server, Server.ServerReaderTask task, SetStartingPointBody setStartingPointBody) {
-        System.out.println(ANSI_CYAN + "Entered handleSetStartingPoint()" + ANSI_RESET);
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSetStartingPoint()" + ANSI_RESET);
 
         int x = setStartingPointBody.getX();
         int y = setStartingPointBody.getY();
@@ -422,7 +423,7 @@ public class MessageDistributer {
          * @param selectCardBody The message body of the message which is of type {@link SelectCardBody}.
          */
         public void handleSelectCard (Server server, Server.ServerReaderTask task, SelectCardBody selectCardBody){
-            System.out.println(ANSI_CYAN + "Entered handleSelectCard()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectCard()" + ANSI_RESET);
 
             // TODO: Write code here
         }
@@ -440,7 +441,7 @@ public class MessageDistributer {
          * @param helloClientBody The message body of the message which is of type {@link HelloClientBody}.
          */
         public void handleHelloClient (Client client, Client.ClientReaderTask task, HelloClientBody helloClientBody){
-            System.out.println(ANSI_CYAN + "Entered handleHelloClient()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleHelloClient()" + ANSI_RESET);
 
             logger.info("Server has protocol " + helloClientBody.getProtocol());
             client.setWaitingForHelloClient(false);
@@ -455,7 +456,7 @@ public class MessageDistributer {
          * @param welcomeBody The message body of the message which is of type {@link WelcomeBody}.
          */
         public void handleWelcome (Client client, Client.ClientReaderTask task, WelcomeBody welcomeBody){
-            System.out.println(ANSI_CYAN + "Entered handleWelcome()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleWelcome()" + ANSI_RESET);
             logger.info("PlayerID: " + welcomeBody.getPlayerID());
 
             // Client creates his player instance
@@ -478,7 +479,7 @@ public class MessageDistributer {
          * @param playerAddedBody The message body of the message which is of type {@link PlayerAddedBody}.
          */
         public void handlePlayerAdded (Client client, Client.ClientReaderTask task, PlayerAddedBody playerAddedBody){
-            System.out.println(ANSI_CYAN + "Entered handlePlayedAdded()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayedAdded()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 client.getActiveClientsProperty().add(String.valueOf(playerAddedBody.getPlayerID()));
@@ -549,7 +550,7 @@ public class MessageDistributer {
          * @param playerStatusBody The message body of the message which is of type {@link PlayerStatusBody}.
          */
         public void handlePlayerStatus(Client client, Client.ClientReaderTask task, PlayerStatusBody playerStatusBody){
-            System.out.println(ANSI_CYAN + "Entered handlePlayerStatus()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerStatus()" + ANSI_RESET);
 
             int messagePlayerID = playerStatusBody.getPlayerID();
             boolean readyStatus = playerStatusBody.isReady();
@@ -595,11 +596,10 @@ public class MessageDistributer {
          * @param gameStartedBody The message body of the message which is of type {@link GameStartedBody}.
          */
         public void handleGameStarted (Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody){
-            System.out.println(ANSI_CYAN + "Entered handleGameStarted()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameStarted()" + ANSI_RESET);
 
             MapController mapController = (MapController) controllerMap.get("Map");
             mapController.fillGridPaneWithMap(gameStartedBody);
-
 
             try {
                 Thread.sleep(1000);
@@ -627,7 +627,7 @@ public class MessageDistributer {
          * @param receivedChatBody The message body of the message which is of type {@link ReceivedChatBody}.
          */
         public void handleReceivedChat (Client client, Client.ClientReaderTask task, ReceivedChatBody receivedChatBody){
-            System.out.println(ANSI_CYAN + "Entered handleReceivedChat()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReceivedChat()" + ANSI_RESET);
 
             // Works for both ordinary and private messages
             Platform.runLater(() -> client.receiveMessage(receivedChatBody.getMessage()));
@@ -644,7 +644,7 @@ public class MessageDistributer {
          * @author Manu
          */
         public void handleError (Client client, Client.ClientReaderTask task, ErrorBody errorBody){
-            System.out.println(ANSI_CYAN + "Entered handleError()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleError()" + ANSI_RESET);
 
             String errorMessage = errorBody.getError();
 
@@ -692,7 +692,7 @@ public class MessageDistributer {
          * @param cardPlayedBody The message body of the message which is of type {@link CardPlayedBody}.
          */
         public void handleCardPlayed (Client client, Client.ClientReaderTask task, CardPlayedBody cardPlayedBody){
-            System.out.println(ANSI_CYAN + "Entered handleCardPlayed()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardPlayed()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -709,7 +709,7 @@ public class MessageDistributer {
          */
         public void handleCurrentPlayer (Client client, Client.ClientReaderTask task, CurrentPlayerBody
         currentPlayerBody){
-            System.out.println(ANSI_CYAN + "Entered handleCurrentPlayer()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentPlayer()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -725,7 +725,7 @@ public class MessageDistributer {
          * @param activePhaseBody The message body of the message which is of type {@link ActivePhaseBody}.
          */
         public void handleActivePhase (Client client, Client.ClientReaderTask task, ActivePhaseBody activePhaseBody){
-            System.out.println(ANSI_CYAN + "Entered handleActivePhase()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleActivePhase()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -741,7 +741,7 @@ public class MessageDistributer {
          * @param startingPointTakenBody The message body of the message which is of type {@link StartingPointTakenBody}.
          */
         public void handleStartingPointTaken (Client client, Client.ClientReaderTask task, StartingPointTakenBody startingPointTakenBody) {
-            System.out.println(ANSI_CYAN + "Entered handleStartingPointTaken()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleStartingPointTaken()" + ANSI_RESET);
 
             System.out.println("OWN PLAYER ID: " + client.getPlayer().getPlayerID());
             Platform.runLater(() -> {
@@ -775,7 +775,7 @@ public class MessageDistributer {
          */
         public void handleYourCards (Client client, Client.ClientReaderTask task, YourCardsBody yourCardsBody){
 
-            System.out.println(ANSI_CYAN + "Entered handleYourCards()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
 
             ArrayList<Card> deck = yourCardsBody.getCardsInHand();
             Platform.runLater(() -> {
@@ -792,7 +792,7 @@ public class MessageDistributer {
          * @param notYourCardsBody The message body of the message which is of type {@link NotYourCardsBody}.
          */
         public void handleNotYourCards (Client client, Client.ClientReaderTask task, NotYourCardsBody notYourCardsBody){
-            System.out.println(ANSI_CYAN + "Entered handleNotYourCards()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleNotYourCards()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -809,7 +809,7 @@ public class MessageDistributer {
          */
         public void handleShuffleCoding (Client client, Client.ClientReaderTask task, ShuffleCodingBody
         shuffleCodingBody){
-            System.out.println(ANSI_CYAN + "Entered handleShuffleCoding()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleShuffleCoding()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -825,7 +825,7 @@ public class MessageDistributer {
          * @param cardSelectedBody The message body of the message which is of type {@link CardSelectedBody}.
          */
         public void handleCardSelected (Client client, Client.ClientReaderTask task, CardSelectedBody cardSelectedBody){
-            System.out.println(ANSI_CYAN + "Entered handleCardSelected()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardSelected()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -842,7 +842,7 @@ public class MessageDistributer {
          */
         public void handleSelectionFinished (Client client, Client.ClientReaderTask task, SelectionFinishedBody
         selectionFinishedBody){
-            System.out.println(ANSI_CYAN + "Entered handleSelectionFinished()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -858,7 +858,7 @@ public class MessageDistributer {
          * @param timerStartedBody The message body of the message which is of type {@link TimerStartedBody}.
          */
         public void handleTimerStarted (Client client, Client.ClientReaderTask task, TimerStartedBody timerStartedBody){
-            System.out.println(ANSI_CYAN + "Entered handleTimerStarted()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerStarted()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -874,7 +874,7 @@ public class MessageDistributer {
          * @param timerEndedBody The message body of the message which is of type {@link TimerEndedBody}.
          */
         public void handleTimerEnded (Client client, Client.ClientReaderTask task, TimerEndedBody timerEndedBody){
-            System.out.println(ANSI_CYAN + "Entered handleTimerEnded()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerEnded()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -891,7 +891,7 @@ public class MessageDistributer {
          */
         public void handleCardsYouGotNow (Client client, Client.ClientReaderTask task, CardsYouGotNowBody
         cardsYouGotNowBody){
-            System.out.println(ANSI_CYAN + "Entered handleCardsYouGotNow()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ):  handleCardsYouGotNow()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -907,7 +907,7 @@ public class MessageDistributer {
          * @param currentCardsBody The message body of the message which is of type {@link CurrentCardsBody}.
          */
         public void handleCurrentCards (Client client, Client.ClientReaderTask task, CurrentCardsBody currentCardsBody){
-            System.out.println(ANSI_CYAN + "Entered handleCurrentCards()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentCards()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -923,7 +923,7 @@ public class MessageDistributer {
          * @param movementBody The message body of the message which is of type {@link MovementBody}.
          */
         public void handleMovement (Client client, Client.ClientReaderTask task, MovementBody movementBody){
-            System.out.println(ANSI_CYAN + "Entered handleMovement()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleMovement()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -939,7 +939,7 @@ public class MessageDistributer {
          * @param drawDamageBody The message body of the message which is of type {@link DrawDamageBody}.
          */
         public void handleDrawDamage (Client client, Client.ClientReaderTask task, DrawDamageBody drawDamageBody){
-            System.out.println(ANSI_CYAN + "Entered handleDrawDamage()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleDrawDamage()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -956,7 +956,7 @@ public class MessageDistributer {
          */
         public void handlePlayerShooting (Client client, Client.ClientReaderTask task, PlayerShootingBody
         playerShootingBody){
-            System.out.println(ANSI_CYAN + "Entered handlePlayerShooting()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerShooting()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -972,7 +972,7 @@ public class MessageDistributer {
          * @param rebootBody The message body of the message which is of type {@link RebootBody}.
          */
         public void handleReboot (Client client, Client.ClientReaderTask task, RebootBody rebootBody){
-            System.out.println(ANSI_CYAN + "Entered handleReboot()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReboot()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -989,7 +989,7 @@ public class MessageDistributer {
          */
         public void handlePlayerTurning (Client client, Client.ClientReaderTask task, PlayerTurningBody
         playerTurningBody){
-            System.out.println(ANSI_CYAN + "Entered handlePlayerTurning()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -1005,7 +1005,7 @@ public class MessageDistributer {
          * @param energyBody The message body of the message which is of type {@link EnergyBody}.
          */
         public void handleEnergy (Client client, Client.ClientReaderTask task, EnergyBody energyBody){
-            System.out.println(ANSI_CYAN + "Entered handleEnergy()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleEnergy()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -1022,7 +1022,7 @@ public class MessageDistributer {
          */
         public void handleCheckPointReached (Client client, Client.ClientReaderTask task, CheckPointReachedBody
         checkPointReachedBody){
-            System.out.println(ANSI_CYAN + "Entered handleCheckPointReached()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCheckPointReached()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here
@@ -1038,7 +1038,7 @@ public class MessageDistributer {
          * @param gameFinishedBody The message body of the message which is of type {@link GameFinishedBody}.
          */
         public void handleGameFinished (Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody){
-            System.out.println(ANSI_CYAN + "Entered handleGameFinished()" + ANSI_RESET);
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
 
             Platform.runLater(() -> {
                 //TODO write code here

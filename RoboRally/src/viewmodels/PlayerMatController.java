@@ -39,7 +39,6 @@ import java.util.ArrayList;
  */
 
 public class PlayerMatController implements IController {
-
     @FXML
     private HBox playerIcons;
     @FXML
@@ -142,206 +141,10 @@ public class PlayerMatController implements IController {
     @FXML
     ImageView dragImage9;
 
-
-
+    private Stage rootStage;
     private StageController stageController;
 
-    public HBox getPlayerIcons() {
-        return playerIcons;
-    }
-
-    public HBox getPlayerDrawDiscardCards() {
-        return playerDrawDiscardCards;
-    }
-
-    public HBox getPlayerUpdates() {
-        return playerUpdates;
-    }
-
-    public HBox getPlayerRegister() {
-        return playerRegister;
-    }
-
-
-    // Player Icons
-
-    public ImageView getOwnRobotIcon() {
-        ownRobotIcon.setPreserveRatio(true);
-        ownRobotIcon.fitWidthProperty().bind(playerIcons.widthProperty());
-        ownRobotIcon.fitHeightProperty().bind(playerIcons.heightProperty());
-        return ownRobotIcon;
-    }
-
-    public ImageView getEmptyIcon() {
-        emptyIcon.setPreserveRatio(true);
-        emptyIcon.fitWidthProperty().bind(playerIcons.widthProperty());
-        emptyIcon.fitHeightProperty().bind(playerIcons.heightProperty());
-        return emptyIcon;
-    }
-
-    public ImageView getClockIcon() {
-        clockIcon.setPreserveRatio(true);
-        clockIcon.fitWidthProperty().bind(playerIcons.widthProperty());
-        clockIcon.fitHeightProperty().bind(playerIcons.heightProperty());
-        return clockIcon;
-    }
-
-    public ImageView getEmptyIcon2() {
-        emptyIcon2.setPreserveRatio(true);
-        emptyIcon2.fitWidthProperty().bind(playerIcons.widthProperty());
-        emptyIcon2.fitHeightProperty().bind(playerIcons.heightProperty());
-        return emptyIcon2;
-    }
-
-    public ImageView getEmptyIcon3() {
-        emptyIcon3.setPreserveRatio(true);
-        emptyIcon3.fitWidthProperty().bind(playerIcons.widthProperty());
-        emptyIcon3.fitHeightProperty().bind(playerIcons.heightProperty());
-        return emptyIcon3;
-    }
-
-    public ImageView getEmptyIcon4() {
-        emptyIcon4.setPreserveRatio(true);
-        emptyIcon4.fitWidthProperty().bind(playerIcons.widthProperty());
-        emptyIcon4.fitHeightProperty().bind(playerIcons.heightProperty());
-        return emptyIcon4;
-    }
-
-    public ImageView getEmptyIcon5() {
-        emptyIcon5.setPreserveRatio(true);
-        emptyIcon5.fitWidthProperty().bind(playerIcons.widthProperty());
-        emptyIcon5.fitHeightProperty().bind(playerIcons.heightProperty());
-        return emptyIcon5;
-    }
-
-    public ImageView getEmptyIcon6() {
-        emptyIcon6.setPreserveRatio(true);
-        emptyIcon6.fitWidthProperty().bind(playerIcons.widthProperty());
-        emptyIcon6.fitHeightProperty().bind(playerIcons.heightProperty());
-        return emptyIcon6;
-    }
-
-
-    // Player Draw Discard Cards
-
-    public ImageView getEmptyIcon0() {
-        emptyIcon0.setPreserveRatio(true);
-        emptyIcon0.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon0.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon0;
-    }
-
-    public ImageView getEmptyIcon01() {
-        emptyIcon01.setPreserveRatio(true);
-        emptyIcon01.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon01.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon01;
-    }
-
-    public ImageView getEmptyIcon02() {
-        emptyIcon02.setPreserveRatio(true);
-        emptyIcon02.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon02.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon02;
-    }
-
-    public ImageView getEmptyIcon03() {
-        emptyIcon03.setPreserveRatio(true);
-        emptyIcon03.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon03.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon03;
-    }
-
-
-    public ImageView getEmptyIcon04() {
-        emptyIcon04.setPreserveRatio(true);
-        emptyIcon04.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon04.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon04;
-    }
-
-
-    public ImageView getEmptyIcon05() {
-        emptyIcon05.setPreserveRatio(true);
-        emptyIcon05.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon05.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon05;
-    }
-
-
-    public ImageView getEmptyIcon06() {
-        emptyIcon06.setPreserveRatio(true);
-        emptyIcon06.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon06.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon06;
-    }
-
-
-    public ImageView getEmptyIcon07() {
-        emptyIcon07.setPreserveRatio(true);
-        emptyIcon07.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
-        emptyIcon07.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
-        return emptyIcon07;
-    }
-
-
-    // Player Updates
-
-    public ImageView getPermaUpdate1() {
-        permaUpdate1.setPreserveRatio(true);
-        permaUpdate1.fitWidthProperty().bind(playerUpdates.widthProperty());
-        permaUpdate1.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return permaUpdate1;
-    }
-
-    public ImageView getPermaUpdate2() {
-        permaUpdate2.setPreserveRatio(true);
-        permaUpdate2.fitWidthProperty().bind(playerUpdates.widthProperty());
-        permaUpdate2.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return permaUpdate2;
-    }
-
-    public ImageView getPermaUpdate3() {
-        permaUpdate3.setPreserveRatio(true);
-        permaUpdate3.fitWidthProperty().bind(playerUpdates.widthProperty());
-        permaUpdate3.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return permaUpdate3;
-    }
-
-    public ImageView getEmptyIcon00() {
-        emptyIcon00.setPreserveRatio(true);
-        emptyIcon00.fitWidthProperty().bind(playerUpdates.widthProperty());
-        emptyIcon00.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return emptyIcon00;
-    }
-
-    public ImageView getTempUpdate1() {
-        tempUpdate1.setPreserveRatio(true);
-        tempUpdate1.fitWidthProperty().bind(playerUpdates.widthProperty());
-        tempUpdate1.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return tempUpdate1;
-    }
-
-    public ImageView getTempUpdate2() {
-        tempUpdate2.setPreserveRatio(true);
-        tempUpdate2.fitWidthProperty().bind(playerUpdates.widthProperty());
-        tempUpdate2.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return tempUpdate2;
-    }
-
-    public ImageView getTempUpdate3() {
-        tempUpdate3.setPreserveRatio(true);
-        tempUpdate3.fitWidthProperty().bind(playerUpdates.widthProperty());
-        tempUpdate3.fitHeightProperty().bind(playerUpdates.heightProperty());
-        return tempUpdate3;
-    }
-
-
-    private Stage rootStage;
-
     BooleanProperty allRegistersSet;
-
-
 
     /**
      * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
@@ -360,6 +163,7 @@ public class PlayerMatController implements IController {
 
                 try {
                     root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+                    root.getStylesheets().add("/resources/css/main.css");
                     rootStage.setScene(new Scene(root));
                     rootStage.setAlwaysOnTop(true);
                     rootStage.initStyle(StageStyle.TRANSPARENT);
@@ -556,6 +360,194 @@ public class PlayerMatController implements IController {
                 }
             });
         }
+    }
+
+    public HBox getPlayerIcons() {
+        return playerIcons;
+    }
+
+    public HBox getPlayerDrawDiscardCards() {
+        return playerDrawDiscardCards;
+    }
+
+    public HBox getPlayerUpdates() {
+        return playerUpdates;
+    }
+
+    public HBox getPlayerRegister() {
+        return playerRegister;
+    }
+
+    // Player Icons
+    public ImageView getOwnRobotIcon() {
+        ownRobotIcon.setPreserveRatio(true);
+        ownRobotIcon.fitWidthProperty().bind(playerIcons.widthProperty());
+        ownRobotIcon.fitHeightProperty().bind(playerIcons.heightProperty());
+        return ownRobotIcon;
+    }
+
+    public ImageView getEmptyIcon() {
+        emptyIcon.setPreserveRatio(true);
+        emptyIcon.fitWidthProperty().bind(playerIcons.widthProperty());
+        emptyIcon.fitHeightProperty().bind(playerIcons.heightProperty());
+        return emptyIcon;
+    }
+
+    public ImageView getClockIcon() {
+        clockIcon.setPreserveRatio(true);
+        clockIcon.fitWidthProperty().bind(playerIcons.widthProperty());
+        clockIcon.fitHeightProperty().bind(playerIcons.heightProperty());
+        return clockIcon;
+    }
+
+    public ImageView getEmptyIcon2() {
+        emptyIcon2.setPreserveRatio(true);
+        emptyIcon2.fitWidthProperty().bind(playerIcons.widthProperty());
+        emptyIcon2.fitHeightProperty().bind(playerIcons.heightProperty());
+        return emptyIcon2;
+    }
+
+    public ImageView getEmptyIcon3() {
+        emptyIcon3.setPreserveRatio(true);
+        emptyIcon3.fitWidthProperty().bind(playerIcons.widthProperty());
+        emptyIcon3.fitHeightProperty().bind(playerIcons.heightProperty());
+        return emptyIcon3;
+    }
+
+    public ImageView getEmptyIcon4() {
+        emptyIcon4.setPreserveRatio(true);
+        emptyIcon4.fitWidthProperty().bind(playerIcons.widthProperty());
+        emptyIcon4.fitHeightProperty().bind(playerIcons.heightProperty());
+        return emptyIcon4;
+    }
+
+    public ImageView getEmptyIcon5() {
+        emptyIcon5.setPreserveRatio(true);
+        emptyIcon5.fitWidthProperty().bind(playerIcons.widthProperty());
+        emptyIcon5.fitHeightProperty().bind(playerIcons.heightProperty());
+        return emptyIcon5;
+    }
+
+    public ImageView getEmptyIcon6() {
+        emptyIcon6.setPreserveRatio(true);
+        emptyIcon6.fitWidthProperty().bind(playerIcons.widthProperty());
+        emptyIcon6.fitHeightProperty().bind(playerIcons.heightProperty());
+        return emptyIcon6;
+    }
+
+
+    // Player Draw Discard Cards
+
+    public ImageView getEmptyIcon0() {
+        emptyIcon0.setPreserveRatio(true);
+        emptyIcon0.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon0.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon0;
+    }
+
+    public ImageView getEmptyIcon01() {
+        emptyIcon01.setPreserveRatio(true);
+        emptyIcon01.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon01.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon01;
+    }
+
+    public ImageView getEmptyIcon02() {
+        emptyIcon02.setPreserveRatio(true);
+        emptyIcon02.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon02.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon02;
+    }
+
+    public ImageView getEmptyIcon03() {
+        emptyIcon03.setPreserveRatio(true);
+        emptyIcon03.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon03.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon03;
+    }
+
+
+    public ImageView getEmptyIcon04() {
+        emptyIcon04.setPreserveRatio(true);
+        emptyIcon04.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon04.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon04;
+    }
+
+
+    public ImageView getEmptyIcon05() {
+        emptyIcon05.setPreserveRatio(true);
+        emptyIcon05.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon05.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon05;
+    }
+
+
+    public ImageView getEmptyIcon06() {
+        emptyIcon06.setPreserveRatio(true);
+        emptyIcon06.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon06.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon06;
+    }
+
+
+    public ImageView getEmptyIcon07() {
+        emptyIcon07.setPreserveRatio(true);
+        emptyIcon07.fitWidthProperty().bind(playerDrawDiscardCards.widthProperty());
+        emptyIcon07.fitHeightProperty().bind(playerDrawDiscardCards.heightProperty());
+        return emptyIcon07;
+    }
+
+
+    // Player Updates
+
+    public ImageView getPermaUpdate1() {
+        permaUpdate1.setPreserveRatio(true);
+        permaUpdate1.fitWidthProperty().bind(playerUpdates.widthProperty());
+        permaUpdate1.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return permaUpdate1;
+    }
+
+    public ImageView getPermaUpdate2() {
+        permaUpdate2.setPreserveRatio(true);
+        permaUpdate2.fitWidthProperty().bind(playerUpdates.widthProperty());
+        permaUpdate2.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return permaUpdate2;
+    }
+
+    public ImageView getPermaUpdate3() {
+        permaUpdate3.setPreserveRatio(true);
+        permaUpdate3.fitWidthProperty().bind(playerUpdates.widthProperty());
+        permaUpdate3.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return permaUpdate3;
+    }
+
+    public ImageView getEmptyIcon00() {
+        emptyIcon00.setPreserveRatio(true);
+        emptyIcon00.fitWidthProperty().bind(playerUpdates.widthProperty());
+        emptyIcon00.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return emptyIcon00;
+    }
+
+    public ImageView getTempUpdate1() {
+        tempUpdate1.setPreserveRatio(true);
+        tempUpdate1.fitWidthProperty().bind(playerUpdates.widthProperty());
+        tempUpdate1.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return tempUpdate1;
+    }
+
+    public ImageView getTempUpdate2() {
+        tempUpdate2.setPreserveRatio(true);
+        tempUpdate2.fitWidthProperty().bind(playerUpdates.widthProperty());
+        tempUpdate2.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return tempUpdate2;
+    }
+
+    public ImageView getTempUpdate3() {
+        tempUpdate3.setPreserveRatio(true);
+        tempUpdate3.fitWidthProperty().bind(playerUpdates.widthProperty());
+        tempUpdate3.fitHeightProperty().bind(playerUpdates.heightProperty());
+        return tempUpdate3;
     }
 
 

@@ -38,7 +38,6 @@ import static utils.Parameter.*;
 public class Server extends Application {
     private ArrayList<ClientWrapper> connectedClients;
     private ArrayList<Player> players = new ArrayList<>();
-
     private ArrayList<String> takenStartingPoints = new ArrayList<>();
 
     private String protocolVersion = "Version 0.1";
@@ -47,6 +46,7 @@ public class Server extends Application {
     private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
     private MessageDistributer messageDistributer = new MessageDistributer();
+
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
     @Override
@@ -101,6 +101,10 @@ public class Server extends Application {
         return numberOfReadyClients;
     }
 
+    public void setNumberOfReadyClients(int numberOfReadyClients) {
+        this.numberOfReadyClients = numberOfReadyClients;
+    }
+
     public void setSetterPlayerID(int setterPlayerID) {
         this.setterPlayerID = setterPlayerID;
     }
@@ -109,20 +113,8 @@ public class Server extends Application {
         this.counterPlayerID = counterPlayerID;
     }
 
-    public void setNumberOfReadyClients(int number) {
-        this.numberOfReadyClients = number;
-    }
-
-    public void setPlayers(ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public ArrayList<String> getTakenStartingPoints() {
         return takenStartingPoints;
-    }
-
-    public void setTakenStartingPoints(ArrayList<String> takenStartingPoints) {
-        this.takenStartingPoints = takenStartingPoints;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -198,7 +190,7 @@ public class Server extends Application {
     }
 
     /**
-     * Inner class to wrap the information from the client (socket + name)
+     * Inner class to wrap the information from the client
      */
     public class ClientWrapper {
         private PrintWriter writer;
@@ -219,7 +211,6 @@ public class Server extends Application {
             this.figure = figure;
             this.playerID = playerID;
             this.isReady = isReady;
-            this.player = player;
         }
 
         public Socket getClientSocket() {
