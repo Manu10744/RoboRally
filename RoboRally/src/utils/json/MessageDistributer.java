@@ -295,7 +295,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -401,6 +401,7 @@ public class MessageDistributer {
         } else {
             // StartingPoint is available
             logger.info(ANSI_GREEN + "STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
+
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, playerID));
@@ -610,7 +611,7 @@ public class MessageDistributer {
             // commented this out because it will throw errors on many maps as startpoints are still hardcoded
             // + charAt(2) will only return 1 when y coordinate is 10.
             // TODO: FIX!
-            // mapController.sendStartPoint();
+            mapController.initEventsOnStartpoints();
 
             // Popup of 9 cards to choose from
             ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(null); //handleYourCards

@@ -191,8 +191,8 @@ public class MapController implements IController {
 
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
 
-                int mapWidth = map.size();
-                int mapHeight = map.get(0).size();
+                mapWidth = map.size();
+                mapHeight = map.get(0).size();
 
                 for (int xPos = mapWidth - 1; xPos >= 0; xPos--) {
                     for (int yPos = mapHeight - 1; yPos >= 0; yPos--) {
@@ -214,7 +214,6 @@ public class MapController implements IController {
                                 imageView.setPreserveRatio(true);
                                 imageGroup.getChildren().add(imageView);
                             } else {
-
                                 Image image = tile.getTileImage();
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
@@ -264,7 +263,7 @@ public class MapController implements IController {
         return false;
     }
 
-    public void sendStartPoint() {
+    public void initEventsOnStartpoints() {
         // The startinPoints in order according to y-position
         Group startPoint1 = fieldMap.get("0-3");
         startPoint1.setId("0-3");
@@ -276,8 +275,8 @@ public class MapController implements IController {
         startPoint4.setId("1-4");
         Group startPoint5 = fieldMap.get("1-5");
         startPoint5.setId("1-5");
-        Group startPoint6 = fieldMap.get("1-10");
-        startPoint6.setId("1-10");
+        Group startPoint6 = fieldMap.get("1-8");
+        startPoint6.setId("1-8");
 
         ArrayList<Group> startPoints = new ArrayList<>();
         startPoints.add(startPoint1);
@@ -297,9 +296,11 @@ public class MapController implements IController {
                     String id = startpoint.getId();
 
                     ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
-                    chatController.getClient().sendStartingPoint(id);
 
-                    mapController.setAllowedToSetStart(false);
+                    if (mapController.isAllowedToSetStart()) {
+                        chatController.getClient().sendStartingPoint(id);
+                        mapController.setAllowedToSetStart(false);
+                    }
                 }
             });
         }

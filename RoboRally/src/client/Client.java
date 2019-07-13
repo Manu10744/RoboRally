@@ -189,12 +189,12 @@ public class Client {
         logger.info("Submitted player values");
     }
 
-    public void sendStartingPoint(String id){
+    public void sendStartingPoint(String id) {
         logger.info("Submitting startinpoint coordinates");
 
-        // Get the x and y coordinates of the StartPoint by its ID
-        int x = Character.getNumericValue(id.charAt(0));
-        int y = Character.getNumericValue(id.charAt(2));
+        // Split the ID "x-y" into the two coordinates x and y
+        int x = Integer.parseInt(id.split("-")[0]);
+        int y = Integer.parseInt(id.split("-")[1]);
 
         JSONMessage jsonMessage = new JSONMessage("SetStartingPoint", new SetStartingPointBody(x,y));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
