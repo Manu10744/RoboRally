@@ -299,7 +299,6 @@ public class MapController implements IController {
 
                     if (mapController.isAllowedToSetStart()) {
                         chatController.getClient().sendStartingPoint(id);
-                        mapController.setAllowedToSetStart(false);
                     }
                 }
             });

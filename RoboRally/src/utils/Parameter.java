@@ -47,7 +47,7 @@ public class Parameter {
 
         //amount of players
     public static final int MAX_PLAYERSIZE = 6;
-    public static final int MIN_PLAYERSIZE = 1;
+    public static final int MIN_PLAYERSIZE = 2;
 
         //Register numbers
     public static final int REGISTER_ONE = 1;
@@ -114,13 +114,6 @@ public class Parameter {
         //amount of walls
     public static final int ONE_WALL = 1;
     public static final int TWO_WALLS = 2;
-
-   ///Map
-        //size
-    public static final int DIZZY_HIGHWAY_HEIGHT = 10;
-    public static final int DIZZY_HIGHWAY_WIDTH = 13;
-    public static final int PASSING_LANE_HEIGHT = 10;
-    public static final int PASSING_LANE_WIDTH = 23;
 
     //ArrayElements
     public static int FIRST_ELEMENT_POS = 0;

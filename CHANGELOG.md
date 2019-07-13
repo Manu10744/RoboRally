@@ -7,19 +7,20 @@
 * Event for INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS needed because informer message about ready status of already connected players comes in too fast -
   information of already connected players is not 100% processed at that time.
  * Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
+ * When setting a StartPoint, the robot always has to look towards the mapboard. 
 
 ## Version [0.4.0] 
 ### New Features 
 * Freshly connected clients are now informed about ready status of already connected clients, but only by a workaround (making the Thread sleep). - *(Manu)*
 * Map can now callback when it was completely loaded by an Event which still needs to be implemented. - *(Manu)*
 
-
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
-* Map sizes are detected without using parameters - (*Verena*)
+* All maps can now be displayed by calculating the map dimensions and giving that information to the loading method. - (*Verena*)
 * Gaps in maps can now be displayed - (*Jessie, Verena*)
 
 ### Bugfixes
+* Fixed bug that happened when player was disallowed to set StartPoint after trying to set an already taken StartPoint - *(Manu)*
 
 ## Version [0.3.2] 
 ### New Features 

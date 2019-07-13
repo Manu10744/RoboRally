@@ -752,6 +752,7 @@ public class MessageDistributer {
                 // For client that chose that StartPoint
                 if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
                     mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
+                    mapController.setAllowedToSetStart(false);
                 } else {
                     // For everyone else
                     Robot otherPlayerRobot;
