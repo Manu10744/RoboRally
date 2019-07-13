@@ -39,45 +39,21 @@ public class ChooseRobotController implements Initializable,IController{
     private ImageView chooseRobotBackground;
 
     @FXML
-    Label headline;
+    private Label headline;
     @FXML
-    Label smashBotLabel;
+    private Label smashBotLabel;
     @FXML
-    Label hammerBotLabel;
+    private Label hammerBotLabel;
     @FXML
-    Label hulkX90Label;
+    private Label hulkX90Label;
     @FXML
-    Label twonkyLabel;
+    private Label twonkyLabel;
     @FXML
-    Label spinBotLabel;
+    private Label spinBotLabel;
     @FXML
-    Label zoomBotLabel;
+    private Label zoomBotLabel;
 
     private StageController stageController;
-
-    public ImageView getHammerBot() {
-        return hammerBot;
-    }
-
-    public ImageView getHulkX90() {
-        return hulkX90;
-    }
-
-    public ImageView getSmashBot() {
-        return smashBot;
-    }
-
-    public ImageView getTwonky() {
-        return twonky;
-    }
-
-    public ImageView getSpinBot() {
-        return spinBot;
-    }
-
-    public ImageView getZoomBot() {
-        return zoomBot;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -178,6 +154,30 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+    }
+
+    public ImageView getHammerBot() {
+        return hammerBot;
+    }
+
+    public ImageView getHulkX90() {
+        return hulkX90;
+    }
+
+    public ImageView getSmashBot() {
+        return smashBot;
+    }
+
+    public ImageView getTwonky() {
+        return twonky;
+    }
+
+    public ImageView getSpinBot() {
+        return spinBot;
+    }
+
+    public ImageView getZoomBot() {
+        return zoomBot;
     }
 
     @Override
