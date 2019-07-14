@@ -14,13 +14,16 @@ import static utils.Parameter.*;
  */
 public class DeckDiscard {
 
+    private ArrayList<Card> deckDiscard;
+
     /**
      * This method creates an empty deckDiscard.
      */
     public void initializeDeckDiscard() {
-
-        ArrayList<Card> deckDiscard = new ArrayList<>();
-
+        this.deckDiscard = new ArrayList<>();
     }
 
+    public ArrayList<Card> getDeckDiscard() {
+        return deckDiscard;
+    }
 }

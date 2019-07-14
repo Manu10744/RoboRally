@@ -3,25 +3,21 @@ package viewmodels;
 import client.Client;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import server.game.Robot;
 import server.game.Tiles.*;
-import utils.Parameter;
 import utils.json.protocol.GameStartedBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -52,13 +48,12 @@ public class MapController implements IController {
 
     private Map<String, Group> fieldMap = new HashMap<String, Group>();
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
+    private ArrayList<Group> startPointList;
     private StageController stageController;
 
     private static final Logger logger = Logger.getLogger(viewmodels.MapController.class.getName());
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
-
-    private ArrayList<Group> startpointlist;
 
     @Override
     public IController setPrimaryController(StageController stageController) {
@@ -103,7 +98,7 @@ public class MapController implements IController {
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
 
-       startpointlist = new ArrayList<>();
+       startPointList = new ArrayList<>();
 
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
@@ -251,7 +246,7 @@ public class MapController implements IController {
                                     String ID = xPos + "-" + yPos;
                                     imageGroup.setId(ID);
                                     imageGroup.setStyle("-fx-cursor: hand;");
-                                    startpointlist.add(imageGroup);
+                                    startPointList.add(imageGroup);
 
                                 }
 
@@ -296,7 +291,7 @@ public class MapController implements IController {
 
     public void initEventsOnStartpoints() {
 
-        for (Group startpoint : startpointlist) {
+        for (Group startpoint : startPointList) {
             startpoint.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 // We need the map controller here because Event Handlers create an anonymous inner class (!)
                 MapController mapController = (MapController) stageController.getControllerMap().get("Map");
@@ -340,5 +335,9 @@ public class MapController implements IController {
 
     public void setAllowedToSetStart(Boolean allowStart) {
         this.allowSetStart = allowStart;
+    }
+
+    public ArrayList<Group> getStartpointList() {
+        return startPointList;
     }
 }

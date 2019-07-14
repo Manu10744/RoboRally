@@ -14,12 +14,16 @@ import static utils.Parameter.*;
  */
 public class DeckHand {
 
+    private ArrayList<Card> deckHand;
+
     /**
      * This method creates an empty deckHand.
      */
     public void initializeDeckHand() {
+        this.deckHand = new ArrayList<>();
+    }
 
-        ArrayList<Card> deckHand = new ArrayList<>();
-
+    public ArrayList<Card> getDeckHand() {
+        return deckHand;
     }
 }

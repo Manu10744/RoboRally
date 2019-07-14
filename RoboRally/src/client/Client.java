@@ -217,7 +217,6 @@ public class Client {
 
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
-
     }
 
 

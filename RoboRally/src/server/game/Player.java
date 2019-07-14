@@ -32,7 +32,7 @@ public class Player implements Serializable {
     private DeckHand deckHand;
     private DeckRegister deckRegister;
 
-    public Player(){
+    public Player() {
         this.name = "";
 
         // Create decks, initialize draw deck
@@ -102,5 +102,25 @@ public class Player implements Serializable {
 
     public void setPlayerRobot(Robot playerRobot) {
         this.playerRobot = playerRobot;
+    }
+
+    public int getEnergy() {
+        return energy;
+    }
+
+    public DeckDraw getDeckDraw() {
+        return deckDraw;
+    }
+
+    public DeckDiscard getDeckDiscard() {
+        return deckDiscard;
+    }
+
+    public DeckHand getDeckHand() {
+        return deckHand;
+    }
+
+    public DeckRegister getDeckRegister() {
+        return deckRegister;
     }
 }
