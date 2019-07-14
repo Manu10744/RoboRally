@@ -1,7 +1,6 @@
 ### Known Issues
 * Ability to choose map not implemented yet
 * Drag and Drop must be fixed (Bugs)
-* Remaining maps are missing (16/18)
 * Timer before map starts
 * Event for INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS needed because informer message about ready status of already connected players comes in too fast -
   information of already connected players is not 100% processed at that time.
@@ -16,6 +15,7 @@
 ### New Features 
 * Freshly connected clients are now informed about ready status of already connected clients, but only by a workaround (making the Thread sleep). - *(Manu)*
 * Map can now callback when it was completely loaded. - *(Manu)*
+* All maps have been added to the game. - *(Jessie, Verena, Vincent)*
 
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
