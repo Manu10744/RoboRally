@@ -5,18 +5,23 @@
 * Timer before map starts
 * Event for INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS needed because informer message about ready status of already connected players comes in too fast -
   information of already connected players is not 100% processed at that time.
- * Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
- * When setting a StartPoint, the robot always has to look towards the mapboard. 
+* Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
+* When setting a StartPoint, the robot always has to look towards the mapboard. 
+* Shop needs to be implemented
+* Antenna algorithm calculating next player needs to be implemented
+* Drawn cards need to be filled into cards popup
+* AI needs to be implemented
 
 ## Version [0.4.0] 
 ### New Features 
 * Freshly connected clients are now informed about ready status of already connected clients, but only by a workaround (making the Thread sleep). - *(Manu)*
-* Map can now callback when it was completely loaded by an Event which still needs to be implemented. - *(Manu)*
+* Map can now callback when it was completely loaded. - *(Manu)*
 
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
 * All maps can now be displayed by calculating the map dimensions and giving that information to the loading method. - (*Verena*)
 * Gaps in maps can now be displayed - (*Jessie, Verena*)
+* Map parameters were removed. - *(Manu)*
 
 ### Bugfixes
 * Fixed bug that happened when player was disallowed to set StartPoint after trying to set an already taken StartPoint - *(Manu)*
@@ -31,25 +36,24 @@
 
 ### Bugfixes
 * Choosing robot by one click enabled - *(Ivan)*
-* Lasers are now properly displayed inside maps. - *(Manu)*
 
 ## Version [0.3.1] 
 ### New Features 
 * Robot can now be set by clicking on robots in the chooseRobot view - *(Verena, Jessi)*
 * Player avatars are now set after choosing robot - *(Verena)*
-* Already assigned robots are disabled now - *(Manu)*
-* Lobby background view - *(Verena)*
-* Player can now set his StartPoint individually - *(Mia, Verena, Manu)*
+* Already assigned robots are now disabled in each freshly connected client's view. - *(Manu)*
+* Lobby background view added. - *(Verena)*
+* Player can now set his StartPoint individually. - *(Mia, Verena, Manu)*
 
 ### Changes
 * Replaced font to RoboRally font - *(Verena)*
 * Proper view sequence implemented (StartScreen -> chooseRobot -> Lobby -> Map -> ScoreBoard) - *(A-Team)*
 
 ### Bugfixes
-* Ready Button's width is now correct - *(Ivan)*
+* Ready Button's width is now correct. - *(Ivan)*
 * New connecting clients are now informed about ready status of already connected players - *(Ivan)*
-* Responsivnes for playermat (completely implemented) and opponentmat (detailed example code and description) - *(Ivan)*
-* Program terminates by set on close request when windows are closed - *(Ivan)*
+* Responsiveness for PlayerMat (completely implemented) and OpponentMat (detailed example code and description) - *(Ivan)*
+* Program terminates by set on close request when windows are closed. - *(Ivan)*
 
 ## Version [0.3.0] 
 ### New Features
@@ -60,9 +64,9 @@
 * Deck functionality finished - *(Vincent)*
 * Game Wiki is completed now *(Verena)*
 * Zooming and Scrolling works smoother now, Map can be reset to its default position by pressing 'Z' - *(Ivan)*
+* Private messages implemented - *(Ivan)*
 
 ### Changes
-* Private messages implemented - *(Ivan)*
 * GridPane of Map now contains one group per field to achieve more convenient editing of map - *(Mia)*
 * Each group is stored in a HashMap to access each field efficiently - *(Mia)*
 * Basic Game Logic removed from Cards and they were made non-static - *(Vincent)*

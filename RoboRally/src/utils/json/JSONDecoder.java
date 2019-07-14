@@ -422,7 +422,7 @@ public class JSONDecoder {
 
                 ArrayList<ArrayList<ArrayList<Tile>>> mapBody = tileArrayListParser.fromJson(tripleNestedArray, listType);
 
-                logger.info(ANSI_GREEN + "( JSONDECODER ): MAP SIZE CALCULATION IN FINISHED: " + mapBody.size() * mapBody.get(0).size() + " FIELDS." + ANSI_RESET + "\n");
+                logger.info(ANSI_GREEN + "( JSONDECODER ): MAP SIZE CALCULATION FINISHED: " + mapBody.size() * mapBody.get(0).size() + " FIELDS." + ANSI_RESET + "\n");
 
                 GameStartedBody gameStartedBody = new GameStartedBody(
                         mapBody

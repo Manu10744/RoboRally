@@ -3,6 +3,7 @@ package viewmodels;
 import client.Client;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -65,7 +66,7 @@ public class MapController implements IController {
 
     @FXML
     public void initialize() {
-        // This Listener fires an event after the map has been completely loaded
+        // This Listener makes a callback after the map has been completely loaded
         mapPane.getChildren().addListener(new ListChangeListener<Node>() {
             @Override
             public void onChanged(Change<? extends Node> change) {
@@ -76,9 +77,15 @@ public class MapController implements IController {
                 // Map size = Height * Width + 1(Group containing all the fields)
                 int mapSizeAfterLoad = (mapController.map.size() * mapController.map.get(0).size()) + 1;
 
-                // Fire event
                 if (mapChangeCounter == mapSizeAfterLoad) {
+                    // Map is completely loaded
                     logger.info(ANSI_GREEN + "( MAPCONTROLLER ): MAP LOADING FINISHED!" + ANSI_RESET);
+
+                    mapController.initEventsOnStartpoints();
+                    logger.info("Initialized MouseClick Events on all StartPoints");
+                    
+                    // Popup of 9 cards to choose from
+                    ((PlayerMatController) stageController.getControllerMap().get("PlayerMat")).openPopupCards(null); //handleYourCards
                 }
             }
         });

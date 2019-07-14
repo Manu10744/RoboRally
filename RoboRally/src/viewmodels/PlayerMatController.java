@@ -163,7 +163,6 @@ public class PlayerMatController implements IController {
 
                 try {
                     root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
-                    root.getStylesheets().add("/resources/css/main.css");
                     rootStage.setScene(new Scene(root));
                     rootStage.setAlwaysOnTop(true);
                     rootStage.initStyle(StageStyle.TRANSPARENT);
@@ -328,8 +327,8 @@ public class PlayerMatController implements IController {
                 }
             });
         }
+        System.out.println("INITIALIZING DRAGDROP EVENTS ON PLAYERREGISTERS");
     }
-
 
 
     @FXML
