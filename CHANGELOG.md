@@ -22,7 +22,8 @@
 * All maps can now be displayed by calculating the map dimensions and giving that information to the loading method. - (*Verena*)
 * Gaps in maps can now be displayed - (*Jessie, Verena*)
 * Map parameters were removed. - *(Manu)*
-* For each Tile of type StartPoint set an ID dynamically consisting out of the coordinates is now working - (*Verena*)
+* For each Tile of type StartPoint setting an ID dynamically consisting out of the coordinates is now working. Startpoints can now be set no matter their position on the map. - (*Verena*)
+* Walls are now displayed on top of lasers instead of vice versa. - *(Manu)*
 
 ### Bugfixes
 * Fixed bug that happened when player was disallowed to set StartPoint after trying to set an already taken StartPoint - *(Manu)*

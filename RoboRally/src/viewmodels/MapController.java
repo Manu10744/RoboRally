@@ -212,10 +212,25 @@ public class MapController implements IController {
                         // Each field on the map is represented by a single Array of Tiles
                         ArrayList<Tile> tileArray = map.get(xPos).get(yPos);
 
-                        // Add a normal tile to each non-empty field to prevent whitespace
-                        if (!containsInstance(tileArray, Empty.class)) {
-                            System.out.println("Doesnt contain empty, so i will add one!");
-                            tileArray.add(0, new Empty());
+                        // Only check for Empty if current field is no empty field
+                        if (!tileArray.contains(null)) {
+                            // Add a normal tile to each non-empty field to prevent whitespace
+                            if (!containsInstance(tileArray, Empty.class)) {
+                                System.out.println("Doesnt contain empty, so i will add one!");
+                                tileArray.add(0, new Empty());
+                            }
+                        }
+
+                        // Only check for Laser and wall if current field is no empty field
+                        if (!tileArray.contains(null)) {
+                            if (containsInstance(tileArray, Wall.class) && containsInstance(tileArray, Laser.class)) {
+                                Tile wall = tileArray.get(1);
+                                Tile laser = tileArray.get(2);
+
+                                // Swap laser and wall so wall image is put over laser image
+                                tileArray.set(2, wall);
+                                tileArray.set(1, laser);
+                            }
                         }
 
                         Group imageGroup = new Group();
@@ -272,10 +287,6 @@ public class MapController implements IController {
      */
     public boolean containsInstance(ArrayList<Tile> listToCheck, Class<?> target) {
         for (Tile listItem : listToCheck) {
-            if (listItem == null) {
-                // Return true so no Empty tile is added to the field
-                return true;
-            }
             if (listItem.getClass().equals(target)) {
                 return true;
             }
