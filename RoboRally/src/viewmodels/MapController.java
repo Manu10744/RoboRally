@@ -58,6 +58,8 @@ public class MapController implements IController {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
 
+    private ArrayList<Group> startpointlist;
+
     @Override
     public IController setPrimaryController(StageController stageController) {
         this.stageController = stageController;
@@ -91,6 +93,8 @@ public class MapController implements IController {
         });
     }
 
+
+
     /**
      * This method fills the GridPane that's responsible for displaying the map. It is triggered inside of the
      * {@link utils.json.MessageDistributer#handleGameStarted(Client, Client.ClientReaderTask, GameStartedBody)} method.
@@ -98,6 +102,8 @@ public class MapController implements IController {
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
+
+       startpointlist = new ArrayList<>();
 
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
@@ -225,7 +231,14 @@ public class MapController implements IController {
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
 
-                                // TODO: For each Tile of type StartPoint set an ID dynamically consisting out of the coordinates!
+
+                                if (tile instanceof StartPoint){
+                                    String ID = xPos + "-" + yPos;
+                                    imageGroup.setId(ID);
+                                    imageGroup.setStyle("-fx-cursor: hand;");
+                                    startpointlist.add(imageGroup);
+
+                                }
 
                                 // Necessary for making map fields responsive
                                 imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
@@ -271,29 +284,8 @@ public class MapController implements IController {
     }
 
     public void initEventsOnStartpoints() {
-        // The startinPoints in order according to y-position
-        Group startPoint1 = fieldMap.get("0-3");
-        startPoint1.setId("0-3");
-        Group startPoint2 = fieldMap.get("0-6");
-        startPoint2.setId("0-6");
-        Group startPoint3 = fieldMap.get("1-1");
-        startPoint3.setId("1-1");
-        Group startPoint4 = fieldMap.get("1-4");
-        startPoint4.setId("1-4");
-        Group startPoint5 = fieldMap.get("1-5");
-        startPoint5.setId("1-5");
-        Group startPoint6 = fieldMap.get("1-8");
-        startPoint6.setId("1-8");
 
-        ArrayList<Group> startPoints = new ArrayList<>();
-        startPoints.add(startPoint1);
-        startPoints.add(startPoint2);
-        startPoints.add(startPoint3);
-        startPoints.add(startPoint4);
-        startPoints.add(startPoint5);
-        startPoints.add(startPoint6);
-
-        for (Group startpoint : startPoints) {
+        for (Group startpoint : startpointlist) {
             startpoint.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 // We need the map controller here because Event Handlers create an anonymous inner class (!)
                 MapController mapController = (MapController) stageController.getControllerMap().get("Map");
