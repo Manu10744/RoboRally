@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="popupCards" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="viewmodels.PlayerMatController">
+<GridPane fx:id="popupCards" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.PlayerMatController">
 
     <columnConstraints>
         <ColumnConstraints minWidth="0.0" />

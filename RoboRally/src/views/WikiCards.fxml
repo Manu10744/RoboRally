@@ -78,7 +78,7 @@
                               <Insets bottom="5.0" left="20.0" top="5.0" />
                            </VBox.margin>
                            <image>
-                              <Image url="@../resources/images/cards/lefttturn-blue100x100.png" />
+                              <Image url="@../resources/images/cards/leftturn-blue100x100.png" />
                            </image>
                         </ImageView>
                         <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -251,7 +251,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
