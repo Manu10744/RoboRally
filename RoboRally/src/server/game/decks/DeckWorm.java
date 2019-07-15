@@ -14,16 +14,20 @@ import static utils.Parameter.WORM_CARDS_AMOUNT;
  */
 public class DeckWorm {
 
+    private ArrayList<Card> deckWorm;
+
     /**
      * This method initializes the deck of Worm cards.
      */
-    public void initializeDeckWorm(){
-
-        ArrayList<Card> deckWorm = new ArrayList<>();
+    public void initializeDeckWorm() {
+        this.deckWorm = new ArrayList<>();
 
         for (int i = 0; i < WORM_CARDS_AMOUNT; i++) {
             deckWorm.add(new Worm());
         }
+    }
 
+    public ArrayList<Card> getDeckWorm() {
+        return deckWorm;
     }
 }
