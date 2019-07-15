@@ -6,9 +6,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,6 +29,8 @@ import server.game.decks.DeckDraw;
 import utils.Parameter;
 
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.HyperlinkEvent;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -151,6 +155,22 @@ public class PlayerMatController implements IController {
 
     BooleanProperty allRegistersSet;
 
+    ArrayList<ImageView> dragImages = new ArrayList<>();
+
+    public void initialize() {
+        if (popupCards != null) {
+            dragImages.add(dragImage1);
+            dragImages.add(dragImage2);
+            dragImages.add(dragImage3);
+            dragImages.add(dragImage4);
+            dragImages.add(dragImage5);
+            dragImages.add(dragImage6);
+            dragImages.add(dragImage7);
+            dragImages.add(dragImage8);
+            dragImages.add(dragImage9);
+        }
+    }
+
     /**
      * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
      * This method fulfills two functions: first, all the hboxes are made responsive, second the drag and drop method is envocked
@@ -159,49 +179,53 @@ public class PlayerMatController implements IController {
      */
 
     public void openPopupCards(ArrayList<Card> deck) {
+        rootStage = new Stage();
+        Parent root;
 
-                rootStage = new Stage();
-                Parent root;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
+            rootStage.setScene(new Scene(root));
+            rootStage.setAlwaysOnTop(true);
+            rootStage.initStyle(StageStyle.TRANSPARENT);
+            rootStage.setX(stageController.getPlayerMat().getLayoutX() + playerUpdates.getLayoutX() - register1.getFitWidth());
+            rootStage.setY(stageController.getPlayerMat().getLayoutY() + playerUpdates.getLayoutY());
+            rootStage.show();
+            root.getStylesheets().add("/resources/css/main.css");
 
-                try {
-                    root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
-                    rootStage.setScene(new Scene(root));
-                    rootStage.setAlwaysOnTop(true);
-                    rootStage.initStyle(StageStyle.TRANSPARENT);
-                    rootStage.setX(stageController.getPlayerMat().getLayoutX() + playerUpdates.getLayoutX() - register1.getFitWidth());
-                    rootStage.setY(stageController.getPlayerMat().getLayoutY() + playerUpdates.getLayoutY());
-                    rootStage.show();
-                    root.getStylesheets().add("/resources/css/main.css");
+            HBox hbox = (HBox) root.getChildrenUnmodifiable().get(0);
+            for (Node node : hbox.getChildren()) {
+                dragImages.add((ImageView) node);
+            }
 
-                    loadCards(deck);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            loadCards(deck);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     *  Drag and drop procedure
+     * Drag and drop procedure
+     * <p>
+     * onDragDetected
+     * The drag-and-drop gesture can only be started by calling the startDragAndDrop method inside the handler of the
+     * DRAG_DETECTED event on a gesture source.
+     * <p>
+     * onDragOver
+     * After the drag-and-drop gesture is started, any node or scene that the mouse is dragged over is a potential
+     * target to drop the data. You specify which object accepts the data by implementing the DRAG_OVER event handler.
+     * <p>
+     * onDragDropped
+     * When the mouse button is released on the gesture target, which accepted previous DRAG_OVER events with a transfer
+     * mode supported by the gesture source, then the DRAG_DROPPED event is sent to the gesture target.
+     * <p>
+     * ondDragDone
+     * After the drag-and-drop gesture is finished, the DRAG_DONE event is sent to the gesture source to inform the
+     * source about how the gesture finished.
      *
-     *  onDragDetected
-     *  The drag-and-drop gesture can only be started by calling the startDragAndDrop method inside the handler of the
-     *  DRAG_DETECTED event on a gesture source.
-     *
-     *  onDragOver
-     *  After the drag-and-drop gesture is started, any node or scene that the mouse is dragged over is a potential
-     *  target to drop the data. You specify which object accepts the data by implementing the DRAG_OVER event handler.
-     *
-     *  onDragDropped
-     *  When the mouse button is released on the gesture target, which accepted previous DRAG_OVER events with a transfer
-     *  mode supported by the gesture source, then the DRAG_DROPPED event is sent to the gesture target.
-     *
-     *  ondDragDone
-     *  After the drag-and-drop gesture is finished, the DRAG_DONE event is sent to the gesture source to inform the
-     *  source about how the gesture finished.
-     *
-     *  @author Jessie
-     *  @author Verena
-     *  @author Mia
-     *  @author Ivan
+     * @author Jessie
+     * @author Verena
+     * @author Mia
+     * @author Ivan
      */
 
 
@@ -238,7 +262,6 @@ public class PlayerMatController implements IController {
     }
 
 
-
     @FXML
     void onDragOverPopUp() {
         for (Node card : cards.getChildren()) {
@@ -268,8 +291,6 @@ public class PlayerMatController implements IController {
             });
         }
     }
-
-
 
     @FXML
     void onDragDroppedPopUp() {
@@ -309,7 +330,7 @@ public class PlayerMatController implements IController {
                             success = true;
                         }
 
-                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null){
+                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null) {
                             register1.setDisable(true);
                             register2.setDisable(true);
                             register3.setDisable(true);
@@ -368,111 +389,78 @@ public class PlayerMatController implements IController {
         Client client = chatController.getClient();
         String robotName = client.getPlayer().getPlayerRobot().getName();
 
-        ArrayList<ImageView> dragImages = new ArrayList<>();
-        dragImages.add(dragImage1);
-        dragImages.add(dragImage2);
-        dragImages.add(dragImage3);
-        dragImages.add(dragImage4);
-        dragImages.add(dragImage5);
-        dragImages.add(dragImage6);
-        dragImages.add(dragImage7);
-        dragImages.add(dragImage8);
-        dragImages.add(dragImage9);
-
         if (robotName.equals("HammerBot")) {
-
-            for (Card card : cardsInHand) {
-                for (ImageView dragImage : dragImages) {
-                    dragImage.setImage(getCardImage(card, "purple"));
-                }
+            for (int i = 0; i < dragImages.size(); i++) {
+                dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "purple"));
             }
-
         }
+
         if (robotName.equals("HulkX90")) {
-
-            for (Card card : cardsInHand) {
-                for (ImageView dragImage : dragImages) {
-                    dragImage.setImage(getCardImage(card, "red"));
-                }
+            for (int i = 0; i < dragImages.size(); i++) {
+                dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "red"));
             }
-
         }
+
         if (robotName.equals("SmashBot")) {
-
-            for (Card card : cardsInHand) {
-                for (ImageView dragImage : dragImages) {
-                    dragImage.setImage(getCardImage(card, "yellow"));
-                }
+            for (int i = 0; i < dragImages.size(); i++) {
+                dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "yellow"));
             }
-
         }
+
         if (robotName.equals("SpinBot")) {
-
-            for (Card card : cardsInHand) {
-                for (ImageView dragImage : dragImages) {
-                    dragImage.setImage(getCardImage(card, "blue"));
-                }
+            for (int i = 0; i < dragImages.size(); i++) {
+                dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "blue"));
             }
-
         }
+
         if (robotName.equals("Twonky")) {
-
-            for (Card card : cardsInHand) {
-                for (ImageView dragImage : dragImages) {
-                    dragImage.setImage(getCardImage(card, "orange"));
-                }
+            for (int i = 0; i < dragImages.size(); i++) {
+                dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "orange"));
             }
-
         }
+
         if (robotName.equals("ZoomBot")) {
-
-            for (Card card : cardsInHand) {
-                for (ImageView dragImage : dragImages) {
-                    dragImage.setImage(getCardImage(card, "green"));
-                }
+            for (int i = 0; i < dragImages.size(); i++) {
+                dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "green"));
             }
-
         }
-
     }
 
     public Image getCardImage(Card card, String color) {
         Image image;
 
-        if (card.cardName.equals("Again")) {
+        if (card.getCardName().equals("Again")) {
             image = new Image("/resources/images/cards/again-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("BackUp")) {
+        if (card.getCardName().equals("BackUp")) {
             image = new Image("/resources/images/cards/moveback-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("MoveI")) {
+        if (card.getCardName().equals("MoveI")) {
             image = new Image("/resources/images/cards/move1-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("MoveII")) {
+        if (card.getCardName().equals("MoveII")) {
             image = new Image("/resources/images/cards/move2-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("MoveIII")) {
+        if (card.getCardName().equals("MoveIII")) {
             image = new Image("/resources/images/cards/move3-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("PowerUp")) {
+        if (card.getCardName().equals("PowerUp")) {
             image = new Image("/resources/images/cards/powerup-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("TurnLeft")) {
-            System.out.println(color);
-            image = new Image("/resources/images/cards/lefttturn-" + color + "100x100.png");
+        if (card.getCardName().equals("TurnLeft")) {
+            image = new Image("/resources/images/cards/leftturn-" + color + "100x100.png");
             return image;
         }
-        if (card.cardName.equals("TurnRight")) {
+        if (card.getCardName().equals("TurnRight")) {
             image = new Image("/resources/images/cards/rightturn-" + color + "100x100.png");
             return image;
-        }
-        else {
+        } else {
             image = new Image("/resources/images/cards/uturn-" + color + "100x100.png");
             return image;
         }
@@ -668,7 +656,7 @@ public class PlayerMatController implements IController {
 
 
     @Override
-    public IController setPrimaryController (StageController stageController){
+    public IController setPrimaryController(StageController stageController) {
         this.stageController = stageController;
         return this;
     }

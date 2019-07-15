@@ -53,7 +53,4 @@ public abstract class Deck {
      */
     public abstract ArrayList<Card> getDeck();
 
-
-
-
 }
