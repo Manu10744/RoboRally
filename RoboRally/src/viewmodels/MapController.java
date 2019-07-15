@@ -292,6 +292,7 @@ public class MapController implements IController {
     public void initEventsOnStartpoints() {
 
         for (Group startpoint : startPointList) {
+            logger.info(ANSI_GREEN + "( MAPCONTROLLER ): DETECTED STARTPOINT ON " + startpoint.getId() + "." + ANSI_RESET);
             startpoint.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 // We need the map controller here because Event Handlers create an anonymous inner class (!)
                 MapController mapController = (MapController) stageController.getControllerMap().get("Map");
