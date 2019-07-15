@@ -5,6 +5,7 @@ import server.game.Deck;
 import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static utils.Parameter.*;
 
@@ -23,6 +24,22 @@ public class DeckDiscard extends Deck {
     @Override
     public void initializeDeck() {
         this.deckDiscard = new ArrayList<>();
+    }
+
+    /**
+     * This method shuffles the deck.
+     */
+    @Override
+    public void shuffleDeck(ArrayList<Card> deckDiscard) {
+        Collections.shuffle(deckDiscard);
+    }
+
+    /**
+     * This method is needed, if the deckDraw gets to small.
+     */
+    public void addDiscardToDraw(DeckDraw deckDraw) {
+        deckDraw.getDeck().addAll(deckDiscard);
+        deckDiscard.clear();
     }
 
     /**

@@ -30,9 +30,7 @@ public abstract class Deck {
     /**
      * This method shuffles the deck.
      */
-    public void shuffleDeck(ArrayList<Card> Deck) {
-        Collections.shuffle(Deck);
-    }
+    public abstract void shuffleDeck(ArrayList<Card> Deck);
 
     /**
      * This method knows the top card of any deck.
@@ -47,20 +45,6 @@ public abstract class Deck {
      */
     public void removeTopCard(ArrayList<Card> Deck) {
         Deck.remove(0);
-    }
-
-    /**
-     * This method clears a Deck. For example you could clear the deckDiscard after you've added it to the deckDraw.
-     */
-    public void clearDeck(ArrayList<Card> Deck) {
-        Deck.clear();
-    }
-
-    /**
-     * This method can check if a Deck has Cards left in it.
-     */
-    public boolean deckEmpty(ArrayList<Card> Deck){
-        return Deck.isEmpty();
     }
 
     /**

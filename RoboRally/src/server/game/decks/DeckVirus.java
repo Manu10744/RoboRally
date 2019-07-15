@@ -5,6 +5,7 @@ import server.game.DamageCards.Virus;
 import server.game.Deck;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static utils.Parameter.*;
 
@@ -27,6 +28,14 @@ public class DeckVirus extends Deck {
         for (int i = 0; i < VIRUS_CARDS_AMOUNT; i++) {
             deckVirus.add(new Virus());
         }
+    }
+
+    /**
+     * This method shuffles the deck.
+     */
+    @Override
+    public void shuffleDeck(ArrayList<Card> deckVirus) {
+        Collections.shuffle(deckVirus);
     }
 
     /**

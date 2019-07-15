@@ -5,6 +5,7 @@ import server.game.DamageCards.Worm;
 import server.game.Deck;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static utils.Parameter.WORM_CARDS_AMOUNT;
 
@@ -27,6 +28,14 @@ public class DeckWorm extends Deck {
         for (int i = 0; i < WORM_CARDS_AMOUNT; i++) {
             deckWorm.add(new Worm());
         }
+    }
+
+    /**
+     * This method shuffles the deck.
+     */
+    @Override
+    public void shuffleDeck(ArrayList<Card> deckWorm) {
+        Collections.shuffle(deckWorm);
     }
 
     /**
