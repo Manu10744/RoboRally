@@ -2,6 +2,7 @@ package server.game.decks;
 
 import server.game.Card;
 import server.game.DamageCards.Worm;
+import server.game.Deck;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,15 @@ import static utils.Parameter.WORM_CARDS_AMOUNT;
  *
  * @author Vincent Tafferner
  */
-public class DeckWorm {
+public class DeckWorm extends Deck {
 
     private ArrayList<Card> deckWorm;
 
     /**
      * This method initializes the deck of Worm cards.
      */
-    public void initializeDeckWorm() {
+    @Override
+    public void initializeDeck() {
         this.deckWorm = new ArrayList<>();
 
         for (int i = 0; i < WORM_CARDS_AMOUNT; i++) {
@@ -27,7 +29,11 @@ public class DeckWorm {
         }
     }
 
-    public ArrayList<Card> getDeckWorm() {
+    /**
+     * This method returns the deck.
+     */
+    @Override
+    public ArrayList<Card> getDeck() {
         return deckWorm;
     }
 }

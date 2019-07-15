@@ -2,6 +2,7 @@ package server.game.decks;
 
 import server.game.Card;
 import server.game.DamageCards.*;
+import server.game.Deck;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,15 @@ import static utils.Parameter.*;
  *
  * @author Vincent Tafferner
  */
-public class DeckTrojan {
+public class DeckTrojan extends Deck {
 
-    ArrayList<Card> deckTrojan;
+    private ArrayList<Card> deckTrojan;
 
     /**
      * This method initializes the deck of Trojan cards.
      */
-    public void initializeDeckTrojan(){
+    @Override
+    public void initializeDeck(){
         this.deckTrojan = new ArrayList<>();
 
         for (int i = 0; i < TROJAN_CARDS_AMOUNT; i++) {
@@ -27,7 +29,11 @@ public class DeckTrojan {
         }
     }
 
-    public ArrayList<Card> getDeckTrojan() {
+    /**
+     * This method returns the deck.
+     */
+    @Override
+    public ArrayList<Card> getDeck() {
         return deckTrojan;
     }
 }

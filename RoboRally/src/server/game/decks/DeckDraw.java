@@ -1,6 +1,7 @@
 package server.game.decks;
 
 import server.game.Card;
+import server.game.Deck;
 import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
@@ -13,13 +14,14 @@ import static utils.Parameter.*;
  *
  * @author Vincent Tafferner
  */
-public class DeckDraw {
+public class DeckDraw extends Deck {
 
     private ArrayList<Card> deckDraw;
     /**
      * This method initializes the deck of the programming cards.
      */
-    public void initializeDeckDraw() {
+    @Override
+    public void initializeDeck() {
         this.deckDraw = new ArrayList<>();
 
         // Add MoveI cards to the deck. The default value is 5.
@@ -72,6 +74,10 @@ public class DeckDraw {
         Collections.shuffle(deckDraw);
     }
 
+    /**
+     * This method returns the deck.
+     */
+    @Override
     public ArrayList<Card> getDeck() {
         return deckDraw;
     }

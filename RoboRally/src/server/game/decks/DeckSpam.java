@@ -2,6 +2,7 @@ package server.game.decks;
 
 import server.game.Card;
 import server.game.DamageCards.*;
+import server.game.Deck;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,15 @@ import static utils.Parameter.*;
  *
  * @author Vincent Tafferner
  */
-public class DeckSpam {
+public class DeckSpam extends Deck {
 
     private ArrayList<Card> deckSpam;
 
     /**
      * This method initializes the deck of Spam cards.
      */
-    public void initializeDeckSpam() {
+    @Override
+    public void initializeDeck() {
         this.deckSpam = new ArrayList<>();
 
         for (int i = 0; i < SPAM_CARDS_AMOUNT; i++) {
@@ -27,7 +29,11 @@ public class DeckSpam {
         }
     }
 
-    public ArrayList<Card> getDeckSpam() {
+    /**
+     * This method returns the deck.
+     */
+    @Override
+    public ArrayList<Card> getDeck() {
         return deckSpam;
     }
 }

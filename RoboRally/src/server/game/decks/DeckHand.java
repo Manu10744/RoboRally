@@ -1,6 +1,7 @@
 package server.game.decks;
 
 import server.game.Card;
+import server.game.Deck;
 import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
@@ -12,18 +13,23 @@ import static utils.Parameter.*;
  *
  * @author Vincent Tafferner
  */
-public class DeckHand {
+public class DeckHand extends Deck {
 
     private ArrayList<Card> deckHand;
 
     /**
      * This method creates an empty deckHand.
      */
-    public void initializeDeckHand() {
+    @Override
+    public void initializeDeck() {
         this.deckHand = new ArrayList<>();
     }
 
-    public ArrayList<Card> getDeckHand() {
+    /**
+     * This method returns the deck.
+     */
+    @Override
+    public ArrayList<Card> getDeck() {
         return deckHand;
     }
 }
