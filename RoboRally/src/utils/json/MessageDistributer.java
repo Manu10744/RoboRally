@@ -816,13 +816,14 @@ public class MessageDistributer {
          * @param yourCardsBody The message body of the message which is of type {@link YourCardsBody}.
          */
         public void handleYourCards (Client client, Client.ClientReaderTask task, YourCardsBody yourCardsBody){
-
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
 
-            ArrayList<Card> deck = yourCardsBody.getCardsInHand();
             Platform.runLater(() -> {
+                ArrayList<Card> deck = yourCardsBody.getCardsInHand();
+
                 ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(deck);
             });
+
         }
 
         /**

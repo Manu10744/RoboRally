@@ -514,7 +514,7 @@ public class JSONDecoder {
         } else if (cardName.equals("TurnLeft")) {
             TurnLeft result = gson.fromJson(jsonMessageBody, TurnLeft.class);
             return result;
-        } else if (cardName.equals("TurnRightRight")) {
+        } else if (cardName.equals("TurnRight")) {
             TurnRight result = gson.fromJson(jsonMessageBody, TurnRight.class);
             return result;
         } else if (cardName.equals("UTurn")) {
