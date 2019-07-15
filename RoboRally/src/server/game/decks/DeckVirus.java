@@ -2,6 +2,7 @@ package server.game.decks;
 
 import server.game.Card;
 import server.game.DamageCards.Virus;
+import server.game.Deck;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,15 @@ import static utils.Parameter.*;
  *
  * @author Vincent Tafferner
  */
-public class DeckVirus {
+public class DeckVirus extends Deck {
 
-    ArrayList<Card> deckVirus;
+    private ArrayList<Card> deckVirus;
 
     /**
      * This method initializes the deck of Virus cards.
      */
-    public void initializeDeckVirus() {
+    @Override
+    public void initializeDeck() {
         this.deckVirus = new ArrayList<>();
 
         for (int i = 0; i < VIRUS_CARDS_AMOUNT; i++) {
@@ -27,7 +29,11 @@ public class DeckVirus {
         }
     }
 
-    public ArrayList<Card> getDeckVirus() {
+    /**
+     * This method returns the deck.
+     */
+    @Override
+    public ArrayList<Card> getDeck() {
         return deckVirus;
     }
 }
