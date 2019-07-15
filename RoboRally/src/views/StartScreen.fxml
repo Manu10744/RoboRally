@@ -19,8 +19,13 @@
     <children>
     <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="false">
         <image>
-            <Image url="@../resources/images/others/StartscreenNew.png" backgroundLoading="true"/>
+            <Image url="@../resources/images/others/StartscreenNewNoTitel.png" backgroundLoading="true"/>
         </image>
     </ImageView>
+        <ImageView fx:id="imageView2" pickOnBounds="true" preserveRatio="false">
+            <image>
+                <Image url="@../resources/images/others/StartscreenNewTitel.png" backgroundLoading="true"/>
+            </image>
+        </ImageView>
     </children>
 </GridPane>
