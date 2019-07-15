@@ -1,76 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="popupCards" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.PlayerMatController">
+<GridPane fx:id="popupCards" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="viewmodels.PlayerMatController">
 
     <columnConstraints>
-        <ColumnConstraints minWidth="0.0"/>
+        <ColumnConstraints minWidth="0.0" />
     </columnConstraints>
 
     <rowConstraints>
-        <RowConstraints minHeight="0.0"/>
+        <RowConstraints minHeight="0.0" />
     </rowConstraints>
 
     <HBox fx:id="cards" minHeight="0.0" minWidth="0.0" style="-fx-background-color: grey" GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <ImageView fx:id="dragImage1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage6" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage6" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage7" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage7" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage8" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage8" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
-        <ImageView fx:id="dragImage9" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"
-                   onDragDetected="#onDragDetectedPopUp"
-                   onDragOver="#onDragOverPopUp"
-                   onDragDropped="#onDragDroppedPopUp"
-                   onDragDone="#onDragDonePopUp">
+        <ImageView fx:id="dragImage9" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
     </HBox>
 </GridPane>

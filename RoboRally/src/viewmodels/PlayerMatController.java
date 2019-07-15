@@ -168,7 +168,127 @@ public class PlayerMatController implements IController {
             dragImages.add(dragImage7);
             dragImages.add(dragImage8);
             dragImages.add(dragImage9);
+
+            for (Node card : cards.getChildren()) {
+                card.setOnDragDetected(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(((ImageView) card).getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
+                });
+
+                card.setOnDragOver(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        if (dragEvent.getGestureSource() != card && dragEvent.getDragboard().hasImage()) {
+                            dragEvent.acceptTransferModes(TransferMode.MOVE);
+                        }
+                        dragEvent.consume();
+                    }
+                });
+                card.setOnDragDropped(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        Dragboard db = dragEvent.getDragboard();
+                        boolean success = false;
+                        if (db.hasImage()) {
+                            if (((ImageView) card).getImage() == null) {
+                                ((ImageView) card).setImage(db.getImage());
+                                success = true;
+                            }
+                        }
+                        dragEvent.setDropCompleted(success);
+                        dragEvent.consume();
+                    }
+                });
+
+                card.setOnDragDone(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                            ((ImageView) card).setImage(null);
+                        }
+                        dragEvent.consume();
+                    }
+                });
+            }
+
+
+
+
         }
+
+        if (playerRegister != null){
+            for (Node register : playerRegister.getChildren()) {
+                register.setOnDragDetected(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        Dragboard db = register.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(((ImageView) register).getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
+                });
+                register.setOnDragOver(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        if (dragEvent.getGestureSource() != register && dragEvent.getDragboard().hasImage()) {
+                            dragEvent.acceptTransferModes(TransferMode.MOVE);
+                        }
+                        dragEvent.consume();
+                    }
+                });
+                register.setOnDragDropped(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        Dragboard db = dragEvent.getDragboard();
+                        boolean success = false;
+                        if (db.hasImage()) {
+                            if (((ImageView) register).getImage() == null) {
+                                ((ImageView) register).setImage(db.getImage());
+                                ((ImageView) register).setPreserveRatio(true);
+                                ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                                ((ImageView) register).fitHeightProperty().bind(playerRegister.heightProperty());
+                                success = true;
+                            }
+
+                            if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null) {
+                                register1.setDisable(true);
+                                register2.setDisable(true);
+                                register3.setDisable(true);
+                                register4.setDisable(true);
+                                register5.setDisable(true);
+
+                                //closes popup
+                                rootStage.close();
+
+                                //Boolean Property for Server so that server knows when a player has finished their programming
+                                allRegistersSet = new SimpleBooleanProperty();
+                                allRegistersSet.setValue(true);
+                            }
+                        }
+                        dragEvent.setDropCompleted(success);
+                        dragEvent.consume();
+                    }
+                });
+
+                register.setOnDragDone(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent dragEvent) {
+                        if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+                            ((ImageView) register).setImage(null);
+                        }
+                        dragEvent.consume();
+                    }
+                });
+            }
+        }
+
     }
 
     /**
@@ -203,186 +323,6 @@ public class PlayerMatController implements IController {
         }
     }
 
-    /**
-     * Drag and drop procedure
-     * <p>
-     * onDragDetected
-     * The drag-and-drop gesture can only be started by calling the startDragAndDrop method inside the handler of the
-     * DRAG_DETECTED event on a gesture source.
-     * <p>
-     * onDragOver
-     * After the drag-and-drop gesture is started, any node or scene that the mouse is dragged over is a potential
-     * target to drop the data. You specify which object accepts the data by implementing the DRAG_OVER event handler.
-     * <p>
-     * onDragDropped
-     * When the mouse button is released on the gesture target, which accepted previous DRAG_OVER events with a transfer
-     * mode supported by the gesture source, then the DRAG_DROPPED event is sent to the gesture target.
-     * <p>
-     * ondDragDone
-     * After the drag-and-drop gesture is finished, the DRAG_DONE event is sent to the gesture source to inform the
-     * source about how the gesture finished.
-     *
-     * @author Jessie
-     * @author Verena
-     * @author Mia
-     * @author Ivan
-     */
-
-
-    @FXML
-    void onDragDetectedPopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragDetected(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(((ImageView) card).getImage());
-                    db.setContent(content);
-                    event.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDetectedRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragDetected(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    Dragboard db = register.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(((ImageView) register).getImage());
-                    db.setContent(content);
-                    event.consume();
-                }
-            });
-        }
-    }
-
-
-    @FXML
-    void onDragOverPopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getGestureSource() != card && dragEvent.getDragboard().hasImage()) {
-                        dragEvent.acceptTransferModes(TransferMode.MOVE);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragOverRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragOver(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getGestureSource() != register && dragEvent.getDragboard().hasImage()) {
-                        dragEvent.acceptTransferModes(TransferMode.MOVE);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDroppedPopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    Dragboard db = dragEvent.getDragboard();
-                    boolean success = false;
-                    if (db.hasImage()) {
-                        if (((ImageView) card).getImage() == null) {
-                            ((ImageView) card).setImage(db.getImage());
-                            success = true;
-                        }
-                    }
-                    dragEvent.setDropCompleted(success);
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDroppedRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragDropped(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    Dragboard db = dragEvent.getDragboard();
-                    boolean success = false;
-                    if (db.hasImage()) {
-                        if (((ImageView) register).getImage() == null) {
-                            ((ImageView) register).setImage(db.getImage());
-                            ((ImageView) register).setPreserveRatio(true);
-                            ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                            ((ImageView) register).fitHeightProperty().bind(playerRegister.heightProperty());
-                            success = true;
-                        }
-
-                        if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null) {
-                            register1.setDisable(true);
-                            register2.setDisable(true);
-                            register3.setDisable(true);
-                            register4.setDisable(true);
-                            register5.setDisable(true);
-
-                            //closes popup
-                            rootStage.close();
-
-                            //Boolean Property for Server so that server knows when a player has finished their programming
-                            allRegistersSet = new SimpleBooleanProperty();
-                            allRegistersSet.setValue(true);
-                        }
-                    }
-                    dragEvent.setDropCompleted(success);
-                    dragEvent.consume();
-                }
-            });
-        }
-        System.out.println("INITIALIZING DRAGDROP EVENTS ON PLAYERREGISTERS");
-    }
-
-
-    @FXML
-    void onDragDonePopUp() {
-        for (Node card : cards.getChildren()) {
-            card.setOnDragDone(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                        ((ImageView) card).setImage(null);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
-
-    @FXML
-    void onDragDoneRegister() {
-        for (Node register : playerRegister.getChildren()) {
-            register.setOnDragDone(new EventHandler<DragEvent>() {
-                @Override
-                public void handle(DragEvent dragEvent) {
-                    if (dragEvent.getTransferMode() == TransferMode.MOVE) {
-                        ((ImageView) register).setImage(null);
-                    }
-                    dragEvent.consume();
-                }
-            });
-        }
-    }
 
     public void loadCards(ArrayList<Card> cardsInHand) {
         ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
