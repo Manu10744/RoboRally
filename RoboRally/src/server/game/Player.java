@@ -9,6 +9,7 @@ import server.game.decks.DeckRegister;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static utils.Parameter.HAND_CARDS_AMOUNT;
 import static utils.Parameter.ORIENTATION_RIGHT;
 
 /**
@@ -37,7 +38,7 @@ public class Player implements Serializable {
 
         // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
-        deckDraw.initializeDeckDraw();
+        deckDraw.initializeDeck();
 
         this.deckDiscard = new DeckDiscard();
         this.deckHand = new DeckHand();
@@ -73,6 +74,26 @@ public class Player implements Serializable {
         // Set robot for this player
         this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
     }
+
+    /**
+     * This method is used for drawing cards from the deck. <br>
+     * It draws Cards until the maximum amount of allowed hand cards is reached.
+     */
+    public void drawHandCards(DeckHand deckHand, DeckDraw deckDraw, DeckDiscard deckDiscard) {
+        for (int i = 0; i < HAND_CARDS_AMOUNT; i++) {
+
+            // Each time this checks if there are still enough Cards left in the deckDraw.
+            if (deckDraw.getDeck().isEmpty()) {
+                deckDiscard.addDiscardToDraw(deckDraw);
+                deckDraw.shuffleDeck(deckDraw.getDeck());
+            }
+
+            // The first Card of deckDraw is added to the deckHand.
+            deckHand.getDeck().add(deckDraw.getTopCard(deckDraw.getDeck()));
+            deckDraw.removeTopCard(deckDraw.getDeck());
+        }
+    }
+
 
     public int getPlayerID(){
         return playerID;
