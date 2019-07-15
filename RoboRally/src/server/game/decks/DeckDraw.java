@@ -4,6 +4,7 @@ import server.game.Card;
 import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static utils.Parameter.*;
 
@@ -14,12 +15,12 @@ import static utils.Parameter.*;
  */
 public class DeckDraw {
 
+    private ArrayList<Card> deckDraw;
     /**
      * This method initializes the deck of the programming cards.
      */
     public void initializeDeckDraw() {
-
-        ArrayList<Card> deckDraw = new ArrayList<>();
+        this.deckDraw = new ArrayList<>();
 
         // Add MoveI cards to the deck. The default value is 5.
         for (int i = 0; i < MOVEI_CARDS_AMOUNT; i++) {
@@ -67,4 +68,11 @@ public class DeckDraw {
         }
     }
 
+    public void shuffleDeck(ArrayList<Card> deckDraw) {
+        Collections.shuffle(deckDraw);
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deckDraw;
+    }
 }

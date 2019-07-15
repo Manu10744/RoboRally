@@ -14,16 +14,20 @@ import static utils.Parameter.*;
  */
 public class DeckTrojan {
 
+    ArrayList<Card> deckTrojan;
+
     /**
      * This method initializes the deck of Trojan cards.
      */
     public void initializeDeckTrojan(){
-
-        ArrayList<Card> deckTrojan = new ArrayList<>();
+        this.deckTrojan = new ArrayList<>();
 
         for (int i = 0; i < TROJAN_CARDS_AMOUNT; i++) {
             deckTrojan.add(new Trojan());
         }
+    }
 
+    public ArrayList<Card> getDeckTrojan() {
+        return deckTrojan;
     }
 }

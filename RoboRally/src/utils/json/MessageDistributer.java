@@ -295,7 +295,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/riskyCrossing.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -304,6 +304,13 @@ public class MessageDistributer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+
+            // Set Construction phase
+            for (Server.ClientWrapper client : server.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(0));
+                client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                client.getWriter().flush();
             }
         }
     }
@@ -715,9 +722,26 @@ public class MessageDistributer {
         public void handleActivePhase (Client client, Client.ClientReaderTask task, ActivePhaseBody activePhaseBody){
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleActivePhase()" + ANSI_RESET);
 
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
+                int activePhase = activePhaseBody.getPhase();
+
+                // Construction phase
+                if (activePhase == 0) {
+                    ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
+                    client.getPlayer().getDeckDraw().shuffleDeck(deck);
+                    System.out.println(client.getPlayer().getDeckDraw().getDeck());
+                }
+                // Upgrade phase
+                else if (activePhase == 1) {
+
+                }
+                // Programming phase
+                else if (activePhase == 2) {
+
+                }
+                // Activation phase
+                else if (activePhase == 4) {
+
+                }
         }
 
         /**

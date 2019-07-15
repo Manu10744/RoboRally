@@ -14,16 +14,20 @@ import static utils.Parameter.*;
  */
 public class DeckVirus {
 
+    ArrayList<Card> deckVirus;
+
     /**
      * This method initializes the deck of Virus cards.
      */
-    public void initializeDeckVirus(){
-
-        ArrayList<Card> deckVirus = new ArrayList<>();
+    public void initializeDeckVirus() {
+        this.deckVirus = new ArrayList<>();
 
         for (int i = 0; i < VIRUS_CARDS_AMOUNT; i++) {
             deckVirus.add(new Virus());
         }
+    }
 
+    public ArrayList<Card> getDeckVirus() {
+        return deckVirus;
     }
 }

@@ -14,16 +14,20 @@ import static utils.Parameter.*;
  */
 public class DeckSpam {
 
+    private ArrayList<Card> deckSpam;
+
     /**
      * This method initializes the deck of Spam cards.
      */
-    public void initializeDeckSpam(){
-
-        ArrayList<Card> deckSpam = new ArrayList<>();
+    public void initializeDeckSpam() {
+        this.deckSpam = new ArrayList<>();
 
         for (int i = 0; i < SPAM_CARDS_AMOUNT; i++) {
             deckSpam.add(new Spam());
         }
+    }
 
+    public ArrayList<Card> getDeckSpam() {
+        return deckSpam;
     }
 }
