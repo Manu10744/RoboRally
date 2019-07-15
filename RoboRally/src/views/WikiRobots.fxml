@@ -28,7 +28,7 @@
             <Image url="@../resources/images/others/HintergrundWikiUnterseite.png" />
          </image>
       </ImageView>
-      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" vvalue="1.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <content>
             <AnchorPane minHeight="600.0" minWidth="800.0" prefWidth="800.0">
                <children>
@@ -96,26 +96,26 @@
                      <children>
                         <Label fx:id="subheadingWiki" prefHeight="27.0" prefWidth="640.0" text="Twonky">
                            <VBox.margin>
-                              <Insets left="15.0" top="80.0" />
+                              <Insets left="15.0" top="90.0" />
                            </VBox.margin>
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="textWiki" prefHeight="100.0" prefWidth="640.0" text="Twonky is cute - by robot standards - and this is perhaps its greatest defense. From every angle, &#10;it appears friendly and unassuming, but Twonky is the kind of robot who kicks you hard in the shins&#10;with its titanium feet, giggles in a high-pitched voice that makes your ears ring for days, &#10;then runs away at a surprisingly high speed.">
+                        <Label fx:id="textWiki" prefHeight="100.0" prefWidth="640.0" text="Twonky is cute - by robot standards - and this is perhaps its greatest defense. From every &#10;angle, it appears friendly and unassuming, but Twonky is the kind of robot who kicks &#10;you hard in the shins with its titanium feet, giggles in a high-pitched voice that makes your &#10;ears ring for days, then runs away at a surprisingly high speed.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
                         <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="640.0" text="Hammer Bot">
                            <VBox.margin>
-                              <Insets left="15.0" top="40.0" />
+                              <Insets left="15.0" top="35.0" />
                            </VBox.margin>
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="Since the days when you could hit something to make it work, Hammer Bot has thought that the solution&#10;to all problems is to give something a good smack. Sensitive and perceptive, it expresses itself with its &#10;giant eyes and a wave of that hammer. When it's happy, it'll tap out a tune and bop anything - living or&#10;inanimate - on the head as it goes by. It can't resist smashing any red button to bits. ">
+                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="Since the days when you could hit something to make it work, Hammer Bot has &#10;thought that the solution to all problems is to give something a good smack. &#10;Sensitive and perceptive, it expresses itself with its giant eyes and a wave of that &#10;hammer. When it's happy, it'll tap out a tune and bop anything - living or&#10;inanimate - on the head as it goes by. It can't resist smashing any red button to bits. ">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -128,7 +128,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="If Spin Bot looks mean, it's because it is. Spin Bot has to constantly spin to keep upright, and that's &#10;tiring work. It's saw-like shape doesn't help its disposition, but it does make it pretty good at pushing fellow&#10;bots. Most of the time, other robots just stay out of its way. ">
+                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="If Spin Bot looks mean, it's because it is. Spin Bot has to constantly spin to keep &#10;upright, and that's tiring work. It's saw-like shape doesn't help its disposition, &#10;but it does make it pretty good at pushing fellow bots. Most of the time, &#10;other robots just stay out of its way. ">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -141,7 +141,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="The large cannon on the front of Hulk x90 points it in the direction of its next challenge. &#10;Its overall mission: intimidate, flatten, and move on. But Hulk x90 has to be careful and methodical&#10;in its movements, or it could easily flatten the factory machinery as it goes. ">
+                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="The large cannon on the front of Hulk x90 points it in the direction of its next challenge. &#10;Its overall mission: intimidate, flatten, and move on. But Hulk x90 has to be careful and &#10;methodical in its movements, or it could easily flatten the factory machinery as it goes. ">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
@@ -154,14 +154,14 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="Smash Bot doesn't mind taking things a bit slow. It relishes the fact that every step it takes is a &#10;metal-flattening stomp. It likes things that bounce back up once flattened, and it'll pause &#10;after it has smashed something to see if it is inclined to pop up again. A proud robot, &#10;Smash Bot often lingers over its work with a sinister smile. ">
+                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="640.0" text="Smash Bot doesn't mind taking things a bit slow. It relishes the fact that every step &#10;it takes is a metal-flattening stomp. It likes things that bounce back up once flattened, &#10;and it'll pause after it has smashed something to see if it is inclined to pop up again. &#10;A proud robot, Smash Bot often lingers over its work with a sinister smile. ">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
                         <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="640.0" text="Zoom Bot">
                            <VBox.margin>
-                              <Insets left="15.0" top="40.0" />
+                              <Insets left="15.0" top="35.0" />
                            </VBox.margin>
                            <font>
                               <Font size="18.0" />

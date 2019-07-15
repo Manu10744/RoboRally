@@ -32,23 +32,15 @@
             <Image url="@../resources/images/others/HintergrundWikiUnterseite.png" />
          </image>
       </ImageView>
-      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" hbarPolicy="ALWAYS" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" vbarPolicy="ALWAYS" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" hbarPolicy="ALWAYS" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" vbarPolicy="ALWAYS" vvalue="1.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
         <content>
           <AnchorPane minHeight="600.0" minWidth="800.0" prefWidth="800.0">
                <children>
                   <VBox minHeight="1545.0" minWidth="145.0" prefWidth="145.0">
                      <children>
-                        <Label fx:id="headingWiki" maxHeight="30.0" prefHeight="30.0" text="Programming Cards">
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="10.0" top="10.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
                         <ImageView fx:id="move1" fitHeight="100.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                              <Insets bottom="5.0" left="20.0" top="55.0" />
                            </VBox.margin>
                            <image>
                               <Image url="@../resources/images/cards/move1-blue100x100.png" />
@@ -121,17 +113,9 @@
                               <Insets bottom="5.0" left="20.0" top="15.0" />
                            </VBox.margin>
                         </ImageView>
-                        <Label font="${headingWiki.font}" text="Damage Cards">
-                           <VBox.margin>
-                              <Insets left="25.0" top="45.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Label>
                         <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <VBox.margin>
-                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                              <Insets bottom="5.0" left="20.0" top="135.0" />
                            </VBox.margin>
                            <image>
                               <Image url="@../resources/images/cards/spam-100x100.png" />
@@ -165,12 +149,23 @@
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
+                     <padding>
+                        <Insets top="50.0" />
+                     </padding>
                   </VBox>
                   <VBox layoutX="135.0" layoutY="24.0" minHeight="1536.0" minWidth="655.0" prefWidth="640.0" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="10.0">
                      <children>
+                        <Label fx:id="headingWiki" maxHeight="30.0" prefHeight="30.0" text="Programming Cards">
+                           <VBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                         <Label fx:id="subheadingWiki" prefWidth="650.0" text="Move 1">
                            <VBox.margin>
-                              <Insets left="15.0" top="40.0" />
+                              <Insets left="15.0" top="45.0" />
                            </VBox.margin>
                            <font>
                               <Font size="18.0" />
@@ -256,10 +251,13 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
+                        <Label prefHeight="50.0" prefWidth="650.0" text="Turn your robot 180 degrees so it faces the opposite direction.&#10;The robot remains in its current space.">
                            <VBox.margin>
                               <Insets left="15.0" />
                            </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
                         </Label>
                         <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="650.0" text="Back Up">
                            <VBox.margin>
@@ -301,7 +299,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="650.0" text="Repeat the programming in your previous register.&#10;If your previous register was a damage card, draw a card from the top of your deck, &#10;and play that card this register.&#10;If you used an update in your previous register that allowed you to play multiple programming cards,&#10;re-execute the second card. This card can't be played in the first register.">
+                        <Label font="${textWiki.font}" prefHeight="100.0" prefWidth="650.0" text="Repeat the programming in your previous register.&#10;If your previous register was a damage card, draw a card from the top of your deck, &#10;and play that card this register.&#10;If you used an update in your previous register that allowed you to play multiple programming &#10;cards, re-execute the second card. This card can't be played in the first register.">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -309,9 +307,17 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
+                        <Label font="${headingWiki.font}" text="Damage Cards">
+                           <VBox.margin>
+                              <Insets left="25.0" top="45.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
                         <Label font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="655.0" text="Spam">
                            <VBox.margin>
-                              <Insets left="15.0" top="70.0" />
+                              <Insets left="15.0" top="45.0" />
                            </VBox.margin>
                            <font>
                               <Font size="18.0" />
@@ -333,7 +339,7 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="640.0" text="When you program a trojan horse damage card, you must immediatly take two spam damage cards.&#10;">
+                        <Label font="${textWiki.font}" prefHeight="50.0" prefWidth="640.0" text="When you program a trojan horse damage card, you must immediatly take two spam &#10;damage cards.&#10;">
                            <font>
                               <Font size="13.0" />
                            </font>
