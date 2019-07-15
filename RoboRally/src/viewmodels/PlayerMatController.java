@@ -1,12 +1,15 @@
 package viewmodels;
 
+import client.Client;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,9 +22,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
+import server.game.Robot;
 import server.game.decks.DeckDraw;
 import utils.Parameter;
 
+import javax.swing.event.ChangeEvent;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -155,9 +160,6 @@ public class PlayerMatController implements IController {
 
     public void openPopupCards(ArrayList<Card> deck) {
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
                 rootStage = new Stage();
                 Parent root;
 
@@ -170,11 +172,11 @@ public class PlayerMatController implements IController {
                     rootStage.setY(stageController.getPlayerMat().getLayoutY() + playerUpdates.getLayoutY());
                     rootStage.show();
                     root.getStylesheets().add("/resources/css/main.css");
+
+                    loadCards(deck);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-        });
     }
 
     /**
@@ -358,6 +360,121 @@ public class PlayerMatController implements IController {
                     dragEvent.consume();
                 }
             });
+        }
+    }
+
+    public void loadCards(ArrayList<Card> cardsInHand) {
+        ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
+        Client client = chatController.getClient();
+        String robotName = client.getPlayer().getPlayerRobot().getName();
+
+        ArrayList<ImageView> dragImages = new ArrayList<>();
+        dragImages.add(dragImage1);
+        dragImages.add(dragImage2);
+        dragImages.add(dragImage3);
+        dragImages.add(dragImage4);
+        dragImages.add(dragImage5);
+        dragImages.add(dragImage6);
+        dragImages.add(dragImage7);
+        dragImages.add(dragImage8);
+        dragImages.add(dragImage9);
+
+        if (robotName.equals("HammerBot")) {
+
+            for (Card card : cardsInHand) {
+                for (ImageView dragImage : dragImages) {
+                    dragImage.setImage(getCardImage(card, "purple"));
+                }
+            }
+
+        }
+        if (robotName.equals("HulkX90")) {
+
+            for (Card card : cardsInHand) {
+                for (ImageView dragImage : dragImages) {
+                    dragImage.setImage(getCardImage(card, "red"));
+                }
+            }
+
+        }
+        if (robotName.equals("SmashBot")) {
+
+            for (Card card : cardsInHand) {
+                for (ImageView dragImage : dragImages) {
+                    dragImage.setImage(getCardImage(card, "yellow"));
+                }
+            }
+
+        }
+        if (robotName.equals("SpinBot")) {
+
+            for (Card card : cardsInHand) {
+                for (ImageView dragImage : dragImages) {
+                    dragImage.setImage(getCardImage(card, "blue"));
+                }
+            }
+
+        }
+        if (robotName.equals("Twonky")) {
+
+            for (Card card : cardsInHand) {
+                for (ImageView dragImage : dragImages) {
+                    dragImage.setImage(getCardImage(card, "orange"));
+                }
+            }
+
+        }
+        if (robotName.equals("ZoomBot")) {
+
+            for (Card card : cardsInHand) {
+                for (ImageView dragImage : dragImages) {
+                    dragImage.setImage(getCardImage(card, "green"));
+                }
+            }
+
+        }
+
+    }
+
+    public Image getCardImage(Card card, String color) {
+        Image image;
+
+        if (card.cardName.equals("Again")) {
+            image = new Image("/resources/images/cards/again-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("BackUp")) {
+            image = new Image("/resources/images/cards/moveback-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("MoveI")) {
+            image = new Image("/resources/images/cards/move1-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("MoveII")) {
+            image = new Image("/resources/images/cards/move2-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("MoveIII")) {
+            image = new Image("/resources/images/cards/move3-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("PowerUp")) {
+            image = new Image("/resources/images/cards/powerup-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("TurnLeft")) {
+            System.out.println(color);
+            image = new Image("/resources/images/cards/lefttturn-" + color + "100x100.png");
+            return image;
+        }
+        if (card.cardName.equals("TurnRight")) {
+            image = new Image("/resources/images/cards/rightturn-" + color + "100x100.png");
+            return image;
+        }
+        else {
+            image = new Image("/resources/images/cards/uturn-" + color + "100x100.png");
+            return image;
         }
     }
 

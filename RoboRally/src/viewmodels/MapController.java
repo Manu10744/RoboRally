@@ -82,7 +82,7 @@ public class MapController implements IController {
                     logger.info("Initialized MouseClick Events on all StartPoints");
                     
                     // Popup of 9 cards to choose from
-                    ((PlayerMatController) stageController.getControllerMap().get("PlayerMat")).openPopupCards(null); //handleYourCards
+                   // ((PlayerMatController) stageController.getControllerMap().get("PlayerMat")).openPopupCards(null); //handleYourCards
                 }
             }
         });

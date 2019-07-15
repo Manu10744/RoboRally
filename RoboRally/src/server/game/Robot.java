@@ -15,8 +15,10 @@ public class Robot {
     private String lineOfSight;
     private int xPosition;
     private int yPosition;
+    private String name;
 
-    public Robot(Image robotImage, String lineOfSight, int xPosition, int yPosition) {
+    public Robot(String name, Image robotImage, String lineOfSight, int xPosition, int yPosition) {
+        this.name = name;
         this.robotImage = robotImage;
         this.lineOfSight = lineOfSight;
         this.xPosition = xPosition;
@@ -52,6 +54,14 @@ public class Robot {
 
     public void setyPosition(int y) {
         this.yPosition = y;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     /**
