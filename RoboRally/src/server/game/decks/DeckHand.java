@@ -5,6 +5,7 @@ import server.game.Deck;
 import server.game.ProgrammingCards.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static utils.Parameter.*;
 
@@ -23,6 +24,14 @@ public class DeckHand extends Deck {
     @Override
     public void initializeDeck() {
         this.deckHand = new ArrayList<>();
+    }
+
+    /**
+     * This method shuffles the deck.
+     */
+    @Override
+    public void shuffleDeck(ArrayList<Card> deckHand) {
+        Collections.shuffle(deckHand);
     }
 
     /**

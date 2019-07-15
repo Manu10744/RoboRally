@@ -70,6 +70,10 @@ public class DeckDraw extends Deck {
         }
     }
 
+    /**
+     * This method shuffles the deck.
+     */
+    @Override
     public void shuffleDeck(ArrayList<Card> deckDraw) {
         Collections.shuffle(deckDraw);
     }

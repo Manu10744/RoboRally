@@ -5,6 +5,7 @@ import server.game.DamageCards.*;
 import server.game.Deck;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static utils.Parameter.*;
 
@@ -27,6 +28,14 @@ public class DeckTrojan extends Deck {
         for (int i = 0; i < TROJAN_CARDS_AMOUNT; i++) {
             deckTrojan.add(new Trojan());
         }
+    }
+
+    /**
+     * This method shuffles the deck.
+     */
+    @Override
+    public void shuffleDeck(ArrayList<Card> deckTrojan) {
+        Collections.shuffle(deckTrojan);
     }
 
     /**
