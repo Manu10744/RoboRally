@@ -62,22 +62,29 @@ public class Player implements Serializable {
     public void initRobotByFigure(int figure) {
 
         Image robotImage;
+        String name;
         if (figure == 1) {
             robotImage= new Image("/resources/images/robots/HammerBot.PNG");
+            name = "HammerBot";
         } else if (figure == 2) {
             robotImage = new Image("/resources/images/robots/HulkX90.PNG");
+            name = "HulkX90";
         } else if (figure == 3) {
             robotImage = new Image("/resources/images/robots/SmashBot.PNG");
+            name = "SmashBot";
         } else if (figure == 4) {
             robotImage = new Image("/resources/images/robots/Spinbot.PNG");
+            name = "SpinBot";
         } else if (figure == 5) {
             robotImage = new Image("/resources/images/robots/Twonky.PNG");
+            name = "Twonky";
         } else { // figure == 6
             robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
+            name = "ZoomBot";
         }
 
         // Set robot for this player
-        this.playerRobot = new Robot(robotImage, ORIENTATION_RIGHT, 0, 0);
+        this.playerRobot = new Robot(name, robotImage, ORIENTATION_RIGHT, 0, 0);
     }
 
     /**
