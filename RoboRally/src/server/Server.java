@@ -45,6 +45,7 @@ public class Server extends Application {
     private int setterPlayerID;
     private int numberOfReadyClients = 0;
     private boolean gameIsRunning = false;
+    private int setStartPoints = 0;
     private MessageDistributer messageDistributer = new MessageDistributer();
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
@@ -75,6 +76,8 @@ public class Server extends Application {
         //Server shuts down:
         serverSocket.close();
         logger.info("Server shut down.");
+
+
     }
 
     public MessageDistributer getMessageDistributer() {
@@ -119,6 +122,14 @@ public class Server extends Application {
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public int getSetStartPoints() {
+        return setStartPoints;
+    }
+
+    public void setSetStartPoints(int setStartPoints) {
+        this.setStartPoints = setStartPoints;
     }
 
     public class ServerReaderTask extends Thread {
@@ -202,7 +213,8 @@ public class Server extends Application {
         private int figure;
         private boolean isReady;
 
-        public ClientWrapper() { }
+        public ClientWrapper() {
+        }
 
         public ClientWrapper(Socket socket, String name, PrintWriter writer, int figure, int playerID, boolean isReady) {
             this.socket = socket;
@@ -261,7 +273,9 @@ public class Server extends Application {
             this.isReady = isReady;
         }
 
-        public Player getPlayer() { return player; }
+        public Player getPlayer() {
+            return player;
+        }
 
         public void setPlayer(Player player) {
             this.player = player;

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import client.Client;
+import com.google.gson.JsonDeserializer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import server.Server;
@@ -408,13 +409,40 @@ public class MessageDistributer {
         } else {
             // StartingPoint is available
             logger.info(ANSI_GREEN + "STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
-
+            server.setSetStartPoints(server.getSetStartPoints() +1);
+            logger.info(ANSI_GREEN + "INCREMENTED SETSTARTPOINT COUNTER TO " + server.getSetStartPoints() + ANSI_RESET);
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, playerID));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
+
+            if (server.getSetStartPoints() == server.getPlayers().size()) {
+                //TODO replace this with upgrade phase
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(2));
+                    client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    client.getWriter().flush();
+                }
+
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
+                    Player player = client.getPlayer();
+
+                    logger.info(ANSI_GREEN + "SIZE OF DRAW PILE BEFORE DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
+                    client.getPlayer().drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
+                    logger.info(ANSI_GREEN + "SIZE OF DRAW PILE AFTER DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
+
+                    ArrayList<Card> cardsInHand = player.getDeckHand().getDeck();
+                    int cardsInPile = player.getDeckDraw().getDeck().size();
+
+                    JSONMessage jsonMessage = new JSONMessage("YourCards", new YourCardsBody(cardsInHand, cardsInPile));
+                    client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    client.getWriter().flush();
+                }
+            }
+
+
 
             // Startpoint is now taken
             server.getTakenStartingPoints().add(desiredStartPoint);

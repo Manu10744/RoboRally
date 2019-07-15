@@ -39,10 +39,15 @@ public class Player implements Serializable {
         // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
         deckDraw.initializeDeck();
+        deckDraw.shuffleDeck(deckDraw.getDeck());
 
         this.deckDiscard = new DeckDiscard();
+        deckDiscard.initializeDeck();
         this.deckHand = new DeckHand();
+        deckHand.initializeDeck();
         this.deckRegister = new DeckRegister();
+        deckRegister.initializeDeck();
+
     }
 
     public int getFigure() {
