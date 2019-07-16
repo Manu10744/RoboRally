@@ -279,7 +279,13 @@ public class JSONDecoder {
 
                 return new JSONMessage("ShuffleCoding", shuffleCodingBody);
             } else if (messageType.equals("SelectedCard")) {
-                String cardName = messageBody.get("card").getAsString();
+                String cardName;
+                if (messageBody.get("card") == null) {
+                    cardName = null;
+                } else {
+                    cardName = messageBody.get("card").getAsString();
+                }
+
 
                 SelectedCardBody selectedCardBody = new SelectedCardBody(
                         deserializeCards(jsonMessage, cardName),
@@ -502,7 +508,10 @@ public class JSONDecoder {
      */
     public static Card deserializeCards(JsonObject jsonMessageBody, String cardName) {
         Gson gson = new Gson();
-        if (cardName.equals("MoveI")) {
+        if (cardName == null) {
+            return null;
+        }
+        else if (cardName.equals("MoveI")) {
             MoveI result = gson.fromJson(jsonMessageBody, MoveI.class);
             return result;
         } else if (cardName.equals("MoveII")) {

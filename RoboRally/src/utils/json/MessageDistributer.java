@@ -493,7 +493,11 @@ public class MessageDistributer {
 
                     player.getDeckRegister().getDeck().set(register - 1, card);
 
-                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    if (card == null) {
+                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    } else {
+                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    }
 
                     // Send card selected to all clients
                     for(Server.ClientWrapper clients : server.getConnectedClients()){
