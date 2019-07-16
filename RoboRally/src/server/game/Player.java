@@ -8,6 +8,7 @@ import server.game.decks.DeckRegister;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import static utils.Parameter.HAND_CARDS_AMOUNT;
 import static utils.Parameter.ORIENTATION_RIGHT;
@@ -34,7 +35,7 @@ public class Player implements Serializable {
     private DeckRegister deckRegister;
 
     public Player() {
-        this.name = "";
+        this.name = "Findus";
 
         // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
@@ -105,6 +106,116 @@ public class Player implements Serializable {
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
     }
+
+    /**
+     * This method clears the deckRegister after they have been played.
+     */
+    public void clearRegister(DeckRegister deckRegister){
+        deckRegister.getDeck().clear();
+    }
+
+    /**
+     * This method is needed, if the deckDraw gets to small.
+     */
+    public void addDiscardToDraw(DeckDraw deckDraw, DeckDiscard deckDiscard) {
+        deckDraw.getDeck().addAll(deckDiscard.getDeck());   // addAll() puts the elements of the list it is given into
+        deckDiscard.getDeck().clear();                      // the list on which it is called.
+    }
+
+    /**
+     * This method is used to add the deckHand to the deckDiscard.
+     */
+    public void addHandToDiscard(DeckDiscard deckDiscard, DeckHand deckHand) {
+        deckDiscard.getDeck().addAll(deckHand.getDeck());
+        deckHand.getDeck().clear();
+    }
+
+    /**
+     * This method fills the registers with Cards from the deckDraw, if the timer ended. <br>
+     * It is necessary to ask for all indices specifically because its possible, that the register at index 0 is empty <br>
+     * while the others are already filled. <br>
+     * The try catch is necessary because its not possible to look if an index is null as with normal arrays. <br>
+     * This is because get() throws an exception instead of null.
+     */
+    public void fillRegisters(DeckRegister deckRegister, DeckDraw deckDraw) {
+
+        // If the index at 0 is empty the first Card of deckDraw will be put there
+        try {
+            deckRegister.getDeck().get(0);
+        } catch (IndexOutOfBoundsException e ) {
+
+            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
+            if (deckDraw.getDeck().isEmpty()) {
+                addDiscardToDraw(deckDraw, deckDiscard);
+                deckDraw.shuffleDeck(deckDraw.getDeck());
+            }
+
+            deckRegister.getDeck().add(0, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckDraw.removeTopCard(deckDraw.getDeck());
+        }
+
+        // If the index at 1 is empty the first Card of deckDraw will be put there
+        try {
+            deckRegister.getDeck().get(1);
+        } catch (IndexOutOfBoundsException e ) {
+
+            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
+            if (deckDraw.getDeck().isEmpty()) {
+                addDiscardToDraw(deckDraw, deckDiscard);
+                deckDraw.shuffleDeck(deckDraw.getDeck());
+            }
+
+            deckRegister.getDeck().add(1, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckDraw.removeTopCard(deckDraw.getDeck());
+        }
+
+        // If the index at 2 is empty the first Card of deckDraw will be put there
+        try {
+            deckRegister.getDeck().get(2);
+        } catch (IndexOutOfBoundsException e ) {
+
+            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
+            if (deckDraw.getDeck().isEmpty()) {
+                addDiscardToDraw(deckDraw, deckDiscard);
+                deckDraw.shuffleDeck(deckDraw.getDeck());
+            }
+
+            deckRegister.getDeck().add(2, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckDraw.removeTopCard(deckDraw.getDeck());
+        }
+
+        // If the index at 3 is empty the first Card of deckDraw will be put there
+        try {
+            deckRegister.getDeck().get(3);
+        } catch (IndexOutOfBoundsException e ) {
+
+            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
+            if (deckDraw.getDeck().isEmpty()) {
+                addDiscardToDraw(deckDraw, deckDiscard);
+                deckDraw.shuffleDeck(deckDraw.getDeck());
+            }
+
+            deckRegister.getDeck().add(3, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckDraw.removeTopCard(deckDraw.getDeck());
+        }
+
+        // If the index at 4 is empty the first Card of deckDraw will be put there
+        try {
+            deckRegister.getDeck().get(4);
+        } catch (IndexOutOfBoundsException e ) {
+
+            // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
+            if (deckDraw.getDeck().isEmpty()) {
+                addDiscardToDraw(deckDraw, deckDiscard);
+                deckDraw.shuffleDeck(deckDraw.getDeck());
+            }
+
+            deckRegister.getDeck().add(4, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckDraw.removeTopCard(deckDraw.getDeck());
+        }
+    }
+
+
 
 
     public int getPlayerID(){
