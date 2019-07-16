@@ -323,7 +323,7 @@ public class MessageDistributer {
 
             // Set Construction phase
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(0));
+                JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(BUILD_UP_PHASE));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
@@ -796,21 +796,21 @@ public class MessageDistributer {
                 int activePhase = activePhaseBody.getPhase();
 
                 // Construction phase
-                if (activePhase == 0) {
+                if (activePhase == BUILD_UP_PHASE) {
                     ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
                     client.getPlayer().getDeckDraw().shuffleDeck(deck);
                     System.out.println(client.getPlayer().getDeckDraw().getDeck());
                 }
                 // Upgrade phase
-                else if (activePhase == 1) {
+                else if (activePhase == UPGRADE_PHASE) {
 
                 }
                 // Programming phase
-                else if (activePhase == 2) {
+                else if (activePhase == PROGRAMMING_PHASE) {
 
                 }
                 // Activation phase
-                else if (activePhase == 4) {
+                else if (activePhase == ACTIVATION_PHASE) {
 
                 }
         }
