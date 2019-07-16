@@ -11,7 +11,6 @@ import javax.sound.sampled.Port;
 public class Parameter {
 
     // Game Phases
-    // Game Phases
     public static final Integer BUILD_UP_PHASE = 0;
     public static final Integer UPGRADE_PHASE = 1;
     public static final Integer PROGRAMMING_PHASE = 2;

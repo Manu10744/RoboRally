@@ -14,11 +14,16 @@ import static utils.Parameter.*;
 
 import client.Client;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import server.Server;
 import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
+import server.game.decks.DeckDiscard;
 import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
@@ -486,30 +491,49 @@ public class MessageDistributer {
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectedCard()" + ANSI_RESET);
 
             for(Server.ClientWrapper client : server.getConnectedClients()){
-                if(client.getClientSocket().equals(task.getClientSocket())){
-                    Player player = client.getPlayer();
-                    Card card = selectedCardBody.getCard();
-                    int register = selectedCardBody.getRegister();
+                Player player = client.getPlayer();
+                Integer selectedCardsNumber = player.getSelectedCards();
+                int register = selectedCardBody.getRegister();
 
+                if(client.getClientSocket().equals(task.getClientSocket())) {
+                    Card card = selectedCardBody.getCard();
                     player.getDeckRegister().getDeck().set(register - 1, card);
 
+                    //When the chosen card is null, one card less is selected, when it is not null, one additional card is selected
                     if (card == null) {
-                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                        selectedCardsNumber--;
+                        player.setSelectedCards(selectedCardsNumber);
+                        //Clients Register is updated
+                        client.getPlayer().addCardToRegister(card);
                     } else {
-                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                        selectedCardsNumber++;
+                        player.setSelectedCards(selectedCardsNumber);
+                        System.out.println("AMOUNT OF CARDS in IF LOOP = " + selectedCardsNumber);
                     }
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+
+                }
+
+
 
                     // Send card selected to all clients
-                    for(Server.ClientWrapper clients : server.getConnectedClients()){
+                    for(Server.ClientWrapper clientWrapper : server.getConnectedClients()){
                         JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
-                        clients.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                        clients.getWriter().flush();
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+
+                        if (selectedCardsNumber == REGISTER_CARDS_AMOUNT){
+
+                            JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
+                            clientWrapper.getWriter().flush();
+                            System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber.intValue());
+                        }
                     }
                 }
             }
 
 
-        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         //                           HANDLERS FOR SERVER MESSAGES                                        //
@@ -867,7 +891,6 @@ public class MessageDistributer {
 
             Platform.runLater(() -> {
                 ArrayList<Card> deck = yourCardsBody.getCardsInHand();
-
                 ((PlayerMatController) controllerMap.get("PlayerMat")).initializeCards(deck);
             });
 
@@ -918,7 +941,9 @@ public class MessageDistributer {
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardSelected()" + ANSI_RESET);
 
             Platform.runLater(() -> {
-                //TODO write code here
+                int register = cardSelectedBody.getRegister();
+                int playerID = cardSelectedBody.getPlayerID();
+                client.getOpponentMatController().updateOpponentregister(register, playerID);
             });
         }
 
@@ -935,7 +960,15 @@ public class MessageDistributer {
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
 
             Platform.runLater(() -> {
-                //TODO write code here
+                //Remove register cards from hand
+                client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
+                ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
+                DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
+                //Cards from hand are added to discard pile
+                clientDiscards.getDeck().addAll(remainingCardsInHand);
+
+                //Todo: Timer activation and test with if else here
+               client.getPlayerMatController().emptyCards();
             });
         }
 

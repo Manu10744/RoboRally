@@ -1,13 +1,17 @@
 package server;
 
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import server.game.Deck;
-import server.game.Game;
-import server.game.Player;
-import server.game.Robot;
+import server.game.*;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
@@ -44,9 +48,10 @@ public class Server extends Application {
     private int counterPlayerID = 1;
     private int setterPlayerID;
     private int numberOfReadyClients = 0;
-    private boolean gameIsRunning = false;
     private int setStartPoints = 0;
     private MessageDistributer messageDistributer = new MessageDistributer();
+    private String gamePhase;
+
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
@@ -132,6 +137,27 @@ public class Server extends Application {
         this.setStartPoints = setStartPoints;
     }
 
+    public void setConnectedClients(ArrayList<ClientWrapper> connectedClients) {
+        this.connectedClients = connectedClients;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
+
+    public void setTakenStartingPoints(ArrayList<String> takenStartingPoints) {
+        this.takenStartingPoints = takenStartingPoints;
+    }
+
+    public String getGamePhase() {
+        return gamePhase;
+    }
+
+    public void setGamePhase(String gamePhase) {
+        this.gamePhase = gamePhase;
+    }
+
+
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
         private Server server;
@@ -198,6 +224,9 @@ public class Server extends Application {
         public BufferedReader getReader() {
             return reader;
         }
+
+
+
     }
 
     /**
@@ -223,6 +252,7 @@ public class Server extends Application {
             this.figure = figure;
             this.playerID = playerID;
             this.isReady = isReady;
+
         }
 
         public Socket getClientSocket() {

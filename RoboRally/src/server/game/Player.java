@@ -1,11 +1,17 @@
 package server.game;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
 import server.game.decks.DeckRegister;
+import utils.Parameter;
 
+import javax.swing.event.ChangeEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +25,11 @@ import static utils.Parameter.ORIENTATION_RIGHT;
  * @author Ivan Dovecar
  * @author Vincent Tafferner
  * @author Jessica Gerlach
+ * @author Mia
  */
 public class Player implements Serializable {
 
+    private int selectedCards;
     private String name;
     private int energy;
     private int playerID;
@@ -48,6 +56,7 @@ public class Player implements Serializable {
         deckHand.initializeDeck();
         this.deckRegister = new DeckRegister();
         deckRegister.initializeDeck();
+        this.selectedCards = 0;
 
     }
 
@@ -266,5 +275,33 @@ public class Player implements Serializable {
 
     public DeckRegister getDeckRegister() {
         return deckRegister;
+    }
+
+    public void setDeckDraw(DeckDraw deckDraw) {
+        this.deckDraw = deckDraw;
+    }
+
+    public void setDeckDiscard(DeckDiscard deckDiscard) {
+        this.deckDiscard = deckDiscard;
+    }
+
+    public void setDeckHand(DeckHand deckHand) {
+        this.deckHand = deckHand;
+    }
+
+    public void addCardToRegister(Card card) {
+        this.deckRegister.getDeck().add(card);
+    }
+
+    public int getSelectedCards() {
+        return this.selectedCards;
+    }
+
+    public void setSelectedCards(int selectedCards) {
+        this.selectedCards = selectedCards;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 }

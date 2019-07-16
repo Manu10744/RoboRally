@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
+import server.game.decks.DeckDiscard;
 import utils.Parameter;
 
 import java.io.IOException;
@@ -291,6 +292,15 @@ public class PlayerMatController implements IController {
 
     }
 
+    public void emptyCards(){
+        System.out.println("Biste hier???" + this.dragImages);
+        //ImageViews are deleted
+        this.dragImages.removeAll(this.dragImages);
+        System.out.println("Nach removen" + this.dragImages);
+        //Todo doe snot empty hbox
+
+    }
+
 
     public void loadCards(ArrayList<Card> cardsInHand) {
         ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
@@ -332,6 +342,8 @@ public class PlayerMatController implements IController {
                 dragImages.get(i).setImage(getCardImage(cardsInHand.get(i), "green"));
             }
         }
+
+
     }
 
     public Image getCardImage(Card card, String color) {
@@ -372,6 +384,7 @@ public class PlayerMatController implements IController {
             image = new Image("/resources/images/cards/uturn-" + color + "100x100.png");
             return image;
         }
+
     }
 
     public HBox getPlayerIcons() {
@@ -988,6 +1001,7 @@ public class PlayerMatController implements IController {
             chatController.getClient().sendSelectedCard(null, register);
         }
     }
+
 
 
     @Override

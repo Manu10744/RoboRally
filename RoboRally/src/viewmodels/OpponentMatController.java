@@ -190,6 +190,10 @@ public class OpponentMatController implements  IController{
          }
      */
 
+    public void updateOpponentregister(int register, int playerID){
+        //Todo show cards laid down on opponent map
+    }
+
     @Override
     public IController setPrimaryController(StageController stageController) {
         return this;
