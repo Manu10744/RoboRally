@@ -16,7 +16,7 @@
         <RowConstraints minHeight="0.0" />
     </rowConstraints>
 
-    <HBox fx:id="cards" minHeight="0.0" minWidth="0.0" style="-fx-background-color: grey" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <HBox fx:id="playerHand" minHeight="0.0" minWidth="0.0" style="-fx-background-color: grey" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <ImageView fx:id="dragImage1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
         <ImageView fx:id="dragImage2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">

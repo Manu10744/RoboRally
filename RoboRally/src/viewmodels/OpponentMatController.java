@@ -7,8 +7,8 @@ import javafx.scene.image.ImageView;
 
 /**
  * This class has full control over the opponentMat views.
- * It is responsible for showing the cards in the register of each player,
- * the update cards of each player and the icons of the players.
+ * It is responsible for showing the playerHand in the register of each player,
+ * the update playerHand of each player and the icons of the players.
  *
  * @author Jessica Gerlach
  * @author Ivan Dovecar

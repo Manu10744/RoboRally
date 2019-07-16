@@ -1,17 +1,11 @@
 package viewmodels;
 
 import client.Client;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.LoadListener;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,22 +18,16 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
-import server.game.Robot;
-import server.game.decks.DeckDraw;
 import utils.Parameter;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.HyperlinkEvent;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 
 /**
  * This class has full control over the playermat views.
  * It is responsible for showing the player´s own icon,
- * the upgrade cards and tbe register of the player.
+ * the upgrade playerHand and tbe register of the player.
  *
  * @author Jessica Gerlach
  * @author Verena Sadtler
@@ -127,10 +115,9 @@ public class PlayerMatController implements IController {
     private ImageView emptyIcon21;
 
     // Following FXMLs are related to PopupCards which represent the players' hand
+
     @FXML
-    GridPane popupCards;
-    @FXML
-    HBox cards;
+    HBox playerHand;
     @FXML
     ImageView dragImage1;
     @FXML
@@ -155,10 +142,10 @@ public class PlayerMatController implements IController {
 
     BooleanProperty allRegistersSet;
 
-    ArrayList<ImageView> dragImages = new ArrayList<>();
+    ArrayList<ImageView> dragImages;
 
     public void initialize() {
-        if (popupCards != null) {
+            dragImages = new ArrayList<>();
             dragImages.add(dragImage1);
             dragImages.add(dragImage2);
             dragImages.add(dragImage3);
@@ -169,7 +156,7 @@ public class PlayerMatController implements IController {
             dragImages.add(dragImage8);
             dragImages.add(dragImage9);
 
-            for (Node card : cards.getChildren()) {
+            for (Node card : playerHand.getChildren()) {
                 card.setOnDragDetected(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
@@ -220,7 +207,7 @@ public class PlayerMatController implements IController {
 
 
 
-        }
+
 
         if (playerRegister != null){
             for (Node register : playerRegister.getChildren()) {
@@ -265,7 +252,7 @@ public class PlayerMatController implements IController {
                                 register5.setDisable(true);
 
                                 //closes popup
-                                rootStage.close();
+                                playerHand.setVisible(false);
 
                                 //Boolean Property for Server so that server knows when a player has finished their programming
                                 allRegistersSet = new SimpleBooleanProperty();
@@ -295,32 +282,12 @@ public class PlayerMatController implements IController {
      * This method is called when the protocol "YouCards" is called. YourCards gives the DrawDeck which is utilised here to fill the PopUp-Window.
      * This method fulfills two functions: first, all the hboxes are made responsive, second the drag and drop method is envocked
      *
-     * @param deck: The cards one draws for choosing their programming
+     * @param deck: The playerHand one draws for choosing their programming
      */
 
-    public void openPopupCards(ArrayList<Card> deck) {
-        rootStage = new Stage();
-        Parent root;
-
-        try {
-            root = FXMLLoader.load(getClass().getResource("/views/PopupCards.fxml"));
-            rootStage.setScene(new Scene(root));
-            rootStage.setAlwaysOnTop(true);
-            rootStage.initStyle(StageStyle.TRANSPARENT);
-            rootStage.setX(stageController.getPlayerMat().getLayoutX() + playerUpdates.getLayoutX() - register1.getFitWidth());
-            rootStage.setY(stageController.getPlayerMat().getLayoutY() + playerUpdates.getLayoutY());
-            rootStage.show();
-            root.getStylesheets().add("/resources/css/main.css");
-
-            HBox hbox = (HBox) root.getChildrenUnmodifiable().get(0);
-            for (Node node : hbox.getChildren()) {
-                dragImages.add((ImageView) node);
-            }
-
+    public void initializeCards(ArrayList<Card> deck) {
+            playerHand.getStylesheets().add("/resources/css/main.css");
             loadCards(deck);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
