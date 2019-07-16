@@ -1,6 +1,5 @@
 ### Known Issues
 * Ability to choose map not implemented yet
-* Timer before map starts
 * Event for INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS needed because informer message about ready status of already connected players comes in too fast -
   information of already connected players is not 100% processed at that time.
 * Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
@@ -15,6 +14,7 @@
 * Map can now callback when it was completely loaded. - *(Manu)*
 * All maps have been added to the game. - *(Jessie, Verena, Vincent)*
 * Each players cards are now loaded in a box - *(Verena, Manu)*
+* Theres a Timer before the map loads - *(Vincent)*
 
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
@@ -23,6 +23,7 @@
 * Map parameters were removed. - *(Manu)*
 * For each Tile of type StartPoint setting an ID dynamically consisting out of the coordinates is now working. Startpoints can now be set no matter their position on the map. - (*Verena*)
 * Walls are now displayed on top of lasers instead of vice versa. - *(Manu)*
+* Reimplemented the deck methods - *(Vincent)*
 
 ### Bugfixes
 * Fixed bug that happened when player was disallowed to set StartPoint after trying to set an already taken StartPoint - *(Manu)*
