@@ -45,6 +45,8 @@ public class Parameter {
     public static final int TIMER_DELAY = 1000; // This should be 1000 because a second has 1000 milliseconds.
     public static final int TIMER_PERIOD = 1000;
 
+    public static final int MAP_LOADING_COOLDOWN = 10;
+
         //amount of players
     public static final int MAX_PLAYERSIZE = 6;
     public static final int MIN_PLAYERSIZE = 1;
