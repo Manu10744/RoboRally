@@ -10,42 +10,72 @@ import static utils.Parameter.*;
  * @ author Vincent Tafferner
  */
 public class Countdown {
-    static int duration;
-    static Timer timer;
+    Timer timer = new Timer();
+    int secs;
+    int delay;
+    int period;
+
+    /**
+     * This is the constructor of a Countdown.
+     */
+    public Countdown(int secs, int delay, int period) {
+        Timer timer = new Timer();
+    }
 
     /**
      * This method does the counting.
      */
-    public static void makeTimer() {
-        int secs = TIMER_LENGTH;
-        int delay = TIMER_DELAY;
-        int period = TIMER_PERIOD;
-        timer = new Timer();
-        duration = secs;
+    public int startTimer() {
+
         // System.out.println(secs);
         timer.scheduleAtFixedRate(new TimerTask() {
 
-            /**
-             * This run method overwrites the standard run method.
-             */
             @Override
             public void run() {
                 //System.out.println(" Bla " + setInterval());
                 setInterval();
             }
         }, delay, period);
+        return secs;
     }
 
     /**
-     * This method stops the timer if it runs out.
+     * This method stops the timer if it runs out. <br>
+     * It makes the drops the seconds counter by 1 each time it is called. <br>
+     * It should be called once each second. (depends on Parameters)
      */
-    private static int setInterval() {
-        if (duration == 1) {
+    private int setInterval() {
+        if (secs == 1) {
             timer.cancel();
         }else {
-            return --duration;
+            return --secs;
         }
         return 0;
     }
+
+    /**
+     * This is the getter for the seconds parameter.
+     * @return how long the timer is set in seconds.
+     */
+    public int getSecs() {
+        return this.secs;
+    }
+
+    /**
+     * This is the getter for the delay.
+     * @return the delay.
+     */
+    public int getDelay() {
+        return this.delay;
+    }
+
+    /**
+     * this is the getter for the period.
+     * @return period.
+     */
+    public int getPeriod() {
+        return this.period;
+    }
+
 
 }

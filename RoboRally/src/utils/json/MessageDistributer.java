@@ -7,7 +7,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
 import java.util.logging.Logger;
+
+import static java.lang.Thread.sleep;
+import static utils.Parameter.*;
 
 import client.Client;
 import javafx.application.Platform;
@@ -17,6 +21,7 @@ import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
 import utils.Parameter;
+import utils.Countdown;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
 import viewmodels.IController;
@@ -24,11 +29,13 @@ import viewmodels.MapController;
 import viewmodels.PlayerMatController;
 
 
+
 /**
  * This class has the sole purpose to distribute the logic for each {@link JSONMessage} into seperate functions
  * that are called when the corresponding message was deserialized.
  *
  * @author Manuel Neumayer
+ * @author Vincent Tafferner
  */
 public class MessageDistributer {
     public static Map<String, IController> controllerMap;
@@ -88,7 +95,7 @@ public class MessageDistributer {
                 }
 
                 // TODO: REPLACE THIS WITH AN EVENT INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS
-                Thread.sleep(300);
+                sleep(300);
 
                 // Inform every freshly connected client about ready status of already connected players
                 for (Server.ClientWrapper client : server.getConnectedClients()) {
@@ -253,6 +260,16 @@ public class MessageDistributer {
     public void handleSetStatus(Server server, Server.ServerReaderTask task, SetStatusBody setStatusBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSetStatus()" + ANSI_RESET);
 
+        /**
+         * Block counts down before the rest of the method is executed. <br>
+         * The MAP_LOADING_COOLDOWN is a parameter that should be set to the duration in milliseconds.
+         */
+        try {
+            sleep(MAP_LOADING_COOLDOWN);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         boolean clientReady = setStatusBody.isReady();
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket().equals(task.getClientSocket()))
                 .findFirst().get().getPlayerID();
@@ -295,7 +312,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -314,6 +331,7 @@ public class MessageDistributer {
             }
         }
     }
+
 
     /**
      * This method contains the logic that comes into action when a 'SendChat' protocol message was received and
