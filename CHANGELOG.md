@@ -1,6 +1,5 @@
 ### Known Issues
 * Ability to choose map not implemented yet
-* Drag and Drop must be fixed (Bugs)
 * Timer before map starts
 * Event for INFORMED_ABOUT_ALREADY_CONNECTED_PLAYERS needed because informer message about ready status of already connected players comes in too fast -
   information of already connected players is not 100% processed at that time.
@@ -8,7 +7,6 @@
 * When setting a StartPoint, the robot always has to look towards the mapboard. 
 * Shop needs to be implemented
 * Antenna algorithm calculating next player needs to be implemented
-* Drawn cards need to be filled into cards popup
 * AI needs to be implemented
 
 ## Version [0.4.0] 
@@ -16,11 +14,12 @@
 * Freshly connected clients are now informed about ready status of already connected clients, but only by a workaround (making the Thread sleep). - *(Manu)*
 * Map can now callback when it was completely loaded. - *(Manu)*
 * All maps have been added to the game. - *(Jessie, Verena, Vincent)*
+* Each players cards are now loaded in a box - *(Verena, Manu)*
 
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
-* All maps can now be displayed by calculating the map dimensions and giving that information to the loading method. - (*Verena*)
-* Gaps in maps can now be displayed - (*Jessie, Verena*)
+* All maps can now be displayed by calculating the map dimensions and giving that information to the loading method. - *(Verena)*
+* Gaps in maps can now be displayed - *(Jessie, Verena)*
 * Map parameters were removed. - *(Manu)*
 * For each Tile of type StartPoint setting an ID dynamically consisting out of the coordinates is now working. Startpoints can now be set no matter their position on the map. - (*Verena*)
 * Walls are now displayed on top of lasers instead of vice versa. - *(Manu)*
@@ -28,6 +27,7 @@
 ### Bugfixes
 * Fixed bug that happened when player was disallowed to set StartPoint after trying to set an already taken StartPoint - *(Manu)*
 * Player is now able to enter a username again after trying to choose an already taken username. - *(Manu)*
+* Drag and Drop was fixed, is now working with one click - *(Verena)*
 
 ## Version [0.3.2] 
 ### New Features 
