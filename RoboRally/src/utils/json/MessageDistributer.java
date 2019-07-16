@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import client.Client;
-import com.google.gson.JsonDeserializer;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import server.Server;
@@ -821,7 +820,7 @@ public class MessageDistributer {
             Platform.runLater(() -> {
                 ArrayList<Card> deck = yourCardsBody.getCardsInHand();
 
-                ((PlayerMatController) controllerMap.get("PlayerMat")).openPopupCards(deck);
+                ((PlayerMatController) controllerMap.get("PlayerMat")).initializeCards(deck);
             });
 
         }

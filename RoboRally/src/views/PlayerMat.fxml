@@ -51,9 +51,9 @@
         <ImageView fx:id="tempUpdate3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
     </HBox>
 
-    <HBox fx:id="playerHand" minHeight="0.0" minWidth="0.0" style="-fx-background-color: deepskyblue"
+    <HBox fx:id="playerHand" minHeight="0.0" minWidth="0.0"
           GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0"
-          alignment="CENTER_RIGHT" visible="false">
+          alignment="CENTER_RIGHT">
         <ImageView fx:id="dragImage1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
         </ImageView>
         <ImageView fx:id="dragImage2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
