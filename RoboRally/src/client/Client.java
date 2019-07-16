@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import server.game.Card;
 import server.game.Player;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import java.net.Socket;
  * All clients connect to one server.
  *
  * @author Ivan Dovecar
+ * @author Verena
  */
 public class Client {
 
@@ -250,6 +252,18 @@ public class Client {
         JSONMessage jsonMessage = new JSONMessage("SetStatus", new SetStatusBody(readyStatus));
         writer.println(JSONEncoder.serializeJSON(jsonMessage));
         writer.flush();
+    }
+
+    /**
+     * This method is responsible for sending the players selected cards to the server.
+     * @param card the selected card
+     * @param register the desired register
+     */
+
+    public void sendSelectedCard(Card card, int register){
+        JSONMessage jsonMessage = new JSONMessage("SelectedCard", new SelectCardBody(card, register));
+        this.writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        this.writer.flush();
     }
 
     /**

@@ -142,7 +142,10 @@ public class PlayerMatController implements IController {
 
     BooleanProperty allRegistersSet;
 
-    ArrayList<ImageView> dragImages;
+    private ArrayList<ImageView> dragImages;
+    private ArrayList<Card> cardsInHand = new ArrayList<>();
+
+    private ChatController chatController;
 
     public void initialize() {
             dragImages = new ArrayList<>();
@@ -233,6 +236,9 @@ public class PlayerMatController implements IController {
                 register.setOnDragDropped(new EventHandler<DragEvent>() {
                     @Override
                     public void handle(DragEvent dragEvent) {
+                        transmitSelectedCards(dragEvent);
+
+
                         Dragboard db = dragEvent.getDragboard();
                         boolean success = false;
                         if (db.hasImage()) {
@@ -287,7 +293,9 @@ public class PlayerMatController implements IController {
 
     public void initializeCards(ArrayList<Card> deck) {
             playerHand.getStylesheets().add("/resources/css/main.css");
+            this.cardsInHand = deck;
             loadCards(deck);
+
     }
 
 
@@ -559,6 +567,248 @@ public class PlayerMatController implements IController {
         tempUpdate3.fitWidthProperty().bind(playerUpdates.widthProperty());
         tempUpdate3.fitHeightProperty().bind(playerUpdates.heightProperty());
         return tempUpdate3;
+    }
+
+    public ArrayList<Card> getCardsInHand(){
+        return cardsInHand;
+    }
+
+    public void transmitSelectedCards(DragEvent dragEvent) {
+        chatController = (ChatController) stageController.getControllerMap().get("Chat");
+
+        if(dragEvent.getGestureSource() == dragImage1 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(0);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage1 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(0);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage1 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(0);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage1 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(0);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage1 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(0);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage2 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(1);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage2 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(1);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage2 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(1);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage2 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(1);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage2 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(1);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage3 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(2);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage3 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(2);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage3 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(2);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage3 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(2);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage3 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(2);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage4 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(3);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage4 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(3);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage4 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(3);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage4 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(3);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage4 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(3);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage5 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(4);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage5 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(4);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage5 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(4);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage5 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(4);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage5 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(4);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage6 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(5);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage6 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(5);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage6 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(5);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage6 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(5);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage6 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(5);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage7 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(6);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage7 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(6);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage7 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(6);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage7 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(6);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage7 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(6);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage8 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(7);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage8 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(7);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage8 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(7);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage8 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(7);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage8 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(7);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+
+        else if(dragEvent.getGestureSource() == dragImage9 && dragEvent.getGestureTarget() == register1){
+            Card chosenCard = cardsInHand.get(8);
+            int register = 1;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage9 && dragEvent.getGestureTarget() == register2){
+            Card chosenCard = cardsInHand.get(8);
+            int register = 2;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage9 && dragEvent.getGestureTarget() == register3){
+            Card chosenCard = cardsInHand.get(8);
+            int register = 3;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage9 && dragEvent.getGestureTarget() == register4){
+            Card chosenCard = cardsInHand.get(8);
+            int register = 4;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
+        else if(dragEvent.getGestureSource() == dragImage9 && dragEvent.getGestureTarget() == register5){
+            Card chosenCard = cardsInHand.get(8);
+            int register = 5;
+            chatController.getClient().sendSelectedCard(chosenCard, register);
+        }
     }
 
 

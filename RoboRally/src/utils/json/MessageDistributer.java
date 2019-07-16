@@ -312,7 +312,7 @@ public class MessageDistributer {
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
+                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
 
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -486,8 +486,28 @@ public class MessageDistributer {
          */
         public void handleSelectCard (Server server, Server.ServerReaderTask task, SelectCardBody selectCardBody){
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectCard()" + ANSI_RESET);
+            System.out.println("RECEIVED SELECTED CARD" + selectCardBody.getCard() + " " + selectCardBody.getRegister());
 
-            // TODO: Write code here
+            for(Server.ClientWrapper client : server.getConnectedClients()){
+                if(client.getClientSocket().equals(task.getClientSocket())){
+                    Player player = client.getPlayer();
+                    Card card = selectCardBody.getCard();
+                    int register = selectCardBody.getRegister();
+
+                    player.getDeckRegister().getDeck().set(register, card);
+
+                    logger.info(ANSI_GREEN + "SET CARD " + card + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+
+                    //send card selected
+                    for(Server.ClientWrapper clients : server.getConnectedClients()){
+                        JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
+                        clients.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clients.getWriter().flush();
+                    }
+                }
+            }
+
+
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////

@@ -278,7 +278,7 @@ public class JSONDecoder {
                 );
 
                 return new JSONMessage("ShuffleCoding", shuffleCodingBody);
-            } else if (messageType.equals("SelectCard")) {
+            } else if (messageType.equals("SelectedCard")) {
                 String cardName = messageBody.get("card").getAsString();
 
                 SelectCardBody selectCardBody = new SelectCardBody(
@@ -649,7 +649,7 @@ public class JSONDecoder {
 
         // Read dizzyHighway.json and deserialize it into a GameStarted message object
         try {
-            Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
             String content = Files.readString(path, StandardCharsets.UTF_8);
             System.out.println(content);
 

@@ -24,6 +24,9 @@ public class DeckRegister extends Deck {
     @Override
     public void initializeDeck(){
         this.deckRegister = new ArrayList<>();
+        for(int i = 0; i < 5; i++){
+            deckRegister.add(i, null);
+        }
     }
 
     /**
