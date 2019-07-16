@@ -491,7 +491,7 @@ public class MessageDistributer {
                     Card card = selectedCardBody.getCard();
                     int register = selectedCardBody.getRegister();
 
-                    player.getDeckRegister().getDeck().set(register, card);
+                    player.getDeckRegister().getDeck().set(register - 1, card);
 
                     logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
 
