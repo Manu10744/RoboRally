@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Timer;
 import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
@@ -21,7 +20,6 @@ import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
 import utils.Parameter;
-import utils.Countdown;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
 import viewmodels.IController;
@@ -415,7 +413,7 @@ public class MessageDistributer {
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket()
                 .equals(task.getClientSocket())).findFirst().get().getPlayerID();
 
-        logger.info(ANSI_GREEN + "PLAYER WITH ID " + playerID + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )" + ANSI_RESET);
+        logger.info(ANSI_GREEN + " ( HANDLESETSTARTINGPOINT ): PLAYER WITH ID " + playerID + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )" + ANSI_RESET);
 
         if (server.getTakenStartingPoints().contains(desiredStartPoint)) {
             logger.info(ANSI_GREEN + "ERROR: STARTPOINT IS ALREADY TAKEN. REQUEST DENIED." + ANSI_RESET);
@@ -425,9 +423,9 @@ public class MessageDistributer {
             task.getWriter().flush();
         } else {
             // StartingPoint is available
-            logger.info(ANSI_GREEN + "STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
+            logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
             server.setSetStartPoints(server.getSetStartPoints() +1);
-            logger.info(ANSI_GREEN + "INCREMENTED SETSTARTPOINT COUNTER TO " + server.getSetStartPoints() + ANSI_RESET);
+            logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): INCREMENTED SETSTARTPOINT COUNTER TO " + server.getSetStartPoints() + ANSI_RESET);
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, playerID));
@@ -446,9 +444,9 @@ public class MessageDistributer {
                 for (Server.ClientWrapper client : server.getConnectedClients()) {
                     Player player = client.getPlayer();
 
-                    logger.info(ANSI_GREEN + "SIZE OF DRAW PILE BEFORE DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE BEFORE DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
                     client.getPlayer().drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
-                    logger.info(ANSI_GREEN + "SIZE OF DRAW PILE AFTER DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE AFTER DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
 
                     ArrayList<Card> cardsInHand = player.getDeckHand().getDeck();
                     int cardsInPile = player.getDeckDraw().getDeck().size();
@@ -482,23 +480,22 @@ public class MessageDistributer {
          *
          * @param server         The Server itself.
          * @param task           The ReaderTask of the distributerServer (Gives access to the PrintWriter).
-         * @param selectCardBody The message body of the message which is of type {@link SelectCardBody}.
+         * @param selectedCardBody The message body of the message which is of type {@link SelectedCardBody}.
          */
-        public void handleSelectCard (Server server, Server.ServerReaderTask task, SelectCardBody selectCardBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectCard()" + ANSI_RESET);
-            System.out.println("RECEIVED SELECTED CARD" + selectCardBody.getCard() + " " + selectCardBody.getRegister());
+        public void handleSelectedCard(Server server, Server.ServerReaderTask task, SelectedCardBody selectedCardBody){
+            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectedCard()" + ANSI_RESET);
 
             for(Server.ClientWrapper client : server.getConnectedClients()){
                 if(client.getClientSocket().equals(task.getClientSocket())){
                     Player player = client.getPlayer();
-                    Card card = selectCardBody.getCard();
-                    int register = selectCardBody.getRegister();
+                    Card card = selectedCardBody.getCard();
+                    int register = selectedCardBody.getRegister();
 
                     player.getDeckRegister().getDeck().set(register, card);
 
-                    logger.info(ANSI_GREEN + "SET CARD " + card + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
 
-                    //send card selected
+                    // Send card selected to all clients
                     for(Server.ClientWrapper clients : server.getConnectedClients()){
                         JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
                         clients.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -839,7 +836,7 @@ public class MessageDistributer {
                     mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
 
                     mapController.setAllowedToSetStart(false);
-                    logger.info(ANSI_GREEN + "( MESSAGEDISTRIBUTER ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
                 } else {
                     // For everyone else
                     Robot otherPlayerRobot;

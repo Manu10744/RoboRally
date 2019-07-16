@@ -8,20 +8,20 @@ import utils.json.MessageDistributer;
 /** This is the wrapper class for the message body of the 'SelectCard' protocol JSON message.
  * @author Manuel Neumayer
  */
-public class SelectCardBody implements ClientMessageAction<SelectCardBody> {
+public class SelectedCardBody implements ClientMessageAction<SelectedCardBody> {
     @Expose
     private Card card;
     @Expose
     private Integer register;
 
-    public SelectCardBody(Card card, Integer register) {
+    public SelectedCardBody(Card card, Integer register) {
         this.card = card;
         this.register = register;
     }
 
     @Override
-    public void triggerAction(Server server, Server.ServerReaderTask task, SelectCardBody messageBodyObject, MessageDistributer messageDistributer) {
-        messageDistributer.handleSelectCard(server, task, messageBodyObject);
+    public void triggerAction(Server server, Server.ServerReaderTask task, SelectedCardBody messageBodyObject, MessageDistributer messageDistributer) {
+        messageDistributer.handleSelectedCard(server, task, messageBodyObject);
     }
 
     public Card getCard() {

@@ -261,7 +261,7 @@ public class Client {
      */
 
     public void sendSelectedCard(Card card, int register){
-        JSONMessage jsonMessage = new JSONMessage("SelectedCard", new SelectCardBody(card, register));
+        JSONMessage jsonMessage = new JSONMessage("SelectedCard", new SelectedCardBody(card, register));
         this.writer.println(JSONEncoder.serializeJSON(jsonMessage));
         this.writer.flush();
     }

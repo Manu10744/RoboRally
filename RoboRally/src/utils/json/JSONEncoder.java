@@ -6,10 +6,8 @@ import server.game.Card;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
-import utils.Parameter;
 import utils.json.protocol.*;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -103,7 +101,7 @@ public class JSONEncoder {
         /*16*/ messages.add(new JSONMessage("YourCards", new YourCardsBody(cards, 9001)));
         /*17*/ messages.add(new JSONMessage("NotYourCards", new NotYourCardsBody(42, 9, 9001)));
         /*18*/ messages.add(new JSONMessage("ShuffleCoding", new ShuffleCodingBody(42)));
-        /*19*/ messages.add(new JSONMessage("SelectCard", new SelectCardBody(new Again(), 5)));
+        /*19*/ messages.add(new JSONMessage("SelectCard", new SelectedCardBody(new Again(), 5)));
         /*20*/ messages.add(new JSONMessage("CardSelected", new CardSelectedBody(42, 5)));
         /*21*/ messages.add(new JSONMessage("SelectionFinished", new SelectionFinishedBody(42)));
         /*22*/ messages.add(new JSONMessage("TimerStarted", new TimerStartedBody()));

@@ -281,12 +281,12 @@ public class JSONDecoder {
             } else if (messageType.equals("SelectedCard")) {
                 String cardName = messageBody.get("card").getAsString();
 
-                SelectCardBody selectCardBody = new SelectCardBody(
+                SelectedCardBody selectedCardBody = new SelectedCardBody(
                         deserializeCards(jsonMessage, cardName),
                         messageBody.get("register").getAsInt()
                 );
 
-                return new JSONMessage("SelectCard", selectCardBody);
+                return new JSONMessage("SelectedCard", selectedCardBody);
             } else if (messageType.equals("CardSelected")) {
 
                 CardSelectedBody cardSelectedBody = new CardSelectedBody(
@@ -611,7 +611,7 @@ public class JSONDecoder {
         /*18*/
         messages.add(new JSONMessage("ShuffleCoding", new ShuffleCodingBody(42)));
         /*19*/
-        messages.add(new JSONMessage("SelectCard", new SelectCardBody(new Again(), 5)));
+        messages.add(new JSONMessage("SelectCard", new SelectedCardBody(new Again(), 5)));
         /*20*/
         messages.add(new JSONMessage("CardSelected", new CardSelectedBody(42, 5)));
         /*21*/

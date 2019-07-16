@@ -109,10 +109,6 @@ public class PlayerMatController implements IController {
     private ImageView register4;
     @FXML
     private ImageView register5;
-    @FXML
-    private ImageView emptyIcon20;
-    @FXML
-    private ImageView emptyIcon21;
 
     // Following FXMLs are related to PopupCards which represent the players' hand
 
