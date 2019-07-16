@@ -41,7 +41,7 @@
         <ImageView fx:id="emptyIcon07" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
     </HBox>
 
-    <HBox fx:id="playerUpdates" GridPane.columnIndex="1" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: orange;">
+    <HBox fx:id="playerUpdates" GridPane.columnIndex="1" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0">
         <ImageView fx:id="permaUpdate1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
         <ImageView fx:id="permaUpdate2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
         <ImageView fx:id="permaUpdate3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS"/>
