@@ -492,7 +492,7 @@ public class MessageDistributer {
 
             for(Server.ClientWrapper client : server.getConnectedClients()){
                 Player player = client.getPlayer();
-                Integer selectedCardsNumber = player.getSelectedCards();
+                int selectedCardsNumber = player.getSelectedCards();
                 int register = selectedCardBody.getRegister();
 
                 if(client.getClientSocket().equals(task.getClientSocket())) {
@@ -503,17 +503,20 @@ public class MessageDistributer {
                     if (card == null) {
                         selectedCardsNumber--;
                         player.setSelectedCards(selectedCardsNumber);
-                        //Clients Register is updated
-                        client.getPlayer().addCardToRegister(card);
                     } else {
                         selectedCardsNumber++;
                         player.setSelectedCards(selectedCardsNumber);
                         System.out.println("AMOUNT OF CARDS in IF LOOP = " + selectedCardsNumber);
                     }
-                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
 
+                    if (card == null) {
+                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
+                    } else {
+                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
+                    }
                 }
-
 
 
                     // Send card selected to all clients
@@ -527,7 +530,7 @@ public class MessageDistributer {
                             JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
                             clientWrapper.getWriter().flush();
-                            System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber.intValue());
+                            System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber);
                         }
                     }
                 }
