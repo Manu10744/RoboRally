@@ -435,9 +435,18 @@ public class MessageDistributer {
                     ArrayList<Card> cardsInHand = player.getDeckHand().getDeck();
                     int cardsInPile = player.getDeckDraw().getDeck().size();
 
-                    JSONMessage jsonMessage = new JSONMessage("YourCards", new YourCardsBody(cardsInHand, cardsInPile));
-                    client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                    client.getWriter().flush();
+                    for (Server.ClientWrapper otherClient : server.getConnectedClients()) {
+                        if (client.getClientSocket().equals(otherClient.getClientSocket())) {
+                            JSONMessage jsonMessage = new JSONMessage("YourCards", new YourCardsBody(cardsInHand, cardsInPile));
+                            client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            client.getWriter().flush();
+                        } else {
+                            JSONMessage jsonMessage = new JSONMessage("NotYourCards", new NotYourCardsBody(client.getPlayer().getPlayerID(), cardsInHand.size(), cardsInPile));
+                            client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            client.getWriter().flush();
+                        }
+                    }
+
                 }
             }
 
