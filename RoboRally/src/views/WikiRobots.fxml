@@ -28,7 +28,7 @@
             <Image url="@../resources/images/others/HintergrundWikiUnterseite.png" />
          </image>
       </ImageView>
-      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" vvalue="1.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <content>
             <AnchorPane minHeight="600.0" minWidth="800.0" prefWidth="800.0">
                <children>
