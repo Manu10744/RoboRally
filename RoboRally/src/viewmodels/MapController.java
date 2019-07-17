@@ -172,6 +172,7 @@ public class MapController implements IController {
                     }
                 });
 
+                // TODO Create parameters for here used doubles
                 mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
                     logger.info("Pressed Key: " + e + mapPane.getTranslateY());
                     if (e.getCode() == KeyCode.PLUS) {
