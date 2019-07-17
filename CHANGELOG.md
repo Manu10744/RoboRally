@@ -15,6 +15,7 @@
 * All maps have been added to the game. - *(Jessie, Verena, Vincent)*
 * Each players cards are now loaded in a box - *(Verena, Manu)*
 * Theres a Timer before the map loads - *(Vincent)*
+* Antenna methods implemented to determine distance between map objects by fields or vector length - *(Ivan)*
 
 ### Changes
 * Server and client are now creating and updating own player (and robot) instances simultaneously. Additionally, the client also keeps track of other players. - *(Mia, Manu)*
