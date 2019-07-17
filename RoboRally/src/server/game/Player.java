@@ -94,7 +94,7 @@ public class Player implements Serializable {
         }
 
         // Set robot for this player
-        this.playerRobot = new Robot(name, robotImage, null, 0, 0);
+        this.playerRobot = new Robot(name, robotImage, ORIENTATION_RIGHT, 0, 0);
     }
 
     /**

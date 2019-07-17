@@ -331,6 +331,24 @@ public class MapController implements IController {
     }
 
     /**
+     * This method turns the robot according to turn card either left or right
+     * @param robotPosition
+     * @param turnDirection
+     */
+    public void turnRobot (String robotPosition, String  turnDirection){
+        //Here we get the robot imageView
+        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size()-1);
+        double currentOrientation = robotImageView.rotateProperty().getValue();
+
+        //Here we turn it either to right or left side
+        if(turnDirection.equals(Parameter.ORIENTATION_LEFT)) {
+            robotImageView.rotateProperty().setValue(currentOrientation - 90);
+        }else{
+            robotImageView.rotateProperty().setValue(currentOrientation + 90);
+        }
+    }
+
+    /**
      * This method controls robotlaser in activation phase
      */
     public void robotLaser() {

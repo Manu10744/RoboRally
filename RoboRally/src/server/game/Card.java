@@ -3,8 +3,6 @@ package server.game;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-
 /**
  * This class defines what a card shall be in the game. <br>
  * There are more specific cards defined in the classes that inherit from Card.
@@ -25,7 +23,7 @@ public abstract class Card {
      * This is the method that is called, when the Card's effect is activated. <br>
      * It will be overwritten in each subclass.
      */
-    public abstract void activateCard(Player player, ArrayList<Card> register);
+    public abstract void activateCard(Player player);
         //TODO please overwrite
 
 

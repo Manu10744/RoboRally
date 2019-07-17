@@ -157,4 +157,7 @@ public class Parameter {
     public static final int LOBBY_RATIO_WIDTH_BGR = 1;
     public static final int LOBBY_RATIO_HEIGHT_BGR = 1;
 
+    //Energy amount
+    public static final int ONE_ENERGY = 1;
+
 }

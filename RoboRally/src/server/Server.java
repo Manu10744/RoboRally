@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
@@ -53,6 +54,9 @@ public class Server extends Application {
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
+    private Antenna antenna;
+    private int antennaXPos;
+    private int antennaYPos;
 
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
@@ -165,6 +169,30 @@ public class Server extends Application {
 
     public void setMap(ArrayList<ArrayList<ArrayList<Tile>>> map) {
         this.map = map;
+    }
+
+    public Antenna getAntenna() {
+        return antenna;
+    }
+
+    public void setAntenna(Antenna antenna) {
+        this.antenna = antenna;
+    }
+
+    public int getAntennaXPos() {
+        return antennaXPos;
+    }
+
+    public void setAntennaXPos(int antennaXPos) {
+        this.antennaXPos = antennaXPos;
+    }
+
+    public int getAntennaYPos() {
+        return antennaYPos;
+    }
+
+    public void setAntennaYPos(int antennaYPos) {
+        this.antennaYPos = antennaYPos;
     }
 
     public class ServerReaderTask extends Thread {

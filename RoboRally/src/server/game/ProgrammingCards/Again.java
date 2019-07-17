@@ -1,10 +1,8 @@
 package server.game.ProgrammingCards;
 
-import server.game.Card;
 import server.game.Player;
 import utils.json.MessageDistributer;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +26,7 @@ public class Again extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, ArrayList<Card> register) {
+    public void activateCard(Player player) {
     //TODO
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'AGAIN' ..." + ANSI_RESET);
     }
