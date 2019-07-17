@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -18,6 +20,7 @@ import utils.json.protocol.GameStartedBody;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -103,7 +106,7 @@ public class MapController implements IController {
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
 
-        /*
+
         // Popup for performing actions on robot
         Platform.runLater(new Runnable() {
             @Override
@@ -138,7 +141,6 @@ public class MapController implements IController {
                 }
             }
         });
-         */
 
         // Scrolling, zooming and filling of Map
         Platform.runLater(new Runnable() {

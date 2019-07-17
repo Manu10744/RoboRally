@@ -1,5 +1,11 @@
 package server.game.ProgrammingCards;
 
+import server.game.Card;
+import server.game.Player;
+import server.game.Robot;
+
+import java.util.ArrayList;
+
 /**
  * This class implements the TurnLeft card.
  *
@@ -15,26 +21,29 @@ public class TurnLeft extends server.game.Card {
      * This will make the robot turn 90 degrees to the left.
      * //TODO remove if not needed in final version.
      */
-    /*
-    public void activateCard() {
+
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+    String lineOfSight = player.getPlayerRobot().getLineOfSight();
+    Robot robot = player.getPlayerRobot();
 
         switch (lineOfSight) {
             case ("up"):
-                lineOfSight = "left";
+                robot.setLineOfSight("left");
                 break;
             case ("right"):
-                lineOfSight = "up";
+                robot.setLineOfSight("up");
                 break;
             case ("down"):
-                lineOfSight = "right";
+                robot.setLineOfSight("right");
                 break;
             case ("left"):
-                lineOfSight = "down";
+                robot.setLineOfSight("down");
                 break;
             default:
                 System.out.println("There is a Problem with the lineOfSight variable.");
         }
 
     }
-    */
+
 }

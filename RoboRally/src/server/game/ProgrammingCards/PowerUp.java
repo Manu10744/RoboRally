@@ -1,5 +1,11 @@
 package server.game.ProgrammingCards;
 
+import server.game.Card;
+import server.game.Player;
+import server.game.Robot;
+
+import java.util.ArrayList;
+
 /**
  * This class implements the PowerUp card.
  *
@@ -16,9 +22,11 @@ public class PowerUp extends server.game.Card {
      * around on the map.
      * //TODO remove if not needed in final version.
      */
-    /*
-    public void activateCard() {
 
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+        int currentEnergy = player.getEnergy();
+        player.setEnergy(currentEnergy + 1);
     }
-    */
+
 }

@@ -1,5 +1,10 @@
 package server.game.ProgrammingCards;
 
+import server.game.Card;
+import server.game.Player;
+
+import java.util.ArrayList;
+
 /**
  * This class implements the Again card.
  *
@@ -16,9 +21,10 @@ public class Again extends server.game.Card {
      * If there was no previous move the robot shall do nothing.
      * //TODO remove if not needed in final version.
      */
-    /*
-    public void activateCard() {
 
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+    //TODO
     }
-     */
+
 }

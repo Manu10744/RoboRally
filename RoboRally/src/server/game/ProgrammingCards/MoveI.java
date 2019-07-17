@@ -1,5 +1,11 @@
 package server.game.ProgrammingCards;
 
+import server.game.Card;
+import server.game.Player;
+import server.game.Robot;
+
+import java.util.ArrayList;
+
 /**
  * This class implements the MoveI card.
  *
@@ -15,24 +21,30 @@ public class MoveI extends server.game.Card {
      * This will move the robot one tile in the direction he is facing.
      * //TODO remove if not needed in final version.
      */
-    /*
-    public void activateCard() {
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+        String lineOfSight = player.getPlayerRobot().getLineOfSight();
+
+        int xPosition = player.getPlayerRobot().getxPosition();
+        int yPosition = player.getPlayerRobot().getyPosition();
+        Robot robot = player.getPlayerRobot();
+
         switch (lineOfSight){
             case ("up"):
-                xPosition = xPosition -1;
+                robot.setyPosition(yPosition + 1);
                 break;
             case ("right"):
-                yPosition = yPosition +1;
+                robot.setxPosition(xPosition + 1);
                 break;
             case ("down"):
-                xPosition = xPosition +1;
+                robot.setyPosition(yPosition - 1);
                 break;
             case ("left"):
-                yPosition = yPosition -1;
+                robot.setxPosition(xPosition - 1);
                 break;
             default:
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
     }
-    */
+
 }
