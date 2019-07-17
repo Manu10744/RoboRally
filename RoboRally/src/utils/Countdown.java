@@ -51,6 +51,7 @@ public class Countdown {
             timer.cancel();
             return secs;
         }else {
+            System.out.println(secs);
             return --secs;
         }
     }
