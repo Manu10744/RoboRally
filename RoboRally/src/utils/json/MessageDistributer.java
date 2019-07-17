@@ -489,14 +489,15 @@ public class MessageDistributer {
          */
         public void handleSelectedCard(Server server, Server.ServerReaderTask task, SelectedCardBody selectedCardBody){
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectedCard()" + ANSI_RESET);
+            int register = selectedCardBody.getRegister();
+            Player player = null;
+            int selectedCardsNumber = 0;
 
             for(Server.ClientWrapper client : server.getConnectedClients()){
-                Player player = client.getPlayer();
-                Integer selectedCardsNumber = player.getSelectedCards();
-                int register = selectedCardBody.getRegister();
-
                 if(client.getClientSocket().equals(task.getClientSocket())) {
                     Card card = selectedCardBody.getCard();
+                    player = client.getPlayer();
+                    selectedCardsNumber = player.getSelectedCards();
                     player.getDeckRegister().getDeck().set(register - 1, card);
 
                     //When the chosen card is null, one card less is selected, when it is not null, one additional card is selected
@@ -514,8 +515,6 @@ public class MessageDistributer {
 
                 }
 
-
-
                     // Send card selected to all clients
                     for(Server.ClientWrapper clientWrapper : server.getConnectedClients()){
                         JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
@@ -523,11 +522,11 @@ public class MessageDistributer {
                         clientWrapper.getWriter().flush();
 
                         if (selectedCardsNumber == REGISTER_CARDS_AMOUNT){
-
                             JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
+                            //Todo: json Message timer started
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
                             clientWrapper.getWriter().flush();
-                            System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber.intValue());
+                            System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber);
                         }
                     }
                 }
@@ -943,7 +942,7 @@ public class MessageDistributer {
             Platform.runLater(() -> {
                 int register = cardSelectedBody.getRegister();
                 int playerID = cardSelectedBody.getPlayerID();
-                client.getOpponentMatController().updateOpponentregister(register, playerID);
+                client.getOpponentMatController().updateOpponentRegister(register, playerID);
             });
         }
 
@@ -960,15 +959,7 @@ public class MessageDistributer {
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
 
             Platform.runLater(() -> {
-                //Remove register cards from hand
-                client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
-                ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
-                DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
-                //Cards from hand are added to discard pile
-                clientDiscards.getDeck().addAll(remainingCardsInHand);
-
-                //Todo: Timer activation and test with if else here
-               client.getPlayerMatController().emptyCards();
+             //Todo popUp
             });
         }
 
@@ -984,7 +975,15 @@ public class MessageDistributer {
             System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerStarted()" + ANSI_RESET);
 
             Platform.runLater(() -> {
-                //TODO write code here
+                //Remove register cards from hand
+                client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
+                ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
+                DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
+                //Cards from hand are added to discard pile
+                clientDiscards.getDeck().addAll(remainingCardsInHand);
+
+                //Todo: Timer activation and test with if else here
+                client.getPlayerMatController().emptyCards();
             });
         }
 

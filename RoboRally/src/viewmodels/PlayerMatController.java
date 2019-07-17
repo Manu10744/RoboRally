@@ -295,7 +295,7 @@ public class PlayerMatController implements IController {
     public void emptyCards(){
         System.out.println("Biste hier???" + this.dragImages);
         //ImageViews are deleted
-        this.dragImages.removeAll(this.dragImages);
+        this.playerHand.getChildren().removeAll(this.playerHand.getChildren());
         System.out.println("Nach removen" + this.dragImages);
         //Todo doe snot empty hbox
 

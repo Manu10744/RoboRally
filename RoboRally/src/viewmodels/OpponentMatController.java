@@ -6,6 +6,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.ImageView;
 
+import java.util.ArrayList;
+
 /**
  * This class has full control over the opponentMat views.
  * It is responsible for showing the playerHand in the register of each player,
@@ -190,8 +192,26 @@ public class OpponentMatController implements  IController{
          }
      */
 
-    public void updateOpponentregister(int register, int playerID){
+    /**
+     * This method shows that an opponent player with the player id playerID has laid a card (backside visible) into the register register
+     * @param register
+     * @param playerID
+     */
+    public void updateOpponentRegister(int register, int playerID){
         //Todo show cards laid down on opponent map
+        ArrayList<HBox> hBoxes = new ArrayList<>();
+        hBoxes.add(player1Register);
+        hBoxes.add(player2Register);
+        hBoxes.add(player3Register);
+        hBoxes.add(player4Register);
+        hBoxes.add(player5Register);
+
+
+
+        for (HBox hbox : hBoxes){
+
+            hbox.getId();
+        }
     }
 
     @Override
