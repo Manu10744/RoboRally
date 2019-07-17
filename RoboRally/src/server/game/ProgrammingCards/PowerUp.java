@@ -1,6 +1,7 @@
 package server.game.ProgrammingCards;
 
 import server.game.Card;
+import server.game.Player;
 import server.game.Robot;
 
 import java.util.ArrayList;
@@ -21,12 +22,11 @@ public class PowerUp extends server.game.Card {
      * around on the map.
      * //TODO remove if not needed in final version.
      */
-    @Override
-    public void activateCard(Robot robot, ArrayList<Card> register) {
-        String lineOfSight = robot.getLineOfSight();
 
-        int xPosition = robot.getxPosition();
-        int yPosition = robot.getyPosition();
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+        int currentEnergy = player.getEnergy();
+        player.setEnergy(currentEnergy + 1);
     }
 
 }

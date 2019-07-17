@@ -1,7 +1,7 @@
 package server.game.ProgrammingCards;
 
 import server.game.Card;
-import server.game.Robot;
+import server.game.Player;
 
 import java.util.ArrayList;
 
@@ -23,11 +23,8 @@ public class Again extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Robot robot, ArrayList<Card> register) {
-        String lineOfSight = robot.getLineOfSight();
-
-        int xPosition = robot.getxPosition();
-        int yPosition = robot.getyPosition();
+    public void activateCard(Player player, ArrayList<Card> register) {
+    //TODO
     }
 
 }

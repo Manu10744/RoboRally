@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -18,6 +20,7 @@ import utils.json.protocol.GameStartedBody;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 
@@ -103,42 +106,47 @@ public class MapController implements IController {
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
 
-        /*
+
         // Popup for performing actions on robot
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Robot Actions");
-                alert.setContentText("Make your robot perform actions!");
-                alert.setResizable(true);
+        /*    Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Robot Actions");
+                    alert.setContentText("Make your robot perform actions!");
+                    alert.setResizable(true);
 
-                ButtonType moveI = new ButtonType("MoveI");
-                ButtonType moveII = new ButtonType("MoveII");
-                ButtonType moveIII = new ButtonType("MoveII");
-                ButtonType turnRight = new ButtonType("TurnRight");
-                ButtonType turnLeft = new ButtonType("TurnLeft");
-                ButtonType backup = new ButtonType("Backup");
-                ButtonType uTurn = new ButtonType("UTurn");
-                ButtonType again = new ButtonType("Again");
+                    ButtonType moveI = new ButtonType("MoveI");
+                    ButtonType moveII = new ButtonType("MoveII");
+                    ButtonType moveIII = new ButtonType("MoveII");
+                    ButtonType turnRight = new ButtonType("TurnRight");
+                    ButtonType turnLeft = new ButtonType("TurnLeft");
+                    ButtonType backup = new ButtonType("Backup");
+                    ButtonType uTurn = new ButtonType("UTurn");
+                    ButtonType again = new ButtonType("Again");
 
-                alert.getButtonTypes().addAll(moveI, moveII, moveIII, turnRight, turnLeft, backup, uTurn, again);
+                    alert.getButtonTypes().addAll(moveI, moveII, moveIII, turnRight, turnLeft, backup, uTurn, again);
 
-                while (true) {
-                    Optional<ButtonType> result = alert.showAndWait();
+                    while (true) {
+                        Optional<ButtonType> result = alert.showAndWait();
 
-                    if (result.get() == moveI) {  }
-                    if (result.get() == moveII) {  }
-                    if (result.get() == moveIII) {  }
-                    if (result.get() == turnRight) {  }
-                    if (result.get() == turnLeft) {  }
-                    if (result.get() == backup) {  }
-                    if (result.get() == uTurn) {  }
-                    if (result.get() == again) {  }
+                        if (result.get() == moveI) {  }
+                        if (result.get() == moveII) {  }
+                        if (result.get() == moveIII) {  }
+                        if (result.get() == turnRight) {  }
+                        if (result.get() == turnLeft) {  }
+                        if (result.get() == backup) {  }
+                        if (result.get() == uTurn) {  }
+                        if (result.get() == again) {  }
+                    }
                 }
-            }
-        });
+            });
+
          */
+
+
+
+
 
         // Scrolling, zooming and filling of Map
         Platform.runLater(new Runnable() {

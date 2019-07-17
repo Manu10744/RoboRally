@@ -33,6 +33,10 @@ public class Robot {
         return lineOfSight;
     }
 
+    public void setLineOfSight(String lineOfSight) {
+        this.lineOfSight = lineOfSight;
+    }
+
     /**
      * Get the x position of the robot
      * @return xPosition The xPosition of the robot

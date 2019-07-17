@@ -1,5 +1,10 @@
 package server.game.DamageCards;
 
+import server.game.Card;
+import server.game.Player;
+
+import java.util.ArrayList;
+
 /**
  * Spam cards are the simplest form of damage a player can receive. <br>
  * A description of the cards effect can be found at the activateDamage method.
@@ -17,9 +22,10 @@ public class Spam extends server.game.Card {
      * In this case the player has to play the top card of his programming deck.
      * //TODO remove if not needed in final version.
      */
-    /*
-    public void activateCard() {
 
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+        //TODO
     }
-    */
+
 }

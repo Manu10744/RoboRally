@@ -1,5 +1,10 @@
 package server.game.DamageCards;
 
+import server.game.Card;
+import server.game.Player;
+
+import java.util.ArrayList;
+
 /**
  * This class defines a kind of damage.
  *
@@ -16,9 +21,9 @@ public class Worm extends server.game.Card {
      * In this case the robot has to reboot.
      * //TODO remove if not needed in final version.
      */
-    /*
-    public void activateCard() {
 
+    @Override
+    public void activateCard(Player player, ArrayList<Card> register) {
+        //TODO
     }
-    */
 }

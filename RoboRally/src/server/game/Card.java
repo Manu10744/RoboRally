@@ -25,7 +25,9 @@ public abstract class Card {
      * This is the method that is called, when the Card's effect is activated. <br>
      * It will be overwritten in each subclass.
      */
-    public abstract void activateCard(Robot robot, ArrayList<Card> register);
+    public abstract void activateCard(Player player, ArrayList<Card> register);
+        //TODO please overwrite
+
 
     /**
      * This method simply returns the name of the card.

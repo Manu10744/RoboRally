@@ -1,6 +1,7 @@
 package server.game.ProgrammingCards;
 
 import server.game.Card;
+import server.game.Player;
 import server.game.Robot;
 
 import java.util.ArrayList;
@@ -22,24 +23,22 @@ public class TurnLeft extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Robot robot, ArrayList<Card> register) {
-        String lineOfSight = robot.getLineOfSight();
-
-        int xPosition = robot.getxPosition();
-        int yPosition = robot.getyPosition();
+    public void activateCard(Player player, ArrayList<Card> register) {
+    String lineOfSight = player.getPlayerRobot().getLineOfSight();
+    Robot robot = player.getPlayerRobot();
 
         switch (lineOfSight) {
             case ("up"):
-                lineOfSight = "left";
+                robot.setLineOfSight("left");
                 break;
             case ("right"):
-                lineOfSight = "up";
+                robot.setLineOfSight("up");
                 break;
             case ("down"):
-                lineOfSight = "right";
+                robot.setLineOfSight("right");
                 break;
             case ("left"):
-                lineOfSight = "down";
+                robot.setLineOfSight("down");
                 break;
             default:
                 System.out.println("There is a Problem with the lineOfSight variable.");

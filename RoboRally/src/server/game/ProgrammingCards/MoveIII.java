@@ -1,6 +1,7 @@
 package server.game.ProgrammingCards;
 
 import server.game.Card;
+import server.game.Player;
 import server.game.Robot;
 
 import java.util.ArrayList;
@@ -25,11 +26,30 @@ public class MoveIII extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Robot robot, ArrayList<Card> register) {
-        String lineOfSight = robot.getLineOfSight();
+    public void activateCard(Player player, ArrayList<Card> register) {
+        String lineOfSight = player.getPlayerRobot().getLineOfSight();
 
-        int xPosition = robot.getxPosition();
-        int yPosition = robot.getyPosition();
+        int xPosition = player.getPlayerRobot().getxPosition();
+        int yPosition = player.getPlayerRobot().getyPosition();
+
+        Robot robot = player.getPlayerRobot();
+
+        switch (lineOfSight){
+            case ("up"):
+                robot.setyPosition(yPosition +3);
+                break;
+            case ("right"):
+                robot.setxPosition(xPosition +3);
+                break;
+            case ("down"):
+                robot.setyPosition(yPosition -3);
+                break;
+            case ("left"):
+                robot.setxPosition(xPosition - 3);
+                break;
+            default:
+                System.out.println("There was a problem with the lineOfSight variable.");
+        }
+
     }
-
 }

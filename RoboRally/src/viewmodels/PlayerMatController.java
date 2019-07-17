@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -345,6 +346,11 @@ public class PlayerMatController implements IController {
             }
         }
 
+        for (int i = 0; i < dragImages.size(); i++) {
+            dragImages.get(i).setPreserveRatio(true);
+            dragImages.get(i).fitWidthProperty().bind(playerHand.widthProperty().divide(Parameter.CARDS_WIDTH_PLAYERHAND));
+            dragImages.get(i).fitHeightProperty().bind(playerHand.heightProperty());
+        }
 
     }
 
