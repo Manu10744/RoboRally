@@ -433,7 +433,8 @@ public class MessageDistributer {
     public void handlePlayCard(Server server, Server.ServerReaderTask task, PlayCardBody playCardBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayCard()" + ANSI_RESET);
 
-        // TODO: Write code here
+        Card playedCard = playCardBody.getCard();
+        playedCard.activateCard(null, null);
     }
 
     /**

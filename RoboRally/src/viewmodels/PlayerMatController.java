@@ -19,6 +19,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
+import server.game.ProgrammingCards.TurnLeft;
+import server.game.ProgrammingCards.TurnRight;
 import server.game.decks.DeckDiscard;
 import utils.Parameter;
 
@@ -277,6 +279,20 @@ public class PlayerMatController implements IController {
                     }
                 });
             }
+
+            // FOR TESTING MOVES
+            register1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    chatController.getClient().sendPlayCard(new TurnLeft());
+                }
+            });
+            register2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    chatController.getClient().sendPlayCard(new TurnRight());
+                }
+            });
         }
 
     }

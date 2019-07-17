@@ -8,6 +8,7 @@ import server.game.Card;
 import server.game.Player;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import server.game.ProgrammingCards.TurnLeft;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
@@ -266,6 +267,11 @@ public class Client {
         this.writer.flush();
     }
 
+    public void sendPlayCard(Card card) {
+        JSONMessage jsonMessage = new JSONMessage("PlayCard", new PlayCardBody(card));
+        this.writer.println(JSONEncoder.serializeJSON(jsonMessage));
+        this.writer.flush();
+    }
     /**
      * This method is responsible for printing a message to the chat history.
      *
