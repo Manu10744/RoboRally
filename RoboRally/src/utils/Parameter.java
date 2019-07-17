@@ -45,6 +45,12 @@ public class Parameter {
     //GUI
     public static final int GUIS_TO_START = 1;
 
+    //Map scrolling / zooming
+    public static final double ZOOM_FACTOR = 1.05;
+    public static final int ZOOM_DEFAULT = 1;
+    public static final int SCROLL_FACTOR = 5;
+    public static final int SCROLL_DEFAULT = 0;
+
     //Game
     public static final int TIMER_LENGTH = 30;
     public static final int TIMER_DELAY = 1000; // This should be 1000 because a second has 1000 milliseconds.

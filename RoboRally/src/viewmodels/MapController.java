@@ -15,6 +15,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import server.game.Robot;
 import server.game.Tiles.*;
+import utils.Parameter;
 import utils.json.protocol.GameStartedBody;
 
 import java.util.ArrayList;
@@ -172,34 +173,33 @@ public class MapController implements IController {
                     }
                 });
 
-                // TODO Create parameters for here used doubles
                 mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
                     logger.info("Pressed Key: " + e + mapPane.getTranslateY());
                     if (e.getCode() == KeyCode.PLUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() * 1.05);
-                        mapPane.setScaleY(mapPane.getScaleY() * 1.05);
+                        mapPane.setScaleX(mapPane.getScaleX() * Parameter.ZOOM_FACTOR);
+                        mapPane.setScaleY(mapPane.getScaleY() * Parameter.ZOOM_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.MINUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() / 1.05);
-                        mapPane.setScaleY(mapPane.getScaleY() / 1.05);
+                        mapPane.setScaleX(mapPane.getScaleX() / Parameter.ZOOM_FACTOR);
+                        mapPane.setScaleY(mapPane.getScaleY() / Parameter.ZOOM_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.A) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() - 5);
+                        mapPane.setTranslateX(mapPane.getTranslateX() - Parameter.SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.D) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() + 5);
+                        mapPane.setTranslateX(mapPane.getTranslateX() + Parameter.SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.W) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() - 5);
+                        mapPane.setTranslateY(mapPane.getTranslateY() - Parameter.SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.S) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() + 5);
+                        mapPane.setTranslateY(mapPane.getTranslateY() + Parameter.SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.Z) {
-                        mapPane.setScaleX(1);
-                        mapPane.setScaleY(1);
-                        mapPane.setTranslateX(0.0);
-                        mapPane.setTranslateY(0.0);
+                        mapPane.setScaleX(Parameter.ZOOM_DEFAULT);
+                        mapPane.setScaleY(Parameter.ZOOM_DEFAULT);
+                        mapPane.setTranslateX(Parameter.SCROLL_DEFAULT);
+                        mapPane.setTranslateY(Parameter.SCROLL_DEFAULT);
                         mapPane.requestFocus();
                     }
                 });
