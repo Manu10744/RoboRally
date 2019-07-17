@@ -345,7 +345,11 @@ public class PlayerMatController implements IController {
             }
         }
 
-
+        for (int i = 0; i < dragImages.size(); i++) {
+            dragImages.get(i).setPreserveRatio(true);
+            dragImages.get(i).fitWidthProperty().bind(playerHand.widthProperty().divide(Parameter.CARDS_WIDTH));
+            dragImages.get(i).fitHeightProperty().bind(playerHand.heightProperty());
+        }
     }
 
     public Image getCardImage(Card card, String color) {
