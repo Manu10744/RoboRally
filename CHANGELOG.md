@@ -5,8 +5,22 @@
 * Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
 * When setting a StartPoint, the robot always has to look towards the mapboard. 
 * Shop needs to be implemented
-* Antenna algorithm calculating next player needs to be implemented
 * AI needs to be implemented
+* Proper lineOfSight of robots for each map needs to be implemented
+* SelectionFinished currently being sent for each player finished programming. Needs to be changed (Send it only once)
+* Timer before map starts needs to be implemented (10 secs)
+* Timer of protocol message 'TimerStarted' needs to be implemented (30 secs)
+* Remaining moves need to be implemented (2/9)
+
+
+## Version [0.5.0]
+### New Features
+* Implemented ability to play 'TurnLeft' and 'TurnRight' cards - *(Mia, Manu)*
+
+### Changes
+
+### Bugfixes
+
 
 ## Version [0.4.0] 
 ### New Features 
