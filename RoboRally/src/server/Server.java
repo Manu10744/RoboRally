@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
@@ -51,6 +52,7 @@ public class Server extends Application {
     private int setStartPoints = 0;
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
+    private ArrayList<ArrayList<ArrayList<Tile>>> map;
 
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
@@ -157,6 +159,13 @@ public class Server extends Application {
         this.gamePhase = gamePhase;
     }
 
+    public ArrayList<ArrayList<ArrayList<Tile>>> getMap() {
+        return map;
+    }
+
+    public void setMap(ArrayList<ArrayList<ArrayList<Tile>>> map) {
+        this.map = map;
+    }
 
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
@@ -310,6 +319,8 @@ public class Server extends Application {
         public void setPlayer(Player player) {
             this.player = player;
         }
+
+
     }
 }
 

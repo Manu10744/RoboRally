@@ -1,6 +1,7 @@
 package utils.json;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -326,10 +327,19 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
+            Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            try {
+                //Sets Map in server
+                String map = Files.readString(path, StandardCharsets.UTF_8);
+                JSONMessage jsonMessage = JSONDecoder.deserializeJSON(map);
+                GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
+                server.setMap(gameStartedBody.getXArray());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
-
                 try {
                     String map = Files.readString(path, StandardCharsets.UTF_8);
                     client.getWriter().println(map);
@@ -970,7 +980,7 @@ public class MessageDistributer {
         Platform.runLater(() -> {
             int register = cardSelectedBody.getRegister();
             int playerID = cardSelectedBody.getPlayerID();
-            client.getOpponentMatController().updateOpponentregister(register, playerID);
+            client.getOpponentMatController().updateOpponentRegister(register, playerID);
         });
     }
 
@@ -987,15 +997,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-            //Remove register cards from hand
-            client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
-            ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
-            DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
-            //Cards from hand are added to discard pile
-            clientDiscards.getDeck().addAll(remainingCardsInHand);
-
-            //Todo: Timer activation and test with if else here
-            client.getPlayerMatController().emptyCards();
+          //todo
         });
     }
 
@@ -1011,7 +1013,16 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerStarted()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-            //TODO write code here
+            //Todo If times up, this block should be activated
+            //Remove register cards from hand
+            client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
+            ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
+            DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
+            //Cards from hand are added to discard pile
+            clientDiscards.getDeck().addAll(remainingCardsInHand);
+
+            //Todo: Timer activation and test with if else here
+            client.getPlayerMatController().emptyCards();
         });
     }
 
