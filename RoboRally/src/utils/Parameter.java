@@ -39,7 +39,6 @@ public class Parameter {
     public static final int HAND_CARDS_AMOUNT = 9;
     public static final int REGISTER_CARDS_AMOUNT = 5;
 
-
     //Server
     public static final int SERVER_PORT = 9998;
 
@@ -55,7 +54,7 @@ public class Parameter {
 
         //amount of players
     public static final int MAX_PLAYERSIZE = 6;
-    public static final int MIN_PLAYERSIZE = 2;
+    public static final int MIN_PLAYERSIZE = 1;
 
         //Register numbers
     public static final int REGISTER_ONE = 1;

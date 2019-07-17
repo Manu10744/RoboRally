@@ -32,7 +32,6 @@ import viewmodels.MapController;
 import viewmodels.PlayerMatController;
 
 
-
 /**
  * This class has the sole purpose to distribute the logic for each {@link JSONMessage} into seperate functions
  * that are called when the corresponding message was deserialized.
@@ -62,6 +61,7 @@ public class MessageDistributer {
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //                           HANDLERS FOR CLIENT MESSAGES                                        //
     ///////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * This method contains the logic that comes into action when a 'HelloServer' protocol message was received and
      * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
@@ -69,7 +69,6 @@ public class MessageDistributer {
      * @param server          The Server itself.
      * @param task            The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
-     *
      * @author Ivan Dovecar
      * @author Manu
      * @author Mia
@@ -213,7 +212,7 @@ public class MessageDistributer {
                     playerToUpdate.initRobotByFigure(playerValueFigure);
 
                     logger.info("SERVER UPDATED HIS PLAYER WITH PLAYERID " + clientWrapper.getPlayerID()
-                        + ". UPDATES: FIGURE: " + playerValueFigure + ", ROBOT: " + playerToUpdate.getPlayerRobot() + ", NAME: " + playerValueName);
+                            + ". UPDATES: FIGURE: " + playerValueFigure + ", ROBOT: " + playerToUpdate.getPlayerRobot() + ", NAME: " + playerValueName);
                 }
             }
 
@@ -429,7 +428,7 @@ public class MessageDistributer {
         } else {
             // StartingPoint is available
             logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
-            server.setSetStartPoints(server.getSetStartPoints() +1);
+            server.setSetStartPoints(server.getSetStartPoints() + 1);
             logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): INCREMENTED SETSTARTPOINT COUNTER TO " + server.getSetStartPoints() + ANSI_RESET);
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
@@ -472,702 +471,699 @@ public class MessageDistributer {
             }
 
 
-
             // Startpoint is now taken
             server.getTakenStartingPoints().add(desiredStartPoint);
         }
     }
 
 
-        /**
-         * This method contains the logic that comes into action when a 'SelectCard' protocol message was received and
-         * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
-         *
-         * @param server         The Server itself.
-         * @param task           The ReaderTask of the distributerServer (Gives access to the PrintWriter).
-         * @param selectedCardBody The message body of the message which is of type {@link SelectedCardBody}.
-         */
-        public void handleSelectedCard(Server server, Server.ServerReaderTask task, SelectedCardBody selectedCardBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectedCard()" + ANSI_RESET);
+    /**
+     * This method contains the logic that comes into action when a 'SelectCard' protocol message was received and
+     * deserialized by the {@link Server}. It is triggered by {@link ClientMessageAction#triggerAction(Server, Server.ServerReaderTask, Object, MessageDistributer)}.
+     *
+     * @param server           The Server itself.
+     * @param task             The ReaderTask of the distributerServer (Gives access to the PrintWriter).
+     * @param selectedCardBody The message body of the message which is of type {@link SelectedCardBody}.
+     */
+    public void handleSelectedCard(Server server, Server.ServerReaderTask task, SelectedCardBody selectedCardBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectedCard()" + ANSI_RESET);
 
-            for(Server.ClientWrapper client : server.getConnectedClients()){
+        int register = selectedCardBody.getRegister();
+        Card selectedCard = selectedCardBody.getCard();
+
+        for (Server.ClientWrapper client : server.getConnectedClients()) {
+            if (client.getClientSocket().equals(task.getClientSocket())) {
                 Player player = client.getPlayer();
                 int selectedCardsNumber = player.getSelectedCards();
-                int register = selectedCardBody.getRegister();
 
-                if(client.getClientSocket().equals(task.getClientSocket())) {
-                    Card card = selectedCardBody.getCard();
-                    player.getDeckRegister().getDeck().set(register - 1, card);
+                // Update the player's register deck
+                player.getDeckRegister().getDeck().set(register - 1, selectedCard);
 
-                    //When the chosen card is null, one card less is selected, when it is not null, one additional card is selected
-                    if (card == null) {
-                        selectedCardsNumber--;
-                        player.setSelectedCards(selectedCardsNumber);
-                    } else {
-                        selectedCardsNumber++;
-                        player.setSelectedCards(selectedCardsNumber);
-                        System.out.println("AMOUNT OF CARDS in IF LOOP = " + selectedCardsNumber);
-                    }
-
-                    if (card == null) {
-                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
-                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
-                    } else {
-                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + card.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
-                        logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
-                    }
+                if (selectedCard == null) {
+                    selectedCardsNumber--;
+                    player.setSelectedCards(selectedCardsNumber);
+                } else {
+                    selectedCardsNumber++;
+                    player.setSelectedCards(selectedCardsNumber);
                 }
 
+                // Send CardSelected to everyone
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
 
-                    // Send card selected to all clients
-                    for(Server.ClientWrapper clientWrapper : server.getConnectedClients()){
-                        JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
-                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    if (selectedCardsNumber == REGISTER_CARDS_AMOUNT) {
+                        JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
                         clientWrapper.getWriter().flush();
-
-                        if (selectedCardsNumber == REGISTER_CARDS_AMOUNT){
-
-                            JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
-                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
-                            clientWrapper.getWriter().flush();
-                            System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber);
-                        }
+                        System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber);
                     }
+                }
+
+                if (selectedCard == null) {
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
+                } else {
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + selectedCard.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
                 }
             }
-
-
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        //                           HANDLERS FOR SERVER MESSAGES                                        //
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-        /**
-         * This method contains the logic that comes into action when a 'HelloClient' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client          The Client itself.
-         * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param helloClientBody The message body of the message which is of type {@link HelloClientBody}.
-         */
-        public void handleHelloClient (Client client, Client.ClientReaderTask task, HelloClientBody helloClientBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleHelloClient()" + ANSI_RESET);
-
-            logger.info("Server has protocol " + helloClientBody.getProtocol());
-            client.setWaitingForHelloClient(false);
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'Welcome' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client      The Client itself.
-         * @param task        The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param welcomeBody The message body of the message which is of type {@link WelcomeBody}.
-         */
-        public void handleWelcome (Client client, Client.ClientReaderTask task, WelcomeBody welcomeBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleWelcome()" + ANSI_RESET);
-            logger.info("PlayerID: " + welcomeBody.getPlayerID());
-
-            // Client creates his player instance
-            Player player = new Player();
-            player.setPlayerID(welcomeBody.getPlayerID());
-            client.setPlayer(player);
-
-            logger.info("CLIENT CREATED HIS PLAYER WITH PLAYER ID: " + player.getPlayerID());
-
-            task.setPlayerID(welcomeBody.getPlayerID());
-
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'PlayerAdded' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client          The Client itself.
-         * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param playerAddedBody The message body of the message which is of type {@link PlayerAddedBody}.
-         */
-        public void handlePlayerAdded (Client client, Client.ClientReaderTask task, PlayerAddedBody playerAddedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayedAdded()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                client.getActiveClientsProperty().add(String.valueOf(playerAddedBody.getPlayerID()));
-                Client.OtherPlayer newPlayer = client.new OtherPlayer(playerAddedBody.getPlayerID());
-                client.getOtherActivePlayers().add(client.getOtherActivePlayers().size(), newPlayer);
-
-                // Extracting message content
-                String messageName = playerAddedBody.getName();
-                int messageFigure = playerAddedBody.getFigure();
-                int messagePlayerID = playerAddedBody.getPlayerID();
-
-                if (playerAddedBody.getPlayerID() == client.getPlayer().getPlayerID()) {
-                    // PlayerAdded message due to own player has been added
-                    client.getPlayer().setName(messageName);
-                    client.getPlayer().initRobotByFigure(messageFigure);
-
-                    logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET + " UPDATED HIS OWN PLAYER. UPDATES: "
-                            + "FIGURE: " + messageFigure + ", ROBOT: " + client.getPlayer().getPlayerRobot() + ", NAME: " + messageName);
-                } else {
-                    // PlayerAdded message due to other player has been added
-                    Player otherPlayer = new Player();
-                    otherPlayer.setPlayerID(messagePlayerID);
-                    otherPlayer.setName(messageName);
-                    otherPlayer.initRobotByFigure(messageFigure);
-
-                    client.getOtherPlayers().add(otherPlayer);
-
-                    if (client.getPlayer().getName() == "") {
-                        logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET - " + ANSI_RESET
-                                + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
-                    } else {
-                        logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
-                                + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
-                    }
-
-                    ChooseRobotController chooseRobotController = client.getChooseRobotController();
-
-                    // Update the chooseRobot view because a robot has been assigned
-                    if (messageFigure == 1) {
-                        chooseRobotController.getHammerBot().setDisable(true);
-                        chooseRobotController.getHammerBot().setOpacity(0.5);
-                    } else if (messageFigure == 2) {
-                        chooseRobotController.getHulkX90().setDisable(true);
-                        chooseRobotController.getHulkX90().setOpacity(0.5);
-                    } else if (messageFigure == 3) {
-                        chooseRobotController.getSmashBot().setDisable(true);
-                        chooseRobotController.getSmashBot().setOpacity(0.5);
-                    } else if (messageFigure == 4) {
-                        chooseRobotController.getSpinBot().setDisable(true);
-                        chooseRobotController.getSpinBot().setOpacity(0.5);
-                    } else if (messageFigure == 5) {
-                        chooseRobotController.getTwonky().setDisable(true);
-                        chooseRobotController.getTwonky().setOpacity(0.5);
-                    } else if (messageFigure == 6) {
-                        chooseRobotController.getZoomBot().setDisable(true);
-                        chooseRobotController.getZoomBot().setOpacity(0.5);
-                    }
-                }
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'PlayerStatus' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param playerStatusBody The message body of the message which is of type {@link PlayerStatusBody}.
-         */
-        public void handlePlayerStatus(Client client, Client.ClientReaderTask task, PlayerStatusBody playerStatusBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerStatus()" + ANSI_RESET);
-
-            int messagePlayerID = playerStatusBody.getPlayerID();
-            boolean readyStatus = playerStatusBody.isReady();
-
-            // Update client's player instance (either own or corresponding OtherPlayer)
-            if (client.getPlayer().getPlayerID() == playerStatusBody.getPlayerID()) {
-                client.getPlayer().setReady(readyStatus);
-
-                logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
-                        + " UPDATED HIS OWN PLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
-            } else {
-                // Ready status of other player has changed
-                for (Player otherPlayer : client.getOtherPlayers()) {
-                    if (otherPlayer.getPlayerID() == messagePlayerID) {
-                        otherPlayer.setReady(readyStatus);
-
-                        if (client.getPlayer().getName() == "") {
-                            logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET -" + ANSI_RESET
-                                    + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
-                        } else {
-                            logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
-                                    + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
-                        }
-                    }
-                }
-            }
-
-            Platform.runLater(() -> {
-                if (readyStatus) {
-                    client.receiveMessage("Player " + playerStatusBody.getPlayerID() + " is ready!");
-                } else {
-                    client.receiveMessage("Player " + playerStatusBody.getPlayerID() + " is not ready!");
-                }
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'GameStarted' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client          The Client itself.
-         * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param gameStartedBody The message body of the message which is of type {@link GameStartedBody}.
-         */
-        public void handleGameStarted (Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameStarted()" + ANSI_RESET);
-
-            MapController mapController = (MapController) controllerMap.get("Map");
-            mapController.fillGridPaneWithMap(gameStartedBody);
-        }
-
-
-        /**
-         * This method contains the logic that comes into action when a 'ReceivedChat' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param receivedChatBody The message body of the message which is of type {@link ReceivedChatBody}.
-         */
-        public void handleReceivedChat (Client client, Client.ClientReaderTask task, ReceivedChatBody receivedChatBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReceivedChat()" + ANSI_RESET);
-
-            // Works for both ordinary and private messages
-            Platform.runLater(() -> client.receiveMessage(receivedChatBody.getMessage()));
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'Error' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client    The Client itself.
-         * @param task      The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param errorBody The message body of the message which is of type {@link ErrorBody}.
-         * @author Ivan Dovecar
-         * @author Manu
-         */
-        public void handleError (Client client, Client.ClientReaderTask task, ErrorBody errorBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleError()" + ANSI_RESET);
-
-            String errorMessage = errorBody.getError();
-
-            Platform.runLater(() -> {
-                if (errorMessage.equals("Error: name already exists")) {
-                    logger.info(errorMessage);
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error occured");
-                    alert.setHeaderText("Username already taken!");
-                    alert.setContentText(errorMessage);
-                    alert.show();
-
-                    client.getChatController().nameSettingFinishedProperty().setValue(false);
-                    client.getChatController().getFieldName().setDisable(false);
-                    //TODO write code here for proper reaction
-                }
-                if (errorMessage.equals("Error: figure already exists")) {
-                    logger.info(errorMessage);
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error occured");
-                    alert.setHeaderText("Figure already taken!");
-                    alert.setContentText(errorMessage);
-                    alert.show();
-
-                    //TODO write code here for proper reaction
-                }
-                if (errorMessage.equals("Sorry, this StartingPoint is already taken!")) {
-                    logger.info(errorMessage);
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error occured");
-                    alert.setHeaderText("StartPoint already taken!");
-                    alert.setContentText(errorMessage);
-                    alert.show();
-                }
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'CardPlayed' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client         The Client itself.
-         * @param task           The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param cardPlayedBody The message body of the message which is of type {@link CardPlayedBody}.
-         */
-        public void handleCardPlayed (Client client, Client.ClientReaderTask task, CardPlayedBody cardPlayedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardPlayed()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'CurrentPlayer' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client            The Client itself.
-         * @param task              The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param currentPlayerBody The message body of the message which is of type {@link CurrentPlayerBody}.
-         */
-        public void handleCurrentPlayer (Client client, Client.ClientReaderTask task, CurrentPlayerBody
-        currentPlayerBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentPlayer()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'ActivePhase' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client          The Client itself.
-         * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param activePhaseBody The message body of the message which is of type {@link ActivePhaseBody}.
-         */
-        public void handleActivePhase (Client client, Client.ClientReaderTask task, ActivePhaseBody activePhaseBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleActivePhase()" + ANSI_RESET);
-
-                int activePhase = activePhaseBody.getPhase();
-
-                // Construction phase
-                if (activePhase == BUILD_UP_PHASE) {
-                    ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
-                    client.getPlayer().getDeckDraw().shuffleDeck(deck);
-                    System.out.println(client.getPlayer().getDeckDraw().getDeck());
-                }
-                // Upgrade phase
-                else if (activePhase == UPGRADE_PHASE) {
-
-                }
-                // Programming phase
-                else if (activePhase == PROGRAMMING_PHASE) {
-
-                }
-                // Activation phase
-                else if (activePhase == ACTIVATION_PHASE) {
-
-                }
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'StartingPointTaken' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client                 The Client itself.
-         * @param task                   The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param startingPointTakenBody The message body of the message which is of type {@link StartingPointTakenBody}.
-         */
-        public void handleStartingPointTaken (Client client, Client.ClientReaderTask task, StartingPointTakenBody startingPointTakenBody) {
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleStartingPointTaken()" + ANSI_RESET);
-
-            System.out.println("OWN PLAYER ID: " + client.getPlayer().getPlayerID());
-            Platform.runLater(() -> {
-                MapController mapController = (MapController) controllerMap.get("Map");
-                String startPosition = startingPointTakenBody.getX() + "-" + startingPointTakenBody.getY();
-
-                // For client that chose that StartPoint
-                if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
-                    mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
-
-                    mapController.setAllowedToSetStart(false);
-                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
-                } else {
-                    // For everyone else
-                    Robot otherPlayerRobot;
-
-                    for (Player otherPlayer : client.getOtherPlayers()) {
-                        if (otherPlayer.getPlayerID() == startingPointTakenBody.getPlayerID()) {
-                            otherPlayerRobot = otherPlayer.getPlayerRobot();
-                            mapController.setStartingPoint(otherPlayerRobot, startPosition);
-                        }
-                    }
-                }
-            });
-        }
-        /**
-         * This method contains the logic that comes into action when a 'YourCards' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client        The Client itself.
-         * @param task          The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param yourCardsBody The message body of the message which is of type {@link YourCardsBody}.
-         */
-        public void handleYourCards (Client client, Client.ClientReaderTask task, YourCardsBody yourCardsBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                ArrayList<Card> deck = yourCardsBody.getCardsInHand();
-                ((PlayerMatController) controllerMap.get("PlayerMat")).initializeCards(deck);
-            });
-
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'NotYourCards' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param notYourCardsBody The message body of the message which is of type {@link NotYourCardsBody}.
-         */
-        public void handleNotYourCards (Client client, Client.ClientReaderTask task, NotYourCardsBody notYourCardsBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleNotYourCards()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'ShuffleCoding' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client            The Client itself.
-         * @param task              The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param shuffleCodingBody The message body of the message which is of type {@link ShuffleCodingBody}.
-         */
-        public void handleShuffleCoding (Client client, Client.ClientReaderTask task, ShuffleCodingBody
-        shuffleCodingBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleShuffleCoding()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'CardSelected' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param cardSelectedBody The message body of the message which is of type {@link CardSelectedBody}.
-         */
-        public void handleCardSelected (Client client, Client.ClientReaderTask task, CardSelectedBody cardSelectedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardSelected()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                int register = cardSelectedBody.getRegister();
-                int playerID = cardSelectedBody.getPlayerID();
-                client.getOpponentMatController().updateOpponentregister(register, playerID);
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'SelectionFinished' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client                The Client itself.
-         * @param task                  The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param selectionFinishedBody The message body of the message which is of type {@link SelectionFinishedBody}.
-         */
-        public void handleSelectionFinished (Client client, Client.ClientReaderTask task, SelectionFinishedBody
-        selectionFinishedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //Remove register cards from hand
-                client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
-                ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
-                DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
-                //Cards from hand are added to discard pile
-                clientDiscards.getDeck().addAll(remainingCardsInHand);
-
-                //Todo: Timer activation and test with if else here
-               client.getPlayerMatController().emptyCards();
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'TimerStarted' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param timerStartedBody The message body of the message which is of type {@link TimerStartedBody}.
-         */
-        public void handleTimerStarted (Client client, Client.ClientReaderTask task, TimerStartedBody timerStartedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerStarted()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'TimerEnded' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client         The Client itself.
-         * @param task           The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param timerEndedBody The message body of the message which is of type {@link TimerEndedBody}.
-         */
-        public void handleTimerEnded (Client client, Client.ClientReaderTask task, TimerEndedBody timerEndedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerEnded()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'CardsYouGotNow' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client             The Client itself.
-         * @param task               The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param cardsYouGotNowBody The message body of the message which is of type {@link CardsYouGotNowBody}.
-         */
-        public void handleCardsYouGotNow (Client client, Client.ClientReaderTask task, CardsYouGotNowBody
-        cardsYouGotNowBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ):  handleCardsYouGotNow()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'CurrentCards' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param currentCardsBody The message body of the message which is of type {@link CurrentCardsBody}.
-         */
-        public void handleCurrentCards (Client client, Client.ClientReaderTask task, CurrentCardsBody currentCardsBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentCards()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'Movement' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client       The Client itself.
-         * @param task         The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param movementBody The message body of the message which is of type {@link MovementBody}.
-         */
-        public void handleMovement (Client client, Client.ClientReaderTask task, MovementBody movementBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleMovement()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'DrawDamage' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client         The Client itself.
-         * @param task           The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param drawDamageBody The message body of the message which is of type {@link DrawDamageBody}.
-         */
-        public void handleDrawDamage (Client client, Client.ClientReaderTask task, DrawDamageBody drawDamageBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleDrawDamage()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'PlayerShooting' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client             The Client itself.
-         * @param task               The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param playerShootingBody The message body of the message which is of type {@link PlayerShootingBody}.
-         */
-        public void handlePlayerShooting (Client client, Client.ClientReaderTask task, PlayerShootingBody
-        playerShootingBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerShooting()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'RestartPoint' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client     The Client itself.
-         * @param task       The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param rebootBody The message body of the message which is of type {@link RebootBody}.
-         */
-        public void handleReboot (Client client, Client.ClientReaderTask task, RebootBody rebootBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReboot()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'PlayerTurning' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client            The Client itself.
-         * @param task              The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param playerTurningBody The message body of the message which is of type {@link PlayerTurningBody}.
-         */
-        public void handlePlayerTurning (Client client, Client.ClientReaderTask task, PlayerTurningBody
-        playerTurningBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'Energy' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client     The Client itself.
-         * @param task       The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param energyBody The message body of the message which is of type {@link EnergyBody}.
-         */
-        public void handleEnergy (Client client, Client.ClientReaderTask task, EnergyBody energyBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleEnergy()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'CheckPointReached' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client                The Client itself.
-         * @param task                  The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param checkPointReachedBody The message body of the message which is of type {@link CheckPointReachedBody}.
-         */
-        public void handleCheckPointReached (Client client, Client.ClientReaderTask task, CheckPointReachedBody
-        checkPointReachedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCheckPointReached()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
-        }
-
-        /**
-         * This method contains the logic that comes into action when a 'StartingPointTaken' protocol message was received and
-         * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
-         *
-         * @param client           The Client itself.
-         * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
-         * @param gameFinishedBody The message body of the message which is of type {@link GameFinishedBody}.
-         */
-        public void handleGameFinished (Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody){
-            System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
-
-            Platform.runLater(() -> {
-                //TODO write code here
-            });
         }
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    //                           HANDLERS FOR SERVER MESSAGES                                        //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * This method contains the logic that comes into action when a 'HelloClient' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client          The Client itself.
+     * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param helloClientBody The message body of the message which is of type {@link HelloClientBody}.
+     */
+    public void handleHelloClient(Client client, Client.ClientReaderTask task, HelloClientBody helloClientBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleHelloClient()" + ANSI_RESET);
+
+        logger.info("Server has protocol " + helloClientBody.getProtocol());
+        client.setWaitingForHelloClient(false);
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'Welcome' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client      The Client itself.
+     * @param task        The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param welcomeBody The message body of the message which is of type {@link WelcomeBody}.
+     */
+    public void handleWelcome(Client client, Client.ClientReaderTask task, WelcomeBody welcomeBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleWelcome()" + ANSI_RESET);
+        logger.info("PlayerID: " + welcomeBody.getPlayerID());
+
+        // Client creates his player instance
+        Player player = new Player();
+        player.setPlayerID(welcomeBody.getPlayerID());
+        client.setPlayer(player);
+
+        logger.info("CLIENT CREATED HIS PLAYER WITH PLAYER ID: " + player.getPlayerID());
+
+        task.setPlayerID(welcomeBody.getPlayerID());
+
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'PlayerAdded' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client          The Client itself.
+     * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param playerAddedBody The message body of the message which is of type {@link PlayerAddedBody}.
+     */
+    public void handlePlayerAdded(Client client, Client.ClientReaderTask task, PlayerAddedBody playerAddedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayedAdded()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            client.getActiveClientsProperty().add(String.valueOf(playerAddedBody.getPlayerID()));
+            Client.OtherPlayer newPlayer = client.new OtherPlayer(playerAddedBody.getPlayerID());
+            client.getOtherActivePlayers().add(client.getOtherActivePlayers().size(), newPlayer);
+
+            // Extracting message content
+            String messageName = playerAddedBody.getName();
+            int messageFigure = playerAddedBody.getFigure();
+            int messagePlayerID = playerAddedBody.getPlayerID();
+
+            if (playerAddedBody.getPlayerID() == client.getPlayer().getPlayerID()) {
+                // PlayerAdded message due to own player has been added
+                client.getPlayer().setName(messageName);
+                client.getPlayer().initRobotByFigure(messageFigure);
+
+                logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET + " UPDATED HIS OWN PLAYER. UPDATES: "
+                        + "FIGURE: " + messageFigure + ", ROBOT: " + client.getPlayer().getPlayerRobot() + ", NAME: " + messageName);
+            } else {
+                // PlayerAdded message due to other player has been added
+                Player otherPlayer = new Player();
+                otherPlayer.setPlayerID(messagePlayerID);
+                otherPlayer.setName(messageName);
+                otherPlayer.initRobotByFigure(messageFigure);
+
+                client.getOtherPlayers().add(otherPlayer);
+
+                if (client.getPlayer().getName() == "") {
+                    logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET - " + ANSI_RESET
+                            + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
+                } else {
+                    logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                            + " ADDED A NEW OTHERPLAYER WITH PROPERTIES: PLAYERID: " + messagePlayerID + ", NAME: " + messageName + ", FIGURE: " + messageFigure);
+                }
+
+                ChooseRobotController chooseRobotController = client.getChooseRobotController();
+
+                // Update the chooseRobot view because a robot has been assigned
+                if (messageFigure == 1) {
+                    chooseRobotController.getHammerBot().setDisable(true);
+                    chooseRobotController.getHammerBot().setOpacity(0.5);
+                } else if (messageFigure == 2) {
+                    chooseRobotController.getHulkX90().setDisable(true);
+                    chooseRobotController.getHulkX90().setOpacity(0.5);
+                } else if (messageFigure == 3) {
+                    chooseRobotController.getSmashBot().setDisable(true);
+                    chooseRobotController.getSmashBot().setOpacity(0.5);
+                } else if (messageFigure == 4) {
+                    chooseRobotController.getSpinBot().setDisable(true);
+                    chooseRobotController.getSpinBot().setOpacity(0.5);
+                } else if (messageFigure == 5) {
+                    chooseRobotController.getTwonky().setDisable(true);
+                    chooseRobotController.getTwonky().setOpacity(0.5);
+                } else if (messageFigure == 6) {
+                    chooseRobotController.getZoomBot().setDisable(true);
+                    chooseRobotController.getZoomBot().setOpacity(0.5);
+                }
+            }
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'PlayerStatus' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param playerStatusBody The message body of the message which is of type {@link PlayerStatusBody}.
+     */
+    public void handlePlayerStatus(Client client, Client.ClientReaderTask task, PlayerStatusBody playerStatusBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerStatus()" + ANSI_RESET);
+
+        int messagePlayerID = playerStatusBody.getPlayerID();
+        boolean readyStatus = playerStatusBody.isReady();
+
+        // Update client's player instance (either own or corresponding OtherPlayer)
+        if (client.getPlayer().getPlayerID() == playerStatusBody.getPlayerID()) {
+            client.getPlayer().setReady(readyStatus);
+
+            logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                    + " UPDATED HIS OWN PLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+        } else {
+            // Ready status of other player has changed
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    otherPlayer.setReady(readyStatus);
+
+                    if (client.getPlayer().getName() == "") {
+                        logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET -" + ANSI_RESET
+                                + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+                    } else {
+                        logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET
+                                + " UPDATED HIS OTHERPLAYER. UPDATES: PLAYERSTATUS: " + readyStatus);
+                    }
+                }
+            }
+        }
+
+        Platform.runLater(() -> {
+            if (readyStatus) {
+                client.receiveMessage("Player " + playerStatusBody.getPlayerID() + " is ready!");
+            } else {
+                client.receiveMessage("Player " + playerStatusBody.getPlayerID() + " is not ready!");
+            }
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'GameStarted' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client          The Client itself.
+     * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param gameStartedBody The message body of the message which is of type {@link GameStartedBody}.
+     */
+    public void handleGameStarted(Client client, Client.ClientReaderTask task, GameStartedBody gameStartedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameStarted()" + ANSI_RESET);
+
+        MapController mapController = (MapController) controllerMap.get("Map");
+        mapController.fillGridPaneWithMap(gameStartedBody);
+    }
+
+
+    /**
+     * This method contains the logic that comes into action when a 'ReceivedChat' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param receivedChatBody The message body of the message which is of type {@link ReceivedChatBody}.
+     */
+    public void handleReceivedChat(Client client, Client.ClientReaderTask task, ReceivedChatBody receivedChatBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReceivedChat()" + ANSI_RESET);
+
+        // Works for both ordinary and private messages
+        Platform.runLater(() -> client.receiveMessage(receivedChatBody.getMessage()));
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'Error' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client    The Client itself.
+     * @param task      The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param errorBody The message body of the message which is of type {@link ErrorBody}.
+     * @author Ivan Dovecar
+     * @author Manu
+     */
+    public void handleError(Client client, Client.ClientReaderTask task, ErrorBody errorBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleError()" + ANSI_RESET);
+
+        String errorMessage = errorBody.getError();
+
+        Platform.runLater(() -> {
+            if (errorMessage.equals("Error: name already exists")) {
+                logger.info(errorMessage);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error occured");
+                alert.setHeaderText("Username already taken!");
+                alert.setContentText(errorMessage);
+                alert.show();
+
+                client.getChatController().nameSettingFinishedProperty().setValue(false);
+                client.getChatController().getFieldName().setDisable(false);
+                //TODO write code here for proper reaction
+            }
+            if (errorMessage.equals("Error: figure already exists")) {
+                logger.info(errorMessage);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error occured");
+                alert.setHeaderText("Figure already taken!");
+                alert.setContentText(errorMessage);
+                alert.show();
+
+                //TODO write code here for proper reaction
+            }
+            if (errorMessage.equals("Sorry, this StartingPoint is already taken!")) {
+                logger.info(errorMessage);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error occured");
+                alert.setHeaderText("StartPoint already taken!");
+                alert.setContentText(errorMessage);
+                alert.show();
+            }
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'CardPlayed' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client         The Client itself.
+     * @param task           The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param cardPlayedBody The message body of the message which is of type {@link CardPlayedBody}.
+     */
+    public void handleCardPlayed(Client client, Client.ClientReaderTask task, CardPlayedBody cardPlayedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardPlayed()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'CurrentPlayer' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client            The Client itself.
+     * @param task              The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param currentPlayerBody The message body of the message which is of type {@link CurrentPlayerBody}.
+     */
+    public void handleCurrentPlayer(Client client, Client.ClientReaderTask task, CurrentPlayerBody
+            currentPlayerBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentPlayer()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'ActivePhase' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client          The Client itself.
+     * @param task            The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param activePhaseBody The message body of the message which is of type {@link ActivePhaseBody}.
+     */
+    public void handleActivePhase(Client client, Client.ClientReaderTask task, ActivePhaseBody activePhaseBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleActivePhase()" + ANSI_RESET);
+
+        int activePhase = activePhaseBody.getPhase();
+
+        // Construction phase
+        if (activePhase == BUILD_UP_PHASE) {
+            ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
+            client.getPlayer().getDeckDraw().shuffleDeck(deck);
+            System.out.println(client.getPlayer().getDeckDraw().getDeck());
+        }
+        // Upgrade phase
+        else if (activePhase == UPGRADE_PHASE) {
+
+        }
+        // Programming phase
+        else if (activePhase == PROGRAMMING_PHASE) {
+
+        }
+        // Activation phase
+        else if (activePhase == ACTIVATION_PHASE) {
+
+        }
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'StartingPointTaken' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client                 The Client itself.
+     * @param task                   The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param startingPointTakenBody The message body of the message which is of type {@link StartingPointTakenBody}.
+     */
+    public void handleStartingPointTaken(Client client, Client.ClientReaderTask task, StartingPointTakenBody startingPointTakenBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleStartingPointTaken()" + ANSI_RESET);
+
+        System.out.println("OWN PLAYER ID: " + client.getPlayer().getPlayerID());
+        Platform.runLater(() -> {
+            MapController mapController = (MapController) controllerMap.get("Map");
+            String startPosition = startingPointTakenBody.getX() + "-" + startingPointTakenBody.getY();
+
+            // For client that chose that StartPoint
+            if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
+                mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
+
+                mapController.setAllowedToSetStart(false);
+                logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
+            } else {
+                // For everyone else
+                Robot otherPlayerRobot;
+
+                for (Player otherPlayer : client.getOtherPlayers()) {
+                    if (otherPlayer.getPlayerID() == startingPointTakenBody.getPlayerID()) {
+                        otherPlayerRobot = otherPlayer.getPlayerRobot();
+                        mapController.setStartingPoint(otherPlayerRobot, startPosition);
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'YourCards' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client        The Client itself.
+     * @param task          The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param yourCardsBody The message body of the message which is of type {@link YourCardsBody}.
+     */
+    public void handleYourCards(Client client, Client.ClientReaderTask task, YourCardsBody yourCardsBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            ArrayList<Card> deck = yourCardsBody.getCardsInHand();
+            ((PlayerMatController) controllerMap.get("PlayerMat")).initializeCards(deck);
+        });
+
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'NotYourCards' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param notYourCardsBody The message body of the message which is of type {@link NotYourCardsBody}.
+     */
+    public void handleNotYourCards(Client client, Client.ClientReaderTask task, NotYourCardsBody notYourCardsBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleNotYourCards()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'ShuffleCoding' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client            The Client itself.
+     * @param task              The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param shuffleCodingBody The message body of the message which is of type {@link ShuffleCodingBody}.
+     */
+    public void handleShuffleCoding(Client client, Client.ClientReaderTask task, ShuffleCodingBody
+            shuffleCodingBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleShuffleCoding()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'CardSelected' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param cardSelectedBody The message body of the message which is of type {@link CardSelectedBody}.
+     */
+    public void handleCardSelected(Client client, Client.ClientReaderTask task, CardSelectedBody cardSelectedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardSelected()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            int register = cardSelectedBody.getRegister();
+            int playerID = cardSelectedBody.getPlayerID();
+            client.getOpponentMatController().updateOpponentregister(register, playerID);
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'SelectionFinished' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client                The Client itself.
+     * @param task                  The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param selectionFinishedBody The message body of the message which is of type {@link SelectionFinishedBody}.
+     */
+    public void handleSelectionFinished(Client client, Client.ClientReaderTask task, SelectionFinishedBody
+            selectionFinishedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //Remove register cards from hand
+            client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
+            ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
+            DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
+            //Cards from hand are added to discard pile
+            clientDiscards.getDeck().addAll(remainingCardsInHand);
+
+            //Todo: Timer activation and test with if else here
+            client.getPlayerMatController().emptyCards();
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'TimerStarted' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param timerStartedBody The message body of the message which is of type {@link TimerStartedBody}.
+     */
+    public void handleTimerStarted(Client client, Client.ClientReaderTask task, TimerStartedBody timerStartedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerStarted()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'TimerEnded' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client         The Client itself.
+     * @param task           The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param timerEndedBody The message body of the message which is of type {@link TimerEndedBody}.
+     */
+    public void handleTimerEnded(Client client, Client.ClientReaderTask task, TimerEndedBody timerEndedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerEnded()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'CardsYouGotNow' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client             The Client itself.
+     * @param task               The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param cardsYouGotNowBody The message body of the message which is of type {@link CardsYouGotNowBody}.
+     */
+    public void handleCardsYouGotNow(Client client, Client.ClientReaderTask task, CardsYouGotNowBody
+            cardsYouGotNowBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ):  handleCardsYouGotNow()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'CurrentCards' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param currentCardsBody The message body of the message which is of type {@link CurrentCardsBody}.
+     */
+    public void handleCurrentCards(Client client, Client.ClientReaderTask task, CurrentCardsBody currentCardsBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentCards()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'Movement' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client       The Client itself.
+     * @param task         The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param movementBody The message body of the message which is of type {@link MovementBody}.
+     */
+    public void handleMovement(Client client, Client.ClientReaderTask task, MovementBody movementBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleMovement()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'DrawDamage' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client         The Client itself.
+     * @param task           The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param drawDamageBody The message body of the message which is of type {@link DrawDamageBody}.
+     */
+    public void handleDrawDamage(Client client, Client.ClientReaderTask task, DrawDamageBody drawDamageBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleDrawDamage()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'PlayerShooting' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client             The Client itself.
+     * @param task               The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param playerShootingBody The message body of the message which is of type {@link PlayerShootingBody}.
+     */
+    public void handlePlayerShooting(Client client, Client.ClientReaderTask task, PlayerShootingBody
+            playerShootingBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerShooting()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'RestartPoint' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client     The Client itself.
+     * @param task       The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param rebootBody The message body of the message which is of type {@link RebootBody}.
+     */
+    public void handleReboot(Client client, Client.ClientReaderTask task, RebootBody rebootBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReboot()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'PlayerTurning' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client            The Client itself.
+     * @param task              The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param playerTurningBody The message body of the message which is of type {@link PlayerTurningBody}.
+     */
+    public void handlePlayerTurning(Client client, Client.ClientReaderTask task, PlayerTurningBody
+            playerTurningBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'Energy' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client     The Client itself.
+     * @param task       The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param energyBody The message body of the message which is of type {@link EnergyBody}.
+     */
+    public void handleEnergy(Client client, Client.ClientReaderTask task, EnergyBody energyBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleEnergy()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'CheckPointReached' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client                The Client itself.
+     * @param task                  The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param checkPointReachedBody The message body of the message which is of type {@link CheckPointReachedBody}.
+     */
+    public void handleCheckPointReached(Client client, Client.ClientReaderTask task, CheckPointReachedBody
+            checkPointReachedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCheckPointReached()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+
+    /**
+     * This method contains the logic that comes into action when a 'StartingPointTaken' protocol message was received and
+     * deserialized by the {@link Client}. It is triggered by {@link ServerMessageAction#triggerAction(Client, Client.ClientReaderTask, Object, MessageDistributer)}.
+     *
+     * @param client           The Client itself.
+     * @param task             The ReaderTask of the client (Gives access to the PrintWriter).
+     * @param gameFinishedBody The message body of the message which is of type {@link GameFinishedBody}.
+     */
+    public void handleGameFinished(Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody) {
+        System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+    }
+}
