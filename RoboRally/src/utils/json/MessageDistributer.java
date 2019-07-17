@@ -7,10 +7,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
 import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
+import utils.Countdown;
 
 import client.Client;
 import javafx.application.Platform;
@@ -266,10 +268,22 @@ public class MessageDistributer {
          * Block counts down before the rest of the method is executed. <br>
          * The MAP_LOADING_COOLDOWN is a parameter that should be set to the duration in milliseconds.
          */
+
+        /*
         try {
             sleep(MAP_LOADING_COOLDOWN);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+         */
+
+        /**
+         * This method currently does not seem to have any effect.
+         * //TODO REFINE THIS METHOD
+         */
+        Countdown countdown = new Countdown(MAP_LOADING_COOLDOWN, TIMER_DELAY, TIMER_PERIOD);
+        if (countdown.getSecs() >= 1) {
+            countdown.startTimer();
         }
 
         boolean clientReady = setStatusBody.isReady();
