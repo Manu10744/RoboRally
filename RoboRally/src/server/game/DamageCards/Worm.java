@@ -1,9 +1,6 @@
 package server.game.DamageCards;
 
-import server.game.Card;
 import server.game.Player;
-
-import java.util.ArrayList;
 
 /**
  * This class defines a kind of damage.
@@ -23,7 +20,7 @@ public class Worm extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, ArrayList<Card> register) {
+    public void activateCard(Player player) {
         //TODO
     }
 }

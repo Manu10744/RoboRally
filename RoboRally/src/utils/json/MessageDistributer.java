@@ -1,33 +1,24 @@
 package utils.json;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Timer;
 import java.util.logging.Logger;
 
-import static java.lang.Thread.activeCount;
 import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
-import utils.Countdown;
 
 import client.Client;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import server.Server;
 import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
-import server.game.decks.DeckDiscard;
 import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
@@ -266,39 +257,6 @@ public class MessageDistributer {
     public void handleSetStatus(Server server, Server.ServerReaderTask task, SetStatusBody setStatusBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSetStatus()" + ANSI_RESET);
 
-        /**
-         * Block counts down before the rest of the method is executed. <br>
-         * The MAP_LOADING_COOLDOWN is a parameter that should be set to the duration in seconds.
-         */
-        try {
-            for (int i = MAP_LOADING_COOLDOWN; i > 0; i--) {
-                sleep(TIMER_DELAY);
-                System.out.println("Just " + i + " more seconds until the map loads");
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        /**
-         * This stops the loading of the map if necessary.
-         */
-        if (!setStatusBody.isReady()) {
-            System.out.println("STOOOOOOOOOOOOOOOOOOP");
-            return;
-        }
-
-
-        /**
-         * This method currently does not seem to have any effect.
-         */
-        /*
-        Countdown countdown = new Countdown(MAP_LOADING_COOLDOWN, TIMER_DELAY, TIMER_PERIOD);
-        while (countdown.getSecs() >= 1) {
-            countdown.startTimer();
-        }
-
-         */
 
         boolean clientReady = setStatusBody.isReady();
         int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket().equals(task.getClientSocket()))
@@ -434,7 +392,70 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayCard()" + ANSI_RESET);
 
         Card playedCard = playCardBody.getCard();
-        playedCard.activateCard(null, null);
+
+        for (Server.ClientWrapper client : server.getConnectedClients()) {
+            if (client.getClientSocket().equals(task.getClientSocket())) {
+                //Todo delete playerID of Client
+                Player player = client.getPlayer();
+                int playerID = player.getPlayerID();
+
+                //update the player of the server
+                playedCard.activateCard(player);
+                logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
+
+                //Sends played card to all clients with id of the one playing it
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(playerID, playedCard));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+                    String cardName = playedCard.getCardName();
+                    //Todo: missing implementation of again
+
+                    //Movement message is sent with new robt coordinates
+                    if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII") | cardName.equals("BackUp")) {
+                        int newXPos = player.getPlayerRobot().getxPosition();
+                        int newYPos = player.getPlayerRobot().getyPosition();
+
+                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+
+                        // PlayerTurning is sent with new line of sight of player robot
+                    } else if (cardName.equals("TurnLeft")) {
+                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_LEFT));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+                    } else if (cardName.equals("TurnRight")) {
+
+                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_RIGHT));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+
+                        // Energy is updated
+                    } else if (cardName.equals("PowerUp")) {
+
+                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("Energy", new EnergyBody(playerID, Parameter.ONE_ENERGY, "card"));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+
+                        //Todo: Again
+                    } else {
+
+                    }
+                }
+            }
+
+
     }
 
     /**
@@ -563,7 +584,11 @@ public class MessageDistributer {
                         JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
                         clientWrapper.getWriter().flush();
-                        System.out.println("AMOUNT OF CARDS = " + selectedCardsNumber);
+
+                        //Timer started message sent after first player fills five registers
+                        JSONMessage jsonMessageTimerStarted = new JSONMessage("TimerStarted", new TimerStartedBody());
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessageTimerStarted));
+                        clientWrapper.getWriter().flush();
                     }
                 }
 
@@ -832,8 +857,10 @@ public class MessageDistributer {
     public void handleCardPlayed(Client client, Client.ClientReaderTask task, CardPlayedBody cardPlayedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardPlayed()" + ANSI_RESET);
 
+        // Player object from client is updated
         Platform.runLater(() -> {
-            //TODO write code here
+            cardPlayedBody.getCard().activateCard(client.getPlayer());
+            logger.info(ANSI_GREEN + "CLIENT UPDATING FINISHED" + ANSI_RESET);
         });
     }
 
@@ -849,8 +876,9 @@ public class MessageDistributer {
             currentPlayerBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentPlayer()" + ANSI_RESET);
 
+
         Platform.runLater(() -> {
-            //TODO write code here
+            //Todo
         });
     }
 
@@ -1011,7 +1039,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-          //todo
+            //todo
         });
     }
 
@@ -1028,6 +1056,7 @@ public class MessageDistributer {
 
         Platform.runLater(() -> {
             //Todo If times up, this block should be activated
+            /*
             //Remove register cards from hand
             client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
             ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
@@ -1037,6 +1066,8 @@ public class MessageDistributer {
 
             //Todo: Timer activation and test with if else here
             client.getPlayerMatController().emptyCards();
+
+             */
         });
     }
 
@@ -1166,6 +1197,9 @@ public class MessageDistributer {
             playerTurningBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
 
+        Player player = client.getPlayer();
+
+        player.getPlayerRobot().setLineOfSight(player.getPlayerRobot().getLineOfSight());
         Platform.runLater(() -> {
             //TODO write code here
         });

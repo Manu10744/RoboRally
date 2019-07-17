@@ -1,11 +1,9 @@
 package server.game.ProgrammingCards;
 
-import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
 import utils.json.MessageDistributer;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -28,7 +26,7 @@ public class TurnLeft extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, ArrayList<Card> register) {
+    public void activateCard(Player player) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'TURNLEFT' ...");
 
     String lineOfSight = player.getPlayerRobot().getLineOfSight();
@@ -37,15 +35,19 @@ public class TurnLeft extends server.game.Card {
         switch (lineOfSight) {
             case ("up"):
                 robot.setLineOfSight("left");
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT ..." + robot.getLineOfSight() + ANSI_RESET);
                 break;
             case ("right"):
                 robot.setLineOfSight("up");
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT ..."+ robot.getLineOfSight() + ANSI_RESET);
                 break;
             case ("down"):
                 robot.setLineOfSight("right");
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT ..."+ robot.getLineOfSight() + ANSI_RESET);
                 break;
             case ("left"):
                 robot.setLineOfSight("down");
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT ..."+ robot.getLineOfSight() + ANSI_RESET);
                 break;
             default:
                 System.out.println("There is a Problem with the lineOfSight variable.");
