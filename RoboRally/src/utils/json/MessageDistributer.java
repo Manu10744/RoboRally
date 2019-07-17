@@ -414,10 +414,10 @@ public class MessageDistributer {
         int y = setStartingPointBody.getY();
 
         String desiredStartPoint = x + "-" + y;
-        int playerID = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket()
-                .equals(task.getClientSocket())).findFirst().get().getPlayerID();
+        Player player = server.getConnectedClients().stream().filter(clientWrapper -> clientWrapper.getClientSocket()
+                .equals(task.getClientSocket())).findFirst().get().getPlayer();
 
-        logger.info(ANSI_GREEN + " ( HANDLESETSTARTINGPOINT ): PLAYER WITH ID " + playerID + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )" + ANSI_RESET);
+        logger.info(ANSI_GREEN + " ( HANDLESETSTARTINGPOINT ): PLAYER WITH ID " + player.getPlayerID() + " WANTS TO SET STARTPOINT ON COORDINATES: ( " + x + " | " + y + " )" + ANSI_RESET);
 
         if (server.getTakenStartingPoints().contains(desiredStartPoint)) {
             logger.info(ANSI_GREEN + "ERROR: STARTPOINT IS ALREADY TAKEN. REQUEST DENIED." + ANSI_RESET);
@@ -427,12 +427,16 @@ public class MessageDistributer {
             task.getWriter().flush();
         } else {
             // StartingPoint is available
-            logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + playerID + ANSI_RESET);
+            logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT ON COORDINATES ( " + x + " | " + y + " ) WAS GIVEN TO PLAYER WITH ID " + player.getPlayerID() + ANSI_RESET);
             server.setSetStartPoints(server.getSetStartPoints() + 1);
             logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): INCREMENTED SETSTARTPOINT COUNTER TO " + server.getSetStartPoints() + ANSI_RESET);
 
+            // update servers robot position
+            player.getPlayerRobot().setxPosition(x);
+            player.getPlayerRobot().setyPosition(y);
+
             for (Server.ClientWrapper client : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, playerID));
+                JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, player.getPlayerID()));
                 client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 client.getWriter().flush();
             }
@@ -445,15 +449,19 @@ public class MessageDistributer {
                     client.getWriter().flush();
                 }
 
+                for (Server.ClientWrapper test : server.getConnectedClients()) {
+                    System.out.println(test.getPlayer().getPlayerRobot().getxPosition());
+                    System.out.println(test.getPlayer().getPlayerRobot().getyPosition());
+                }
                 for (Server.ClientWrapper client : server.getConnectedClients()) {
-                    Player player = client.getPlayer();
+                    Player eachPlayer = client.getPlayer();
 
-                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE BEFORE DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
-                    client.getPlayer().drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
-                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE AFTER DRAWING CARDS: " + player.getDeckDraw().getDeck().size() + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE BEFORE DRAWING CARDS: " + eachPlayer.getDeckDraw().getDeck().size() + ANSI_RESET);
+                    client.getPlayer().drawHandCards(eachPlayer.getDeckHand(), eachPlayer.getDeckDraw(), eachPlayer.getDeckDiscard());
+                    logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE AFTER DRAWING CARDS: " + eachPlayer.getDeckDraw().getDeck().size() + ANSI_RESET);
 
-                    ArrayList<Card> cardsInHand = player.getDeckHand().getDeck();
-                    int cardsInPile = player.getDeckDraw().getDeck().size();
+                    ArrayList<Card> cardsInHand = eachPlayer.getDeckHand().getDeck();
+                    int cardsInPile = eachPlayer.getDeckDraw().getDeck().size();
 
                     for (Server.ClientWrapper otherClient : server.getConnectedClients()) {
                         if (client.getClientSocket().equals(otherClient.getClientSocket())) {
@@ -860,6 +868,12 @@ public class MessageDistributer {
             // For client that chose that StartPoint
             if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
                 mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
+
+                // update position of clients robot
+                int xPos = startingPointTakenBody.getX();
+                int yPos = startingPointTakenBody.getY();
+                client.getPlayer().getPlayerRobot().setxPosition(xPos);
+                client.getPlayer().getPlayerRobot().setyPosition(yPos);
 
                 mapController.setAllowedToSetStart(false);
                 logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
