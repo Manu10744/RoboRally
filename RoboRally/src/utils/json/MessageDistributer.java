@@ -410,50 +410,50 @@ public class MessageDistributer {
                     clientWrapper.getWriter().flush();
                 }
 
-                    String cardName = playedCard.getCardName();
-                    //Todo: missing implementation of again
+                String cardName = playedCard.getCardName();
+                //Todo: missing implementation of again
 
-                    //Movement message is sent with new robt coordinates
-                    if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII") | cardName.equals("BackUp")) {
-                        int newXPos = player.getPlayerRobot().getxPosition();
-                        int newYPos = player.getPlayerRobot().getyPosition();
+                //Movement message is sent with new robt coordinates
+                if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII") | cardName.equals("BackUp")) {
+                    int newXPos = player.getPlayerRobot().getxPosition();
+                    int newYPos = player.getPlayerRobot().getyPosition();
 
-                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                            JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
-                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                            clientWrapper.getWriter().flush();
-                        }
-
-                        // PlayerTurning is sent with new line of sight of player robot
-                    } else if (cardName.equals("TurnLeft")) {
-                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                            JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_LEFT));
-                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                            clientWrapper.getWriter().flush();
-                        }
-                    } else if (cardName.equals("TurnRight")) {
-
-                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                            JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_RIGHT));
-                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                            clientWrapper.getWriter().flush();
-                        }
-
-                        // Energy is updated
-                    } else if (cardName.equals("PowerUp")) {
-
-                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                            JSONMessage jsonMessage = new JSONMessage("Energy", new EnergyBody(playerID, Parameter.ONE_ENERGY, "card"));
-                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                            clientWrapper.getWriter().flush();
-                        }
-
-                        //Todo: Again
-                    } else {
-
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
                     }
+
+                    // PlayerTurning is sent with new line of sight of player robot
+                } else if (cardName.equals("TurnLeft")) {
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_LEFT));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+                } else if (cardName.equals("TurnRight")) {
+
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_RIGHT));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Energy is updated
+                } else if (cardName.equals("PowerUp")) {
+
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Energy", new EnergyBody(playerID, Parameter.ONE_ENERGY, "card"));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    //Todo: Again
+                } else {
+
                 }
             }
+        }
 
 
     }
@@ -1197,11 +1197,15 @@ public class MessageDistributer {
             playerTurningBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
 
-        Player player = client.getPlayer();
+        int x = client.getPlayer().getPlayerRobot().getxPosition();
+        int y = client.getPlayer().getPlayerRobot().getyPosition();
+        String robotPosition = x + "-" + y;
 
-        player.getPlayerRobot().setLineOfSight(player.getPlayerRobot().getLineOfSight());
+        String turnDirection = playerTurningBody.getDirection();
+
         Platform.runLater(() -> {
-            //TODO write code here
+            MapController mapController = client.getMapController();
+            mapController.turnRobot(robotPosition, turnDirection);
         });
     }
 

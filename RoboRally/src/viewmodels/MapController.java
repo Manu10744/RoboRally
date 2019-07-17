@@ -331,6 +331,15 @@ public class MapController implements IController {
     }
 
     /**
+     * This method turns the robot according to turn card either left or right
+     * @param robotPosition
+     * @param turnDirection
+     */
+    public void turnRobot (String robotPosition, String  turnDirection){
+
+    }
+
+    /**
      * This method controls robotlaser in activation phase
      */
     public void robotLaser() {
