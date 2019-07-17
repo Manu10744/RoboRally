@@ -3,8 +3,10 @@ package server.game.ProgrammingCards;
 import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
+import utils.json.MessageDistributer;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  * This class implements the MoveII card. <br>
@@ -14,6 +16,9 @@ import java.util.ArrayList;
  * @author Vincent Tafferner
  */
 public class MoveII extends server.game.Card {
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
+    private static final Logger logger = Logger.getLogger(MessageDistributer.class.getName());
 
     public MoveII() {
         cardName = "MoveII";
@@ -27,6 +32,8 @@ public class MoveII extends server.game.Card {
 
     @Override
     public void activateCard(Player player, ArrayList<Card> register) {
+        logger.info(ANSI_GREEN + "ACTIVATING CARD 'MOVE II' ...");
+
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
 
         int xPosition = player.getPlayerRobot().getxPosition();
