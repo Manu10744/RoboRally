@@ -274,8 +274,17 @@ public class MessageDistributer {
                 sleep(TIMER_DELAY);
                 System.out.println("Just " + i + " more seconds until the map loads");
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        /**
+         * This stops the loading of the map if necessary.
+         */
+        if (!setStatusBody.isReady()) {
+            System.out.println("STOOOOOOOOOOOOOOOOOOP");
+            return;
         }
 
 
