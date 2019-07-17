@@ -27,6 +27,8 @@ public class Countdown {
      */
     public int startTimer() {
 
+        Timer timer = new Timer();
+
         // System.out.println(secs);
         timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -47,10 +49,10 @@ public class Countdown {
     private int setInterval() {
         if (secs == 1) {
             timer.cancel();
+            return secs;
         }else {
             return --secs;
         }
-        return 0;
     }
 
     /**

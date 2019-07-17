@@ -180,7 +180,9 @@ public class PlayerMatController implements IController {
                 card.setOnDragDropped(new EventHandler<DragEvent>() {
                     @Override
                     public void handle(DragEvent dragEvent) {
-                        transmitSelectedCards(dragEvent);
+                        if (((ImageView)card).getImage() == null) {
+                            transmitSelectedCards(dragEvent);
+                        }
                         Dragboard db = dragEvent.getDragboard();
                         boolean success = false;
                         if (db.hasImage()) {
@@ -230,9 +232,9 @@ public class PlayerMatController implements IController {
                 register.setOnDragDropped(new EventHandler<DragEvent>() {
                     @Override
                     public void handle(DragEvent dragEvent) {
-                        transmitSelectedCards(dragEvent);
-
-
+                        if (((ImageView) register).getImage() == null) {
+                            transmitSelectedCards(dragEvent);
+                        }
                         Dragboard db = dragEvent.getDragboard();
                         boolean success = false;
                         if (db.hasImage()) {
