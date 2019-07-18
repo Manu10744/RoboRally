@@ -835,15 +835,18 @@ public class MessageDistributer {
         int messagePlayerID = cardPlayedBody.getPlayerID();
         Card playedCard = cardPlayedBody.getCard();
         String cardName = playedCard.getCardName();
+        String oldPosition;
 
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
+            oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
             playedCard.activateCard(client.getPlayer());
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
+                    oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
                     playedCard.activateCard(player);
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
@@ -856,6 +859,8 @@ public class MessageDistributer {
 
         // Update GUI
         if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
+            String robotPosition = x + "-" + y;
+
 
         } else if (cardName.equals("BackUp")) {
 

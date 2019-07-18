@@ -364,6 +364,11 @@ public class MapController implements IController {
         }
     }
 
+    public void moveRobot(String oldPosition, String newRobotPosition ){
+        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
+
+    }
+
     /**
      * This method controls robotlaser in activation phase
      */

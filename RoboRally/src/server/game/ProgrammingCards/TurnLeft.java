@@ -27,7 +27,7 @@ public class TurnLeft extends server.game.Card {
 
     @Override
     public void activateCard(Player player) {
-        logger.info(ANSI_GREEN + "ACTIVATING CARD 'TURNLEFT' ...");
+       logger.info(ANSI_GREEN + "ACTIVATING CARD 'TURNLEFT' ...");
 
     String lineOfSight = player.getPlayerRobot().getLineOfSight();
     Robot robot = player.getPlayerRobot();
