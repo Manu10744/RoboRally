@@ -21,6 +21,7 @@ import server.game.Player;
 import server.game.Robot;
 import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
+import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
@@ -1124,6 +1125,12 @@ public class MessageDistributer {
             client.getPlayerMatController().emptyCards();
 
              */
+
+            client.getChatController().getTimer().setVisible(true);
+            client.getChatController().getTimer().setTranslateY(-200);
+
+            Countdown timer = new Countdown(30, 0, 1000);
+            timer.startTimer(client.getChatController().getTimer());
         });
     }
 

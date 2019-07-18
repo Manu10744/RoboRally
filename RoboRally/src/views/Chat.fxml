@@ -2,15 +2,18 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="chat" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ChatController" style="-fx-background-color: whitesmoke;">
+<GridPane fx:id="chat" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ChatController">
 
    <columnConstraints>
       <ColumnConstraints minWidth="0.0" percentWidth="100.0" />
@@ -19,48 +22,57 @@
    <rowConstraints>
       <RowConstraints minHeight="0.0" percentHeight="100.0" />
    </rowConstraints>
-
-   <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
-
-      <HBox prefHeight="52.0" prefWidth="340.0">
-         <Button fx:id="buttonWiki" mnemonicParsing="false" onAction="#openWiki" prefHeight="30.0" prefWidth="30.0" text="?">
-            <HBox.margin>
-               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </HBox.margin>
-         </Button>
-         <TextField fx:id="fieldServer" prefHeight="25.0" prefWidth="1000" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
-            <HBox.margin>
-               <Insets bottom="20.0" right="20.0" top="20.0" />
-            </HBox.margin>
-         </TextField>
-      </HBox>
-
-      <HBox prefHeight="52.0" prefWidth="340.0">
-           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name...">
-            <HBox.margin>
-               <Insets bottom="20.0" right="20.0" left="20.0"/>
-            </HBox.margin>
-         </TextField>
-      </HBox>
-
-      <VBox prefHeight="918.0" prefWidth="340.0">
-         <TextArea fx:id="chatOutput" editable="false" focusTraversable="false" mouseTransparent="true" prefHeight="646.0" prefWidth="300.0" wrapText="true">
-            <VBox.margin>
-               <Insets bottom="20.0" left="20.0" right="20.0" />
-            </VBox.margin>
-         </TextArea>
-
-         <TextArea fx:id="chatInput" disable="true" prefHeight="200.0" prefWidth="300.0" promptText="Chat with other players ... (submit = press enter / word wrap = shift+enter)" wrapText="true">
-            <VBox.margin>
-               <Insets bottom="20.0" left="20.0" right="20.0" />
-            </VBox.margin>
-         </TextArea>
-      </VBox>
-
-      <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="1000" text="Ready">
-         <VBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" />
-         </VBox.margin>
-      </Button>
-   </VBox>
+   <StackPane>
+      <children>
+      
+         <VBox>
+      
+            <HBox prefHeight="52.0" prefWidth="340.0">
+               <Button fx:id="buttonWiki" mnemonicParsing="false" onAction="#openWiki" prefHeight="30.0" prefWidth="30.0" text="?">
+                  <HBox.margin>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </HBox.margin>
+               </Button>
+               <TextField fx:id="fieldServer" prefHeight="25.0" prefWidth="1000" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
+                  <HBox.margin>
+                     <Insets bottom="20.0" right="20.0" top="20.0" />
+                  </HBox.margin>
+               </TextField>
+            </HBox>
+      
+            <HBox prefHeight="52.0" prefWidth="340.0">
+                 <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name...">
+                  <HBox.margin>
+                     <Insets bottom="20.0" left="20.0" right="20.0" />
+                  </HBox.margin>
+               </TextField>
+            </HBox>
+      
+            <VBox prefHeight="918.0" prefWidth="340.0">
+               <TextArea fx:id="chatOutput" editable="false" focusTraversable="false" mouseTransparent="true" prefHeight="646.0" prefWidth="300.0" wrapText="true">
+                  <VBox.margin>
+                     <Insets bottom="20.0" left="20.0" right="20.0" />
+                  </VBox.margin>
+               </TextArea>
+      
+               <TextArea fx:id="chatInput" disable="true" prefHeight="200.0" prefWidth="300.0" promptText="Chat with other players ... (submit = press enter / word wrap = shift+enter)" wrapText="true">
+                  <VBox.margin>
+                     <Insets bottom="20.0" left="20.0" right="20.0" />
+                  </VBox.margin>
+               </TextArea>
+            </VBox>
+      
+            <Button fx:id="buttonReady" disable="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="1000" text="Ready">
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" />
+               </VBox.margin>
+            </Button>
+         </VBox>
+         <Label fx:id="timer" text="30" visible="false">
+            <font>
+               <Font size="72.0" />
+            </font>
+         </Label>
+      </children>
+   </StackPane>
 </GridPane>

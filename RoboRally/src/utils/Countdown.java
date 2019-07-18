@@ -1,5 +1,8 @@
 package utils;
 
+import javafx.application.Platform;
+import javafx.scene.control.Label;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,13 +22,17 @@ public class Countdown {
      * This is the constructor of a Countdown.
      */
     public Countdown(int secs, int delay, int period) {
+        this.secs = secs;
+        this.delay = delay;
+        this.period = period;
+
         Timer timer = new Timer();
     }
 
     /**
      * This method does the counting.
      */
-    public int startTimer() {
+    public int startTimer(Label label) {
 
         Timer timer = new Timer();
 
@@ -35,7 +42,7 @@ public class Countdown {
             @Override
             public void run() {
                 //System.out.println(" Bla " + setInterval());
-                setInterval();
+                setInterval(label);
             }
         }, delay, period);
         return secs;
@@ -46,12 +53,16 @@ public class Countdown {
      * It makes the drops the seconds counter by 1 each time it is called. <br>
      * It should be called once each second. (depends on Parameters)
      */
-    private int setInterval() {
+    private int setInterval(Label label) {
         if (secs == 1) {
             timer.cancel();
+            label.setVisible(false);
             return secs;
         }else {
             System.out.println(secs);
+            Platform.runLater(() -> {
+                label.setText(String.valueOf(secs));
+            });
             return --secs;
         }
     }

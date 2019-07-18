@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import client.Client;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import utils.Parameter;
@@ -48,6 +49,8 @@ public class ChatController implements Initializable, IController {
     private Button buttonWiki;
     @FXML
     private Button buttonReady;
+    @FXML
+    private Label timer;
 
     private String tempString;
     private String serverIP;
@@ -406,6 +409,8 @@ public class ChatController implements Initializable, IController {
     public TextField getFieldName() {
         return fieldName;
     }
+
+    public Label getTimer() { return timer; }
 
     @Override
     public IController setPrimaryController(StageController stageController) {
