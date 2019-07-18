@@ -309,12 +309,14 @@ public class MessageDistributer {
                 server.setMap(gameStartedBody.getXArray());
 
                 // Set Antenna in server
-                for (int i = 0; i < server.getMap().size(); i++) {
-                    for (int j = 0; j < server.getMap().get(j).size(); j++) {
-                        for (Tile tile : server.getMap().get(i).get(j)) {
+                for (int xPos = 0; xPos < server.getMap().size(); xPos++) {
+                    for (int yPos = 0; yPos < server.getMap().get(yPos).size(); yPos++) {
+                        for (Tile tile : server.getMap().get(xPos).get(yPos)) {
                             if (tile instanceof Antenna) {
                                 server.setAntenna(tile);
-                                logger.info(ANSI_GREEN + "ANTENNA IN SERVER HAS BEEN SET!");
+                                server.setAntennaXPos(xPos);
+                                server.setAntennaYPos(yPos);
+                                logger.info(ANSI_GREEN + "ANTENNA IN SERVER HAS BEEN SET! COORDINATES: " + "( " + xPos + " | " + yPos + " )" + ANSI_RESET);
                             }
                         }
                     }
