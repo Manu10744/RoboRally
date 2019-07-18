@@ -1,7 +1,9 @@
 package utils;
 
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -57,10 +59,18 @@ public class Countdown {
         if (secs == 1) {
             timer.cancel();
             label.setVisible(false);
+
             return secs;
         }else {
             System.out.println(secs);
             Platform.runLater(() -> {
+                ScaleTransition transition = new ScaleTransition(Duration.millis(100), label);
+                transition.setByX(1.5f);
+                transition.setByY(1.5f);
+                transition.setCycleCount(4);
+                transition.setAutoReverse(true);
+                transition.play();
+
                 label.setText(String.valueOf(secs));
             });
             return --secs;
