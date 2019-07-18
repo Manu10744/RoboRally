@@ -19,6 +19,8 @@ import server.Server;
 import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.Antenna;
+import server.game.Tiles.Tile;
 import utils.Parameter;
 import utils.json.protocol.*;
 import viewmodels.ChooseRobotController;
@@ -298,14 +300,25 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-            Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/deathTrap.json");
             try {
-                //Sets Map in server
+                // Sets Map in server
                 String map = Files.readString(path, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(map);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
                 server.setMap(gameStartedBody.getXArray());
 
+                // Set Antenna in server
+                for (int i = 0; i < server.getMap().size(); i++) {
+                    for (int j = 0; j < server.getMap().get(j).size(); j++) {
+                        for (Tile tile : server.getMap().get(i).get(j)) {
+                            if (tile instanceof Antenna) {
+                                server.setAntenna(tile);
+                                logger.info(ANSI_GREEN + "ANTENNA IN SERVER HAS BEEN SET!");
+                            }
+                        }
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -490,9 +503,15 @@ public class MessageDistributer {
             server.setSetStartPoints(server.getSetStartPoints() + 1);
             logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): INCREMENTED SETSTARTPOINT COUNTER TO " + server.getSetStartPoints() + ANSI_RESET);
 
-            // update servers robot position
+            // Update servers robot position
             player.getPlayerRobot().setxPosition(x);
             player.getPlayerRobot().setyPosition(y);
+
+
+            // Update servers robot orientation
+            String antennaOrientation = server.getAntenna().getOrientations().get(0);
+            player.getPlayerRobot().setLineOfSight(antennaOrientation);
+            logger.info(ANSI_GREEN + "SERVER ROBOT INSTANCE UPDATED! NEW LINE OF SIGHT: " + antennaOrientation + ANSI_RESET);
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("StartingPointTaken", new StartingPointTakenBody(x, y, player.getPlayerID()));
@@ -512,6 +531,7 @@ public class MessageDistributer {
                     System.out.println(test.getPlayer().getPlayerRobot().getxPosition());
                     System.out.println(test.getPlayer().getPlayerRobot().getyPosition());
                 }
+
                 for (Server.ClientWrapper client : server.getConnectedClients()) {
                     Player eachPlayer = client.getPlayer();
 
@@ -930,16 +950,22 @@ public class MessageDistributer {
         Platform.runLater(() -> {
             MapController mapController = (MapController) controllerMap.get("Map");
             String startPosition = startingPointTakenBody.getX() + "-" + startingPointTakenBody.getY();
+            String antennaOrientation = client.getMapController().getAntenna().getOrientations().get(0);
+
+            int xPos = startingPointTakenBody.getX();
+            int yPos = startingPointTakenBody.getY();
 
             // For client that chose that StartPoint
             if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
                 mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
 
-                // update position of clients robot
-                int xPos = startingPointTakenBody.getX();
-                int yPos = startingPointTakenBody.getY();
+                // Update position of clients robot
                 client.getPlayer().getPlayerRobot().setxPosition(xPos);
                 client.getPlayer().getPlayerRobot().setyPosition(yPos);
+
+                // Update orientation of clients robot
+                client.getPlayer().getPlayerRobot().setLineOfSight(antennaOrientation);
+                logger.info(ANSI_GREEN + "CLIENT UPDATED HIS OWN ROBOT! NEW LINE OF SIGHT: " + antennaOrientation);
 
                 mapController.setAllowedToSetStart(false);
                 logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
@@ -950,6 +976,15 @@ public class MessageDistributer {
                 for (Player otherPlayer : client.getOtherPlayers()) {
                     if (otherPlayer.getPlayerID() == startingPointTakenBody.getPlayerID()) {
                         otherPlayerRobot = otherPlayer.getPlayerRobot();
+
+                        // Update position of OtherPlayer's robot
+                        otherPlayerRobot.setxPosition(xPos);
+                        otherPlayerRobot.setyPosition(yPos);
+
+                        // Update orientation of OtherPlayer's robot
+                        otherPlayerRobot.setLineOfSight(antennaOrientation);
+                        logger.info(ANSI_GREEN + "CLIENT UPDATED OTHER PLAYERS ROBOT! NEW LINE OF SIGHT: " + antennaOrientation);
+
                         mapController.setStartingPoint(otherPlayerRobot, startPosition);
                     }
                 }

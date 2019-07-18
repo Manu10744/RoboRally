@@ -54,7 +54,7 @@ public class Server extends Application {
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
-    private Antenna antenna;
+    private Tile antenna;
     private int antennaXPos;
     private int antennaYPos;
 
@@ -171,11 +171,11 @@ public class Server extends Application {
         this.map = map;
     }
 
-    public Antenna getAntenna() {
+    public Tile getAntenna() {
         return antenna;
     }
 
-    public void setAntenna(Antenna antenna) {
+    public void setAntenna(Tile antenna) {
         this.antenna = antenna;
     }
 

@@ -50,6 +50,8 @@ public class MapController implements IController {
     public int mapWidth;
     public int mapHeight;
 
+    private Tile antenna;
+
     private Map<String, Group> fieldMap = new HashMap<String, Group>();
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private ArrayList<Group> startPointList;
@@ -240,7 +242,7 @@ public class MapController implements IController {
                         Group imageGroup = new Group();
                         // For each tile in the array, get the image and display it in the corresponding field
                         for (Tile tile : tileArray) {
-                            if (tile == null){
+                            if (tile == null) {
                                 ImageView imageView = new ImageView();
 
                                 imageView.setPreserveRatio(true);
@@ -250,13 +252,15 @@ public class MapController implements IController {
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
 
-
                                 if (tile instanceof StartPoint){
                                     String ID = xPos + "-" + yPos;
                                     imageGroup.setId(ID);
                                     imageGroup.setStyle("-fx-cursor: hand;");
                                     startPointList.add(imageGroup);
+                                }
 
+                                if (tile instanceof Antenna) {
+                                    setAntenna(tile);
                                 }
 
                                 // Necessary for making map fields responsive
@@ -321,11 +325,23 @@ public class MapController implements IController {
     }
 
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
+        String antennaOrientation = this.antenna.getOrientations().get(0);
+
         ImageView imageView = new ImageView(playerRobot.getRobotImage());
         imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
         imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
         imageView.setPreserveRatio(true);
 
+        // Set robot orientation equal to antenna orientation
+        if (antennaOrientation.equals("up")) {
+            imageView.rotateProperty().setValue(0);
+        } else if (antennaOrientation.equals("right")) {
+            imageView.rotateProperty().setValue(90);
+        } else if (antennaOrientation.equals("down")) {
+            imageView.rotateProperty().setValue(180);
+        } else if (antennaOrientation.equals("left")) {
+            imageView.rotateProperty().setValue(270);
+        }
 
         fieldMap.get(startingPoint).getChildren().add(imageView);
     }
@@ -368,4 +384,13 @@ public class MapController implements IController {
     public ArrayList<Group> getStartpointList() {
         return startPointList;
     }
+
+    public Tile getAntenna() {
+        return antenna;
+    }
+
+    public void setAntenna(Tile antenna) {
+        this.antenna = antenna;
+    }
 }
+
