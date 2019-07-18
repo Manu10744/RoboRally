@@ -984,7 +984,7 @@ public class MessageDistributer {
 
                 // Set orientation of clients robot
                 client.getPlayer().getPlayerRobot().setLineOfSight(antennaOrientation);
-                logger.info(ANSI_GREEN + "CLIENT UPDATED HIS OWN ROBOT! NEW LINE OF SIGHT: " + antennaOrientation);
+                logger.info(ANSI_GREEN + "CLIENT UPDATED HIS OWN ROBOT! NEW LINE OF SIGHT: " + antennaOrientation + ANSI_RESET);
 
                 mapController.setAllowedToSetStart(false);
                 logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): STARTPOINT FOR THIS CLIENT SET. DISABLED OPTION TO SET STARTPOINT." + ANSI_RESET);
@@ -1002,7 +1002,7 @@ public class MessageDistributer {
 
                         // Update orientation of OtherPlayer's robot
                         otherPlayerRobot.setLineOfSight(antennaOrientation);
-                        logger.info(ANSI_GREEN + "CLIENT UPDATED OTHER PLAYERS ROBOT! NEW LINE OF SIGHT: " + antennaOrientation);
+                        logger.info(ANSI_GREEN + "CLIENT UPDATED OTHER PLAYERS ROBOT! NEW LINE OF SIGHT: " + antennaOrientation + ANSI_RESET);
 
                         mapController.setStartingPoint(otherPlayerRobot, startPosition);
                     }

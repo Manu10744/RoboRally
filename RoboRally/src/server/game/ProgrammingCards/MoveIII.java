@@ -42,15 +42,23 @@ public class MoveIII extends server.game.Card {
         switch (lineOfSight){
             case ("up"):
                 robot.setyPosition(yPosition +3);
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
+                        robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("right"):
                 robot.setxPosition(xPosition +3);
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
+                        robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("down"):
                 robot.setyPosition(yPosition -3);
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
+                        robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("left"):
                 robot.setxPosition(xPosition - 3);
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
+                        robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             default:
                 System.out.println("There was a problem with the lineOfSight variable.");
