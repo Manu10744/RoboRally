@@ -835,15 +835,18 @@ public class MessageDistributer {
         int messagePlayerID = cardPlayedBody.getPlayerID();
         Card playedCard = cardPlayedBody.getCard();
         String cardName = playedCard.getCardName();
+        String oldPosition = null;
 
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
+            oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
             playedCard.activateCard(client.getPlayer());
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
+                    oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
                     playedCard.activateCard(player);
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
@@ -854,41 +857,49 @@ public class MessageDistributer {
         int x = client.getPlayer().getPlayerRobot().getxPosition();
         int y = client.getPlayer().getPlayerRobot().getyPosition();
 
-        // Update GUI
-        if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
-
-        } else if (cardName.equals("BackUp")) {
-
-        } else if (cardName.equals("TurnLeft")) {
-
-            String robotPosition = x + "-" + y;
-            String turnDirection = "left";
-
-            MapController mapController = client.getMapController();
-            mapController.turnRobot(robotPosition, turnDirection);
-
-        } else if (cardName.equals("TurnRight")) {
-
-            String robotPosition = x + "-" + y;
-            String turnDirection = "right";
-
-            MapController mapController = client.getMapController();
-            mapController.turnRobot(robotPosition, turnDirection);
-
-        } else if (cardName.equals("UTurn")) {
-            String robotPosition = x + "-" + y;
-            MapController mapController = client.getMapController();
-            for (int i = 0; i < 2; i++) {
-                mapController.turnRobot(robotPosition, "right");
-            }
-
-        } else if (cardName.equals("PowerUp")) {
-
-        } else if (cardName.equals("Again")) {
-
-        }
-
+        //TODO check that final
+        String finalOldPosition = oldPosition;
         Platform.runLater(() -> {
+            // Update GUI
+            if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
+                String newPosition = x + "-" + y;
+                MapController mapController = client.getMapController();
+                mapController.moveRobot(finalOldPosition, newPosition);
+
+
+            } else if (cardName.equals("BackUp")) {
+                String newPosition = x + "-" + y;
+                MapController mapController = client.getMapController();
+                mapController.moveRobot(finalOldPosition, newPosition);
+
+            } else if (cardName.equals("TurnLeft")) {
+
+                String robotPosition = x + "-" + y;
+                String turnDirection = "left";
+
+                MapController mapController = client.getMapController();
+                mapController.turnRobot(robotPosition, turnDirection);
+
+            } else if (cardName.equals("TurnRight")) {
+
+                String robotPosition = x + "-" + y;
+                String turnDirection = "right";
+
+                MapController mapController = client.getMapController();
+                mapController.turnRobot(robotPosition, turnDirection);
+
+            } else if (cardName.equals("UTurn")) {
+                String robotPosition = x + "-" + y;
+                MapController mapController = client.getMapController();
+                for (int i = 0; i < 2; i++) {
+                    mapController.turnRobot(robotPosition, "right");
+                }
+
+            } else if (cardName.equals("PowerUp")) {
+
+            } else if (cardName.equals("Again")) {
+
+            }
         });
     }
 
