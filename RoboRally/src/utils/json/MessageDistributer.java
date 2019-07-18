@@ -422,53 +422,8 @@ public class MessageDistributer {
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
                 }
-
-                String cardName = playedCard.getCardName();
-                //Todo: missing implementation of again
-
-                //Movement message is sent with new robt coordinates
-                if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII") | cardName.equals("BackUp")) {
-                    int newXPos = player.getPlayerRobot().getxPosition();
-                    int newYPos = player.getPlayerRobot().getyPosition();
-
-                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
-                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                        clientWrapper.getWriter().flush();
-                    }
-
-                    // PlayerTurning is sent with new line of sight of player robot
-                } else if (cardName.equals("TurnLeft")) {
-                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_LEFT));
-                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                        clientWrapper.getWriter().flush();
-                    }
-                } else if (cardName.equals("TurnRight")) {
-
-                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, ORIENTATION_RIGHT));
-                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                        clientWrapper.getWriter().flush();
-                    }
-
-                    // Energy is updated
-                } else if (cardName.equals("PowerUp")) {
-
-                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("Energy", new EnergyBody(playerID, Parameter.ONE_ENERGY, "card"));
-                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                        clientWrapper.getWriter().flush();
-                    }
-
-                    //Todo: Again
-                } else {
-
-                }
             }
         }
-
-
     }
 
     /**
@@ -877,10 +832,45 @@ public class MessageDistributer {
     public void handleCardPlayed(Client client, Client.ClientReaderTask task, CardPlayedBody cardPlayedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardPlayed()" + ANSI_RESET);
 
-        // Player object from client is updated
+        Card playedCard = cardPlayedBody.getCard();
+        String cardName = playedCard.getCardName();
+
+        // Update players robot object
+        cardPlayedBody.getCard().activateCard(client.getPlayer());
+        logger.info(ANSI_GREEN + "CLIENT UPDATING FINISHED" + ANSI_RESET);
+
+        // New position of player's robot
+        int x = client.getPlayer().getPlayerRobot().getxPosition();
+        int y = client.getPlayer().getPlayerRobot().getyPosition();
+
+        // Update GUI
+        if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
+
+        } else if (cardName.equals("BackUp")) {
+
+        } else if (cardName.equals("TurnLeft")) {
+
+            String robotPosition = x + "-" + y;
+            String turnDirection = "left";
+
+            MapController mapController = client.getMapController();
+            mapController.turnRobot(robotPosition, turnDirection);
+        } else if (cardName.equals("TurnRight")) {
+
+            String robotPosition = x + "-" + y;
+            String turnDirection = "right";
+
+            MapController mapController = client.getMapController();
+            mapController.turnRobot(robotPosition, turnDirection);
+        } else if (cardName.equals("UTurn")) {
+
+        } else if (cardName.equals("PowerUp")) {
+
+        } else if (cardName.equals("Again")) {
+
+        }
+
         Platform.runLater(() -> {
-            cardPlayedBody.getCard().activateCard(client.getPlayer());
-            logger.info(ANSI_GREEN + "CLIENT UPDATING FINISHED" + ANSI_RESET);
         });
     }
 
@@ -1232,15 +1222,8 @@ public class MessageDistributer {
             playerTurningBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
 
-        int x = client.getPlayer().getPlayerRobot().getxPosition();
-        int y = client.getPlayer().getPlayerRobot().getyPosition();
-        String robotPosition = x + "-" + y;
-
-        String turnDirection = playerTurningBody.getDirection();
-
         Platform.runLater(() -> {
-            MapController mapController = client.getMapController();
-            mapController.turnRobot(robotPosition, turnDirection);
+
         });
     }
 
