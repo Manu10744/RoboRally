@@ -19,10 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
-import server.game.ProgrammingCards.MoveI;
-import server.game.ProgrammingCards.TurnLeft;
-import server.game.ProgrammingCards.TurnRight;
-import server.game.ProgrammingCards.UTurn;
+import server.game.ProgrammingCards.*;
 import server.game.decks.DeckDiscard;
 import utils.Parameter;
 
@@ -286,25 +283,25 @@ public class PlayerMatController implements IController {
             register1.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new TurnLeft());
+                    chatController.getClient().sendPlayCard(new MoveI());
                 }
             });
             register2.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new TurnRight());
+                    chatController.getClient().sendPlayCard(new MoveII());
                 }
             });
             register3.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new UTurn());
+                    chatController.getClient().sendPlayCard(new BackUp());
                 }
             });
             register4.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new MoveI());
+                    chatController.getClient().sendPlayCard(new TurnRight());
                 }
             });
         }
