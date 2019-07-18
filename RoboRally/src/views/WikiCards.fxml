@@ -145,6 +145,54 @@
                               <Image url="@../resources/images/cards/virus-100x100.png" />
                            </image>
                         </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/images/cards/energy-routine-100x100.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="140.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../resources/images/cards/sandbox-routine-100x100.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/weasel-routine-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/speed-routine-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/spam-folder-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/repeat-routine-100x100.png" />
+                           </image>
+                        </ImageView>
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -374,6 +422,110 @@
                         <Label font="${textWiki.font}" prefHeight="60.0" prefWidth="640.0" text="When you program a virus damage card,&#10;any robot on the board within a six-space radius of you must immediatly take a virus card &#10;of the draw pile.&#10;">
                            <VBox.margin>
                               <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${headingWiki.font}" text="Special Programming Cards">
+                           <VBox.margin>
+                              <Insets left="25.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Energy Routine">
+                           <VBox.margin>
+                              <Insets left="15.0" top="55.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="50.0" text="Take one energy cube, and place it on your player mat.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Sandbox Routine">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="50.0" text="Choose one of the following actions to perform this register: &#10;Move 1, 2, or 3, Back Up, Turn Left, Turn Right, U-Turn">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Weasel Routine">
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="50.0" text="Choose one of the  following actions to  perform this register: &#10;Turn Left, Turn Right, U-Turn">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Speed Routine">
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="50.0" text="Move your robot 3 spaces in the direction it is facing.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Spam Folder">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="50.0" text="Permanently discard one SPAM damage card from your discard pile &#10;to the SPAM damage card draw pile.  ">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Repeat Routine">
+                           <VBox.margin>
+                              <Insets left="15.0" top="30.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="80.0" text="Repeat the programming in your previous register. If your previous register was a damage card, &#10;draw a card from the top of your deck, and play that card this register. &#10;If you used an upgrade in your previous register that allowed you to play multiple &#10;programming cards, reexecute the second card. ">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="15.0" />
                            </VBox.margin>
                            <font>
                               <Font size="13.0" />
