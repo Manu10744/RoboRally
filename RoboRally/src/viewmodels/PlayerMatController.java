@@ -21,6 +21,7 @@ import javafx.stage.StageStyle;
 import server.game.Card;
 import server.game.ProgrammingCards.TurnLeft;
 import server.game.ProgrammingCards.TurnRight;
+import server.game.ProgrammingCards.UTurn;
 import server.game.decks.DeckDiscard;
 import utils.Parameter;
 
@@ -291,6 +292,12 @@ public class PlayerMatController implements IController {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     chatController.getClient().sendPlayCard(new TurnRight());
+                }
+            });
+            register3.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    chatController.getClient().sendPlayCard(new UTurn());
                 }
             });
         }

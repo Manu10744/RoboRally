@@ -866,6 +866,7 @@ public class MessageDistributer {
 
             MapController mapController = client.getMapController();
             mapController.turnRobot(robotPosition, turnDirection);
+
         } else if (cardName.equals("TurnRight")) {
 
             String robotPosition = x + "-" + y;
@@ -873,7 +874,13 @@ public class MessageDistributer {
 
             MapController mapController = client.getMapController();
             mapController.turnRobot(robotPosition, turnDirection);
+
         } else if (cardName.equals("UTurn")) {
+            String robotPosition = x + "-" + y;
+            MapController mapController = client.getMapController();
+            for (int i = 0; i < 2; i++) {
+                mapController.turnRobot(robotPosition, "right");
+            }
 
         } else if (cardName.equals("PowerUp")) {
 
