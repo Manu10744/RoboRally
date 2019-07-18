@@ -832,12 +832,23 @@ public class MessageDistributer {
     public void handleCardPlayed(Client client, Client.ClientReaderTask task, CardPlayedBody cardPlayedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardPlayed()" + ANSI_RESET);
 
+        int messagePlayerID = cardPlayedBody.getPlayerID();
         Card playedCard = cardPlayedBody.getCard();
         String cardName = playedCard.getCardName();
 
-        // Update players robot object
-        cardPlayedBody.getCard().activateCard(client.getPlayer());
-        logger.info(ANSI_GREEN + "CLIENT UPDATING FINISHED" + ANSI_RESET);
+        if (messagePlayerID == client.getPlayer().getPlayerID()) {
+            // Update own robot
+            playedCard.activateCard(client.getPlayer());
+            logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
+        } else {
+            // Update OtherPlayer robot
+            for (Player player : client.getOtherPlayers()) {
+                if (player.getPlayerID() == messagePlayerID) {
+                    playedCard.activateCard(player);
+                    logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
+                }
+            }
+        }
 
         // New position of player's robot
         int x = client.getPlayer().getPlayerRobot().getxPosition();
@@ -949,11 +960,11 @@ public class MessageDistributer {
             if (client.getPlayer().getPlayerID() == startingPointTakenBody.getPlayerID()) {
                 mapController.setStartingPoint(client.getPlayer().getPlayerRobot(), startPosition);
 
-                // Update position of clients robot
+                // Set StartPoint position of clients robot
                 client.getPlayer().getPlayerRobot().setxPosition(xPos);
                 client.getPlayer().getPlayerRobot().setyPosition(yPos);
 
-                // Update orientation of clients robot
+                // Set orientation of clients robot
                 client.getPlayer().getPlayerRobot().setLineOfSight(antennaOrientation);
                 logger.info(ANSI_GREEN + "CLIENT UPDATED HIS OWN ROBOT! NEW LINE OF SIGHT: " + antennaOrientation);
 
