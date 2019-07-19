@@ -68,7 +68,7 @@
                </VBox.margin>
             </Button>
          </VBox>
-         <Label fx:id="timer" text="30" visible="false">
+         <Label fx:id="timer" visible="false">
             <font>
                <Font size="72.0" />
             </font>

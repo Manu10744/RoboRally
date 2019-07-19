@@ -5,16 +5,28 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
 
 import client.Client;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.util.Duration;
 import server.Server;
 import server.game.Card;
 import server.game.Player;
@@ -545,6 +557,14 @@ public class MessageDistributer {
                 player.getDeckRegister().getDeck().set(register - 1, selectedCard);
 
                 if (selectedCard == null) {
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
+                } else {
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + selectedCard.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
+                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
+                }
+
+                if (selectedCard == null) {
                     selectedCardsNumber--;
                     player.setSelectedCards(selectedCardsNumber);
                 } else {
@@ -566,20 +586,37 @@ public class MessageDistributer {
                         clientWrapper.getWriter().flush();
                     }
 
+                    int secs = 10;
+                    final CountDownLatch latch = new CountDownLatch(secs);
+
+                    // Creates a timer that can then be started to decrease the CountDownLatch each second
+                    Countdown timer = new Countdown(secs, 400, 1000);
+                    timer.startTimer(latch);
+
+                    // Inform clients that timer has been started
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         //Timer started message sent after first player fills five registers
                         JSONMessage jsonMessageTimerStarted = new JSONMessage("TimerStarted", new TimerStartedBody());
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessageTimerStarted));
                         clientWrapper.getWriter().flush();
                     }
-                }
 
-                if (selectedCard == null) {
-                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
-                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
-                } else {
-                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD " + selectedCard.getCardName() + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
-                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
+                    // Stop code execution until CountDown is finished
+                    try {
+                        latch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("TIMER IN SERVER HAS FINISHED!");
+                    //TODO: Give proper information about not finished players
+                    ArrayList<Integer> bla = new ArrayList<>();
+                    bla.add(1337);
+
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("TimerEnded", new TimerEndedBody(bla));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
                 }
             }
         }
@@ -1133,8 +1170,37 @@ public class MessageDistributer {
             client.getChatController().getTimer().setVisible(true);
             client.getChatController().getTimer().setTranslateY(-200);
 
-            Countdown timer = new Countdown(30, 0, 1000);
-            timer.startTimer(client.getChatController().getTimer());
+            int countDownTimer = 10;
+            Label timerLabel = client.getChatController().getTimer();
+            timerLabel.setText(Integer.toString(countDownTimer));
+
+            ScaleTransition transition = new ScaleTransition(Duration.millis(100), timerLabel);
+            transition.setByX(1.5f);
+            transition.setByY(1.5f);
+            transition.setCycleCount(4);
+            transition.setAutoReverse(true);
+
+            Timeline timer = new Timeline(
+                    new KeyFrame(Duration.seconds(1), ae -> {
+                        // Heartbeat animation
+                        transition.play();
+
+                        int time = Integer.parseInt(timerLabel.getText());
+                        time--;
+
+                        timerLabel.setText(Integer.toString(time));
+                    }));
+
+            // Set execution count
+            timer.setCycleCount(countDownTimer);
+            timer.play();
+
+            timer.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    System.out.println("TIMER IN CLIENT HAS FINISHED!");
+                }
+            });
         });
     }
 
