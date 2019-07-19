@@ -24,8 +24,11 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
 import server.game.Card;
@@ -1168,12 +1171,15 @@ public class MessageDistributer {
 
              */
 
-            client.getChatController().getTimer().setVisible(true);
-            client.getChatController().getTimer().setTranslateY(-200);
+            Label timerLabel = new Label("60");
+            timerLabel.setStyle("-fx-font-size: 15em");
+            timerLabel.setTextFill(Color.LIGHTGRAY);
+
+            client.getStageController().getStage().getChildren().add(timerLabel);
+            client.getStageController().getStage().setHalignment(timerLabel, HPos.CENTER);
 
             // Set up Client countdown with animation
             int countDownTimer = 10;
-            Label timerLabel = client.getChatController().getTimer();
             timerLabel.setText(Integer.toString(countDownTimer));
 
             ScaleTransition transition = new ScaleTransition(Duration.millis(100), timerLabel);
@@ -1203,6 +1209,7 @@ public class MessageDistributer {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     System.out.println("TIMER IN CLIENT HAS FINISHED!");
+                    client.getStageController().getStage().getChildren().remove(timerLabel);
                 }
             });
         });

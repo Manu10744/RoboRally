@@ -49,8 +49,6 @@ public class ChatController implements Initializable, IController {
     private Button buttonWiki;
     @FXML
     private Button buttonReady;
-    @FXML
-    private Label timer;
 
     private String tempString;
     private String serverIP;
@@ -409,8 +407,6 @@ public class ChatController implements Initializable, IController {
     public TextField getFieldName() {
         return fieldName;
     }
-
-    public Label getTimer() { return timer; }
 
     @Override
     public IController setPrimaryController(StageController stageController) {
