@@ -556,12 +556,16 @@ public class MessageDistributer {
                     JSONMessage jsonMessage = new JSONMessage("CardSelected", new CardSelectedBody(player.getPlayerID(), register));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
+                }
 
-                    if (selectedCardsNumber == REGISTER_CARDS_AMOUNT) {
+                if (selectedCardsNumber == REGISTER_CARDS_AMOUNT) {
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
                         clientWrapper.getWriter().flush();
+                    }
 
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         //Timer started message sent after first player fills five registers
                         JSONMessage jsonMessageTimerStarted = new JSONMessage("TimerStarted", new TimerStartedBody());
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessageTimerStarted));
