@@ -7,7 +7,6 @@
 * AI needs to be implemented
 * SelectionFinished currently being sent for each player finished programming. Needs to be changed (Send it only once)
 * Timer before map starts needs to be implemented (10 secs)
-* Timer of protocol message 'TimerStarted' needs to be implemented (30 secs)
 * Remaining moves need to be implemented (7/9)
 
 ## Version [0.5.0]
@@ -15,8 +14,10 @@
 * Implemented ability to play 'TurnLeft' and 'TurnRight' cards - *(Mia, Manu)*
 * When setting a StartPoint, a robot is now always looking towards the map. - *(Manu)*
 * Implemented ability to play 'MoveI', 'MoveII', 'MoveIII', 'BackUp' and 'UTurn' - *(Verena, Manu)*
+* When a player finishes programming, a 30 second timer is started which determines the end of the programming phase. - *(Manu)*
 
 ### Changes
+
 
 ### Bugfixes
 
