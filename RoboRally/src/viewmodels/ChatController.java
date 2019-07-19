@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import client.Client;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import utils.Parameter;
