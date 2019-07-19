@@ -586,6 +586,7 @@ public class MessageDistributer {
                         clientWrapper.getWriter().flush();
                     }
 
+                    // Set up Server countdown
                     int secs = 10;
                     final CountDownLatch latch = new CountDownLatch(secs);
 
@@ -1170,6 +1171,7 @@ public class MessageDistributer {
             client.getChatController().getTimer().setVisible(true);
             client.getChatController().getTimer().setTranslateY(-200);
 
+            // Set up Client countdown with animation
             int countDownTimer = 10;
             Label timerLabel = client.getChatController().getTimer();
             timerLabel.setText(Integer.toString(countDownTimer));
@@ -1182,7 +1184,7 @@ public class MessageDistributer {
 
             Timeline timer = new Timeline(
                     new KeyFrame(Duration.seconds(1), ae -> {
-                        // Heartbeat animation
+                        // Repeat Heartbeat animation
                         transition.play();
 
                         int time = Integer.parseInt(timerLabel.getText());
@@ -1191,9 +1193,11 @@ public class MessageDistributer {
                         timerLabel.setText(Integer.toString(time));
                     }));
 
-            // Set execution count
+            // Set timer execution count
             timer.setCycleCount(countDownTimer);
+
             timer.play();
+            transition.play();
 
             timer.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
