@@ -23,17 +23,20 @@
 
     <HBox fx:id="playerIcons" minHeight="0.0" minWidth="0.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <ImageView fx:id="ownRobotIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <ImageView fx:id="ownEnergyCubes" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" >
-        <image>
-            <Image url="@../resources/images/others/energycube-playermat.png" />
-        </image>
-        </ImageView>
-        <Label fx:id="ownEnergyCubesLabel" layoutX="50.0" layoutY="100.0" text="5">
+
+        <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+        <Label fx:id="ownEnergyCubesLabel" contentDisplay="TOP" graphicTextGap="-75.0" textAlignment="CENTER" text="5">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>
+            <graphic>
+                <ImageView fx:id="ownEnergyCubes" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" >
+                    <image>
+                        <Image url="@../resources/images/others/energycube-playermat.png" />
+                    </image>
+                </ImageView>
+            </graphic>
         </Label>
-        <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
