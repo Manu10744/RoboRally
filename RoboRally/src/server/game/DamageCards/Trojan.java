@@ -1,6 +1,10 @@
 package server.game.DamageCards;
 
 import server.game.Player;
+import server.game.Tiles.PushPanel;
+import server.game.Tiles.Wall;
+
+import java.util.Map;
 
 /**
  * This class defines a kind of damage.
@@ -20,7 +24,7 @@ public class Trojan extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player) {
+    public void activateCard(Player player, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
         //TODO
     }
 

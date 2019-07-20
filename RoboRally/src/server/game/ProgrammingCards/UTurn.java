@@ -2,8 +2,11 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.PushPanel;
+import server.game.Tiles.Wall;
 import utils.json.MessageDistributer;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -25,7 +28,7 @@ public class UTurn extends server.game.Card {
      * //TODO remove if not needed in final version.
      */
     @Override
-    public void activateCard(Player player) {
+    public void activateCard(Player player, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'UTURN' ...");
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();

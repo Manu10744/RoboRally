@@ -2,8 +2,11 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.PushPanel;
+import server.game.Tiles.Wall;
 import utils.json.MessageDistributer;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -25,33 +28,52 @@ public class MoveI extends server.game.Card {
      * //TODO remove if not needed in final version.
      */
     @Override
-    public void activateCard(Player player) {
+    public void activateCard(Player player, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'MOVE I' ..." + ANSI_RESET);
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
 
         int xPosition = player.getPlayerRobot().getxPosition();
         int yPosition = player.getPlayerRobot().getyPosition();
+
+        String oldPos = xPosition + "-" + yPosition;
+        String newPos;
         Robot robot = player.getPlayerRobot();
 
         switch (lineOfSight){
             case ("up"):
-                robot.setyPosition(yPosition + 1);
+                newPos = xPosition + "-" + (yPosition + 1);
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "up", "down")) {
+                    robot.setyPosition(yPosition + 1);
+                }
+
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("right"):
-                robot.setxPosition(xPosition + 1);
+                newPos = (xPosition + 1) + "-" + yPosition;
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "right", "left")) {
+                    robot.setxPosition(xPosition + 1);
+                }
+
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("down"):
-                robot.setyPosition(yPosition - 1);
+                newPos = xPosition + "-" + (yPosition - 1);
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "down", "up")) {
+                    robot.setyPosition(yPosition - 1);
+                }
+
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("left"):
-                robot.setxPosition(xPosition - 1);
+                newPos = (xPosition - 1) + "-" + yPosition;
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "left", "right")) {
+                    robot.setxPosition(xPosition - 1);
+                }
+
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
@@ -59,5 +81,6 @@ public class MoveI extends server.game.Card {
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
     }
+    }
 
-}
+

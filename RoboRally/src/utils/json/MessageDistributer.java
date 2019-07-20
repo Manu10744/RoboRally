@@ -472,7 +472,7 @@ public class MessageDistributer {
                 int playerID = player.getPlayerID();
 
                 //update the player of the server
-                playedCard.activateCard(player);
+                playedCard.activateCard(player, server.getWallMap(), server.getPushPanelMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
 
                 //Sends played card to all clients with id of the one playing it
@@ -929,14 +929,14 @@ public class MessageDistributer {
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
             oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-            playedCard.activateCard(client.getPlayer());
+            playedCard.activateCard(client.getPlayer(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
                     oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-                    playedCard.activateCard(player);
+                    playedCard.activateCard(player, client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
             }
