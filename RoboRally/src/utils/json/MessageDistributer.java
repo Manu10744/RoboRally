@@ -34,8 +34,7 @@ import server.Server;
 import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Tile;
+import server.game.Tiles.*;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -328,6 +327,48 @@ public class MessageDistributer {
                 for (int xPos = 0; xPos < server.getMap().size(); xPos++) {
                     for (int yPos = 0; yPos < server.getMap().get(yPos).size(); yPos++) {
                         for (Tile tile : server.getMap().get(xPos).get(yPos)) {
+                            if (tile instanceof Wall){
+                                String ID = xPos + "-" + yPos;
+                                Wall wall = (Wall) tile;
+                                server.getWallMap().put(ID, wall);
+                            }
+                            if(tile instanceof Pit){
+                                String ID = xPos + "-" + yPos;
+                                Pit pit = (Pit) tile;
+                                server.getPitMap().put(ID, pit);
+                            }
+                            if(tile instanceof Gear){
+                                String ID = xPos + "-" + yPos;
+                                Gear gear = (Gear) tile;
+                                server.getGearMap().put(ID, gear);
+                            }
+                            if(tile instanceof Laser){
+                                String ID = xPos + "-" + yPos;
+                                Laser laser = (Laser) tile;
+                                server.getLaserMap().put(ID, laser);
+                            }
+                            if(tile instanceof PushPanel){
+                                String ID = xPos + "-" + yPos;
+                                PushPanel pushPanel = (PushPanel) tile;
+                                server.getPushPanelMap().put(ID, pushPanel);
+                            }
+                            if(tile instanceof RestartPoint){
+                                String ID = xPos + "-" + yPos;
+                                RestartPoint restartPoint = (RestartPoint) tile;
+                                server.getRebootMap().put(ID, restartPoint);
+                            }
+                            if(tile instanceof CheckPoint){
+                                String ID = xPos + "-" + yPos;
+                                CheckPoint checkPoint = (CheckPoint) tile;
+                                server.getCheckPointMap().put(ID, checkPoint);
+                            }
+                            if(tile instanceof EnergySpace){
+                                String ID = xPos + "-" + yPos;
+                                EnergySpace energySpace = (EnergySpace) tile;
+                                server.getEnergySpaceMap().put(ID, energySpace);
+                            }
+
+
                             if (tile instanceof Antenna) {
                                 server.setAntenna(tile);
                                 server.setAntennaXPos(xPos);
