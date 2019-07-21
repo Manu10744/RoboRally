@@ -15,6 +15,7 @@
 * When setting a StartPoint, a robot is now always looking towards the map. - *(Manu)*
 * Implemented ability to play 'MoveI', 'MoveII', 'MoveIII', 'BackUp' and 'UTurn' - *(Verena, Manu)*
 * When a player finishes programming, a 30 second timer is started which determines the end of the programming phase. - *(Manu)*
+* Added an algorithm to check if moves are valid or if there is a pit, wall or pushPanel blocking the players way. - *(Verena, Manu)* 
 
 ### Changes
 
@@ -27,7 +28,6 @@
 * Map can now callback when it was completely loaded. - *(Manu)*
 * All maps have been added to the game. - *(Jessie, Verena, Vincent)*
 * Each players cards are now loaded in a box - *(Verena, Manu)*
-* Theres a Timer before the map loads - *(Vincent)*
 * Antenna methods implemented to determine distance between map objects by fields or vector length - *(Ivan)*
 
 ### Changes
@@ -35,7 +35,7 @@
 * All maps can now be displayed by calculating the map dimensions and giving that information to the loading method. - *(Verena)*
 * Gaps in maps can now be displayed - *(Jessie, Verena)*
 * Map parameters were removed. - *(Manu)*
-* For each Tile of type StartPoint setting an ID dynamically consisting out of the coordinates is now working. Startpoints can now be set no matter their position on the map. - (*Verena*)
+* For each Tile of type StartPoint setting an ID dynamically consisting out of the coordinates is now working. Startpoints can now be set no matter their position on the map. - *(Verena, Mia, Manu)*
 * Walls are now displayed on top of lasers instead of vice versa. - *(Manu)*
 * Reimplemented the deck methods - *(Vincent)*
 
@@ -60,7 +60,6 @@
 * Player avatars are now set after choosing robot - *(Verena)*
 * Already assigned robots are now disabled in each freshly connected client's view. - *(Manu)*
 * Lobby background view added. - *(Verena)*
-* Player can now set his StartPoint individually. - *(Mia, Verena, Manu)*
 
 ### Changes
 * Replaced font to RoboRally font - *(Verena)*
