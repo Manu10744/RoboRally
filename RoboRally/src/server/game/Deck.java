@@ -29,13 +29,13 @@ public abstract class Deck {
     /**
      * This method shuffles the deck.
      */
-    public abstract void shuffleDeck(ArrayList<Card> Deck);
+    public abstract void shuffleDeck();
 
     /**
      * This method knows the top card of any deck.
      */
-    public Card getTopCard(ArrayList<Card> Deck) {
-        topCard = Deck.get(0);
+    public Card getTopCard() {
+        topCard = this.getDeck().get(0);
         return topCard;
     }
 

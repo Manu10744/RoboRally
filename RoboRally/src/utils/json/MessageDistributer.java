@@ -23,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
@@ -30,6 +31,11 @@ import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
 import server.game.Tiles.*;
+import server.game.Tiles.Antenna;
+import server.game.Tiles.Tile;
+import server.game.decks.DeckDiscard;
+import server.game.decks.DeckDraw;
+import server.game.decks.DeckRegister;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -991,6 +997,17 @@ public class MessageDistributer {
 
             } else if (cardName.equals("Again")) {
 
+                //update own player
+                if (messagePlayerID == client.getPlayer().getPlayerID()) {
+                    DeckRegister currentRegister = client.getPlayer().getDeckRegister();
+
+                    cardPlayedBody.getCard();
+
+                } else {
+                    //Update other player
+                }
+
+                //Todo Mia
             }
         });
     }
@@ -1029,20 +1046,25 @@ public class MessageDistributer {
         // Construction phase
         if (activePhase == BUILD_UP_PHASE) {
             ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
-            client.getPlayer().getDeckDraw().shuffleDeck(deck);
+            client.getPlayer().getDeckDraw().shuffleDeck();
             System.out.println(client.getPlayer().getDeckDraw().getDeck());
+
+            client.getChatHistoryProperty().set("The game has commenced - choose a STARTING POINT while you still can, muhahaha!");
+
         }
         // Upgrade phase
         else if (activePhase == UPGRADE_PHASE) {
-
         }
         // Programming phase
         else if (activePhase == PROGRAMMING_PHASE) {
-
+            client.getChatHistoryProperty().set("All players have chosen their starting points, it is now time to programm your robot," +
+                    "but beware and be fast!");
         }
         // Activation phase
         else if (activePhase == ACTIVATION_PHASE) {
-
+            client.getPlayer().setActivaPhase(REGISTER_ONE);
+            client.getChatHistoryProperty().set("Your robot has been activated, may it survive!");
+            client.getChatHistoryProperty().set("Register ONE controls now your fate!");
         }
     }
 
@@ -1185,7 +1207,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSelectionFinished()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-            //todo
+            //todo: now clicking is possible until the timer starts
         });
     }
 
@@ -1201,19 +1223,6 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerStarted()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-            //Todo If times up, this block should be activated
-            /*
-            //Remove register cards from hand
-            client.getPlayer().getDeckHand().getDeck().removeAll(client.getPlayer().getDeckRegister().getDeck());
-            ArrayList<Card> remainingCardsInHand = client.getPlayer().getDeckHand().getDeck();
-            DeckDiscard clientDiscards = client.getPlayer().getDeckDiscard();
-            //Cards from hand are added to discard pile
-            clientDiscards.getDeck().addAll(remainingCardsInHand);
-
-            //Todo: Timer activation and test with if else here
-            client.getPlayerMatController().emptyCards();
-
-             */
 
             Label timerLabel = new Label("60");
             timerLabel.setStyle("-fx-font-size: 15em");
@@ -1270,8 +1279,42 @@ public class MessageDistributer {
     public void handleTimerEnded(Client client, Client.ClientReaderTask task, TimerEndedBody timerEndedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleTimerEnded()" + ANSI_RESET);
 
+        Player player = client.getPlayer();
+        PlayerMatController playerMatController = client.getPlayerMatController();
+
         Platform.runLater(() -> {
-            //TODO write code here
+            //Remove register cards from hand
+            player.getDeckHand().getDeck().removeAll(player.getDeckRegister().getDeck());
+            ArrayList<Card> remainingCardsInHand = player.getDeckHand().getDeck();
+
+            //Cards from hand are added to discard pile
+            DeckDiscard deckDiscard = player.getDeckDiscard();
+            deckDiscard.getDeck().addAll(remainingCardsInHand);
+
+            //Hand is emptied
+            playerMatController.emptyHand();
+
+            //Empty registers are filled in with cards from deckDraw
+            DeckDraw deckDraw = player.getDeckDraw();
+
+            //now fill empty ergisters with rest cards of draw pile, if not enough, put discrad on draw pile and reshuffle
+            ArrayList<Integer> emptyRegisterNumbers = playerMatController.getEmptyRegisterNumbers();
+
+
+            //when there are less cards to draw then needed for filling, the disccards are added to the draw pile and it is reshuffled
+            if (emptyRegisterNumbers.size() > deckDraw.getDeck().size()) {
+                deckDraw.getDeck().addAll(deckDiscard.getDeck());
+                deckDraw.shuffleDeck();
+            }
+
+            //in register missing cards from DeckDraw are filled in
+            for (int i : emptyRegisterNumbers) {
+                Card drawnCard = deckDraw.getTopCard();
+
+               Image cardImage = playerMatController.getCardImage(drawnCard, client.getPlayer().getColor());
+               playerMatController.putImageInRegister(i, cardImage);
+            }
+
         });
     }
 

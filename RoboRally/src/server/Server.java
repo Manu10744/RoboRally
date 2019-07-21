@@ -66,6 +66,7 @@ public class Server extends Application {
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
     private int numOfRegistersFilled = 0;
+    private int activeRound;
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
@@ -97,6 +98,14 @@ public class Server extends Application {
         logger.info("Server shut down.");
 
 
+    }
+
+    public int getActiveRound() {
+        return activeRound;
+    }
+
+    public void setActiveRound(int activeRound) {
+        this.activeRound = activeRound;
     }
 
     public int getNumOfRegistersFilled() {

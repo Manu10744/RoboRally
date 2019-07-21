@@ -30,8 +30,8 @@ public class DeckDiscard extends Deck {
      * This method shuffles the deck.
      */
     @Override
-    public void shuffleDeck(ArrayList<Card> deckDiscard) {
-        Collections.shuffle(deckDiscard);
+    public void shuffleDeck() {
+        Collections.shuffle(this.getDeck());
     }
 
     /**
