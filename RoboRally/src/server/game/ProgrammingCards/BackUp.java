@@ -37,26 +37,41 @@ public class BackUp extends server.game.Card {
 
         int xPosition = player.getPlayerRobot().getxPosition();
         int yPosition = player.getPlayerRobot().getyPosition();
+
+        String oldPos = xPosition + "-" + yPosition;
+        String newPos;
         Robot robot = player.getPlayerRobot();
 
         switch (lineOfSight){
             case ("up"):
-                robot.setyPosition(yPosition - 1);
+                newPos = xPosition + "-" + (yPosition - 1);
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "down", "up")) {
+                    robot.setyPosition(yPosition - 1);
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("right"):
-                robot.setxPosition(xPosition - 1);
+                newPos = (xPosition - 1) + "-" + yPosition;
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "left", "right")) {
+                    robot.setxPosition(xPosition - 1);
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("down"):
-                robot.setyPosition(yPosition + 1);
+                newPos = xPosition + "-" + (yPosition + 1);
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "up", "down")) {
+                    robot.setyPosition(yPosition + 1);
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("left"):
-                robot.setxPosition(xPosition + 1);
+                newPos = (xPosition + 1) + "-" + yPosition;
+                if (this.isValidMove(wallMap, pushPanelMap, oldPos, newPos, "right", "left")) {
+                    robot.setxPosition(xPosition + 1);
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
