@@ -5,11 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
@@ -17,7 +14,6 @@ import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
 
 import client.Client;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -25,7 +21,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -472,7 +467,7 @@ public class MessageDistributer {
                 int playerID = player.getPlayerID();
 
                 //update the player of the server
-                playedCard.activateCard(player, server.getWallMap(), server.getPushPanelMap());
+                playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
 
                 //Sends played card to all clients with id of the one playing it
@@ -937,14 +932,14 @@ public class MessageDistributer {
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
             oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-            playedCard.activateCard(client.getPlayer(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+            playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
                     oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-                    playedCard.activateCard(player, client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+                    playedCard.activateCard(player, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
             }

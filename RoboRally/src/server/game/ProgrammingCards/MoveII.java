@@ -2,6 +2,7 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.Pit;
 import server.game.Tiles.PushPanel;
 import server.game.Tiles.Wall;
 import utils.json.MessageDistributer;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
  * This is important because otherwise the Robot might be able to jump over walls.
  *
  * @author Vincent Tafferner
+ * @author Verena
  */
 public class MoveII extends server.game.Card {
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -26,45 +28,78 @@ public class MoveII extends server.game.Card {
     }
 
     /**
-     * This will move the robot two tiles in the direction he is facing. <br>
-     * It is important, that he moves one tile at a time so he cant jump over holes or walls.
-     * //TODO remove if not needed in final version.
+     * This will move the robot two tiles in the direction he is facing.
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'MOVE II' ...");
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
 
         int xPosition = player.getPlayerRobot().getxPosition();
         int yPosition = player.getPlayerRobot().getyPosition();
+
+        String oldPos = xPosition + "-" + yPosition;
+        String newPos;
         Robot robot = player.getPlayerRobot();
 
-        switch (lineOfSight){
+        switch (lineOfSight) {
             case ("up"):
-                robot.setyPosition(yPosition + 2);
+                for (int i = 0; i < 2; i++) {
+                    //update new position for algorithm to check
+                    newPos = xPosition + "-" + (yPosition + 1);
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "down", "up")) {
+                        // Update robots y-position
+                        robot.setyPosition(yPosition + 1);
+                        // Update the local y-Position for the algorithm
+                        yPosition = yPosition + 1;
+                        // Move was valid, update old position for algorithm for next iteration
+                        oldPos = xPosition + "-" + yPosition;
+                    }
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("right"):
-                robot.setxPosition(xPosition + 2);
+                for (int i = 0; i < 2; i++) {
+                    newPos = (xPosition + 1) + "-" + yPosition;
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "left", "right")) {
+                        robot.setxPosition(xPosition + 1);
+                        xPosition = xPosition + 1;
+                        oldPos = xPosition + "-" + yPosition;
+                    }
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("down"):
-                robot.setyPosition(yPosition -2);
+                for (int i = 0; i < 2; i++) {
+                    newPos = xPosition + "-" + (yPosition - 1);
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "up", "down")) {
+                        robot.setyPosition(yPosition - 1);
+                        yPosition = yPosition - 1;
+                        oldPos = xPosition + "-" + yPosition;
+                    }
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             case ("left"):
-                robot.setxPosition(xPosition - 2);
+                for (int i = 0; i < 2; i++) {
+                    newPos = (xPosition - 1) + "-" + yPosition;
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "right", "left")) {
+                        robot.setxPosition(xPosition - 1);
+                        xPosition = xPosition - 1;
+                        oldPos = xPosition + "-" + yPosition;
+                    }
+                }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
                 break;
             default:
                 System.out.println("There was a problem with the lineOfSight variable.");
-    }
+        }
 
-}
+    }
 }
