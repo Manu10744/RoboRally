@@ -42,6 +42,8 @@ public class Player implements Serializable {
     private DeckHand deckHand;
     private DeckRegister deckRegister;
 
+    private int activaPhase;
+
     public Player() {
         this.name = "Findus";
 
@@ -137,6 +139,14 @@ public class Player implements Serializable {
     public void addHandToDiscard(DeckDiscard deckDiscard, DeckHand deckHand) {
         deckDiscard.getDeck().addAll(deckHand.getDeck());
         deckHand.getDeck().clear();
+    }
+
+    public int getActivaPhase() {
+        return activaPhase;
+    }
+
+    public void setActivaPhase(int activaPhase) {
+        this.activaPhase = activaPhase;
     }
 
     /**

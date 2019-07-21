@@ -36,6 +36,7 @@ import server.game.Player;
 import server.game.Robot;
 import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
+import server.game.decks.DeckRegister;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -423,6 +424,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayCard()" + ANSI_RESET);
 
         Card playedCard = playCardBody.getCard();
+
 
         for (Server.ClientWrapper client : server.getConnectedClients()) {
             if (client.getClientSocket().equals(task.getClientSocket())) {
@@ -955,6 +957,17 @@ public class MessageDistributer {
 
             } else if (cardName.equals("Again")) {
 
+                //update own player
+                if (messagePlayerID == client.getPlayer().getPlayerID()){
+                    DeckRegister currentRegister = client.getPlayer().getDeckRegister();
+
+                    cardPlayedBody.getCard();
+
+                }else{
+                    //Update other player
+                }
+
+                //Todo Mia
             }
         });
     }
@@ -995,18 +1008,23 @@ public class MessageDistributer {
             ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
             client.getPlayer().getDeckDraw().shuffleDeck(deck);
             System.out.println(client.getPlayer().getDeckDraw().getDeck());
+
+            client.getChatHistoryProperty().set("You have entered the game - choose a STARTING POINT while you still can, muhahaha!");
+
         }
         // Upgrade phase
         else if (activePhase == UPGRADE_PHASE) {
-
         }
         // Programming phase
         else if (activePhase == PROGRAMMING_PHASE) {
-
+            client.getChatHistoryProperty().set("All players have chosen their starting points, it is now time to programm your robot," +
+                    "but beware and be fast!");
         }
         // Activation phase
         else if (activePhase == ACTIVATION_PHASE) {
-
+            client.getPlayer().setActivaPhase(REGISTER_ONE);
+            client.getChatHistoryProperty().set("Your robot has been activated, may it survive!");
+            client.getChatHistoryProperty().set("Register ONE controls now your fate!");
         }
     }
 
