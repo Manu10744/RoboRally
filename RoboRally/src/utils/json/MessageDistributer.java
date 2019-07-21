@@ -536,7 +536,7 @@ public class MessageDistributer {
             if (server.getSetStartPoints() == server.getPlayers().size()) {
                 //TODO replace this with upgrade phase
                 for (Server.ClientWrapper client : server.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(2));
+                    JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(PROGRAMMING_PHASE));
                     client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     client.getWriter().flush();
                 }
@@ -592,6 +592,7 @@ public class MessageDistributer {
         int register = selectedCardBody.getRegister();
         Card selectedCard = selectedCardBody.getCard();
 
+
         for (Server.ClientWrapper client : server.getConnectedClients()) {
             if (client.getClientSocket().equals(task.getClientSocket())) {
                 Player player = client.getPlayer();
@@ -623,7 +624,14 @@ public class MessageDistributer {
                     clientWrapper.getWriter().flush();
                 }
 
-                if (selectedCardsNumber == REGISTER_CARDS_AMOUNT) {
+                //This counter is initialised with 0 and each time someone fills all their registers it adds to it, so it is only 0 once
+                //and hence the message "SelectionFinished" is only sent once
+                int numOfRegistersFilled = server.getNumOfRegistersFilled();
+
+                if (selectedCardsNumber == REGISTER_CARDS_AMOUNT && numOfRegistersFilled == 0) {
+                    numOfRegistersFilled++;
+                    server.setNumOfRegistersFilled(numOfRegistersFilled);
+
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMsg));
