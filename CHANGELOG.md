@@ -18,8 +18,8 @@
 
 ### Changes
 
-
 ### Bugfixes
+* Fixed bug that happened when a Card was played and all robots were affected by the corresponding effects. - *(Manu)*
 
 ## Version [0.4.0] 
 ### New Features 

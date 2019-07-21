@@ -933,64 +933,61 @@ public class MessageDistributer {
         int messagePlayerID = cardPlayedBody.getPlayerID();
         Card playedCard = cardPlayedBody.getCard();
         String cardName = playedCard.getCardName();
-        String oldPosition = null;
+
+        String currentPosition = null;
+        String newPosition = null;
 
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
-            oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+            currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
             playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+
+            // New position of own robot
+            newPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
-                    oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+                    currentPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
                     playedCard.activateCard(player, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+
+                    // New position of OtherPlayer's robot
+                    newPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
             }
         }
-
-        // New position of player's robot
-        int x = client.getPlayer().getPlayerRobot().getxPosition();
-        int y = client.getPlayer().getPlayerRobot().getyPosition();
-
         //TODO check that final
-        String finalOldPosition = oldPosition;
+        String finalCurrentPosition = currentPosition;
+        String finalNewPosition = newPosition;
         Platform.runLater(() -> {
             // Update GUI
             if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
-                String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalOldPosition, newPosition);
-
+                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
 
             } else if (cardName.equals("BackUp")) {
-                String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalOldPosition, newPosition);
+                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
 
             } else if (cardName.equals("TurnLeft")) {
-
-                String robotPosition = x + "-" + y;
                 String turnDirection = "left";
 
                 MapController mapController = client.getMapController();
-                mapController.turnRobot(robotPosition, turnDirection);
+                mapController.turnRobot(finalCurrentPosition, turnDirection);
 
             } else if (cardName.equals("TurnRight")) {
-
-                String robotPosition = x + "-" + y;
                 String turnDirection = "right";
 
                 MapController mapController = client.getMapController();
-                mapController.turnRobot(robotPosition, turnDirection);
+                mapController.turnRobot(finalCurrentPosition, turnDirection);
 
             } else if (cardName.equals("UTurn")) {
-                String robotPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
                 for (int i = 0; i < 2; i++) {
-                    mapController.turnRobot(robotPosition, "right");
+                    mapController.turnRobot(finalCurrentPosition, "right");
                 }
 
             } else if (cardName.equals("PowerUp")) {
