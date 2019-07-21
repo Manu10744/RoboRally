@@ -57,7 +57,7 @@ public class Server extends Application {
     private Tile antenna;
     private int antennaXPos;
     private int antennaYPos;
-
+    private int numOfRegistersFilled = 0;
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
@@ -89,6 +89,14 @@ public class Server extends Application {
         logger.info("Server shut down.");
 
 
+    }
+
+    public int getNumOfRegistersFilled() {
+        return numOfRegistersFilled;
+    }
+
+    public void setNumOfRegistersFilled(int numOfRegistersFilled) {
+        this.numOfRegistersFilled = numOfRegistersFilled;
     }
 
     public MessageDistributer getMessageDistributer() {
