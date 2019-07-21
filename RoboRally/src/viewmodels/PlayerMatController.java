@@ -323,7 +323,6 @@ public class PlayerMatController implements IController {
     }
 
     public void emptyHand(){
-        System.out.println("Biste hier???" + this.dragImages);
         //ImageViews are deleted
         this.playerHand.getChildren().removeAll(this.playerHand.getChildren());
         System.out.println("Nach removen" + this.dragImages);
