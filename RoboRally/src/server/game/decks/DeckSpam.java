@@ -34,8 +34,8 @@ public class DeckSpam extends Deck {
      * This method shuffles the deck.
      */
     @Override
-    public void shuffleDeck(ArrayList<Card> deckSpam) {
-        Collections.shuffle(deckSpam);
+    public void shuffleDeck() {
+        Collections.shuffle(this.getDeck());
     }
 
     /**

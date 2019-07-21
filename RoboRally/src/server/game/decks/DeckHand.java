@@ -30,8 +30,8 @@ public class DeckHand extends Deck {
      * This method shuffles the deck.
      */
     @Override
-    public void shuffleDeck(ArrayList<Card> deckHand) {
-        Collections.shuffle(deckHand);
+    public void shuffleDeck() {
+        Collections.shuffle(this.getDeck());
     }
 
     /**

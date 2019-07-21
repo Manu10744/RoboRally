@@ -322,13 +322,70 @@ public class PlayerMatController implements IController {
 
     }
 
-    public void emptyCards(){
+    public void emptyHand(){
         System.out.println("Biste hier???" + this.dragImages);
         //ImageViews are deleted
         this.playerHand.getChildren().removeAll(this.playerHand.getChildren());
         System.out.println("Nach removen" + this.dragImages);
-        //Todo doe snot empty hbox
+    }
 
+    /**
+     * This method return an arraylIst with all currently empty registers
+     * It is used in handleTimerFinished for filling up registers that have not yet been filled
+     * @return
+     */
+    public ArrayList<Integer> getEmptyRegisterNumbers(){
+        ArrayList<Integer> emptyRegisterNumbers = new ArrayList<>();
+
+        //if a register does not have an image in it, it is empty and its register number will be added to the list
+        if (register1.getImage() == null){
+            emptyRegisterNumbers.add(1);
+        }
+        if(register2.getImage() == null){
+            emptyRegisterNumbers.add(2);
+        }
+        if (register3.getImage() == null){
+            emptyRegisterNumbers.add(3);
+        }
+        if (register4.getImage() == null){
+            emptyRegisterNumbers.add(4);
+        }
+        if (register5.getImage() == null){
+            emptyRegisterNumbers.add(5);
+        }
+
+        return emptyRegisterNumbers;
+    }
+
+    /**
+     * This method sets registers individually with an image of a programming card.
+     * It is used when the timer finishes so that the remaining registers can be filled.
+     * @param registerNumber
+     * @param cardImage
+     */
+    public void putImageInRegister(int registerNumber, Image cardImage){
+        switch (registerNumber){
+            case 1: {
+                register1.setImage(cardImage);
+                break;
+            }
+            case 2: {
+                register2.setImage(cardImage);
+                break;
+            }
+            case 3: {
+                register3.setImage(cardImage);
+                break;
+            }
+            case 4: {
+                register4.setImage(cardImage);
+                break;
+            }
+            case 5: {
+                register5.setImage(cardImage);
+                break;
+            }
+        }
     }
 
 
