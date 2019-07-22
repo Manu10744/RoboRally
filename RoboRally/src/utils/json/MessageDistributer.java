@@ -321,7 +321,7 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-            Path path = Paths.get("RoboRally/src/resources/maps/passingLane.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
             try {
                 // Sets Map in server
                 String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -477,11 +477,11 @@ public class MessageDistributer {
                 Player player = client.getPlayer();
                 int playerID = player.getPlayerID();
 
-                //update the player of the server
+                // Update the player of the server
                 playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
 
-                //Sends played card to all clients with id of the one playing it
+                // Sends played card to all clients with id of the one playing it
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(playerID, playedCard));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -489,27 +489,45 @@ public class MessageDistributer {
                 }
 
                 String playerPos = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
-                // player fell into a pit
-                if (server.getPitMap().get(playerPos) != null) {
+                // Player fell into a pit or out of map
+                if (server.getPitMap().get(playerPos) != null || server.playerFellOffMap(player)) {
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
                     }
 
-                    // choose a random restartPoint
+                    // Choose a random restartPoint
                     Random random = new Random();
                     int randomVal = random.nextInt(server.getRebootMap().size());
-                    // get the random restartPoints coordinates
+
+                    // Get the random restartPoint's coordinates
                     String rebootPos = ((String) server.getRebootMap().keySet().toArray()[randomVal]);
-                    int xPos = Integer.parseInt(rebootPos.split("-")[0]);
-                    int yPos = Integer.parseInt(rebootPos.split("-")[1]);
+                    int rebootXPos = Integer.parseInt(rebootPos.split("-")[0]);
+                    int rebootYPos = Integer.parseInt(rebootPos.split("-")[1]);
 
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, xPos, yPos));
+                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, rebootXPos, rebootYPos));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
                     }
+
+                    // Update server data of that player due to Reboot
+                    player.getPlayerRobot().setxPosition(rebootXPos);
+                    player.getPlayerRobot().setyPosition(rebootYPos);
+                    player.getPlayerRobot().setLineOfSight("up");
+                }
+
+                if (server.getGearMap().get(playerPos) != null) {
+                    String gearOrientation = server.getGearMap().get(playerPos).getOrientations().get(0);
+
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, gearOrientation));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // TODO: update orientation of robot
                 }
             }
         }
@@ -1072,42 +1090,88 @@ public class MessageDistributer {
         String currentPosition = null;
         String newPosition = null;
 
+        int newXPos = 0;
+        int newYPos = 0;
+
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
+
+            int currentXPos = client.getPlayer().getPlayerRobot().getxPosition();
+            int currentYPos = client.getPlayer().getPlayerRobot().getyPosition();
+
             currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
             playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
 
             // New position of own robot
             newPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
 
+            newXPos = client.getPlayer().getPlayerRobot().getxPosition();
+            newYPos = client.getPlayer().getPlayerRobot().getyPosition();
+
+            // Player fell of the map, so set the coordinates back to the old ones so no error occurs when moving player's robot image due to Reboot
+            if (newXPos < 0 || newYPos < 0 || newXPos >= client.getMapController().getMap().size() || newYPos >= client.getMapController().getMap().get(0).size()) {
+                logger.info(ANSI_GREEN + "RESET OF PLAYER COORDINATES BECAUSE PLAYER FELL OFF MAP!" + ANSI_RESET);
+                client.getPlayer().getPlayerRobot().setxPosition(currentXPos);
+                client.getPlayer().getPlayerRobot().setyPosition(currentYPos);
+            }
+
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
+                    int currentXPos = player.getPlayerRobot().getxPosition();
+                    int currentYPos = player.getPlayerRobot().getyPosition();
+
                     currentPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
                     playedCard.activateCard(player, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
 
                     // New position of OtherPlayer's robot
                     newPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
+
+                    newXPos = player.getPlayerRobot().getxPosition();
+                    newYPos = player.getPlayerRobot().getyPosition();
+
+                    // Player fell of the map, so set the coordinates back to the old ones so no error occurs when moving player's robot image due to Reboot
+                    if (newXPos < 0 || newYPos < 0 || newXPos >= client.getMapController().getMap().size() || newYPos >= client.getMapController().getMap().get(0).size()) {
+                        logger.info(ANSI_GREEN + "RESET OF PLAYER COORDINATES BECAUSE PLAYER FELL OFF MAP!" + ANSI_RESET);
+                        player.getPlayerRobot().setxPosition(currentXPos);
+                        player.getPlayerRobot().setyPosition(currentYPos);
+                    }
+
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
             }
         }
+
         //TODO check that final
         String finalCurrentPosition = currentPosition;
         String finalNewPosition = newPosition;
+        int finalNewYPos = newYPos;
+        int finalNewXPos = newXPos;
+
+        int mapWidth = client.getMapController().getMap().size();
+        int mapHeight = client.getMapController().getMap().get(0).size();
+
         Platform.runLater(() -> {
             // Update GUI
             if (cardToActivateName.equals("MoveI") || cardToActivateName.equals("MoveII") || cardToActivateName.equals("MoveIII")) {
                 String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+
+                // Only move a robot when it's not out going of the map
+                if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                    mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+                }
 
             } else if (cardToActivateName.equals("BackUp")) {
                 String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+
+                // Only move a robot when it's not going out of the map
+                if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                    mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+                }
 
             } else if (cardToActivateName.equals("TurnLeft")) {
 
@@ -1534,24 +1598,38 @@ public class MessageDistributer {
         Platform.runLater(() -> {
         // own robot has to reboot
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
-            String oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
 
+            int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
+            int playerYPos = client.getPlayer().getPlayerRobot().getyPosition();
+
+            int mapWidth = client.getMapController().getMap().size();
+            int mapHeight = client.getMapController().getMap().get(0).size();
+            Robot playerRobot = client.getPlayer().getPlayerRobot();
+
+            String oldPos = playerXPos + "-" + playerYPos;
+
+            // Update client player data due to Reboot
             client.getPlayer().getPlayerRobot().setxPosition(rebootXPos);
             client.getPlayer().getPlayerRobot().setyPosition(rebootYPos);
+            client.getPlayer().getPlayerRobot().setLineOfSight("up");
 
             String newPos = rebootXPos + "-" + rebootYPos;
 
             client.getMapController().rebootRobot(oldPos, newPos);
-
-            //set robot orientation to north
-            client.getPlayer().getPlayerRobot().setLineOfSight("up");
 
         }
         else {
             // other player's robot has to reboot
             for (Player otherPlayer : client.getOtherPlayers()) {
                 if (otherPlayer.getPlayerID() == messagePlayerID) {
-                    String oldPos = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
+                    int otherPlayerXPos = otherPlayer.getPlayerRobot().getxPosition();
+                    int otherPlayerYPos = otherPlayer.getPlayerRobot().getyPosition();
+
+                    int mapWidth = client.getMapController().getMap().size();
+                    int mapHeight = client.getMapController().getMap().get(0).size();
+                    Robot playerRobot = otherPlayer.getPlayerRobot();
+
+                    String oldPos = otherPlayerXPos + "-" + otherPlayerYPos;
 
                     otherPlayer.getPlayerRobot().setxPosition(rebootXPos);
                     otherPlayer.getPlayerRobot().setyPosition(rebootYPos);
@@ -1560,8 +1638,8 @@ public class MessageDistributer {
 
                     client.getMapController().rebootRobot(oldPos, newPos);
 
-                    //set robot orientation to north
-                    client.getPlayer().getPlayerRobot().setLineOfSight("up");
+                    // Set robot orientation to north
+                    otherPlayer.getPlayerRobot().setLineOfSight("up");
                 }
             }
         }
@@ -1628,6 +1706,18 @@ public class MessageDistributer {
     public void handlePlayerTurning(Client client, Client.ClientReaderTask task, PlayerTurningBody
             playerTurningBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
+
+        int messagePlayerID = playerTurningBody.getPlayerID();
+        String turnOrientation = playerTurningBody.getDirection();
+
+        String oldPos;
+        if (client.getPlayer().getPlayerID() == messagePlayerID) {
+            // Own player is turning
+            oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+            client.getMapController().turnRobot(oldPos, turnOrientation);
+
+            // TODO: Update orientation with switch block
+        }
 
         Platform.runLater(() -> {
 

@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
+import server.game.Player;
 import server.game.ProgrammingCards.*;
 import server.game.decks.DeckDiscard;
 import utils.Parameter;
@@ -454,6 +455,8 @@ public class PlayerMatController implements IController {
         }
 
     }
+
+
 
     public Image getCardImage(Card card, String color) {
         Image image;

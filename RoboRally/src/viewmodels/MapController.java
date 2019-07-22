@@ -429,6 +429,8 @@ public class MapController implements IController {
     }
 
     public void rebootRobot(String oldPosition, String newPosition ) {
+        System.out.println("(REBOOTROBOT): OLDPOSITION: " + oldPosition);
+        System.out.println("(REBOOTROBOT): NEWPOSITION: " + newPosition);
         ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
         fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
 
