@@ -702,13 +702,13 @@ public class MessageDistributer {
                             }
                         }
 
-                        //Todo only issue if there is two players
 
                         //Current cards
                         ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
 
                         for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
-                            {
+                            {                        //Todo only issue if there is two players
+
                                 Player playerToUpdate = clientToUpdate.getPlayer();
 
                                 //active round is updated, first call from 0 to 1, else always between 1 and 5
