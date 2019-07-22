@@ -106,9 +106,14 @@ public class Server extends Application {
         int mapHeight = this.map.get(0).size();
         int mapWidth = this.map.size();
 
-        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight || this.map.get(playerXPos).get(playerYPos).get(0) == null){
+        // Player fell off the map border
+        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight) {
             return true;
-        } else{
+        }
+        // Player fell into a gap
+        else if (this.map.get(playerXPos).get(playerYPos).get(0) == null) {
+            return true;
+        } else {
             return false;
         }
     }

@@ -524,7 +524,31 @@ public class MessageDistributer {
                         clientWrapper.getWriter().flush();
                     }
 
-                    // TODO: update orientation of robot
+                    String currLineOfSight = player.getPlayerRobot().getLineOfSight();
+
+                    if (gearOrientation.equals("left")) {
+                        switch(currLineOfSight) {
+                            case "up": player.getPlayerRobot().setLineOfSight("left");
+                            break;
+                            case "left": player.getPlayerRobot().setLineOfSight("down");
+                            break;
+                            case "down": player.getPlayerRobot().setLineOfSight("right");
+                            break;
+                            case "right": player.getPlayerRobot().setLineOfSight("up");
+                        }
+                    }
+
+                    if (gearOrientation.equals("right")) {
+                        switch(currLineOfSight) {
+                            case "up": player.getPlayerRobot().setLineOfSight("right");
+                                break;
+                            case "left": player.getPlayerRobot().setLineOfSight("up");
+                                break;
+                            case "down": player.getPlayerRobot().setLineOfSight("left");
+                                break;
+                            case "right": player.getPlayerRobot().setLineOfSight("down");
+                        }
+                    }
                 }
             }
         }
@@ -1572,9 +1596,106 @@ public class MessageDistributer {
         if (client.getPlayer().getPlayerID() == messagePlayerID) {
             // Own player is turning
             oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-            client.getMapController().turnRobot(oldPos, turnOrientation);
 
+            String currLineOfSight = client.getPlayer().getPlayerRobot().getLineOfSight();
+
+            if (turnOrientation.equals("left")) {
+                switch(currLineOfSight) {
+                    case "up":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("left");
+                        break;
+                    case "left":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("down");
+                        break;
+                    case "down":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("right");
+                        break;
+                    case "right":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("up");
+                }
+            }
+
+            if (turnOrientation.equals("right")) {
+                switch(currLineOfSight) {
+                    case "up":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("right");
+                        break;
+                    case "left":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("up");
+                        break;
+                    case "down":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("left");
+                        break;
+                    case "right":
+                        client.getPlayer().getPlayerRobot().setLineOfSight("down");
+                        break;
+                }
+            }
+
+            // TODO: Check why this is needed (Why is handlePlayerTurning faster than handleCardPlayed??)
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+            client.getMapController().turnRobot(oldPos, turnOrientation);
             // TODO: Update orientation with switch block
+        } else {
+            // Other player is turning
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    oldPos = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
+
+                    String currLineOfSight = otherPlayer.getPlayerRobot().getLineOfSight();
+
+                    if (turnOrientation.equals("left")) {
+                        switch(currLineOfSight) {
+                            case "up":
+                                otherPlayer.getPlayerRobot().setLineOfSight("left");
+                                break;
+                            case "left":
+                                otherPlayer.getPlayerRobot().setLineOfSight("down");
+                                break;
+                            case "down":
+                                otherPlayer.getPlayerRobot().setLineOfSight("right");
+                                break;
+                            case "right":
+                                otherPlayer.getPlayerRobot().setLineOfSight("up");
+                        }
+                    }
+
+                    if (turnOrientation.equals("right")) {
+                        switch(currLineOfSight) {
+                            case "up":
+                                otherPlayer.getPlayerRobot().setLineOfSight("right");
+                                break;
+                            case "left":
+                                otherPlayer.getPlayerRobot().setLineOfSight("up");
+                                break;
+                            case "down":
+                                otherPlayer.getPlayerRobot().setLineOfSight("left");
+                                break;
+                            case "right":
+                                otherPlayer.getPlayerRobot().setLineOfSight("down");
+                                break;
+                        }
+                    }
+
+                    // TODO: Check why this is needed (Why is handlePlayerTurning faster than handleCardPlayed??)
+
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    client.getMapController().turnRobot(oldPos, turnOrientation);
+                    // TODO: Update orientation with switch block
+                }
+            }
         }
 
         Platform.runLater(() -> {
