@@ -106,7 +106,7 @@ public class Server extends Application {
         int mapHeight = this.map.get(0).size();
         int mapWidth = this.map.size();
 
-        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight){
+        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight || this.map.get(playerXPos).get(playerYPos).get(0) == null){
             return true;
         } else{
             return false;
