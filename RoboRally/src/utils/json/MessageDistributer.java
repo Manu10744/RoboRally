@@ -486,7 +486,7 @@ public class MessageDistributer {
                 }
 
                 String playerPos = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
-                // player fell into a pit
+                // player fell into a pit or out of map
                 if (server.getPitMap().get(playerPos) != null) {
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
@@ -963,6 +963,9 @@ public class MessageDistributer {
         String currentPosition = null;
         String newPosition = null;
 
+        int newXPos = 0;
+        int newYPos = 0;
+
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
             currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
@@ -970,6 +973,9 @@ public class MessageDistributer {
 
             // New position of own robot
             newPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+
+            newXPos = client.getPlayer().getPlayerRobot().getxPosition();
+            newYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
@@ -981,6 +987,10 @@ public class MessageDistributer {
 
                     // New position of OtherPlayer's robot
                     newPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
+
+                    newXPos = player.getPlayerRobot().getxPosition();
+                    newYPos = player.getPlayerRobot().getyPosition();
+
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
             }
@@ -988,15 +998,31 @@ public class MessageDistributer {
         //TODO check that final
         String finalCurrentPosition = currentPosition;
         String finalNewPosition = newPosition;
+        int finalNewYPos = newYPos;
+        int finalNewXPos = newXPos;
+
+        System.out.println("FINALNEWYPOS: " + finalNewYPos);
+        System.out.println("FINALNEWXPOS: " + finalNewXPos);
+        int mapWidth = client.getMapController().getMap().size();
+        int mapHeight = client.getMapController().getMap().get(0).size();
+
         Platform.runLater(() -> {
             // Update GUI
             if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+
+                // Only move a robot when hes not out of the map
+                if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                    mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+                }
 
             } else if (cardName.equals("BackUp")) {
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+
+                // Only move a robot when hes not out of the map
+                if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                    mapController.moveRobot(finalCurrentPosition, finalNewPosition);
+                }
 
             } else if (cardName.equals("TurnLeft")) {
                 String turnDirection = "left";
