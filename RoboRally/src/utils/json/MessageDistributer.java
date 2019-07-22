@@ -674,6 +674,8 @@ public class MessageDistributer {
                                     deckDraw.getDeck().addAll(deckDiscard.getDeck());
                                     deckDraw.shuffleDeck();
 
+                                    clientPlayer.setDeckDraw(deckDraw);
+
                                     //Shuffle coding is sent
                                     JSONMessage jsonMessageShuffle = new JSONMessage("ShuffleCoding", new ShuffleCodingBody(clientPlayer.getPlayerID()));
                                     client.getWriter().println(JSONEncoder.serializeJSON(jsonMessageShuffle));
@@ -690,7 +692,6 @@ public class MessageDistributer {
                                     //PlayerDraw deck is updated
                                     deckDraw.getDeck().remove(deckDraw.getTopCard());
                                     player.getDeckDraw().getDeck().remove(deckDraw.getTopCard());
-                                    //Todo update client in handleCardYouGotNow
                                     i++;
                                 }
 
@@ -701,10 +702,10 @@ public class MessageDistributer {
                             }
                         }
 
+                        System.out.println("Bist du hier?");
 
                         //Current cards
                         ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
-
 
                         for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
                             {
@@ -731,6 +732,8 @@ public class MessageDistributer {
                             JSONMessage jsonMessageCurrentCards = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCardsObjects));
                             clientToUpdate.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
                             clientToUpdate.getWriter().flush();
+
+
 
                         }
                     }
@@ -1399,16 +1402,15 @@ public class MessageDistributer {
 
 
             //in register missing cards from DeckDraw are filled in
-                ArrayList<Integer> emptyRegisterIndexes = playerMatController.getEmptyRegisterNumbers();
+            ArrayList<Integer> emptyRegisterIndexes = playerMatController.getEmptyRegisterNumbers();
 
-                int i = 0;
-                while (i < emptyRegisterIndexes.size()){
+            int i = 0;
+            while (i < emptyRegisterIndexes.size()) {
 
                 for (Card card : cardsYouGotNowBody.getCards()) {
                     //Player register is updated
                     player.getDeckRegister().getDeck().add(emptyRegisterIndexes.get(i), card);
 
-                    System.out.println("Card? " + card);
                     //Gui is updated
                     Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
                     playerMatController.putImageInRegister(emptyRegisterIndexes.get(i), cardImage);
@@ -1416,8 +1418,6 @@ public class MessageDistributer {
                     i++;
                 }
             }
-
-
         });
     }
 
