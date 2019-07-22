@@ -306,7 +306,6 @@ public class JSONDecoder {
                 SelectionFinishedBody selectionFinishedBody = new SelectionFinishedBody(
                         messageBody.get("playerID").getAsInt()
                 );
-
                 return new JSONMessage("SelectionFinished", selectionFinishedBody);
             } else if (messageType.equals("TimerStarted")) {
 
@@ -510,8 +509,7 @@ public class JSONDecoder {
         Gson gson = new Gson();
         if (cardName == null) {
             return null;
-        }
-        else if (cardName.equals("MoveI")) {
+        } else if (cardName.equals("MoveI")) {
             MoveI result = gson.fromJson(jsonMessageBody, MoveI.class);
             return result;
         } else if (cardName.equals("MoveII")) {

@@ -362,26 +362,30 @@ public class PlayerMatController implements IController {
      * @param registerNumber
      * @param cardImage
      */
-    public void putImageInRegister(int registerNumber, Image cardImage){
+    public void putImageInRegister(int registerNumber, ImageView cardImage){
+        //Making the cards responsive
+        cardImage.fitWidthProperty().bind(playerHand.widthProperty().divide(Parameter.CARDS_WIDTH_PLAYERHAND));
+        cardImage.fitHeightProperty().bind(playerHand.heightProperty());
+
         switch (registerNumber){
             case 1: {
-                register1.setImage(cardImage);
+                register1.setImage(cardImage.getImage());
                 break;
             }
             case 2: {
-                register2.setImage(cardImage);
+                register2.setImage(cardImage.getImage());
                 break;
             }
             case 3: {
-                register3.setImage(cardImage);
+                register3.setImage(cardImage.getImage());
                 break;
             }
             case 4: {
-                register4.setImage(cardImage);
+                register4.setImage(cardImage.getImage());
                 break;
             }
             case 5: {
-                register5.setImage(cardImage);
+                register5.setImage(cardImage.getImage());
                 break;
             }
         }

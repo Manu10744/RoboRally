@@ -1,6 +1,7 @@
 package utils.json;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
 
 import client.Client;
+import com.google.gson.JsonDeserializer;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -24,6 +26,7 @@ import javafx.geometry.HPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
@@ -34,6 +37,7 @@ import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
+import server.game.decks.DeckHand;
 import server.game.decks.DeckRegister;
 import utils.Countdown;
 import utils.Parameter;
@@ -551,7 +555,6 @@ public class MessageDistributer {
         int register = selectedCardBody.getRegister();
         Card selectedCard = selectedCardBody.getCard();
 
-
         for (Server.ClientWrapper client : server.getConnectedClients()) {
             if (client.getClientSocket().equals(task.getClientSocket())) {
                 Player player = client.getPlayer();
@@ -568,6 +571,7 @@ public class MessageDistributer {
                     logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
                 }
 
+                //Counts how many cards are in total selected
                 if (selectedCard == null) {
                     selectedCardsNumber--;
                     player.setSelectedCards(selectedCardsNumber);
@@ -575,6 +579,8 @@ public class MessageDistributer {
                     selectedCardsNumber++;
                     player.setSelectedCards(selectedCardsNumber);
                 }
+
+                System.out.println("Servers selectedCards " + server.getNumOfRegistersFilled());
 
                 // Send CardSelected to everyone
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
@@ -624,16 +630,114 @@ public class MessageDistributer {
                     ArrayList<Integer> bla = new ArrayList<>();
                     bla.add(1337);
 
+                    boolean timerEnded = false;
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("TimerEnded", new TimerEndedBody(bla));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
+
+                        System.out.println("Server has full registers " + server.getNumOfRegistersFilled());
+                        timerEnded = true;
+
+                    }
+
+                    //Cards you got now is sent for those whose registers have not yet been filled
+                    //Additionally the remaining cards in hand are added to the discard pile
+                    if (timerEnded) {
+                        for (Server.ClientWrapper clientToNotify : server.getConnectedClients()) {
+                            System.out.println("Number of cards in register + " + clientToNotify.getPlayer().getSelectedCards());
+                            if (clientToNotify.getPlayer().getSelectedCards() < REGISTER_FIVE) {
+
+                                Player clientPlayer = clientToNotify.getPlayer();
+
+                                //Remove register cards from hand
+                                clientPlayer.getDeckHand().getDeck().removeAll(clientPlayer.getDeckRegister().getDeck());
+                                ArrayList<Card> remainingCardsInHand = clientPlayer.getDeckHand().getDeck();
+
+                                //Cards from hand are added to discard pile
+                                DeckDiscard deckDiscard = clientPlayer.getDeckDiscard();
+                                deckDiscard.getDeck().addAll(remainingCardsInHand);
+                                clientPlayer.setDeckDiscard(deckDiscard);
+
+                                //now fill empty registers with rest cards of draw pile, if not enough, put discrad on draw pile and reshuffle
+                                DeckDraw deckDraw = clientPlayer.getDeckDraw();
+                                ArrayList<Card> playerRegister = clientPlayer.getDeckRegister().getDeck();
+
+                                //empty registers are counted
+                                int fullRegisters = 0;
+                                for (Card registerCard : playerRegister) {
+                                    if (registerCard != null) {
+                                        fullRegisters++;
+                                    }
+                                }
+
+                                //when there are less cards to draw then needed for filling, the discards are added to the draw pile and it is reshuffled
+                                if ((REGISTER_FIVE - fullRegisters) > deckDraw.getDeck().size()) {
+                                    deckDraw.getDeck().addAll(deckDiscard.getDeck());
+                                    deckDraw.shuffleDeck();
+
+                                    //Shuffle coding is sent
+                                    JSONMessage jsonMessageShuffle = new JSONMessage("ShuffleCoding", new ShuffleCodingBody(clientPlayer.getPlayerID()));
+                                    client.getWriter().println(JSONEncoder.serializeJSON(jsonMessageShuffle));
+                                }
+
+                                //the difference of cards to a full register is saved in cardsToFillIn-Array
+                                ArrayList<Card> cardsToFillInArray = new ArrayList<>();
+
+                                int i = 0;
+                                while (i <= (REGISTER_FIVE - fullRegisters)) {
+                                    Card registerCard = deckDraw.getTopCard();
+                                    cardsToFillInArray.add(registerCard);
+
+                                    //PlayerDraw deck is updated
+                                    deckDraw.getDeck().remove(deckDraw.getTopCard());
+                                    player.getDeckDraw().getDeck().remove(deckDraw.getTopCard());
+                                    //Todo update client in handleCardYouGotNow
+                                    i++;
+                                }
+
+                                //Missing register-cards are filled in
+                                JSONMessage jsonMessageCardsYouGot = new JSONMessage("CardsYouGotNow", new CardsYouGotNowBody(cardsToFillInArray));
+                                clientToNotify.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCardsYouGot));
+                                clientToNotify.getWriter().flush();
+                            }
+                        }
+
+                        //Current cards
+                        ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
+
+                        for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
+                            {
+                                Player playerToUpdate = clientToUpdate.getPlayer();
+
+                                //active round is updated, first call from 0 to 1, else always between 1 and 5
+                                int activeRound = server.getActiveRound();
+                                if (activeRound == REGISTER_FIVE) {
+                                    server.setActiveRound(REGISTER_ONE);
+                                }
+                                activeRound++;
+                                server.setActiveRound(activeRound);
+
+                                //Card and player ID are saved in activeCardObject
+                                Card cardInRegister = playerToUpdate.getDeckRegister().getDeck().get(activeRound - 1);
+                                int playerID = playerToUpdate.getPlayerID();
+                                CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, cardInRegister);
+
+                                //activeCardObjects is added to list of all activeCardObjects so that those can be used
+                                activeCardsObjects.add(activeCardsObject);
+                                //the -1 is used on activeRound because the registers start with index 0 and end with index 4
+                            }
+                            JSONMessage jsonMessageCurrentCards = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCardsObjects));
+                            clientToUpdate.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
+                            clientToUpdate.getWriter().flush();
+
+                        }
                     }
                 }
             }
         }
-    }
 
+    }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //                           HANDLERS FOR SERVER MESSAGES                                        //
@@ -890,7 +994,7 @@ public class MessageDistributer {
 
         int messagePlayerID = cardPlayedBody.getPlayerID();
         Card playedCard = cardPlayedBody.getCard();
-        String cardName = playedCard.getCardName();
+        String cardToActivateName = playedCard.getCardName();
         String oldPosition = null;
 
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
@@ -917,18 +1021,18 @@ public class MessageDistributer {
         String finalOldPosition = oldPosition;
         Platform.runLater(() -> {
             // Update GUI
-            if (cardName.equals("MoveI") || cardName.equals("MoveII") || cardName.equals("MoveIII")) {
+            if (cardToActivateName.equals("MoveI") || cardToActivateName.equals("MoveII") || cardToActivateName.equals("MoveIII")) {
                 String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
                 mapController.moveRobot(finalOldPosition, newPosition);
 
 
-            } else if (cardName.equals("BackUp")) {
+            } else if (cardToActivateName.equals("BackUp")) {
                 String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
                 mapController.moveRobot(finalOldPosition, newPosition);
 
-            } else if (cardName.equals("TurnLeft")) {
+            } else if (cardToActivateName.equals("TurnLeft")) {
 
                 String robotPosition = x + "-" + y;
                 String turnDirection = "left";
@@ -936,7 +1040,7 @@ public class MessageDistributer {
                 MapController mapController = client.getMapController();
                 mapController.turnRobot(robotPosition, turnDirection);
 
-            } else if (cardName.equals("TurnRight")) {
+            } else if (cardToActivateName.equals("TurnRight")) {
 
                 String robotPosition = x + "-" + y;
                 String turnDirection = "right";
@@ -944,28 +1048,39 @@ public class MessageDistributer {
                 MapController mapController = client.getMapController();
                 mapController.turnRobot(robotPosition, turnDirection);
 
-            } else if (cardName.equals("UTurn")) {
+            } else if (cardToActivateName.equals("UTurn")) {
                 String robotPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
                 for (int i = 0; i < 2; i++) {
                     mapController.turnRobot(robotPosition, "right");
                 }
 
-            } else if (cardName.equals("PowerUp")) {
+            } else if (cardToActivateName.equals("PowerUp")) {
+                //Todo power up
 
-            } else if (cardName.equals("Again")) {
+            } else if (cardToActivateName.equals("Again")) {
+                int register = client.getPlayer().getActivaPhase();
+                Player player = client.getPlayer();
 
-                //update own player
-                if (messagePlayerID == client.getPlayer().getPlayerID()) {
-                    DeckRegister currentRegister = client.getPlayer().getDeckRegister();
-
-                    cardPlayedBody.getCard();
-
+                if (register == REGISTER_ONE) {
+                    //do nothing as there is no card to repeat
                 } else {
-                    //Update other player
+                    Card cardToActivate = player.getDeckRegister().getDeck().get(register - 2);
+                    //here minus 2 as the active phase goes from 1-5 but the registers go from 0-4, so you have to go back
+                    //1 for the actual phase and two for the register before and three for the phase before that register
+
+                    if (cardToActivate.getCardName().equals("Again")) {
+                        if (register < REGISTER_THREE) {
+                            //do nothing as for two times to use again one has to
+                        } else {
+                            cardToActivate = player.getDeckRegister().getDeck().get(register - 3);
+                        }
+                    }
+                    //here the if-else block is called recursively
+                    //Todo recursvie: cardToActivateName = cardToActivate.getCardName();
+
                 }
 
-                //Todo Mia
             }
         });
     }
@@ -1130,7 +1245,11 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleShuffleCoding()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-            //TODO write code here
+            //Client shuffles deckDraw after putting deckDiscard on top
+            DeckDiscard deckDiscard = client.getPlayer().getDeckDiscard();
+            DeckDraw deckDraw = client.getPlayer().getDeckDraw();
+            deckDraw.getDeck().addAll(deckDiscard.getDeck());
+            deckDraw.shuffleDeck();
         });
     }
 
@@ -1241,37 +1360,19 @@ public class MessageDistributer {
         PlayerMatController playerMatController = client.getPlayerMatController();
 
         Platform.runLater(() -> {
+            //No differentiation bewteen too slow players and finished players necessary, as all remaining cards in hand
+            //are put on discard pile as follows:
+
             //Remove register cards from hand
             player.getDeckHand().getDeck().removeAll(player.getDeckRegister().getDeck());
-            ArrayList<Card> remainingCardsInHand = player.getDeckHand().getDeck();
 
-            //Cards from hand are added to discard pile
-            DeckDiscard deckDiscard = player.getDeckDiscard();
-            deckDiscard.getDeck().addAll(remainingCardsInHand);
+            //Remaining cards in hand are added to discard pile
+            ArrayList<Card> remainingCardsInHand = player.getDeckHand().getDeck();
+            player.getDeckDiscard().getDeck().addAll(remainingCardsInHand);
 
             //Hand is emptied
             playerMatController.emptyHand();
 
-            //Empty registers are filled in with cards from deckDraw
-            DeckDraw deckDraw = player.getDeckDraw();
-
-            //now fill empty ergisters with rest cards of draw pile, if not enough, put discrad on draw pile and reshuffle
-            ArrayList<Integer> emptyRegisterNumbers = playerMatController.getEmptyRegisterNumbers();
-
-
-            //when there are less cards to draw then needed for filling, the disccards are added to the draw pile and it is reshuffled
-            if (emptyRegisterNumbers.size() > deckDraw.getDeck().size()) {
-                deckDraw.getDeck().addAll(deckDiscard.getDeck());
-                deckDraw.shuffleDeck();
-            }
-
-            //in register missing cards from DeckDraw are filled in
-            for (int i : emptyRegisterNumbers) {
-                Card drawnCard = deckDraw.getTopCard();
-
-               Image cardImage = playerMatController.getCardImage(drawnCard, client.getPlayer().getColor());
-               playerMatController.putImageInRegister(i, cardImage);
-            }
 
         });
     }
@@ -1288,8 +1389,34 @@ public class MessageDistributer {
             cardsYouGotNowBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ):  handleCardsYouGotNow()" + ANSI_RESET);
 
+        PlayerMatController playerMatController = client.getPlayerMatController();
+        Player player = client.getPlayer();
+
+        System.out.println("Cardsyougot now" + cardsYouGotNowBody.getCards());
+
         Platform.runLater(() -> {
-            //TODO write code here
+
+
+            //in register missing cards from DeckDraw are filled in
+                ArrayList<Integer> emptyRegisterIndexes = playerMatController.getEmptyRegisterNumbers();
+
+                int i = 0;
+                while (i < emptyRegisterIndexes.size()){
+
+                for (Card card : cardsYouGotNowBody.getCards()) {
+                    //Player register is updated
+                    player.getDeckRegister().getDeck().add(emptyRegisterIndexes.get(i), card);
+
+                    System.out.println("Card? " + card);
+                    //Gui is updated
+                    Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
+                    playerMatController.putImageInRegister(emptyRegisterIndexes.get(i), new ImageView(cardImage));
+
+                    i++;
+                }
+            }
+
+
         });
     }
 
@@ -1304,9 +1431,15 @@ public class MessageDistributer {
     public void handleCurrentCards(Client client, Client.ClientReaderTask task, CurrentCardsBody currentCardsBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentCards()" + ANSI_RESET);
 
+        //The current round is set which is important for implementing again
+        int activeRegister = client.getPlayer().getActivaPhase();
+
         Platform.runLater(() -> {
             //TODO write code here
         });
+        //after every card in the current register is shown, the register is updated
+        activeRegister++;
+        client.getPlayer().setActivaPhase(activeRegister);
     }
 
     /**
