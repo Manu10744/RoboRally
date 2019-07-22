@@ -702,7 +702,7 @@ public class MessageDistributer {
                             }
                         }
 
-                        System.out.println("Bist du hier?");
+                        //Todo only issue if there is two players
 
                         //Current cards
                         ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
