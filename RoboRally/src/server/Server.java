@@ -100,6 +100,19 @@ public class Server extends Application {
 
     }
 
+    public boolean playerFellOffMap(Player player){
+        int playerXPos = player.getPlayerRobot().getxPosition();
+        int playerYPos = player.getPlayerRobot().getyPosition();
+        int mapHeight = this.map.get(0).size();
+        int mapWidth = this.map.size();
+
+        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public int getActiveRound() {
         return activeRound;
     }

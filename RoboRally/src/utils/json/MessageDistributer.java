@@ -487,7 +487,7 @@ public class MessageDistributer {
 
                 String playerPos = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
                 // player fell into a pit or out of map
-                if (server.getPitMap().get(playerPos) != null) {
+                if (server.getPitMap().get(playerPos) != null || server.playerFellOffMap(player)) {
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -499,14 +499,17 @@ public class MessageDistributer {
                     int randomVal = random.nextInt(server.getRebootMap().size());
                     // get the random restartPoints coordinates
                     String rebootPos = ((String) server.getRebootMap().keySet().toArray()[randomVal]);
-                    int xPos = Integer.parseInt(rebootPos.split("-")[0]);
-                    int yPos = Integer.parseInt(rebootPos.split("-")[1]);
+                    int rebootXPos = Integer.parseInt(rebootPos.split("-")[0]);
+                    int rebootYPos = Integer.parseInt(rebootPos.split("-")[1]);
 
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, xPos, yPos));
+                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, rebootXPos, rebootYPos));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
                     }
+                    player.getPlayerRobot().setxPosition(rebootXPos);
+                    player.getPlayerRobot().setyPosition(rebootYPos);
+                    player.getPlayerRobot().setLineOfSight("up");
                 }
             }
         }
@@ -1418,6 +1421,21 @@ public class MessageDistributer {
         Platform.runLater(() -> {
         // own robot has to reboot
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
+
+            int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
+            int playerYPos = client.getPlayer().getPlayerRobot().getyPosition();
+
+            if(client.getPlayer().getPlayerRobot().getxPosition() < 0){
+                client.getPlayer().getPlayerRobot().setxPosition(playerXPos + 1);
+            }else if(client.getPlayer().getPlayerRobot().getyPosition() < 0){
+                client.getPlayer().getPlayerRobot().setyPosition(playerYPos + 1);
+            }else if(client.getPlayer().getPlayerRobot().getxPosition() >= client.getMapController().getMap().size()){
+                client.getPlayer().getPlayerRobot().setxPosition(playerXPos - 1);
+            }else if(client.getPlayer().getPlayerRobot().getyPosition() >= client.getMapController().getMap().get(0).size()){
+                client.getPlayer().getPlayerRobot().setyPosition(playerYPos - 1);
+            }
+
+
             String oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
 
             client.getPlayer().getPlayerRobot().setxPosition(rebootXPos);
