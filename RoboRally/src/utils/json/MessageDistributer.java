@@ -318,7 +318,7 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-            Path path = Paths.get("RoboRally/src/resources/maps/passingLane.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
             try {
                 // Sets Map in server
                 String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -510,6 +510,18 @@ public class MessageDistributer {
                     player.getPlayerRobot().setxPosition(rebootXPos);
                     player.getPlayerRobot().setyPosition(rebootYPos);
                     player.getPlayerRobot().setLineOfSight("up");
+                }
+
+                if (server.getGearMap().get(playerPos) != null) {
+                    String gearOrientation = server.getGearMap().get(playerPos).getOrientations().get(0);
+
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, gearOrientation));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // TODO: update orientation of robot
                 }
             }
         }
@@ -1425,6 +1437,11 @@ public class MessageDistributer {
             int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
             int playerYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
+            int mapWidth = client.getMapController().getMap().size();
+            int mapHeight = client.getMapController().getMap().get(0).size();
+            Robot playerRobot = client.getPlayer().getPlayerRobot();
+
+
             if(client.getPlayer().getPlayerRobot().getxPosition() < 0){
                 client.getPlayer().getPlayerRobot().setxPosition(playerXPos + 1);
             }else if(client.getPlayer().getPlayerRobot().getyPosition() < 0){
@@ -1434,7 +1451,6 @@ public class MessageDistributer {
             }else if(client.getPlayer().getPlayerRobot().getyPosition() >= client.getMapController().getMap().get(0).size()){
                 client.getPlayer().getPlayerRobot().setyPosition(playerYPos - 1);
             }
-
 
             String oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
 
@@ -1530,6 +1546,18 @@ public class MessageDistributer {
     public void handlePlayerTurning(Client client, Client.ClientReaderTask task, PlayerTurningBody
             playerTurningBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerTurning()" + ANSI_RESET);
+
+        int messagePlayerID = playerTurningBody.getPlayerID();
+        String turnOrientation = playerTurningBody.getDirection();
+
+        String oldPos;
+        if (client.getPlayer().getPlayerID() == messagePlayerID) {
+            // Own player is turning
+            oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+            client.getMapController().turnRobot(oldPos, turnOrientation);
+
+            // TODO: Update orientation with switch block
+        }
 
         Platform.runLater(() -> {
 
