@@ -636,7 +636,6 @@ public class MessageDistributer {
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
 
-                        System.out.println("Server has full registers " + server.getNumOfRegistersFilled());
                         timerEnded = true;
 
                     }
@@ -645,7 +644,6 @@ public class MessageDistributer {
                     //Additionally the remaining cards in hand are added to the discard pile
                     if (timerEnded) {
                         for (Server.ClientWrapper clientToNotify : server.getConnectedClients()) {
-                            System.out.println("Number of cards in register + " + clientToNotify.getPlayer().getSelectedCards());
                             if (clientToNotify.getPlayer().getSelectedCards() < REGISTER_FIVE) {
 
                                 Player clientPlayer = clientToNotify.getPlayer();
@@ -703,8 +701,10 @@ public class MessageDistributer {
                             }
                         }
 
+
                         //Current cards
                         ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
+
 
                         for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
                             {
@@ -720,12 +720,13 @@ public class MessageDistributer {
 
                                 //Card and player ID are saved in activeCardObject
                                 Card cardInRegister = playerToUpdate.getDeckRegister().getDeck().get(activeRound - 1);
+                                //the -1 is used on activeRound because the registers start with index 0 and end with index 4
+
                                 int playerID = playerToUpdate.getPlayerID();
                                 CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, cardInRegister);
 
                                 //activeCardObjects is added to list of all activeCardObjects so that those can be used
                                 activeCardsObjects.add(activeCardsObject);
-                                //the -1 is used on activeRound because the registers start with index 0 and end with index 4
                             }
                             JSONMessage jsonMessageCurrentCards = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCardsObjects));
                             clientToUpdate.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
@@ -1410,7 +1411,7 @@ public class MessageDistributer {
                     System.out.println("Card? " + card);
                     //Gui is updated
                     Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
-                    playerMatController.putImageInRegister(emptyRegisterIndexes.get(i), new ImageView(cardImage));
+                    playerMatController.putImageInRegister(emptyRegisterIndexes.get(i), cardImage);
 
                     i++;
                 }
