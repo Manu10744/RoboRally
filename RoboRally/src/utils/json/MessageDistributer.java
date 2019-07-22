@@ -894,8 +894,10 @@ public class MessageDistributer {
                 for (int i = 0; i < 2; i++) {
                     mapController.turnRobot(robotPosition, "right");
                 }
-
             } else if (cardName.equals("PowerUp")) {
+                int energyAmount = client.getPlayer().getEnergy();
+                // update energy amount
+                client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(energyAmount));
 
             } else if (cardName.equals("Again")) {
 

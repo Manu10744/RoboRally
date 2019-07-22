@@ -25,7 +25,7 @@
         <ImageView fx:id="ownRobotIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
 
         <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <Label fx:id="ownEnergyCubesLabel" contentDisplay="TOP" graphicTextGap="-75.0" textAlignment="CENTER" text="5">
+        <Label fx:id="ownEnergyCubesLabel" contentDisplay="TOP" graphicTextGap="-75.0" textAlignment="CENTER" text="5" visible="false">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>

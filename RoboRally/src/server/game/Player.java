@@ -44,6 +44,7 @@ public class Player implements Serializable {
 
     public Player() {
         this.name = "Findus";
+        this.energy = 5;
 
         // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
