@@ -193,6 +193,86 @@
                               <Image url="@../resources/images/cards/repeat-routine-100x100.png" />
                            </image>
                         </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="250.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-permanent-admin-privilege-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-permanent-cache-memory-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-permanent-deflector-shield-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-permanent-memory-stick-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-permanent-rear-laser-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="120.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-temporary-boink-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-temporary-hack-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-temporary-memory-swap-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" top="5.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-temporary-repeat-routine-100x100.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" top="30.0" />
+                           </VBox.margin>
+                           <image>
+                              <Image url="@../resources/images/cards/upgrade-temporary-spam-blocker-100x100.png" />
+                           </image>
+                        </ImageView>
                      </children>
                      <opaqueInsets>
                         <Insets />
@@ -526,6 +606,190 @@
                         <Label font="${textWiki.font}" prefHeight="80.0" text="Repeat the programming in your previous register. If your previous register was a damage card, &#10;draw a card from the top of your deck, and play that card this register. &#10;If you used an upgrade in your previous register that allowed you to play multiple &#10;programming cards, reexecute the second card. ">
                            <VBox.margin>
                               <Insets bottom="20.0" left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${headingWiki.font}" text="Upgrade Cards">
+                           <VBox.margin>
+                              <Insets left="15.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${headingWiki.font}" text="Permanent Upgrades">
+                           <VBox.margin>
+                              <Insets left="15.0" top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Admin Privilege">
+                           <VBox.margin>
+                              <Insets left="15.0" top="60.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="70.0" text="Cost: 3 &#10;Effect: Once per round, you may give your robot priority for one register.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Cache Memory">
+                           <VBox.margin>
+                              <Insets left="15.0" top="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="70.0" text="Cost: 4 &#10;Effect: You may discard cards from your hand and place them on the top of your deck. &#10;Do not draw replacement cards. ">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Deflector Shield">
+                           <VBox.margin>
+                              <Insets left="15.0" top="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="70.0" text="Cost: 2 &#10;Effect: At the beginning of a register, you may spend one energy to negate any robot lasers &#10;that would hit you that register. ">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Memory Stick">
+                           <VBox.margin>
+                              <Insets left="15.0" top="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="70.0" text="Cost: 4 &#10;Effect: You may discard cards from your hand and place them on the top of your deck. &#10;Do not draw replacement cards.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Rear Laser">
+                           <VBox.margin>
+                              <Insets left="15.0" top="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" text="Cost: 2 &#10;Effect: Your robot may shoot backward as well as forward.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${headingWiki.font}" text="Temporary Upgrades">
+                           <VBox.margin>
+                              <Insets left="15.0" top="80.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Boink">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" top="35.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="60.0" text="Cost: 1 &#10;Effect: Move to an adjacent space. Do not change direction.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Hack">
+                           <VBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="70.0" text="Cost: 1 &#10;Effect: Execute the programming in your current register again.  &#10;This action does not replace any existing programming.">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Memory Swap">
+                           <VBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="60.0" text="Cost: 1 &#10;Effect: Draw three cards. Then choose three from your hand to put on top of your deck. ">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Repeat Routine">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="15.0" top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="70.0" text="Cost: 3 &#10;Effect: Add the Repeat Routine programming card to your discard pile.  &#10;It is now permanently part of your deck. The Repeat Routine programming card acts as an &#10;extra Again card in your programming deck. ">
+                           <VBox.margin>
+                              <Insets left="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label font="${subheadingWiki.font}" text="Spam Blocker">
+                           <VBox.margin>
+                              <Insets left="15.0" top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label font="${textWiki.font}" prefHeight="100.0" text="Cost: 3 &#10;Effect: Replace each SPAM damage card in your hand with a card from the top of your deck. &#10;Immediately discard the SPAM damage cards by placing them in the SPAM damage &#10;card draw pile. If you draw new SPAM damage cards from your deck, &#10;keep them in your hand for this round.">
+                           <VBox.margin>
+                              <Insets left="15.0" />
                            </VBox.margin>
                            <font>
                               <Font size="13.0" />

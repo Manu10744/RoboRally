@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
@@ -33,6 +34,7 @@ import server.Server;
 import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.*;
 import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
@@ -319,7 +321,7 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
-            Path path = Paths.get("RoboRally/src/resources/maps/deathTrap.json");
+            Path path = Paths.get("RoboRally/src/resources/maps/passingLane.json");
             try {
                 // Sets Map in server
                 String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -331,6 +333,48 @@ public class MessageDistributer {
                 for (int xPos = 0; xPos < server.getMap().size(); xPos++) {
                     for (int yPos = 0; yPos < server.getMap().get(yPos).size(); yPos++) {
                         for (Tile tile : server.getMap().get(xPos).get(yPos)) {
+                            if (tile instanceof Wall){
+                                String ID = xPos + "-" + yPos;
+                                Wall wall = (Wall) tile;
+                                server.getWallMap().put(ID, wall);
+                            }
+                            if(tile instanceof Pit){
+                                String ID = xPos + "-" + yPos;
+                                Pit pit = (Pit) tile;
+                                server.getPitMap().put(ID, pit);
+                            }
+                            if(tile instanceof Gear){
+                                String ID = xPos + "-" + yPos;
+                                Gear gear = (Gear) tile;
+                                server.getGearMap().put(ID, gear);
+                            }
+                            if(tile instanceof Laser){
+                                String ID = xPos + "-" + yPos;
+                                Laser laser = (Laser) tile;
+                                server.getLaserMap().put(ID, laser);
+                            }
+                            if(tile instanceof PushPanel){
+                                String ID = xPos + "-" + yPos;
+                                PushPanel pushPanel = (PushPanel) tile;
+                                server.getPushPanelMap().put(ID, pushPanel);
+                            }
+                            if(tile instanceof RestartPoint){
+                                String ID = xPos + "-" + yPos;
+                                RestartPoint restartPoint = (RestartPoint) tile;
+                                server.getRebootMap().put(ID, restartPoint);
+                            }
+                            if(tile instanceof CheckPoint){
+                                String ID = xPos + "-" + yPos;
+                                CheckPoint checkPoint = (CheckPoint) tile;
+                                server.getCheckPointMap().put(ID, checkPoint);
+                            }
+                            if(tile instanceof EnergySpace){
+                                String ID = xPos + "-" + yPos;
+                                EnergySpace energySpace = (EnergySpace) tile;
+                                server.getEnergySpaceMap().put(ID, energySpace);
+                            }
+
+
                             if (tile instanceof Antenna) {
                                 server.setAntenna(tile);
                                 server.setAntennaXPos(xPos);
@@ -427,7 +471,6 @@ public class MessageDistributer {
 
         Card playedCard = playCardBody.getCard();
 
-
         for (Server.ClientWrapper client : server.getConnectedClients()) {
             if (client.getClientSocket().equals(task.getClientSocket())) {
                 //Todo delete playerID of Client
@@ -435,7 +478,7 @@ public class MessageDistributer {
                 int playerID = player.getPlayerID();
 
                 //update the player of the server
-                playedCard.activateCard(player);
+                playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
 
                 //Sends played card to all clients with id of the one playing it
@@ -443,6 +486,30 @@ public class MessageDistributer {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(playerID, playedCard));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
+                }
+
+                String playerPos = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
+                // player fell into a pit
+                if (server.getPitMap().get(playerPos) != null) {
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // choose a random restartPoint
+                    Random random = new Random();
+                    int randomVal = random.nextInt(server.getRebootMap().size());
+                    // get the random restartPoints coordinates
+                    String rebootPos = ((String) server.getRebootMap().keySet().toArray()[randomVal]);
+                    int xPos = Integer.parseInt(rebootPos.split("-")[0]);
+                    int yPos = Integer.parseInt(rebootPos.split("-")[1]);
+
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, xPos, yPos));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
                 }
             }
         }
@@ -1000,41 +1067,47 @@ public class MessageDistributer {
         Card playedCard = cardPlayedBody.getCard();
         String cardToActivateName = playedCard.getCardName();
         String oldPosition = null;
+        String cardName = playedCard.getCardName();
+
+        String currentPosition = null;
+        String newPosition = null;
 
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
-            oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-            playedCard.activateCard(client.getPlayer());
+            currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+            playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+
+            // New position of own robot
+            newPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
             for (Player player : client.getOtherPlayers()) {
                 if (player.getPlayerID() == messagePlayerID) {
-                    oldPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-                    playedCard.activateCard(player);
+                    currentPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
+                    playedCard.activateCard(player, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+
+                    // New position of OtherPlayer's robot
+                    newPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
                 }
             }
         }
-
-        // New position of player's robot
-        int x = client.getPlayer().getPlayerRobot().getxPosition();
-        int y = client.getPlayer().getPlayerRobot().getyPosition();
-
         //TODO check that final
-        String finalOldPosition = oldPosition;
+        String finalCurrentPosition = currentPosition;
+        String finalNewPosition = newPosition;
         Platform.runLater(() -> {
             // Update GUI
             if (cardToActivateName.equals("MoveI") || cardToActivateName.equals("MoveII") || cardToActivateName.equals("MoveIII")) {
                 String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalOldPosition, newPosition);
-
+                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
 
             } else if (cardToActivateName.equals("BackUp")) {
                 String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
-                mapController.moveRobot(finalOldPosition, newPosition);
+                mapController.moveRobot(finalCurrentPosition, finalNewPosition);
 
             } else if (cardToActivateName.equals("TurnLeft")) {
 
@@ -1042,7 +1115,7 @@ public class MessageDistributer {
                 String turnDirection = "left";
 
                 MapController mapController = client.getMapController();
-                mapController.turnRobot(robotPosition, turnDirection);
+                mapController.turnRobot(finalCurrentPosition, turnDirection);
 
             } else if (cardToActivateName.equals("TurnRight")) {
 
@@ -1050,13 +1123,13 @@ public class MessageDistributer {
                 String turnDirection = "right";
 
                 MapController mapController = client.getMapController();
-                mapController.turnRobot(robotPosition, turnDirection);
+                mapController.turnRobot(finalCurrentPosition, turnDirection);
 
             } else if (cardToActivateName.equals("UTurn")) {
                 String robotPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
                 for (int i = 0; i < 2; i++) {
-                    mapController.turnRobot(robotPosition, "right");
+                    mapController.turnRobot(finalCurrentPosition, "right");
                 }
 
             } else if (cardToActivateName.equals("PowerUp")) {
@@ -1454,8 +1527,44 @@ public class MessageDistributer {
     public void handleMovement(Client client, Client.ClientReaderTask task, MovementBody movementBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleMovement()" + ANSI_RESET);
 
+        int rebootXPos = movementBody.getX();
+        int rebootYPos = movementBody.getY();
+        int messagePlayerID = movementBody.getPlayerID();
+
         Platform.runLater(() -> {
-            //TODO write code here
+        // own robot has to reboot
+        if (messagePlayerID == client.getPlayer().getPlayerID()) {
+            String oldPos = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
+
+            client.getPlayer().getPlayerRobot().setxPosition(rebootXPos);
+            client.getPlayer().getPlayerRobot().setyPosition(rebootYPos);
+
+            String newPos = rebootXPos + "-" + rebootYPos;
+
+            client.getMapController().rebootRobot(oldPos, newPos);
+
+            //set robot orientation to north
+            client.getPlayer().getPlayerRobot().setLineOfSight("up");
+
+        }
+        else {
+            // other player's robot has to reboot
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    String oldPos = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
+
+                    otherPlayer.getPlayerRobot().setxPosition(rebootXPos);
+                    otherPlayer.getPlayerRobot().setyPosition(rebootYPos);
+
+                    String newPos = rebootXPos + "-" + rebootYPos;
+
+                    client.getMapController().rebootRobot(oldPos, newPos);
+
+                    //set robot orientation to north
+                    client.getPlayer().getPlayerRobot().setLineOfSight("up");
+                }
+            }
+        }
         });
     }
 

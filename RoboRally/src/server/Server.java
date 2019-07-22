@@ -12,8 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Tile;
+import server.game.Tiles.*;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
@@ -57,6 +56,15 @@ public class Server extends Application {
     private Tile antenna;
     private int antennaXPos;
     private int antennaYPos;
+
+    private Map<String, Wall> wallMap = new HashMap<>();
+    private Map<String, Pit> pitMap = new HashMap<>();
+    private Map<String, Gear> gearMap = new HashMap<>();
+    private Map<String, Laser> laserMap = new HashMap<>();
+    private Map<String, PushPanel> pushPanelMap = new HashMap<>();
+    private Map<String, RestartPoint> rebootMap = new HashMap<>();
+    private Map<String, CheckPoint> checkPointMap = new HashMap<>();
+    private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
     private int numOfRegistersFilled = 0;
     private int activeRound;
 
@@ -210,6 +218,38 @@ public class Server extends Application {
 
     public void setAntennaYPos(int antennaYPos) {
         this.antennaYPos = antennaYPos;
+    }
+
+    public Map<String, Wall> getWallMap(){
+        return wallMap;
+    }
+
+    public Map<String, Pit> getPitMap(){
+        return pitMap;
+    }
+
+    public Map<String, Gear> getGearMap(){
+        return gearMap;
+    }
+
+    public Map<String, Laser> getLaserMap(){
+       return laserMap;
+    }
+
+    public Map<String, PushPanel> getPushPanelMap(){
+        return pushPanelMap;
+    }
+
+    public Map<String, RestartPoint> getRebootMap(){
+        return rebootMap;
+    }
+
+    public Map<String, CheckPoint> getCheckPointMap(){
+        return checkPointMap;
+    }
+
+    public Map<String, EnergySpace> getEnergySpaceMap(){
+        return energySpaceMap;
     }
 
     public class ServerReaderTask extends Thread {

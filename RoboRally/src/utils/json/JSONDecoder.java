@@ -380,13 +380,13 @@ public class JSONDecoder {
             } else if (messageType.equals("PlayerShooting")) {
                 PlayerShootingBody playerShootingBody = new PlayerShootingBody();
                 return new JSONMessage("PlayerShooting", playerShootingBody);
-            } else if (messageType.equals("RestartPoint")) {
+            } else if (messageType.equals("Reboot")) {
 
                 RebootBody rebootBody = new RebootBody(
                         messageBody.get("playerID").getAsInt()
                 );
 
-                return new JSONMessage("RestartPoint", rebootBody);
+                return new JSONMessage("Reboot", rebootBody);
             } else if (messageType.equals("PlayerTurning")) {
 
                 PlayerTurningBody playerTurningBody = new PlayerTurningBody(
