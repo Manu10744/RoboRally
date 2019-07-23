@@ -57,7 +57,6 @@ import viewmodels.PlayerMatController;
  * @author Ivan Dovecar
  * @author Verena Sadtler
  * @author Jessica Gerlach
- *
  */
 public class MessageDistributer {
     public static Map<String, IController> controllerMap;
@@ -350,42 +349,42 @@ public class MessageDistributer {
                 for (int xPos = 0; xPos < server.getMap().size(); xPos++) {
                     for (int yPos = 0; yPos < server.getMap().get(yPos).size(); yPos++) {
                         for (Tile tile : server.getMap().get(xPos).get(yPos)) {
-                            if (tile instanceof Wall){
+                            if (tile instanceof Wall) {
                                 String ID = xPos + "-" + yPos;
                                 Wall wall = (Wall) tile;
                                 server.getWallMap().put(ID, wall);
                             }
-                            if(tile instanceof Pit){
+                            if (tile instanceof Pit) {
                                 String ID = xPos + "-" + yPos;
                                 Pit pit = (Pit) tile;
                                 server.getPitMap().put(ID, pit);
                             }
-                            if(tile instanceof Gear){
+                            if (tile instanceof Gear) {
                                 String ID = xPos + "-" + yPos;
                                 Gear gear = (Gear) tile;
                                 server.getGearMap().put(ID, gear);
                             }
-                            if(tile instanceof Laser){
+                            if (tile instanceof Laser) {
                                 String ID = xPos + "-" + yPos;
                                 Laser laser = (Laser) tile;
                                 server.getLaserMap().put(ID, laser);
                             }
-                            if(tile instanceof PushPanel){
+                            if (tile instanceof PushPanel) {
                                 String ID = xPos + "-" + yPos;
                                 PushPanel pushPanel = (PushPanel) tile;
                                 server.getPushPanelMap().put(ID, pushPanel);
                             }
-                            if(tile instanceof RestartPoint){
+                            if (tile instanceof RestartPoint) {
                                 String ID = xPos + "-" + yPos;
                                 RestartPoint restartPoint = (RestartPoint) tile;
                                 server.getRebootMap().put(ID, restartPoint);
                             }
-                            if(tile instanceof CheckPoint){
+                            if (tile instanceof CheckPoint) {
                                 String ID = xPos + "-" + yPos;
                                 CheckPoint checkPoint = (CheckPoint) tile;
                                 server.getCheckPointMap().put(ID, checkPoint);
                             }
-                            if(tile instanceof EnergySpace){
+                            if (tile instanceof EnergySpace) {
                                 String ID = xPos + "-" + yPos;
                                 EnergySpace energySpace = (EnergySpace) tile;
                                 server.getEnergySpaceMap().put(ID, energySpace);
@@ -545,26 +544,34 @@ public class MessageDistributer {
                     String currLineOfSight = player.getPlayerRobot().getLineOfSight();
 
                     if (gearOrientation.equals("left")) {
-                        switch(currLineOfSight) {
-                            case "up": player.getPlayerRobot().setLineOfSight("left");
-                            break;
-                            case "left": player.getPlayerRobot().setLineOfSight("down");
-                            break;
-                            case "down": player.getPlayerRobot().setLineOfSight("right");
-                            break;
-                            case "right": player.getPlayerRobot().setLineOfSight("up");
+                        switch (currLineOfSight) {
+                            case "up":
+                                player.getPlayerRobot().setLineOfSight("left");
+                                break;
+                            case "left":
+                                player.getPlayerRobot().setLineOfSight("down");
+                                break;
+                            case "down":
+                                player.getPlayerRobot().setLineOfSight("right");
+                                break;
+                            case "right":
+                                player.getPlayerRobot().setLineOfSight("up");
                         }
                     }
 
                     if (gearOrientation.equals("right")) {
-                        switch(currLineOfSight) {
-                            case "up": player.getPlayerRobot().setLineOfSight("right");
+                        switch (currLineOfSight) {
+                            case "up":
+                                player.getPlayerRobot().setLineOfSight("right");
                                 break;
-                            case "left": player.getPlayerRobot().setLineOfSight("up");
+                            case "left":
+                                player.getPlayerRobot().setLineOfSight("up");
                                 break;
-                            case "down": player.getPlayerRobot().setLineOfSight("left");
+                            case "down":
+                                player.getPlayerRobot().setLineOfSight("left");
                                 break;
-                            case "right": player.getPlayerRobot().setLineOfSight("down");
+                            case "right":
+                                player.getPlayerRobot().setLineOfSight("down");
                         }
                     }
                 }
@@ -685,9 +692,17 @@ public class MessageDistributer {
                 int selectedCardsNumber = player.getSelectedCards();
 
                 // Update the player's register deck
-                player.getDeckRegister().getDeck().set(register - 1, selectedCard);
+                for (Card handCard : client.getPlayer().getDeckHand().getDeck()) {
+                    // If player puts a card back into the hand deck
+                    if (selectedCard == null) {
+                        player.getDeckRegister().getDeck().set(register - 1, null);
+                    } else if (handCard.getClass().equals(selectedCard.getClass())) {
+                        player.getDeckRegister().getDeck().set(register - 1, handCard);
 
-                player.getDeckHand().getDeck().remove(selectedCard);
+                        // Break, so only 1 card of that type is added to the players register
+                        break;
+                    }
+                }
 
                 if (selectedCard == null) {
                     logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
@@ -750,8 +765,10 @@ public class MessageDistributer {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("TIMER IN SERVER HAS FINISHED!");
-                    //TODO: Give proper information about not finished players
+
+                    logger.info(ANSI_CYAN + "TIMER IN SERVER HAS FINISHED!" + ANSI_RESET);
+
+                    // Containing playerIDs of players that have not finished programming
                     ArrayList<Integer> playersNotFinished = new ArrayList<>();
 
                     // Timer ended, now check for players that have not finished programming
@@ -776,26 +793,20 @@ public class MessageDistributer {
                     if (timerEnded) {
                         for (Server.ClientWrapper clientToNotify : server.getConnectedClients()) {
                             if (clientToNotify.getPlayer().getSelectedCards() < REGISTER_FIVE) {
-                                Player clientPlayer = clientToNotify.getPlayer();
+                                Player notFinishedPlayer = clientToNotify.getPlayer();
 
-                                System.out.println("DECKHAND SIZE BEFORE: " + clientPlayer.getDeckHand().getDeck().size());
+                                // Remove register cards from hand
+                                notFinishedPlayer.getDeckHand().getDeck().removeAll(notFinishedPlayer.getDeckRegister().getDeck());
 
-                                //Remove register cards from hand
-                                ArrayList<Card> deckRegister = clientPlayer.getDeckRegister().getDeck();
-                                ArrayList<Card> deckHand = clientPlayer.getDeckHand().getDeck();
-                                
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): REMOVED CHOSEN REGISTER CARDS FROM HAND DECK" + ANSI_RESET);
 
+                                // Add remaining hand cards to discard pile
+                                notFinishedPlayer.getDeckDiscard().getDeck().addAll(notFinishedPlayer.getDeckHand().getDeck());
 
-                                System.out.println("DECKHAND SIZE AFTER: " + clientPlayer.getDeckHand().getDeck().size());
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): ADDED REMAINING HAND CARDS TO THE DISCARD PILE. DISCARD PILE SIZE: " + notFinishedPlayer.getDeckDiscard().getDeck().size() + ANSI_RESET);
 
-                                //Cards from hand are added to discard pile
-                                DeckDiscard deckDiscard = clientPlayer.getDeckDiscard();
-                                //deckDiscard.getDeck().addAll(remainingCardsInHand);
-                                clientPlayer.setDeckDiscard(deckDiscard);
-
-                                //now fill empty registers with rest cards of draw pile, if not enough, put discrad on draw pile and reshuffle
-                                DeckDraw deckDraw = clientPlayer.getDeckDraw();
-                                ArrayList<Card> playerRegister = clientPlayer.getDeckRegister().getDeck();
+                                // Now fill empty registers with rest cards of draw pile, if not enough, put discard on draw pile and reshuffle
+                                ArrayList<Card> playerRegister = notFinishedPlayer.getDeckRegister().getDeck();
 
                                 //empty registers are counted
                                 int fullRegisters = 0;
@@ -805,41 +816,48 @@ public class MessageDistributer {
                                     }
                                 }
 
-                                //when there are less cards to draw then needed for filling, the discards are added to the draw pile and it is reshuffled
-                                if ((REGISTER_FIVE - fullRegisters) > deckDraw.getDeck().size()) {
-                                    deckDraw.getDeck().addAll(deckDiscard.getDeck());
-                                    deckDraw.shuffleDeck();
+                                System.out.println(fullRegisters);
+                                // When there are less cards to draw than needed for filling, the discard cards are added to the draw pile and it is reshuffled
+                                if ((REGISTER_FIVE - fullRegisters) > notFinishedPlayer.getDeckDraw().getDeck().size()) {
+                                    notFinishedPlayer.getDeckDraw().getDeck().addAll(notFinishedPlayer.getDeckDiscard().getDeck());
+                                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): NOT ENOUGH CARDS ON DRAW PILE. ADDING DISCARD PILE TO DRAW PILE" + ANSI_RESET);
 
-                                    clientPlayer.setDeckDraw(deckDraw);
+                                    notFinishedPlayer.getDeckDraw().shuffleDeck();
+                                    logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SHUFFLING DRAW PILE...OK" + ANSI_RESET);
 
-                                    //Shuffle coding is sent
-                                    JSONMessage jsonMessageShuffle = new JSONMessage("ShuffleCoding", new ShuffleCodingBody(clientPlayer.getPlayerID()));
+                                    // Shuffle coding is sent
+                                    JSONMessage jsonMessageShuffle = new JSONMessage("ShuffleCoding", new ShuffleCodingBody(notFinishedPlayer.getPlayerID()));
                                     client.getWriter().println(JSONEncoder.serializeJSON(jsonMessageShuffle));
                                 }
 
-                                //the difference of cards to a full register is saved in cardsToFillIn-Array
+                                // Collect all cards that are used to fill the register
                                 ArrayList<Card> cardsToFillInArray = new ArrayList<>();
+
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): FILLING REGISTER DECK OF PLAYER " + notFinishedPlayer.getName() + " STARTED ..." + ANSI_RESET);
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): REGISTER DECK OF PLAYER " + notFinishedPlayer.getName() + " BEFORE FILLING: " + notFinishedPlayer.getDeckRegister().getDeck() + ANSI_RESET);
 
                                 int i = 0;
                                 while (i < REGISTER_FIVE) {
-                                    if(playerRegister.get(i) == null){
-                                        //card to fill in array is added to array which is sent when yourCards is snet
-                                        Card registerCard = deckDraw.getTopCard();
-                                        cardsToFillInArray.add(registerCard);
+                                    if (playerRegister.get(i) == null) {
+                                        // Fill each empty register with the current top card of the draw pile
+                                        Card fillingCard = notFinishedPlayer.getDeckDraw().getTopCard();
+                                        cardsToFillInArray.add(fillingCard);
 
-                                        //update player register
-                                        playerRegister.add(i, registerCard);
-                                        player.getDeckRegister().getDeck().add(i, registerCard);
+                                        // Fill the register
+                                        playerRegister.set(i, fillingCard);
 
-                                        //PlayerDraw deck is updated
-                                        deckDraw.getDeck().remove(deckDraw.getTopCard());
-                                        player.getDeckDraw().getDeck().remove(deckDraw.getTopCard());
+                                        // Remove the taken card from the draw pile
+                                        notFinishedPlayer.getDeckDraw().getDeck().remove(notFinishedPlayer.getDeckDraw().getTopCard());
                                     }
 
                                     i++;
                                 }
 
-                                //Missing register-cards are filled in
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): FILLING REGISTER DECK OF PLAYER " + notFinishedPlayer.getName() + " FINISHED!" + ANSI_RESET);
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): REGISTER DECK AFTER FILLING: " + notFinishedPlayer.getDeckRegister().getDeck() + ANSI_RESET);
+                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): NEW DRAW PILE SIZE: " + notFinishedPlayer.getDeckDraw().getDeck().size());
+
+                                // Inform player about his new cards
                                 JSONMessage jsonMessageCardsYouGot = new JSONMessage("CardsYouGotNow", new CardsYouGotNowBody(cardsToFillInArray));
                                 clientToNotify.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCardsYouGot));
                                 clientToNotify.getWriter().flush();
@@ -848,47 +866,45 @@ public class MessageDistributer {
                         cardsYouGotNowIsSent = true;
                     }
 
-                        //Current cards
-                        ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
+                    // Current cards
+                    ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
 
-                        if(cardsYouGotNowIsSent){
-                            System.out.println("You here?");
-                        for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
-                            {                        //Todo only issue if there is two players
+                    if (cardsYouGotNowIsSent) {
+                        int activeRound = server.getActiveRound();
 
-                                Player playerToUpdate = clientToUpdate.getPlayer();
-
-                                //active round is updated, first call from 0 to 1, else always between 1 and 5
-                                int activeRound = server.getActiveRound();
-                                if (activeRound == REGISTER_FIVE) {
-                                    server.setActiveRound(REGISTER_ONE);
-                                }
-                                activeRound++;
-                                server.setActiveRound(activeRound);
-
-                                //Card and player ID are saved in activeCardObject
-                                Card cardInRegister = playerToUpdate.getDeckRegister().getDeck().get(activeRound - 1);
-                                System.out.println("Card in register of player " + playerToUpdate.getPlayerID() + ": " + cardInRegister);
-                                //the -1 is used on activeRound because the registers start with index 0 and end with index 4
-
-                                int playerID = playerToUpdate.getPlayerID();
-                                CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, cardInRegister);
-
-                                //activeCardObjects is added to list of all activeCardObjects so that those can be used
-                                activeCardsObjects.add(activeCardsObject);
-                            }
-                            JSONMessage jsonMessageCurrentCards = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCardsObjects));
-                            clientToUpdate.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
-                            clientToUpdate.getWriter().flush();
-
-
+                        // If the round timer has hit the value 5, reset
+                        if (activeRound == REGISTER_FIVE) {
+                            server.setActiveRound(REGISTER_ONE);
                         }
+
+                        activeRound++;
+                        server.setActiveRound(activeRound);
+
+                        // Collect each players current card and wrap it into ActiveCard Object
+                        for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
+                            Player playerToUpdate = clientToUpdate.getPlayer();
+
+                            // Card and player ID are saved in activeCardObject
+                            Card cardInRegister = playerToUpdate.getDeckRegister().getDeck().get(activeRound - 1);
+
+                            int playerID = playerToUpdate.getPlayerID();
+                            CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, cardInRegister);
+
+                            //activeCardObjects is added to list of all activeCardObjects so that those can be used
+                            activeCardsObjects.add(activeCardsObject);
+                        }
+
+                        // Send each players current card to all clients
+                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                            JSONMessage jsonMessageCurrentCards = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCardsObjects));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
+                            clientWrapper.getWriter().flush();
                         }
                     }
                 }
             }
         }
-
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1279,7 +1295,7 @@ public class MessageDistributer {
 
                                 // Update GUI
                                 if (cardToActivate.getCardName().equals("MoveI") || cardToActivate.getCardName().equals("MoveII") ||
-                                    cardToActivate.getCardName().equals("MoveIII") || cardToActivate.getCardName().equals("BackUp")) {
+                                        cardToActivate.getCardName().equals("MoveIII") || cardToActivate.getCardName().equals("BackUp")) {
 
                                     String newPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
 
@@ -1520,8 +1536,8 @@ public class MessageDistributer {
             client.getStageController().getStage().setHalignment(timerLabel, HPos.CENTER);
 
             // Set up Client countdown with animation
-            int countDownTimer = 10;
-            timerLabel.setText(Integer.toString(countDownTimer));
+            int secs = 10;
+            timerLabel.setText(Integer.toString(secs));
 
             ScaleTransition transition = new ScaleTransition(Duration.millis(100), timerLabel);
             transition.setByX(1.5f);
@@ -1541,7 +1557,7 @@ public class MessageDistributer {
                     }));
 
             // Set timer execution count
-            timer.setCycleCount(countDownTimer);
+            timer.setCycleCount(secs);
 
             timer.play();
             transition.play();
@@ -1598,35 +1614,27 @@ public class MessageDistributer {
             cardsYouGotNowBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ):  handleCardsYouGotNow()" + ANSI_RESET);
 
-        /*
         PlayerMatController playerMatController = client.getPlayerMatController();
         Player player = client.getPlayer();
 
-        System.out.println("Cardsyougot now" + cardsYouGotNowBody.getCards());
-
         Platform.runLater(() -> {
+            ArrayList<Integer> emptyRegisterNumbers = playerMatController.getEmptyRegisterNumbers();
 
-
-            //in register missing cards from DeckDraw are filled in
-            ArrayList<Integer> emptyRegisterIndexes = playerMatController.getEmptyRegisterNumbers();
-
+            // Fill register deck with cards from server
             int i = 0;
-            while (i < emptyRegisterIndexes.size()) {
-
+            while (i < emptyRegisterNumbers.size()) {
                 for (Card card : cardsYouGotNowBody.getCards()) {
-                    //Player register is updated
-                    player.getDeckRegister().getDeck().set(emptyRegisterIndexes.get(i), card);
+                    // Player register is updated ( -1 due to Array indexes )
+                    player.getDeckRegister().getDeck().set(emptyRegisterNumbers.get(i) - 1, card);
 
-                    //Gui is updated
+                    // GUI is updated
                     Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
-                    playerMatController.putImageInRegister(emptyRegisterIndexes.get(i), cardImage);
+                    playerMatController.putImageInRegister(emptyRegisterNumbers.get(i), cardImage);
 
                     i++;
                 }
             }
         });
-
-         */
     }
 
     /**
@@ -1667,53 +1675,52 @@ public class MessageDistributer {
         int messagePlayerID = movementBody.getPlayerID();
 
         Platform.runLater(() -> {
-        // own robot has to reboot
-        if (messagePlayerID == client.getPlayer().getPlayerID()) {
+            // own robot has to reboot
+            if (messagePlayerID == client.getPlayer().getPlayerID()) {
 
-            int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
-            int playerYPos = client.getPlayer().getPlayerRobot().getyPosition();
+                int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
+                int playerYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
-            int mapWidth = client.getMapController().getMap().size();
-            int mapHeight = client.getMapController().getMap().get(0).size();
-            Robot playerRobot = client.getPlayer().getPlayerRobot();
+                int mapWidth = client.getMapController().getMap().size();
+                int mapHeight = client.getMapController().getMap().get(0).size();
+                Robot playerRobot = client.getPlayer().getPlayerRobot();
 
-            String oldPos = playerXPos + "-" + playerYPos;
+                String oldPos = playerXPos + "-" + playerYPos;
 
-            // Update client player data due to Reboot
-            client.getPlayer().getPlayerRobot().setxPosition(rebootXPos);
-            client.getPlayer().getPlayerRobot().setyPosition(rebootYPos);
-            client.getPlayer().getPlayerRobot().setLineOfSight("up");
+                // Update client player data due to Reboot
+                client.getPlayer().getPlayerRobot().setxPosition(rebootXPos);
+                client.getPlayer().getPlayerRobot().setyPosition(rebootYPos);
+                client.getPlayer().getPlayerRobot().setLineOfSight("up");
 
-            String newPos = rebootXPos + "-" + rebootYPos;
+                String newPos = rebootXPos + "-" + rebootYPos;
 
-            client.getMapController().rebootRobot(oldPos, newPos);
+                client.getMapController().rebootRobot(oldPos, newPos);
 
-        }
-        else {
-            // other player's robot has to reboot
-            for (Player otherPlayer : client.getOtherPlayers()) {
-                if (otherPlayer.getPlayerID() == messagePlayerID) {
-                    int otherPlayerXPos = otherPlayer.getPlayerRobot().getxPosition();
-                    int otherPlayerYPos = otherPlayer.getPlayerRobot().getyPosition();
+            } else {
+                // other player's robot has to reboot
+                for (Player otherPlayer : client.getOtherPlayers()) {
+                    if (otherPlayer.getPlayerID() == messagePlayerID) {
+                        int otherPlayerXPos = otherPlayer.getPlayerRobot().getxPosition();
+                        int otherPlayerYPos = otherPlayer.getPlayerRobot().getyPosition();
 
-                    int mapWidth = client.getMapController().getMap().size();
-                    int mapHeight = client.getMapController().getMap().get(0).size();
-                    Robot playerRobot = otherPlayer.getPlayerRobot();
+                        int mapWidth = client.getMapController().getMap().size();
+                        int mapHeight = client.getMapController().getMap().get(0).size();
+                        Robot playerRobot = otherPlayer.getPlayerRobot();
 
-                    String oldPos = otherPlayerXPos + "-" + otherPlayerYPos;
+                        String oldPos = otherPlayerXPos + "-" + otherPlayerYPos;
 
-                    otherPlayer.getPlayerRobot().setxPosition(rebootXPos);
-                    otherPlayer.getPlayerRobot().setyPosition(rebootYPos);
+                        otherPlayer.getPlayerRobot().setxPosition(rebootXPos);
+                        otherPlayer.getPlayerRobot().setyPosition(rebootYPos);
 
-                    String newPos = rebootXPos + "-" + rebootYPos;
+                        String newPos = rebootXPos + "-" + rebootYPos;
 
-                    client.getMapController().rebootRobot(oldPos, newPos);
+                        client.getMapController().rebootRobot(oldPos, newPos);
 
-                    // Set robot orientation to north
-                    otherPlayer.getPlayerRobot().setLineOfSight("up");
+                        // Set robot orientation to north
+                        otherPlayer.getPlayerRobot().setLineOfSight("up");
+                    }
                 }
             }
-        }
         });
     }
 
@@ -1789,7 +1796,7 @@ public class MessageDistributer {
             String currLineOfSight = client.getPlayer().getPlayerRobot().getLineOfSight();
 
             if (turnOrientation.equals("left")) {
-                switch(currLineOfSight) {
+                switch (currLineOfSight) {
                     case "up":
                         client.getPlayer().getPlayerRobot().setLineOfSight("left");
                         break;
@@ -1805,7 +1812,7 @@ public class MessageDistributer {
             }
 
             if (turnOrientation.equals("right")) {
-                switch(currLineOfSight) {
+                switch (currLineOfSight) {
                     case "up":
                         client.getPlayer().getPlayerRobot().setLineOfSight("right");
                         break;
@@ -1841,7 +1848,7 @@ public class MessageDistributer {
                     String currLineOfSight = otherPlayer.getPlayerRobot().getLineOfSight();
 
                     if (turnOrientation.equals("left")) {
-                        switch(currLineOfSight) {
+                        switch (currLineOfSight) {
                             case "up":
                                 otherPlayer.getPlayerRobot().setLineOfSight("left");
                                 break;
@@ -1857,7 +1864,7 @@ public class MessageDistributer {
                     }
 
                     if (turnOrientation.equals("right")) {
-                        switch(currLineOfSight) {
+                        switch (currLineOfSight) {
                             case "up":
                                 otherPlayer.getPlayerRobot().setLineOfSight("right");
                                 break;

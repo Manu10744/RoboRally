@@ -46,17 +46,22 @@ public class Server extends Application {
     private ArrayList<String> takenStartingPoints = new ArrayList<>();
 
     private String protocolVersion = "Version 0.1";
+
     private int counterPlayerID = 1;
     private int setterPlayerID;
     private int numberOfReadyClients;
-    private boolean firstAllRegistersFilled = false;
+    private int antennaXPos;
+    private int antennaYPos;
     private int setStartPoints = 0;
+    private int numOfRegistersFilled = 0;
+    private int activeRound;
+
+    private boolean firstAllRegistersFilled = false;
+
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private Tile antenna;
-    private int antennaXPos;
-    private int antennaYPos;
 
     private Map<String, Wall> wallMap = new HashMap<>();
     private Map<String, Pit> pitMap = new HashMap<>();
@@ -66,8 +71,6 @@ public class Server extends Application {
     private Map<String, RestartPoint> rebootMap = new HashMap<>();
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
-    private int numOfRegistersFilled = 0;
-    private int activeRound;
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
