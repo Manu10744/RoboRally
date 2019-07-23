@@ -28,9 +28,7 @@ public class Game {
     }
 
     /**
-     * This method starts a game
-     * @author Vincent Tafferner
-     * @author Ivan Dovecar
+     * This method starts a game.
      */
     public void startGame(ArrayList<Player> players) {
 

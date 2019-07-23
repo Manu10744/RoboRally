@@ -60,6 +60,8 @@ public class WikiController extends Application {
     private Label subheadingWiki;
     @FXML
     private Label textWiki;
+    @FXML
+    private Label robopedia;
 
     /**
      * This method starts the wiki
@@ -80,6 +82,8 @@ public class WikiController extends Application {
             buttonRules.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
             buttonCards.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
             buttonRobots.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+            robopedia.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 80));
+
         }
         if (buttonRule != null && buttonCard != null && buttonRobot != null) {
             // Set RoboRally font as soon as elements are initialized

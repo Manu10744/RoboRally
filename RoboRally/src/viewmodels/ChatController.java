@@ -34,6 +34,8 @@ import javafx.fxml.FXML;
  * Moreover, the controller can open the game wiki when needed.
  *
  * @author Ivan Dovecar
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
  */
 public class ChatController implements Initializable, IController {
 
@@ -76,8 +78,6 @@ public class ChatController implements Initializable, IController {
     /**
      * Initialize supervises all chat elements for action, checks user input on syntax failures and controls the
      * elements' visibility.
-     *
-     * @author Ivan Dovecar
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -266,8 +266,6 @@ public class ChatController implements Initializable, IController {
 
     /**
      * Check if IP String is a valid IP Address and contains IP and Port
-     *
-     * @author Ivan Dovecar
      */
     private boolean checkIPString(String IP) {
         if (!IP.contains(":")) {
@@ -306,7 +304,6 @@ public class ChatController implements Initializable, IController {
      * @param owner
      * @param control
      * @param tooltip
-     * @author Ivan Dovecar
      */
     private void showTooltip(Stage owner, Control control, Tooltip tooltip) {
         Point2D p = control.localToScene(0.0, 0.0);
@@ -317,8 +314,6 @@ public class ChatController implements Initializable, IController {
 
     /**
      * Shows an alert and informs about unknown Server or invalid Name.
-     *
-     * @author Ivan Dovecar
      */
 
     // TODO Check if still necessary, after tooltip works.
@@ -337,7 +332,6 @@ public class ChatController implements Initializable, IController {
      *
      * @param chatAreaText plain chatAreaText
      * @return formatted String
-     * @author Ivan Dovecar
      */
     private String formatChatMessage(String chatAreaText) {
         String result = chatAreaText;

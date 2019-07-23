@@ -13,7 +13,7 @@ import static utils.Parameter.*;
 
 /**
  * This class implements a countdown.
- * @ author Vincent Tafferner
+ * @author Vincent Tafferner
  */
 public class Countdown {
     Timer timer = new Timer();

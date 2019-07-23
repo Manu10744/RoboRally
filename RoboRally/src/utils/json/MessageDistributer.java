@@ -51,6 +51,11 @@ import viewmodels.PlayerMatController;
  *
  * @author Manuel Neumayer
  * @author Vincent Tafferner
+ * @author Mia Brandtner
+ * @author Ivan Dovecar
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
+ *
  */
 public class MessageDistributer {
     public static Map<String, IController> controllerMap;
@@ -82,9 +87,6 @@ public class MessageDistributer {
      * @param server          The Server itself.
      * @param task            The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
-     * @author Ivan Dovecar
-     * @author Manu
-     * @author Mia
      */
     public void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleHelloServer()" + ANSI_RESET);
@@ -162,8 +164,6 @@ public class MessageDistributer {
      * @param server           The Server itself.
      * @param task             The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param playerValuesBody The message body of the message which is of type {@link PlayerValuesBody}.
-     * @author Ivan Dovecar
-     * @author Manu
      */
     public static void handlePlayerValues(Server server, Server.ServerReaderTask task, PlayerValuesBody playerValuesBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerValues()" + ANSI_RESET);
@@ -316,7 +316,27 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
+
+            // Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/riskyCrossing.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/highOctane.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/sprintCramp.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/fractionation.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/lostBearings.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/passingLane.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/twister.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/dodgeThis.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/chopShopChallenge.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/undertow.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/heavyMergeArea.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/deathTrap.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/gearStripper.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/extraCrispy.json")
             Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
+
             try {
                 // Sets Map in server
                 String map = Files.readString(path, StandardCharsets.UTF_8);
@@ -410,8 +430,6 @@ public class MessageDistributer {
      * @param server       The Server itself.
      * @param task         The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param sendChatBody The message body of the message which is of type {@link SendChatBody}.
-     * @author Ivan Dovecar
-     * @author Manu
      */
     public void handleSendChat(Server server, Server.ServerReaderTask task, SendChatBody sendChatBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSendChat()" + ANSI_RESET);
@@ -1056,8 +1074,6 @@ public class MessageDistributer {
      * @param client    The Client itself.
      * @param task      The ReaderTask of the client (Gives access to the PrintWriter).
      * @param errorBody The message body of the message which is of type {@link ErrorBody}.
-     * @author Ivan Dovecar
-     * @author Manu
      */
     public void handleError(Client client, Client.ClientReaderTask task, ErrorBody errorBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleError()" + ANSI_RESET);
@@ -1219,9 +1235,10 @@ public class MessageDistributer {
                 for (int i = 0; i < 2; i++) {
                     mapController.turnRobot(finalCurrentPosition, "right");
                 }
-
-            } else if (cardToActivateName.equals("PowerUp")) {
-                //Todo power up
+            } else if (cardName.equals("PowerUp")) {
+                int energyAmount = client.getPlayer().getEnergy();
+                // update energy amount
+                client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(energyAmount));
 
             } else if (cardToActivateName.equals("Again")) {
                 int register = client.getPlayer().getActiveRound();

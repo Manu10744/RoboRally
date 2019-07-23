@@ -22,7 +22,9 @@ import java.net.Socket;
  * All clients connect to one server.
  *
  * @author Ivan Dovecar
- * @author Verena
+ * @author Verena Sadtler
+ * @author Mia Brandtner
+ * @author Manu Neumayer
  */
 public class Client {
 
@@ -181,7 +183,6 @@ public class Client {
      * The server is going to process the values and if valid, it will return a playerAdded message.
      * It uses the {@link @FXML fieldName} to get the name and chooseRobot FXML to get figure.
      *
-     * @author Ivan
      */
     public void sendPlayerValues(String name, int figure) {
         logger.info("Submitting player values");
@@ -192,8 +193,12 @@ public class Client {
         logger.info("Submitted player values");
     }
 
+    /**
+     * This method is responsible for sending the chosen startingpoint to the server
+     * @param id The x and y coordinate of the startingpoint
+     */
     public void sendStartingPoint(String id) {
-        logger.info("Submitting startinpoint coordinates");
+        logger.info("Submitting startingpoint coordinates");
 
         // Split the ID "x-y" into the two coordinates x and y
         int x = Integer.parseInt(id.split("-")[0]);
@@ -213,7 +218,6 @@ public class Client {
      * It uses the {@link @FXML chatInput} to get the message content.
      *
      * @param message The message that should be sent.
-     * @author Mia
      */
     public void sendMessage(String message) {
         JSONMessage jsonMessage = new JSONMessage("SendChat", new SendChatBody(message, -1));
@@ -231,7 +235,6 @@ public class Client {
      *
      * @param message The message that should be sent.
      * @param receiverID The playerID of the Player who should receive the private message.
-     * @author Mia
      */
     public void sendPrivateMessage(String message, int receiverID) {
         JSONMessage jsonMessage = new JSONMessage("SendChat", new SendChatBody(message, receiverID));
@@ -245,8 +248,6 @@ public class Client {
      * This method is responsible for sending the players ready status to the server.
      *
      * <b>Note:</b> A game starts automatically when all players (at least 2 players) are ready.
-     *
-     * @author Ivan Dovecar
      */
     public void sendReadyStatus(boolean readyStatus) {
         // Inform the server about changed ready status
@@ -257,8 +258,8 @@ public class Client {
 
     /**
      * This method is responsible for sending the players selected cards to the server.
-     * @param card the selected card
-     * @param register the desired register
+     * @param card The selected card
+     * @param register The desired register
      */
 
     public void sendSelectedCard(Card card, int register){
@@ -267,6 +268,10 @@ public class Client {
         this.writer.flush();
     }
 
+    /**
+     * This method is responsible for sending the played cards to the server.
+     * @param card The played card
+     */
     public void sendPlayCard(Card card) {
         JSONMessage jsonMessage = new JSONMessage("PlayCard", new PlayCardBody(card));
         this.writer.println(JSONEncoder.serializeJSON(jsonMessage));
@@ -378,7 +383,6 @@ public class Client {
          * The body of the message then contains various content. For more info check out the attributes of the
          *
          * @link MessageBody class.
-         * @author Ivan, Manu, Mia
          */
         @Override
         public void run() {

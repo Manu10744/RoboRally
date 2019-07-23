@@ -13,7 +13,7 @@ import java.util.Map;
  * There are more specific cards defined in the classes that inherit from Card.
  *
  * @author Vincent Tafferner
- * @author Verena
+ * @author Verena Sadtler
  */
 public abstract class Card {
 

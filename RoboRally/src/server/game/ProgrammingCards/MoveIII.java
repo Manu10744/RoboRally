@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * This is important because otherwise the Robot might be able to jump over walls.
  *
  * @author Vincent Tafferner
- * @author Verena
+ * @author Verena Sadtler
  */
 public class MoveIII extends server.game.Card {
     public static final String ANSI_GREEN = "\u001B[32m";

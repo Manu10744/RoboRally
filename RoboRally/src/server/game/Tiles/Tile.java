@@ -7,6 +7,11 @@ import viewmodels.ChatController;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * This class is responsible for loading the tile images onto the map.
+ *
+ * @author Mia Brandtner
+ */
 public class Tile {
     private String type;
     private Integer speed;
@@ -57,13 +62,12 @@ public class Tile {
 
     /**
      * This method returns the path to and thus the image belonging to the tile it is applied to.
-     * In case there are more than one images for one tileType, the method differentiates between those different elements
+     * In case there is more than one image for one tileType, the method differentiates between those different elements
      * in taking account of further tile attributes (as can be seen within the if-else-clauses).
      * Which additional tile attributes were chosen depend on the tile classes - the attributes that differ from the parent class tile
      * are the only ones that are not null in the subclasses and are hence the only viable option to differentiate between different objects of the same subclass
      *
      * @return
-     * @author Mia
      */
     public Image getTileImage() {
         StringBuilder path = new StringBuilder("resources/images/mapelements/");
