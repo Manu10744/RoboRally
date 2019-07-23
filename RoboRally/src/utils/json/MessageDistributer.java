@@ -321,7 +321,27 @@ public class MessageDistributer {
         // If required number of players are ready, game starts and map is created
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
+
+            // Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/riskyCrossing.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/highOctane.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/sprintCramp.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/fractionation.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/lostBearings.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/passingLane.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/twister.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/dodgeThis.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/chopShopChallenge.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/undertow.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/heavyMergeArea.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/deathTrap.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/gearStripper.json");
+            // Path path = Paths.get("RoboRally/src/resources/maps/extraCrispy.json")
             Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
+
             try {
                 // Sets Map in server
                 String map = Files.readString(path, StandardCharsets.UTF_8);
