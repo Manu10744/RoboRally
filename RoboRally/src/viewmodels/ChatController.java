@@ -102,6 +102,9 @@ public class ChatController implements Initializable, IController {
             logger.info("serverAddress addlistener is creating and closing a test-socket to check if IP and port are valid (leads to first server INFO: Client connected from: IP");
             serverIP = serverAddress.get().split("\\:")[0];
             serverPort = Integer.parseInt(serverAddress.get().split("\\:")[1]);
+
+           // creating test socket disabled, to prevent connection failures
+            /*
             try {
                 Socket checkConnectionSocket = new Socket(serverIP, serverPort);
                 checkConnectionSocket.close();
@@ -112,6 +115,13 @@ public class ChatController implements Initializable, IController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+             */
+
+            serverSettingFinished.set(true);
+            fieldServer.setDisable(true);
+
+
             client = new Client(serverIP, serverPort);
 
             // Register all controllers to the client
