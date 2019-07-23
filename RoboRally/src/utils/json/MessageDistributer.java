@@ -684,12 +684,11 @@ public class MessageDistributer {
                 if (selectedCard == null) {
                     selectedCardsNumber--;
                     player.setSelectedCards(selectedCardsNumber);
+
                 } else {
                     selectedCardsNumber++;
                     player.setSelectedCards(selectedCardsNumber);
                 }
-
-                System.out.println("Servers selectedCards " + server.getNumOfRegistersFilled());
 
                 // Send CardSelected to everyone
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
@@ -700,11 +699,11 @@ public class MessageDistributer {
 
                 //This counter is initialised with 0 and each time someone fills all their registers it adds to it, so it is only 0 once
                 //and hence the message "SelectionFinished" is only sent once
-                int numOfRegistersFilled = server.getNumOfRegistersFilled();
+                boolean firstAllregistersFilled = server.isFirstAllRegistersFilled();
 
-                if (selectedCardsNumber == REGISTER_CARDS_AMOUNT && numOfRegistersFilled == 0) {
-                    numOfRegistersFilled++;
-                    server.setNumOfRegistersFilled(numOfRegistersFilled);
+                if (selectedCardsNumber == REGISTER_CARDS_AMOUNT && firstAllregistersFilled == false) {
+                    firstAllregistersFilled = true;
+                    server.setFirstAllRegistersFilled(firstAllregistersFilled);
 
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMsg = new JSONMessage("SelectionFinished", new SelectionFinishedBody(player.getPlayerID()));
@@ -749,6 +748,7 @@ public class MessageDistributer {
 
                     }
 
+                    boolean cardsYouGotNowIsSent = false;
                     //Cards you got now is sent for those whose registers have not yet been filled
                     //Additionally the remaining cards in hand are added to the discard pile
                     if (timerEnded) {
@@ -794,13 +794,21 @@ public class MessageDistributer {
                                 ArrayList<Card> cardsToFillInArray = new ArrayList<>();
 
                                 int i = 0;
-                                while (i <= (REGISTER_FIVE - fullRegisters)) {
-                                    Card registerCard = deckDraw.getTopCard();
-                                    cardsToFillInArray.add(registerCard);
+                                while (i < REGISTER_FIVE) {
+                                    if(playerRegister.get(i) == null){
+                                        //card to fill in array is added to array which is sent when yourCards is snet
+                                        Card registerCard = deckDraw.getTopCard();
+                                        cardsToFillInArray.add(registerCard);
 
-                                    //PlayerDraw deck is updated
-                                    deckDraw.getDeck().remove(deckDraw.getTopCard());
-                                    player.getDeckDraw().getDeck().remove(deckDraw.getTopCard());
+                                        //update player register
+                                        playerRegister.add(i, registerCard);
+                                        player.getDeckRegister().getDeck().add(i, registerCard);
+
+                                        //PlayerDraw deck is updated
+                                        deckDraw.getDeck().remove(deckDraw.getTopCard());
+                                        player.getDeckDraw().getDeck().remove(deckDraw.getTopCard());
+                                    }
+
                                     i++;
                                 }
 
@@ -810,11 +818,14 @@ public class MessageDistributer {
                                 clientToNotify.getWriter().flush();
                             }
                         }
-
+                        cardsYouGotNowIsSent = true;
+                    }
 
                         //Current cards
                         ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
 
+                        if(cardsYouGotNowIsSent){
+                            System.out.println("You here?");
                         for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
                             {                        //Todo only issue if there is two players
 
@@ -830,6 +841,7 @@ public class MessageDistributer {
 
                                 //Card and player ID are saved in activeCardObject
                                 Card cardInRegister = playerToUpdate.getDeckRegister().getDeck().get(activeRound - 1);
+                                System.out.println("Card in register of player " + playerToUpdate.getPlayerID() + ": " + cardInRegister);
                                 //the -1 is used on activeRound because the registers start with index 0 and end with index 4
 
                                 int playerID = playerToUpdate.getPlayerID();
@@ -843,14 +855,14 @@ public class MessageDistributer {
                             clientToUpdate.getWriter().flush();
 
 
-
+                        }
                         }
                     }
                 }
             }
         }
 
-    }
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //                           HANDLERS FOR SERVER MESSAGES                                        //
@@ -1180,7 +1192,6 @@ public class MessageDistributer {
         Platform.runLater(() -> {
             // Update GUI
             if (cardToActivateName.equals("MoveI") || cardToActivateName.equals("MoveII") || cardToActivateName.equals("MoveIII")) {
-                String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
 
                 // Only move a robot when it's not out going of the map
@@ -1189,7 +1200,6 @@ public class MessageDistributer {
                 }
 
             } else if (cardToActivateName.equals("BackUp")) {
-                String newPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
 
                 // Only move a robot when it's not going out of the map
@@ -1198,23 +1208,18 @@ public class MessageDistributer {
                 }
 
             } else if (cardToActivateName.equals("TurnLeft")) {
-
-                String robotPosition = x + "-" + y;
                 String turnDirection = "left";
 
                 MapController mapController = client.getMapController();
                 mapController.turnRobot(finalCurrentPosition, turnDirection);
 
             } else if (cardToActivateName.equals("TurnRight")) {
-
-                String robotPosition = x + "-" + y;
                 String turnDirection = "right";
 
                 MapController mapController = client.getMapController();
                 mapController.turnRobot(finalCurrentPosition, turnDirection);
 
             } else if (cardToActivateName.equals("UTurn")) {
-                String robotPosition = x + "-" + y;
                 MapController mapController = client.getMapController();
                 for (int i = 0; i < 2; i++) {
                     mapController.turnRobot(finalCurrentPosition, "right");

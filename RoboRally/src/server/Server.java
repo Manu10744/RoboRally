@@ -48,7 +48,8 @@ public class Server extends Application {
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
     private int setterPlayerID;
-    private int numberOfReadyClients = 0;
+    private int numberOfReadyClients;
+    private boolean firstAllRegistersFilled = false;
     private int setStartPoints = 0;
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
@@ -126,12 +127,12 @@ public class Server extends Application {
         this.activeRound = activeRound;
     }
 
-    public int getNumOfRegistersFilled() {
-        return numOfRegistersFilled;
+    public boolean isFirstAllRegistersFilled() {
+        return firstAllRegistersFilled;
     }
 
-    public void setNumOfRegistersFilled(int numOfRegistersFilled) {
-        this.numOfRegistersFilled = numOfRegistersFilled;
+    public void setFirstAllRegistersFilled(boolean firstAllRegistersFilled) {
+        this.firstAllRegistersFilled = firstAllRegistersFilled;
     }
 
     public MessageDistributer getMessageDistributer() {
