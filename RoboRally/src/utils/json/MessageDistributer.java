@@ -1,7 +1,6 @@
 package utils.json;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +15,6 @@ import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
 
 import client.Client;
-import com.google.gson.JsonDeserializer;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -27,7 +25,6 @@ import javafx.geometry.HPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
@@ -39,8 +36,6 @@ import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
-import server.game.decks.DeckHand;
-import server.game.decks.DeckRegister;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -1229,7 +1224,7 @@ public class MessageDistributer {
                 //Todo power up
 
             } else if (cardToActivateName.equals("Again")) {
-                int register = client.getPlayer().getActivaPhase();
+                int register = client.getPlayer().getActiveRound();
                 Player player = client.getPlayer();
 
                 if (register == REGISTER_ONE) {
@@ -1305,7 +1300,7 @@ public class MessageDistributer {
         }
         // Activation phase
         else if (activePhase == ACTIVATION_PHASE) {
-            client.getPlayer().setActivaPhase(REGISTER_ONE);
+            client.getPlayer().setActiveRound(REGISTER_ONE);
             client.getChatHistoryProperty().set("Your robot has been activated, may it survive!");
             client.getChatHistoryProperty().set("Register ONE controls now your fate!");
         }
@@ -1599,14 +1594,14 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentCards()" + ANSI_RESET);
 
         //The current round is set which is important for implementing again
-        int activeRegister = client.getPlayer().getActivaPhase();
+        int activeRegister = client.getPlayer().getActiveRound();
 
         Platform.runLater(() -> {
             //TODO write code here
         });
         //after every card in the current register is shown, the register is updated
         activeRegister++;
-        client.getPlayer().setActivaPhase(activeRegister);
+        client.getPlayer().setActiveRound(activeRegister);
     }
 
     /**
