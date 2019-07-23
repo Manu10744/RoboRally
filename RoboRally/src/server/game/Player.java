@@ -36,7 +36,7 @@ public class Player implements Serializable {
     private DeckRegister deckRegister;
 
 
-    private int activeRound;
+    private int currentRound;
 
     public Player() {
         this.name = "Findus";
@@ -145,12 +145,12 @@ public class Player implements Serializable {
         deckHand.getDeck().clear();
     }
 
-    public int getActiveRound() {
-        return activeRound;
+    public int getCurrentRound() {
+        return currentRound;
     }
 
-    public void setActiveRound(int activeRound) {
-        this.activeRound = activeRound;
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
     }
 
     /**
