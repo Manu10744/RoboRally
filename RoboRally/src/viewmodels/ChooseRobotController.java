@@ -14,8 +14,8 @@ import java.util.ResourceBundle;
 /**
  * This class allows the player to choose a figure by clicking on a robot picture
  *
- * @author Verena
- * @author Jessie
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
  * @author Ivan Dovecar
  */
 
@@ -54,6 +54,7 @@ public class ChooseRobotController implements Initializable,IController{
     private Label zoomBotLabel;
 
     private StageController stageController;
+    private PlayerMatController playerMatController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -84,6 +85,11 @@ public class ChooseRobotController implements Initializable,IController{
         chooseRobot.getStylesheets().add("/resources/css/main.css");
     }
 
+    /**
+     * The following methods are responsible for clicking on a robot in the choose a robot scene.
+     * When a robot is clicked, the robot icon is set in the players mat and the choose a robot scene gets invisible.
+     */
+
     public void hammerBotClicked() {
         // Get needed controllers
         ChatController chatController = (ChatController) this.stageController.getControllerMap().get("Chat");
@@ -94,6 +100,7 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+        playerMatController.ownEnergyCubesLabel.setVisible(true);
     }
 
     public void hulkX90Clicked() {
@@ -106,6 +113,7 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+        playerMatController.ownEnergyCubesLabel.setVisible(true);
     }
 
     public void smashBotClicked() {
@@ -118,6 +126,7 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+        playerMatController.ownEnergyCubesLabel.setVisible(true);
     }
 
     public void spinBotClicked() {
@@ -130,6 +139,7 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+        playerMatController.ownEnergyCubesLabel.setVisible(true);
     }
 
     public void twonkyClicked() {
@@ -142,6 +152,7 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+        playerMatController.ownEnergyCubesLabel.setVisible(true);
     }
 
     public void zoomBotClicked() {
@@ -154,6 +165,7 @@ public class ChooseRobotController implements Initializable,IController{
         Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
+        playerMatController.ownEnergyCubesLabel.setVisible(true);
     }
 
     public ImageView getHammerBot() {

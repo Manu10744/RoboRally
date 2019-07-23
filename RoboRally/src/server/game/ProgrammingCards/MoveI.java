@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * This class implements the MoveI card.
  *
  * @author Vincent Tafferner
- * @author Verena
+ * @author Verena Sadtler
  */
 public class MoveI extends server.game.Card {
     public static final String ANSI_GREEN = "\u001B[32m";

@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -137,6 +138,11 @@ public class PlayerMatController implements IController {
     @FXML
     ImageView dragImage9;
 
+    @FXML
+    Label ownEnergyCubesLabel;
+    @FXML
+    ImageView ownEnergyCubes;
+
     private Stage rootStage;
     private StageController stageController;
 
@@ -146,6 +152,7 @@ public class PlayerMatController implements IController {
     private ArrayList<Card> cardsInHand = new ArrayList<>();
 
     private ChatController chatController;
+
 
     public void initialize() {
             dragImages = new ArrayList<>();
@@ -158,6 +165,12 @@ public class PlayerMatController implements IController {
             dragImages.add(dragImage7);
             dragImages.add(dragImage8);
             dragImages.add(dragImage9);
+
+            ownEnergyCubes.setPreserveRatio(true);
+            ownEnergyCubes.fitHeightProperty().bind(playerIcons.heightProperty());
+            ownEnergyCubes.fitWidthProperty().bind(playerIcons.widthProperty());
+
+
 
             for (Node card : playerHand.getChildren()) {
                 card.setOnDragDetected(new EventHandler<MouseEvent>() {
@@ -296,7 +309,7 @@ public class PlayerMatController implements IController {
             register3.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new BackUp());
+                    chatController.getClient().sendPlayCard(new PowerUp());
                 }
             });
             register4.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -320,9 +333,11 @@ public class PlayerMatController implements IController {
             playerHand.getStylesheets().add("/resources/css/main.css");
             this.cardsInHand = deck;
             loadCards(deck);
-
     }
 
+    /**
+     * This method removes the cards of the player hand when the player has dragged five cards into the register.
+     */
     public void emptyHand(){
         //ImageViews are deleted
         this.playerHand.getChildren().removeAll(this.playerHand.getChildren());
@@ -405,7 +420,10 @@ public class PlayerMatController implements IController {
         }
     }
 
-
+    /**
+     * This method loads the right colored cards into the players hand according to which robot the player has chosen
+     * @param cardsInHand The nine cards in the players hand
+     */
     public void loadCards(ArrayList<Card> cardsInHand) {
         ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
         Client client = chatController.getClient();
@@ -456,6 +474,12 @@ public class PlayerMatController implements IController {
     }
 
 
+    /**
+     * This method gets the images of the cards
+     * @param card The specific card
+     * @param color The color of that card
+     * @return The cards image
+     */
 
     public Image getCardImage(Card card, String color) {
         Image image;
@@ -686,10 +710,19 @@ public class PlayerMatController implements IController {
         return tempUpdate3;
     }
 
+    public Label getOwnEnergyCubesLabel() {
+        return ownEnergyCubesLabel;
+    }
+
     public ArrayList<Card> getCardsInHand(){
         return cardsInHand;
     }
 
+    /**
+     * This method is responsible for dragging the cards from the players hand into the register, the cards <br>
+     * from the register back into the players hand, and the cards from one register into another.
+     * @param dragEvent
+     */
     public void transmitSelectedCards(DragEvent dragEvent) {
         chatController = (ChatController) stageController.getControllerMap().get("Chat");
 

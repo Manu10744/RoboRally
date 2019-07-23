@@ -3,7 +3,7 @@ package utils;
 import javax.sound.sampled.Port;
 
 /**
- * In this class all the Parameters that will occur in the diffenrent classes will show up. <br>
+ * In this class all the Parameters that will occur in the different classes will show up. <br>
  * The goal is to have them all in one spot.
  *
  * @author Ivan Dovecar

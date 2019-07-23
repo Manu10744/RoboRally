@@ -17,7 +17,7 @@ import static utils.Parameter.ORIENTATION_RIGHT;
  * @author Ivan Dovecar
  * @author Vincent Tafferner
  * @author Jessica Gerlach
- * @author Mia
+ * @author Mia Brandtner
  */
 public class Player implements Serializable {
 
@@ -40,6 +40,7 @@ public class Player implements Serializable {
 
     public Player() {
         this.name = "Findus";
+        this.energy = 5;
 
         // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
