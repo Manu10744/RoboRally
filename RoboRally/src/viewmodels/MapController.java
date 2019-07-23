@@ -36,9 +36,9 @@ import java.util.logging.Logger;
  * with calling fieldMap.get("x-y")
  *
  * @author Ivan Dovecar
- * @author Mia
- * @author Manu
- * @author Verena
+ * @author Mia Brandtner
+ * @author Manu Neumayer
+ * @author Verena Sadtler
  */
 
 public class MapController implements IController {
@@ -359,6 +359,9 @@ public class MapController implements IController {
         return false;
     }
 
+    /**
+     * This method initializes the click events for all starting points on the map, so they can be clicked.
+     */
     public void initEventsOnStartpoints() {
 
         for (Group startpoint : startPointList) {
@@ -381,6 +384,12 @@ public class MapController implements IController {
         }
     }
 
+
+    /**
+     * This method sets the robot onto the chosen startingpoint.
+     * @param playerRobot The players chosen robot
+     * @param startingPoint The startingpoint the player has chosen to set his robot on.
+     */
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
         String antennaOrientation = this.antenna.getOrientations().get(0);
 
@@ -421,6 +430,11 @@ public class MapController implements IController {
         }
     }
 
+    /**
+     * This method removes the robot from its old position and sets it onto the new position
+     * @param oldPosition The old Position of the robot
+     * @param newPosition The new Position of the robot
+     */
     public void moveRobot(String oldPosition, String newPosition ){
         ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
         fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
@@ -428,6 +442,11 @@ public class MapController implements IController {
 
     }
 
+    /**
+     * This method sets the robot onto the restartpoint and sets its orientation to north
+     * @param oldPosition The old position of the robot
+     * @param newPosition The position of the restartpoint, the robot is set onto
+     */
     public void rebootRobot(String oldPosition, String newPosition ) {
         System.out.println("(REBOOTROBOT): OLDPOSITION: " + oldPosition);
         System.out.println("(REBOOTROBOT): NEWPOSITION: " + newPosition);

@@ -11,6 +11,13 @@ import utils.Parameter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class is responsible for showing the sccoreboard when a player has won the game.
+ *
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
+ */
+
 public class ScoreboardController implements Initializable {
 
     @FXML

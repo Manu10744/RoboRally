@@ -323,6 +323,9 @@ public class PlayerMatController implements IController {
 
     }
 
+    /**
+     * This method removes the cards of the player hand when the player has dragged five cards into the register.
+     */
     public void emptyHand(){
         //ImageViews are deleted
         this.playerHand.getChildren().removeAll(this.playerHand.getChildren());
@@ -405,7 +408,10 @@ public class PlayerMatController implements IController {
         }
     }
 
-
+    /**
+     * This method loads the right colored cards into the players hand according to which robot the player has chosen
+     * @param cardsInHand The nine cards in the players hand
+     */
     public void loadCards(ArrayList<Card> cardsInHand) {
         ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
         Client client = chatController.getClient();
@@ -456,6 +462,12 @@ public class PlayerMatController implements IController {
     }
 
 
+    /**
+     * This method gets the images of the cards
+     * @param card The specific card
+     * @param color The color of that card
+     * @return The cards image
+     */
 
     public Image getCardImage(Card card, String color) {
         Image image;
@@ -690,6 +702,11 @@ public class PlayerMatController implements IController {
         return cardsInHand;
     }
 
+    /**
+     * This method is responsible for dragging the cards from the players hand into the register, the cards <br>
+     * from the register back into the players hand, and the cards from one register into another.
+     * @param dragEvent
+     */
     public void transmitSelectedCards(DragEvent dragEvent) {
         chatController = (ChatController) stageController.getControllerMap().get("Chat");
 

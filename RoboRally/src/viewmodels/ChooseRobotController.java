@@ -14,8 +14,8 @@ import java.util.ResourceBundle;
 /**
  * This class allows the player to choose a figure by clicking on a robot picture
  *
- * @author Verena
- * @author Jessie
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
  * @author Ivan Dovecar
  */
 
@@ -83,6 +83,11 @@ public class ChooseRobotController implements Initializable,IController{
         zoomBotLabel.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
         chooseRobot.getStylesheets().add("/resources/css/main.css");
     }
+
+    /**
+     * The following methods are responsible for clicking on a robot in the choose a robot scene.
+     * When a robot is clicked, the robot icon is set in the players mat and the choose a robot scene gets invisible.
+     */
 
     public void hammerBotClicked() {
         // Get needed controllers

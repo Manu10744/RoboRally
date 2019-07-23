@@ -13,17 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * This controller class is responsible for the board and the chat.
+ * GridPane 'stage' adapts automatically to the users' screen setup.
+ * Stage GUI and its elements are fully responsive.
+ * It loads furthermore the initial start screen and the select robot screen.
+ *
+ * @author Ivan Dovecar
+ * @author Manu Neumayer
+ * @author Mia Brandtner
+ */
 public class StageController implements Initializable, IController {
-    /**
-     * This controller class is responsible for the board and the chat.
-     * GridPane 'stage' adapts automatically to the users' screen setup.
-     * Stage GUI and its elements are fully responsive.
-     * It loads furthermore the initial start screen and the select robot screen.
-     *
-     * @author Ivan Dovecar
-     * @author Manu
-     * @author Mia
-     */
 
     @FXML
     private GridPane stage;

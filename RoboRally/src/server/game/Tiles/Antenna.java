@@ -6,6 +6,12 @@ import utils.Parameter;
 import java.util.ArrayList;
 import static java.lang.Math.abs;
 
+/**
+ * This class is responsible for the antenna.
+ *
+ * @author Ivan Dovecar
+ */
+
 public class Antenna extends Tile {
     @Expose
     private String type;
@@ -50,8 +56,6 @@ public class Antenna extends Tile {
      * @param start (which is represented by the coordinates of the antenna)
      * @param end (which is represented by the coordinates of the chosen robot)
      * @return double value which stands for fields between the objects
-     *
-     * @author Ivan Dovecar
      */
     public double distanceCalculatorByFields (Point2D start, Point2D end){
         Point2D startEndDifference = start.subtract(end);
@@ -70,8 +74,6 @@ public class Antenna extends Tile {
      * @param start (which is represented by the coordinates of the chosen robot)
      * @param end (which is represented by the coordinates of the actual checkpoint)
      * @return double value which stands for the vector length between the objects
-     *
-     * @author Ivan Dovecar
      */
     public double distanceCalculatorByVectorLength (Point2D start, Point2D end){
         double distanceVector = start.distance(end);

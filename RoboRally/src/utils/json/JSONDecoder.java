@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * {@link JSONDecoder#cardArrayDeserializer} and {@link JSONDecoder#tileJsonDeserializer})
  *
  * @author Manuel Neumayer
- * @author Mia
+ * @author Mia Brandtner
  */
 public class JSONDecoder {
 

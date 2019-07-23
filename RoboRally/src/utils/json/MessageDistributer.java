@@ -56,6 +56,11 @@ import viewmodels.PlayerMatController;
  *
  * @author Manuel Neumayer
  * @author Vincent Tafferner
+ * @author Mia Brandtner
+ * @author Ivan Dovecar
+ * @author Verena Sadtler
+ * @author Jessica Gerlach
+ *
  */
 public class MessageDistributer {
     public static Map<String, IController> controllerMap;
@@ -87,9 +92,6 @@ public class MessageDistributer {
      * @param server          The Server itself.
      * @param task            The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param helloServerBody The message body of the message which is of type {@link HelloServerBody}.
-     * @author Ivan Dovecar
-     * @author Manu
-     * @author Mia
      */
     public void handleHelloServer(Server server, Server.ServerReaderTask task, HelloServerBody helloServerBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleHelloServer()" + ANSI_RESET);
@@ -167,8 +169,6 @@ public class MessageDistributer {
      * @param server           The Server itself.
      * @param task             The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param playerValuesBody The message body of the message which is of type {@link PlayerValuesBody}.
-     * @author Ivan Dovecar
-     * @author Manu
      */
     public static void handlePlayerValues(Server server, Server.ServerReaderTask task, PlayerValuesBody playerValuesBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayerValues()" + ANSI_RESET);
@@ -435,8 +435,6 @@ public class MessageDistributer {
      * @param server       The Server itself.
      * @param task         The ReaderTask of the distributerServer (Gives access to the PrintWriter).
      * @param sendChatBody The message body of the message which is of type {@link SendChatBody}.
-     * @author Ivan Dovecar
-     * @author Manu
      */
     public void handleSendChat(Server server, Server.ServerReaderTask task, SendChatBody sendChatBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleSendChat()" + ANSI_RESET);
@@ -1081,8 +1079,6 @@ public class MessageDistributer {
      * @param client    The Client itself.
      * @param task      The ReaderTask of the client (Gives access to the PrintWriter).
      * @param errorBody The message body of the message which is of type {@link ErrorBody}.
-     * @author Ivan Dovecar
-     * @author Manu
      */
     public void handleError(Client client, Client.ClientReaderTask task, ErrorBody errorBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleError()" + ANSI_RESET);
