@@ -2,7 +2,6 @@ package server.game;
 
 import server.game.DamageCards.*;
 import server.game.ProgrammingCards.*;
-import server.game.GamePhases.*;
 import server.game.decks.*;
 
 import java.util.ArrayList;
@@ -30,13 +29,13 @@ public abstract class Deck {
     /**
      * This method shuffles the deck.
      */
-    public abstract void shuffleDeck(ArrayList<Card> Deck);
+    public abstract void shuffleDeck();
 
     /**
      * This method knows the top card of any deck.
      */
-    public Card getTopCard(ArrayList<Card> Deck) {
-        topCard = Deck.get(0);
+    public Card getTopCard() {
+        topCard = this.getDeck().get(0);
         return topCard;
     }
 

@@ -34,8 +34,8 @@ public class DeckVirus extends Deck {
      * This method shuffles the deck.
      */
     @Override
-    public void shuffleDeck(ArrayList<Card> deckVirus) {
-        Collections.shuffle(deckVirus);
+    public void shuffleDeck() {
+        Collections.shuffle(this.getDeck());
     }
 
     /**

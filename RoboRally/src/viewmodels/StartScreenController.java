@@ -10,6 +10,12 @@ import utils.Parameter;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This controller class is responsible for showing the startscreen
+ *
+ * @author Verena Sadtler
+ */
+
 public class StartScreenController implements Initializable {
     @FXML
     GridPane startScreen;

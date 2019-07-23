@@ -9,7 +9,7 @@ import utils.json.MessageDistributer;
 import java.util.ArrayList;
 
 /** This is the wrapper class for the message body of the 'GameStarted' protocol JSON message. Its main purpose is to sent the map
- * @author Mia
+ * @author Mia Brandtner
  */
 
 public class GameStartedBody implements ServerMessageAction<GameStartedBody> {

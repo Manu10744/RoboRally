@@ -5,7 +5,7 @@ import utils.Parameter;
 
 /**
  * This class's sole purpose is to construct normal map tiles which only have a name
- * @author  Mia
+ * @author  Mia Brandtner
  */
 public class Empty extends Tile {
     @Expose

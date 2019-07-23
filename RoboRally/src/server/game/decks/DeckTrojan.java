@@ -34,8 +34,8 @@ public class DeckTrojan extends Deck {
      * This method shuffles the deck.
      */
     @Override
-    public void shuffleDeck(ArrayList<Card> deckTrojan) {
-        Collections.shuffle(deckTrojan);
+    public void shuffleDeck() {
+        Collections.shuffle(this.getDeck());
     }
 
     /**

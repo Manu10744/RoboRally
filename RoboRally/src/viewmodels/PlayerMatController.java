@@ -20,6 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
+import server.game.Player;
 import server.game.ProgrammingCards.*;
 import server.game.decks.DeckDiscard;
 import utils.Parameter;
@@ -334,16 +335,95 @@ public class PlayerMatController implements IController {
             loadCards(deck);
     }
 
-    public void emptyCards(){
-        System.out.println("Biste hier???" + this.dragImages);
+    /**
+     * This method removes the cards of the player hand when the player has dragged five cards into the register.
+     */
+    public void emptyHand(){
         //ImageViews are deleted
         this.playerHand.getChildren().removeAll(this.playerHand.getChildren());
-        System.out.println("Nach removen" + this.dragImages);
-        //Todo doe snot empty hbox
-
     }
 
+    /**
+     * This method return an arraylIst with all currently empty registers
+     * It is used in handleTimerFinished for filling up registers that have not yet been filled
+     * @return
+     */
+    public ArrayList<Integer> getEmptyRegisterNumbers(){
+        ArrayList<Integer> emptyRegisterNumbers = new ArrayList<>();
 
+        //if a register does not have an image in it, it is empty and its register number will be added to the list
+        if (register1.getImage() == null){
+            emptyRegisterNumbers.add(1);
+        }
+        if(register2.getImage() == null){
+            emptyRegisterNumbers.add(2);
+        }
+        if (register3.getImage() == null){
+            emptyRegisterNumbers.add(3);
+        }
+        if (register4.getImage() == null){
+            emptyRegisterNumbers.add(4);
+        }
+        if (register5.getImage() == null){
+            emptyRegisterNumbers.add(5);
+        }
+
+        return emptyRegisterNumbers;
+    }
+
+    /**
+     * This method sets registers individually with an image of a programming card.
+     * It is used when the timer finishes so that the remaining registers can be filled.
+     * @param registerNumber
+     * @param cardImage
+     */
+    public void putImageInRegister(int registerNumber, Image cardImage){
+        //Making the cards responsive
+
+
+        switch (registerNumber){
+            case 1: {
+                register1.setImage(cardImage);
+                register1.setPreserveRatio(true);
+                register1.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                register1.fitHeightProperty().bind(playerRegister.heightProperty());
+                break;
+            }
+            case 2: {
+                register2.setImage(cardImage);
+                register2.setPreserveRatio(true);
+                register2.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                register2.fitHeightProperty().bind(playerRegister.heightProperty());
+                break;
+            }
+            case 3: {
+                register3.setImage(cardImage);
+                register3.setPreserveRatio(true);
+                register3.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                register3.fitHeightProperty().bind(playerRegister.heightProperty());
+                break;
+            }
+            case 4: {
+                register4.setImage(cardImage);
+                register4.setPreserveRatio(true);
+                register4.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                register4.fitHeightProperty().bind(playerRegister.heightProperty());
+                break;
+            }
+            case 5: {
+                register5.setImage(cardImage);
+                register5.setPreserveRatio(true);
+                register5.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
+                register5.fitHeightProperty().bind(playerRegister.heightProperty());
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method loads the right colored cards into the players hand according to which robot the player has chosen
+     * @param cardsInHand The nine cards in the players hand
+     */
     public void loadCards(ArrayList<Card> cardsInHand) {
         ChatController chatController = (ChatController) stageController.getControllerMap().get("Chat");
         Client client = chatController.getClient();
@@ -392,6 +472,14 @@ public class PlayerMatController implements IController {
         }
 
     }
+
+
+    /**
+     * This method gets the images of the cards
+     * @param card The specific card
+     * @param color The color of that card
+     * @return The cards image
+     */
 
     public Image getCardImage(Card card, String color) {
         Image image;
@@ -630,6 +718,11 @@ public class PlayerMatController implements IController {
         return cardsInHand;
     }
 
+    /**
+     * This method is responsible for dragging the cards from the players hand into the register, the cards <br>
+     * from the register back into the players hand, and the cards from one register into another.
+     * @param dragEvent
+     */
     public void transmitSelectedCards(DragEvent dragEvent) {
         chatController = (ChatController) stageController.getControllerMap().get("Chat");
 

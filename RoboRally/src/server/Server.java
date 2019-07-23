@@ -12,8 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Tile;
+import server.game.Tiles.*;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
@@ -49,7 +48,8 @@ public class Server extends Application {
     private String protocolVersion = "Version 0.1";
     private int counterPlayerID = 1;
     private int setterPlayerID;
-    private int numberOfReadyClients = 0;
+    private int numberOfReadyClients;
+    private boolean firstAllRegistersFilled = false;
     private int setStartPoints = 0;
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
@@ -58,6 +58,16 @@ public class Server extends Application {
     private int antennaXPos;
     private int antennaYPos;
 
+    private Map<String, Wall> wallMap = new HashMap<>();
+    private Map<String, Pit> pitMap = new HashMap<>();
+    private Map<String, Gear> gearMap = new HashMap<>();
+    private Map<String, Laser> laserMap = new HashMap<>();
+    private Map<String, PushPanel> pushPanelMap = new HashMap<>();
+    private Map<String, RestartPoint> rebootMap = new HashMap<>();
+    private Map<String, CheckPoint> checkPointMap = new HashMap<>();
+    private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+    private int numOfRegistersFilled = 0;
+    private int activeRound;
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
@@ -89,6 +99,40 @@ public class Server extends Application {
         logger.info("Server shut down.");
 
 
+    }
+
+    public boolean playerFellOffMap(Player player){
+        int playerXPos = player.getPlayerRobot().getxPosition();
+        int playerYPos = player.getPlayerRobot().getyPosition();
+        int mapHeight = this.map.get(0).size();
+        int mapWidth = this.map.size();
+
+        // Player fell off the map border
+        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight) {
+            return true;
+        }
+        // Player fell into a gap
+        else if (this.map.get(playerXPos).get(playerYPos).get(0) == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int getActiveRound() {
+        return activeRound;
+    }
+
+    public void setActiveRound(int activeRound) {
+        this.activeRound = activeRound;
+    }
+
+    public boolean isFirstAllRegistersFilled() {
+        return firstAllRegistersFilled;
+    }
+
+    public void setFirstAllRegistersFilled(boolean firstAllRegistersFilled) {
+        this.firstAllRegistersFilled = firstAllRegistersFilled;
     }
 
     public MessageDistributer getMessageDistributer() {
@@ -193,6 +237,38 @@ public class Server extends Application {
 
     public void setAntennaYPos(int antennaYPos) {
         this.antennaYPos = antennaYPos;
+    }
+
+    public Map<String, Wall> getWallMap(){
+        return wallMap;
+    }
+
+    public Map<String, Pit> getPitMap(){
+        return pitMap;
+    }
+
+    public Map<String, Gear> getGearMap(){
+        return gearMap;
+    }
+
+    public Map<String, Laser> getLaserMap(){
+       return laserMap;
+    }
+
+    public Map<String, PushPanel> getPushPanelMap(){
+        return pushPanelMap;
+    }
+
+    public Map<String, RestartPoint> getRebootMap(){
+        return rebootMap;
+    }
+
+    public Map<String, CheckPoint> getCheckPointMap(){
+        return checkPointMap;
+    }
+
+    public Map<String, EnergySpace> getEnergySpaceMap(){
+        return energySpaceMap;
     }
 
     public class ServerReaderTask extends Thread {

@@ -36,9 +36,9 @@ import java.util.logging.Logger;
  * with calling fieldMap.get("x-y")
  *
  * @author Ivan Dovecar
- * @author Mia
- * @author Manu
- * @author Verena
+ * @author Mia Brandtner
+ * @author Manu Neumayer
+ * @author Verena Sadtler
  */
 
 public class MapController implements IController {
@@ -53,6 +53,15 @@ public class MapController implements IController {
     private Tile antenna;
 
     private Map<String, Group> fieldMap = new HashMap<String, Group>();
+    private Map<String, Wall> wallMap = new HashMap<>();
+    private Map<String, Pit> pitMap = new HashMap<>();
+    private Map<String, Gear> gearMap = new HashMap<>();
+    private Map<String, Laser> laserMap = new HashMap<>();
+    private Map<String, PushPanel> pushPanelMap = new HashMap<>();
+    private Map<String, RestartPoint> rebootMap = new HashMap<>();
+    private Map<String, CheckPoint> checkPointMap = new HashMap<>();
+    private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private ArrayList<Group> startPointList;
     private StageController stageController;
@@ -252,6 +261,54 @@ public class MapController implements IController {
                                 ImageView imageView = new ImageView();
                                 imageView.setImage(image);
 
+                                if (tile instanceof Wall) {
+                                    String ID = xPos + "-" + yPos;
+                                    Wall wall = (Wall) tile;
+                                    wallMap.put(ID, wall);
+                                }
+
+                                if (tile instanceof Pit) {
+                                    String ID = xPos + "-" + yPos;
+                                    Pit pit = (Pit) tile;
+                                    pitMap.put(ID, pit);
+                                }
+
+                                if (tile instanceof Gear) {
+                                    String ID = xPos + "-" + yPos;
+                                    Gear gear = (Gear) tile;
+                                    gearMap.put(ID, gear);
+                                }
+
+                                if (tile instanceof Laser) {
+                                    String ID = xPos + "-" + yPos;
+                                    Laser laser = (Laser) tile;
+                                    laserMap.put(ID, laser);
+                                }
+
+                                if (tile instanceof PushPanel) {
+                                    String ID = xPos + "-" + yPos;
+                                    PushPanel pushPanel = (PushPanel) tile;
+                                    pushPanelMap.put(ID, pushPanel);
+                                }
+
+                                if (tile instanceof RestartPoint) {
+                                    String ID = xPos + "-" + yPos;
+                                    RestartPoint restartPoint = (RestartPoint) tile;
+                                    rebootMap.put(ID, restartPoint);
+                                }
+
+                                if (tile instanceof CheckPoint) {
+                                    String ID = xPos + "-" + yPos;
+                                    CheckPoint checkPoint = (CheckPoint) tile;
+                                    checkPointMap.put(ID, checkPoint);
+                                }
+
+                                if (tile instanceof EnergySpace) {
+                                    String ID = xPos + "-" + yPos;
+                                    EnergySpace energySpace = (EnergySpace) tile;
+                                    energySpaceMap.put(ID, energySpace);
+                                }
+
                                 if (tile instanceof StartPoint){
                                     String ID = xPos + "-" + yPos;
                                     imageGroup.setId(ID);
@@ -302,6 +359,9 @@ public class MapController implements IController {
         return false;
     }
 
+    /**
+     * This method initializes the click events for all starting points on the map, so they can be clicked.
+     */
     public void initEventsOnStartpoints() {
 
         for (Group startpoint : startPointList) {
@@ -324,6 +384,12 @@ public class MapController implements IController {
         }
     }
 
+
+    /**
+     * This method sets the robot onto the chosen startingpoint.
+     * @param playerRobot The players chosen robot
+     * @param startingPoint The startingpoint the player has chosen to set his robot on.
+     */
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
         String antennaOrientation = this.antenna.getOrientations().get(0);
 
@@ -364,11 +430,31 @@ public class MapController implements IController {
         }
     }
 
+    /**
+     * This method removes the robot from its old position and sets it onto the new position
+     * @param oldPosition The old Position of the robot
+     * @param newPosition The new Position of the robot
+     */
     public void moveRobot(String oldPosition, String newPosition ){
-
-
         ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
         fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
+        fieldMap.get(newPosition).getChildren().add(robotImageView);
+
+    }
+
+    /**
+     * This method sets the robot onto the restartpoint and sets its orientation to north
+     * @param oldPosition The old position of the robot
+     * @param newPosition The position of the restartpoint, the robot is set onto
+     */
+    public void rebootRobot(String oldPosition, String newPosition ) {
+        System.out.println("(REBOOTROBOT): OLDPOSITION: " + oldPosition);
+        System.out.println("(REBOOTROBOT): NEWPOSITION: " + newPosition);
+        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
+        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
+
+        // set robot orientation to north
+        robotImageView.rotateProperty().setValue(0);
         fieldMap.get(newPosition).getChildren().add(robotImageView);
 
     }
@@ -400,6 +486,38 @@ public class MapController implements IController {
 
     public void setAntenna(Tile antenna) {
         this.antenna = antenna;
+    }
+
+    public Map<String, Wall> getWallMap() {
+        return wallMap;
+    }
+
+    public Map<String, Pit> getPitMap() {
+        return pitMap;
+    }
+
+    public Map<String, Gear> getGearMap() {
+        return gearMap;
+    }
+
+    public Map<String, Laser> getLaserMap() {
+        return laserMap;
+    }
+
+    public Map<String, PushPanel> getPushPanelMap() {
+        return pushPanelMap;
+    }
+
+    public Map<String, RestartPoint> getRebootMap() {
+        return rebootMap;
+    }
+
+    public Map<String, CheckPoint> getCheckPointMap() {
+        return checkPointMap;
+    }
+
+    public Map<String, EnergySpace> getEnergySpaceMap() {
+        return energySpaceMap;
     }
 }
 

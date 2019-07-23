@@ -19,7 +19,7 @@ public class PushPanel extends Tile {
      * for two registers there are only pushpanels activating at register 2 and 4, for three they activate at 1, 3, 5. This is taken from the maps that came with RoboRally.
      * @param orientation
      * @param numOfRegisters
-     * @author Mia
+     * @author Mia Brandtner
      */
     public PushPanel(String orientation, int numOfRegisters){
         this.type = Parameter.PUSHPANEL_NAME;

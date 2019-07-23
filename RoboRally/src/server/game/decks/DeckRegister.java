@@ -32,8 +32,8 @@ public class DeckRegister extends Deck {
     /**
      * This method shuffles the deck.
      */
-    public void shuffleDeck(ArrayList<Card> deckRegister) {
-        Collections.shuffle(deckRegister);
+    public void shuffleDeck() {
+        Collections.shuffle(this.getDeck());
     }
 
     /**
@@ -43,4 +43,5 @@ public class DeckRegister extends Deck {
     public ArrayList<Card> getDeck() {
         return deckRegister;
     }
+
 }

@@ -25,7 +25,7 @@ import static utils.Parameter.ORIENTATION_RIGHT;
  * @author Ivan Dovecar
  * @author Vincent Tafferner
  * @author Jessica Gerlach
- * @author Mia
+ * @author Mia Brandtner
  */
 public class Player implements Serializable {
 
@@ -36,11 +36,15 @@ public class Player implements Serializable {
     private int figure;
     private boolean isReady;
     private Robot playerRobot;
+    private String color;
 
     private DeckDraw deckDraw;
     private DeckDiscard deckDiscard;
     private DeckHand deckHand;
     private DeckRegister deckRegister;
+
+
+    private int activaPhase;
 
     public Player() {
         this.name = "Findus";
@@ -49,7 +53,7 @@ public class Player implements Serializable {
         // Create decks, initialize draw deck
         this.deckDraw = new DeckDraw();
         deckDraw.initializeDeck();
-        deckDraw.shuffleDeck(deckDraw.getDeck());
+        deckDraw.shuffleDeck();
 
         this.deckDiscard = new DeckDiscard();
         deckDiscard.initializeDeck();
@@ -69,29 +73,38 @@ public class Player implements Serializable {
         this.figure = figure;
     }
 
-    // Initialises Robot by processing figure property
+    /**
+     * This method initialises the robot of a player with name and image as well as its setting the color o the player according to the
+     * robot figure
+     */
     public void initRobotByFigure(int figure) {
 
         Image robotImage;
         String name;
         if (figure == 1) {
-            robotImage= new Image("/resources/images/robots/HammerBot.PNG");
+            robotImage = new Image("/resources/images/robots/HammerBot.PNG");
             name = "HammerBot";
+            this.color = "purple";
         } else if (figure == 2) {
             robotImage = new Image("/resources/images/robots/HulkX90.PNG");
             name = "HulkX90";
+            this.color = "red";
         } else if (figure == 3) {
             robotImage = new Image("/resources/images/robots/SmashBot.PNG");
             name = "SmashBot";
+            this.color = "yellow";
         } else if (figure == 4) {
             robotImage = new Image("/resources/images/robots/Spinbot.PNG");
             name = "SpinBot";
+            this.color = "blue";
         } else if (figure == 5) {
             robotImage = new Image("/resources/images/robots/Twonky.PNG");
             name = "Twonky";
+            this.color = "orange";
         } else { // figure == 6
             robotImage = new Image("/resources/images/robots/ZoomBot.PNG");
             name = "ZoomBot";
+            this.color = "green";
         }
 
         // Set robot for this player
@@ -108,11 +121,11 @@ public class Player implements Serializable {
             // Each time this checks if there are still enough Cards left in the deckDraw.
             if (deckDraw.getDeck().isEmpty()) {
                 deckDiscard.addDiscardToDraw(deckDraw);
-                deckDraw.shuffleDeck(deckDraw.getDeck());
+                deckDraw.shuffleDeck();
             }
 
             // The first Card of deckDraw is added to the deckHand.
-            deckHand.getDeck().add(deckDraw.getTopCard(deckDraw.getDeck()));
+            deckHand.getDeck().add(deckDraw.getTopCard());
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
     }
@@ -120,7 +133,7 @@ public class Player implements Serializable {
     /**
      * This method clears the deckRegister after they have been played.
      */
-    public void clearRegister(DeckRegister deckRegister){
+    public void clearRegister(DeckRegister deckRegister) {
         deckRegister.getDeck().clear();
     }
 
@@ -140,6 +153,14 @@ public class Player implements Serializable {
         deckHand.getDeck().clear();
     }
 
+    public int getActivaPhase() {
+        return activaPhase;
+    }
+
+    public void setActivaPhase(int activaPhase) {
+        this.activaPhase = activaPhase;
+    }
+
     /**
      * This method fills the registers with Cards from the deckDraw, if the timer ended. <br>
      * It is necessary to ask for all indices specifically because its possible, that the register at index 0 is empty <br>
@@ -152,83 +173,81 @@ public class Player implements Serializable {
         // If the index at 0 is empty the first Card of deckDraw will be put there
         try {
             deckRegister.getDeck().get(0);
-        } catch (IndexOutOfBoundsException e ) {
+        } catch (IndexOutOfBoundsException e) {
 
             // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
             if (deckDraw.getDeck().isEmpty()) {
                 addDiscardToDraw(deckDraw, deckDiscard);
-                deckDraw.shuffleDeck(deckDraw.getDeck());
+                deckDraw.shuffleDeck();
             }
 
-            deckRegister.getDeck().add(0, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckRegister.getDeck().add(0, deckDraw.getTopCard());
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
 
         // If the index at 1 is empty the first Card of deckDraw will be put there
         try {
             deckRegister.getDeck().get(1);
-        } catch (IndexOutOfBoundsException e ) {
+        } catch (IndexOutOfBoundsException e) {
 
             // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
             if (deckDraw.getDeck().isEmpty()) {
                 addDiscardToDraw(deckDraw, deckDiscard);
-                deckDraw.shuffleDeck(deckDraw.getDeck());
+                deckDraw.shuffleDeck();
             }
 
-            deckRegister.getDeck().add(1, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckRegister.getDeck().add(1, deckDraw.getTopCard());
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
 
         // If the index at 2 is empty the first Card of deckDraw will be put there
         try {
             deckRegister.getDeck().get(2);
-        } catch (IndexOutOfBoundsException e ) {
+        } catch (IndexOutOfBoundsException e) {
 
             // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
             if (deckDraw.getDeck().isEmpty()) {
                 addDiscardToDraw(deckDraw, deckDiscard);
-                deckDraw.shuffleDeck(deckDraw.getDeck());
+                deckDraw.shuffleDeck();
             }
 
-            deckRegister.getDeck().add(2, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckRegister.getDeck().add(2, deckDraw.getTopCard());
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
 
         // If the index at 3 is empty the first Card of deckDraw will be put there
         try {
             deckRegister.getDeck().get(3);
-        } catch (IndexOutOfBoundsException e ) {
+        } catch (IndexOutOfBoundsException e) {
 
             // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
             if (deckDraw.getDeck().isEmpty()) {
                 addDiscardToDraw(deckDraw, deckDiscard);
-                deckDraw.shuffleDeck(deckDraw.getDeck());
+                deckDraw.shuffleDeck();
             }
 
-            deckRegister.getDeck().add(3, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckRegister.getDeck().add(3, deckDraw.getTopCard());
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
 
         // If the index at 4 is empty the first Card of deckDraw will be put there
         try {
             deckRegister.getDeck().get(4);
-        } catch (IndexOutOfBoundsException e ) {
+        } catch (IndexOutOfBoundsException e) {
 
             // In the case that the deckDraw has no Cards left in it, it will get new Cards from the deckDiscard.
             if (deckDraw.getDeck().isEmpty()) {
                 addDiscardToDraw(deckDraw, deckDiscard);
-                deckDraw.shuffleDeck(deckDraw.getDeck());
+                deckDraw.shuffleDeck();
             }
 
-            deckRegister.getDeck().add(4, deckDraw.getTopCard(deckDraw.getDeck()));
+            deckRegister.getDeck().add(4, deckDraw.getTopCard());
             deckDraw.removeTopCard(deckDraw.getDeck());
         }
     }
 
 
-
-
-    public int getPlayerID(){
+    public int getPlayerID() {
         return playerID;
     }
 
@@ -236,7 +255,9 @@ public class Player implements Serializable {
         this.playerID = playerID;
     }
 
-    public boolean isReady() { return isReady; }
+    public boolean isReady() {
+        return isReady;
+    }
 
     public void setReady(boolean isReady) {
         this.isReady = isReady;
@@ -305,4 +326,9 @@ public class Player implements Serializable {
     public void setEnergy(int energy) {
         this.energy = energy;
     }
+
+    public String getColor() {
+        return color;
+    }
+
 }

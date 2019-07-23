@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * {@link JSONDecoder#cardArrayDeserializer} and {@link JSONDecoder#tileJsonDeserializer})
  *
  * @author Manuel Neumayer
- * @author Mia
+ * @author Mia Brandtner
  */
 public class JSONDecoder {
 
@@ -306,7 +306,6 @@ public class JSONDecoder {
                 SelectionFinishedBody selectionFinishedBody = new SelectionFinishedBody(
                         messageBody.get("playerID").getAsInt()
                 );
-
                 return new JSONMessage("SelectionFinished", selectionFinishedBody);
             } else if (messageType.equals("TimerStarted")) {
 
@@ -381,13 +380,13 @@ public class JSONDecoder {
             } else if (messageType.equals("PlayerShooting")) {
                 PlayerShootingBody playerShootingBody = new PlayerShootingBody();
                 return new JSONMessage("PlayerShooting", playerShootingBody);
-            } else if (messageType.equals("RestartPoint")) {
+            } else if (messageType.equals("Reboot")) {
 
                 RebootBody rebootBody = new RebootBody(
                         messageBody.get("playerID").getAsInt()
                 );
 
-                return new JSONMessage("RestartPoint", rebootBody);
+                return new JSONMessage("Reboot", rebootBody);
             } else if (messageType.equals("PlayerTurning")) {
 
                 PlayerTurningBody playerTurningBody = new PlayerTurningBody(
@@ -510,8 +509,7 @@ public class JSONDecoder {
         Gson gson = new Gson();
         if (cardName == null) {
             return null;
-        }
-        else if (cardName.equals("MoveI")) {
+        } else if (cardName.equals("MoveI")) {
             MoveI result = gson.fromJson(jsonMessageBody, MoveI.class);
             return result;
         } else if (cardName.equals("MoveII")) {

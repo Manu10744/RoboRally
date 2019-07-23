@@ -68,20 +68,6 @@ public class Robot {
         this.name = name;
     }
 
-    /**
-     * This method is responsible for moving the robot on the map
-     */
-    public void move() {
-        //TODO delete if not needed in the future
-    }
-
-    /**
-     * This method is responsible for rotating the robot on the map
-     */
-    public void rotate() {
-        //TODO not needed
-    }
-
     public Image getRobotImage() {
         return robotImage;
     }

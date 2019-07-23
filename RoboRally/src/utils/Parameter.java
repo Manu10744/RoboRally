@@ -3,7 +3,7 @@ package utils;
 import javax.sound.sampled.Port;
 
 /**
- * In this class all the Parameters that will occur in the diffenrent classes will show up. <br>
+ * In this class all the Parameters that will occur in the different classes will show up. <br>
  * The goal is to have them all in one spot.
  *
  * @author Ivan Dovecar
@@ -60,7 +60,7 @@ public class Parameter {
 
         //amount of players
     public static final int MAX_PLAYERSIZE = 6;
-    public static final int MIN_PLAYERSIZE = 1;
+    public static final int MIN_PLAYERSIZE = 2;
 
         //Register numbers
     public static final int REGISTER_ONE = 1;
