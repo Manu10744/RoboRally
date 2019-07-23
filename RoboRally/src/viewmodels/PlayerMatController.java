@@ -250,11 +250,11 @@ public class PlayerMatController implements IController {
                             }
 
                             if (register1.getImage() != null && register2.getImage() != null && register3.getImage() != null && register4.getImage() != null && register5.getImage() != null) {
-                                register1.setDisable(true);
-                                register2.setDisable(true);
-                                register3.setDisable(true);
-                                register4.setDisable(true);
-                                register5.setDisable(true);
+                               // register1.setDisable(true);
+                               // register2.setDisable(true);
+                                //register3.setDisable(true);
+                               // register4.setDisable(true);
+                               // register5.setDisable(true);
 
                                 //closes popup
                                 playerHand.setVisible(false);
@@ -302,7 +302,7 @@ public class PlayerMatController implements IController {
             register4.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new TurnRight());
+                    chatController.getClient().sendPlayCard(new Again());
                 }
             });
         }

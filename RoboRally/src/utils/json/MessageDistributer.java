@@ -1,7 +1,6 @@
 package utils.json;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +15,6 @@ import static java.lang.Thread.sleep;
 import static utils.Parameter.*;
 
 import client.Client;
-import com.google.gson.JsonDeserializer;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -27,7 +25,6 @@ import javafx.geometry.HPos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
@@ -322,29 +319,29 @@ public class MessageDistributer {
         // TODO: Check case when 6 players connected and another one connects
         if (numberOfReadyClients >= Parameter.MIN_PLAYERSIZE && numberOfReadyClients == server.getConnectedClients().size()) {
 
-            // Path path = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/riskyCrossing.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/highOctane.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/sprintCramp.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/fractionation.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/burnout.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/lostBearings.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/passingLane.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/twister.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/dodgeThis.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/chopShopChallenge.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/undertow.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/heavyMergeArea.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/deathTrap.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/gearStripper.json");
-            // Path path = Paths.get("RoboRally/src/resources/maps/extraCrispy.json")
-            Path path = Paths.get("RoboRally/src/resources/maps/burnRun.json");
+            Path dizzyHighway = Paths.get("RoboRally/src/resources/maps/dizzyHighway.json");
+            Path riskyCrossing = Paths.get("RoboRally/src/resources/maps/riskyCrossing.json");
+            Path highOctane = Paths.get("RoboRally/src/resources/maps/highOctane.json");
+            Path sprintCramp = Paths.get("RoboRally/src/resources/maps/sprintCramp.json");
+            Path corridorBlitz = Paths.get("RoboRally/src/resources/maps/corridorBlitz.json");
+            Path fractionation = Paths.get("RoboRally/src/resources/maps/fractionation.json");
+            Path burnout = Paths.get("RoboRally/src/resources/maps/burnout.json");
+            Path lostBearings = Paths.get("RoboRally/src/resources/maps/lostBearings.json");
+            Path passingLane = Paths.get("RoboRally/src/resources/maps/passingLane.json");
+            Path twister = Paths.get("RoboRally/src/resources/maps/twister.json");
+            Path dodgeThis = Paths.get("RoboRally/src/resources/maps/dodgeThis.json");
+            Path chopShopChallenge = Paths.get("RoboRally/src/resources/maps/chopShopChallenge.json");
+            Path undertow = Paths.get("RoboRally/src/resources/maps/undertow.json");
+            Path heavyMergeArea = Paths.get("RoboRally/src/resources/maps/heavyMergeArea.json");
+            Path deathTrap = Paths.get("RoboRally/src/resources/maps/deathTrap.json");
+            Path pilgrimage = Paths.get("RoboRally/src/resources/maps/pilgrimage.json");
+            Path gearStripper = Paths.get("RoboRally/src/resources/maps/gearStripper.json");
+            Path extraCrispy = Paths.get("RoboRally/src/resources/maps/extraCrispy.json");
+            Path burnRun = Paths.get("RoboRally/src/resources/maps/burnRun.json");
 
             try {
                 // Sets Map in server
-                String map = Files.readString(path, StandardCharsets.UTF_8);
+                String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(map);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
                 server.setMap(gameStartedBody.getXArray());
@@ -410,7 +407,7 @@ public class MessageDistributer {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 try {
-                    String map = Files.readString(path, StandardCharsets.UTF_8);
+                    String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                     client.getWriter().println(map);
                     client.getWriter().flush();
                 } catch (IOException e) {
@@ -692,6 +689,8 @@ public class MessageDistributer {
                 // Update the player's register deck
                 player.getDeckRegister().getDeck().set(register - 1, selectedCard);
 
+                player.getDeckHand().getDeck().remove(selectedCard);
+
                 if (selectedCard == null) {
                     logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): SET CARD null " + " FOR PLAYER " + player.getName() + " IN REGISTER " + register + ANSI_RESET);
                     logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): DECK FOR PLAYER " + player.getName() + ": " + player.getDeckRegister().getDeck() + ANSI_RESET);
@@ -755,17 +754,22 @@ public class MessageDistributer {
                     }
                     System.out.println("TIMER IN SERVER HAS FINISHED!");
                     //TODO: Give proper information about not finished players
-                    ArrayList<Integer> bla = new ArrayList<>();
-                    bla.add(1337);
+                    ArrayList<Integer> playersNotFinished = new ArrayList<>();
+
+                    // Timer ended, now check for players that have not finished programming
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        if (clientWrapper.getPlayer().getSelectedCards() < REGISTER_FIVE) {
+                            playersNotFinished.add(clientWrapper.getPlayer().getPlayerID());
+                        }
+                    }
 
                     boolean timerEnded = false;
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("TimerEnded", new TimerEndedBody(bla));
+                        JSONMessage jsonMessage = new JSONMessage("TimerEnded", new TimerEndedBody(playersNotFinished));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
 
                         timerEnded = true;
-
                     }
 
                     boolean cardsYouGotNowIsSent = false;
@@ -774,16 +778,21 @@ public class MessageDistributer {
                     if (timerEnded) {
                         for (Server.ClientWrapper clientToNotify : server.getConnectedClients()) {
                             if (clientToNotify.getPlayer().getSelectedCards() < REGISTER_FIVE) {
-
                                 Player clientPlayer = clientToNotify.getPlayer();
 
+                                System.out.println("DECKHAND SIZE BEFORE: " + clientPlayer.getDeckHand().getDeck().size());
+
                                 //Remove register cards from hand
-                                clientPlayer.getDeckHand().getDeck().removeAll(clientPlayer.getDeckRegister().getDeck());
-                                ArrayList<Card> remainingCardsInHand = clientPlayer.getDeckHand().getDeck();
+                                ArrayList<Card> deckRegister = clientPlayer.getDeckRegister().getDeck();
+                                ArrayList<Card> deckHand = clientPlayer.getDeckHand().getDeck();
+                                
+
+
+                                System.out.println("DECKHAND SIZE AFTER: " + clientPlayer.getDeckHand().getDeck().size());
 
                                 //Cards from hand are added to discard pile
                                 DeckDiscard deckDiscard = clientPlayer.getDeckDiscard();
-                                deckDiscard.getDeck().addAll(remainingCardsInHand);
+                                //deckDiscard.getDeck().addAll(remainingCardsInHand);
                                 clientPlayer.setDeckDiscard(deckDiscard);
 
                                 //now fill empty registers with rest cards of draw pile, if not enough, put discrad on draw pile and reshuffle
@@ -1249,28 +1258,43 @@ public class MessageDistributer {
                 //Todo power up
 
             } else if (cardToActivateName.equals("Again")) {
-                int register = client.getPlayer().getActivaPhase();
-                Player player = client.getPlayer();
+                int currentRegister = 2;
+                System.out.println(currentRegister);
 
-                if (register == REGISTER_ONE) {
-                    //do nothing as there is no card to repeat
-                } else {
-                    Card cardToActivate = player.getDeckRegister().getDeck().get(register - 2);
-                    //here minus 2 as the active phase goes from 1-5 but the registers go from 0-4, so you have to go back
-                    //1 for the actual phase and two for the register before and three for the phase before that register
+                if (client.getPlayer().getPlayerID() == messagePlayerID) {
+                    // Own player played Again
+                    Player ownPlayer = client.getPlayer();
+                    if (ownPlayer.getCurrentRound() == Parameter.REGISTER_ONE) {
+                        // Do nothing as there is no card to play again
+                    } else {
+                        System.out.println(ownPlayer.getDeckRegister().getDeck());
 
-                    if (cardToActivate.getCardName().equals("Again")) {
-                        if (register < REGISTER_THREE) {
-                            //do nothing as for two times to use again one has to
-                        } else {
-                            cardToActivate = player.getDeckRegister().getDeck().get(register - 3);
+                        for (int i = currentRegister; i <= 0; i--) {
+                            // Find the first card in already played cards that is no Again-Card
+                            if (!ownPlayer.getDeckRegister().getDeck().get(i).getCardName().equals("Again")) {
+                                // Activate the card
+                                Card cardToActivate = ownPlayer.getDeckRegister().getDeck().get(i);
+                                String currentPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
+                                cardToActivate.activateCard(ownPlayer, client.getMapController().getPitMap(),
+                                        client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+
+                                logger.info(ANSI_GREEN + "CLIENT ACTIVATED AGAIN. ACTUAL CARD: " + cardToActivate.getCardName() + "!");
+
+                                // Update GUI
+                                if (cardToActivate.getCardName().equals("MoveI") || cardToActivate.getCardName().equals("MoveII") ||
+                                    cardToActivate.getCardName().equals("MoveIII") || cardToActivate.getCardName().equals("BackUp")) {
+
+                                    String newPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
+
+                                    // Only move a robot when it's not out going of the map
+                                    if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                                        client.getMapController().moveRobot(currentPos, newPos);
+                                    }
+                                }
+                            }
                         }
                     }
-                    //here the if-else block is called recursively
-                    //Todo recursvie: cardToActivateName = cardToActivate.getCardName();
-
                 }
-
             }
         });
     }
@@ -1325,7 +1349,7 @@ public class MessageDistributer {
         }
         // Activation phase
         else if (activePhase == ACTIVATION_PHASE) {
-            client.getPlayer().setActivaPhase(REGISTER_ONE);
+            client.getPlayer().setCurrentRound(REGISTER_ONE);
             client.getChatHistoryProperty().set("Your robot has been activated, may it survive!");
             client.getChatHistoryProperty().set("Register ONE controls now your fate!");
         }
@@ -1554,7 +1578,6 @@ public class MessageDistributer {
             //are put on discard pile as follows:
 
             //Remove register cards from hand
-            player.getDeckHand().getDeck().removeAll(player.getDeckRegister().getDeck());
 
             //Remaining cards in hand are added to discard pile
             ArrayList<Card> remainingCardsInHand = player.getDeckHand().getDeck();
@@ -1562,7 +1585,6 @@ public class MessageDistributer {
 
             //Hand is emptied
             playerMatController.emptyHand();
-
 
         });
     }
@@ -1579,6 +1601,7 @@ public class MessageDistributer {
             cardsYouGotNowBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ):  handleCardsYouGotNow()" + ANSI_RESET);
 
+        /*
         PlayerMatController playerMatController = client.getPlayerMatController();
         Player player = client.getPlayer();
 
@@ -1595,7 +1618,7 @@ public class MessageDistributer {
 
                 for (Card card : cardsYouGotNowBody.getCards()) {
                     //Player register is updated
-                    player.getDeckRegister().getDeck().add(emptyRegisterIndexes.get(i), card);
+                    player.getDeckRegister().getDeck().set(emptyRegisterIndexes.get(i), card);
 
                     //Gui is updated
                     Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
@@ -1605,6 +1628,8 @@ public class MessageDistributer {
                 }
             }
         });
+
+         */
     }
 
     /**
@@ -1619,14 +1644,14 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentCards()" + ANSI_RESET);
 
         //The current round is set which is important for implementing again
-        int activeRegister = client.getPlayer().getActivaPhase();
+        int activeRegister = client.getPlayer().getCurrentRound();
 
         Platform.runLater(() -> {
             //TODO write code here
         });
         //after every card in the current register is shown, the register is updated
         activeRegister++;
-        client.getPlayer().setActivaPhase(activeRegister);
+        client.getPlayer().setCurrentRound(activeRegister);
     }
 
     /**

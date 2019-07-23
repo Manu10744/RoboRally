@@ -1,20 +1,12 @@
 package server.game;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
 import server.game.decks.DeckRegister;
-import utils.Parameter;
 
-import javax.swing.event.ChangeEvent;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import static utils.Parameter.HAND_CARDS_AMOUNT;
 import static utils.Parameter.ORIENTATION_RIGHT;
@@ -44,7 +36,7 @@ public class Player implements Serializable {
     private DeckRegister deckRegister;
 
 
-    private int activaPhase;
+    private int currentRound;
 
     public Player() {
         this.name = "Findus";
@@ -152,12 +144,12 @@ public class Player implements Serializable {
         deckHand.getDeck().clear();
     }
 
-    public int getActivaPhase() {
-        return activaPhase;
+    public int getCurrentRound() {
+        return currentRound;
     }
 
-    public void setActivaPhase(int activaPhase) {
-        this.activaPhase = activaPhase;
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
     }
 
     /**
