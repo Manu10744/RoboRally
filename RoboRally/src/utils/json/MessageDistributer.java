@@ -616,6 +616,14 @@ public class MessageDistributer {
 
                     // Reset the counter that observes the selected cards
                     player.setSelectedCards(0);
+                    server.setActiveRound(1);
+                    server.setFirstAllRegistersFilled(false);
+
+                    for (Server.ClientWrapper client : server.getConnectedClients()){
+                        JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(PROGRAMMING_PHASE));
+                        client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        client.getWriter().flush();
+                    }
 
                     player.drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
 
@@ -1557,6 +1565,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
 
         Platform.runLater(() -> {
+            ((PlayerMatController) controllerMap.get("PlayerMat")).clearRegisterDeck();
             ArrayList<Card> deck = yourCardsBody.getCardsInHand();
             ((PlayerMatController) controllerMap.get("PlayerMat")).initializeCards(deck);
         });
@@ -1772,10 +1781,13 @@ public class MessageDistributer {
         //The current round is set which is important for implementing again
         int activeRegister = client.getPlayer().getCurrentRound();
 
-        //after every card in the current register is shown, the register is updated
-        activeRegister++;
-        client.getPlayer().setCurrentRound(activeRegister);
-
+        if(activeRegister == 5){
+            client.getPlayer().setCurrentRound(1);
+        }else {
+            //after every card in the current register is shown, the register is updated
+            activeRegister++;
+            client.getPlayer().setCurrentRound(activeRegister);
+        }
         Platform.runLater(() -> {
             //TODO write code here
         });

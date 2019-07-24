@@ -421,6 +421,12 @@ public class PlayerMatController implements IController {
         }
     }
 
+    public void clearRegisterDeck(){
+        for(Node node : playerRegister.getChildren()){
+            ((ImageView) node).setImage(null);
+        }
+    }
+
     /**
      * This method loads the right colored cards into the players hand according to which robot the player has chosen
      * @param cardsInHand The nine cards in the players hand
