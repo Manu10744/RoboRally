@@ -488,6 +488,33 @@ public class MessageDistributer {
 
         for (Server.ClientWrapper client : server.getConnectedClients()) {
             if (client.getClientSocket().equals(task.getClientSocket())) {
+
+                if (playedCard.getCardName().equals("Again")) {
+                    int currentRegister = server.getActiveRound();
+                    System.out.println(currentRegister);
+
+                        Player ownPlayer = client.getPlayer();
+                        if (ownPlayer.getCurrentRound() == Parameter.REGISTER_ONE) {
+                            // Do nothing as there is no card to play again
+                        } else {
+                            System.out.println(ownPlayer.getDeckRegister().getDeck());
+
+                            for (int i = currentRegister; i >= 0; i--) {
+                                // Find the first card in already played cards that is no Again-Card
+                                if (!ownPlayer.getDeckRegister().getDeck().get(i).getCardName().equals("Again")) {
+                                    // Activate the card
+                                    Card cardToActivate = ownPlayer.getDeckRegister().getDeck().get(i);
+                                    cardToActivate.activateCard(ownPlayer, server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
+
+                                    //Client gets infomed by card to play
+                                   JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(ownPlayer.getPlayerID(), cardToActivate));
+                                   client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                                   client.getWriter().flush();
+                                    }
+                                }
+                            }
+                        }
+
                 //Todo delete playerID of Client
                 Player player = client.getPlayer();
                 int playerID = player.getPlayerID();
@@ -751,7 +778,6 @@ public class MessageDistributer {
                         e.printStackTrace();
                     }
                     System.out.println("TIMER IN SERVER HAS FINISHED!");
-                    //TODO: Give proper information about not finished players
                     ArrayList<Integer> playersNotFinished = new ArrayList<>();
 
                     // Timer ended, now check for players that have not finished programming
@@ -1253,45 +1279,6 @@ public class MessageDistributer {
                 int energyAmount = client.getPlayer().getEnergy();
                 // update energy amount
                 client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(energyAmount));
-
-            } else if (cardToActivateName.equals("Again")) {
-                int currentRegister = 2;
-                System.out.println(currentRegister);
-
-                if (client.getPlayer().getPlayerID() == messagePlayerID) {
-                    // Own player played Again
-                    Player ownPlayer = client.getPlayer();
-                    if (ownPlayer.getCurrentRound() == Parameter.REGISTER_ONE) {
-                        // Do nothing as there is no card to play again
-                    } else {
-                        System.out.println(ownPlayer.getDeckRegister().getDeck());
-
-                        for (int i = currentRegister; i <= 0; i--) {
-                            // Find the first card in already played cards that is no Again-Card
-                            if (!ownPlayer.getDeckRegister().getDeck().get(i).getCardName().equals("Again")) {
-                                // Activate the card
-                                Card cardToActivate = ownPlayer.getDeckRegister().getDeck().get(i);
-                                String currentPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
-                                cardToActivate.activateCard(ownPlayer, client.getMapController().getPitMap(),
-                                        client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
-
-                                logger.info(ANSI_GREEN + "CLIENT ACTIVATED AGAIN. ACTUAL CARD: " + cardToActivate.getCardName() + "!");
-
-                                // Update GUI
-                                if (cardToActivate.getCardName().equals("MoveI") || cardToActivate.getCardName().equals("MoveII") ||
-                                    cardToActivate.getCardName().equals("MoveIII") || cardToActivate.getCardName().equals("BackUp")) {
-
-                                    String newPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
-
-                                    // Only move a robot when it's not out going of the map
-                                    if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
-                                        client.getMapController().moveRobot(currentPos, newPos);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
             }
         });
     }
