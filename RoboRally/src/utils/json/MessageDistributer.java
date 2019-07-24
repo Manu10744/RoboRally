@@ -1474,6 +1474,7 @@ public class MessageDistributer {
     public void handleCardSelected(Client client, Client.ClientReaderTask task, CardSelectedBody cardSelectedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCardSelected()" + ANSI_RESET);
 
+
         Platform.runLater(() -> {
             int register = cardSelectedBody.getRegister();
             int playerID = cardSelectedBody.getPlayerID();

@@ -263,6 +263,9 @@ public class Client {
      */
 
     public void sendSelectedCard(Card card, int register){
+        // First update own player data by putting the selected card into the chosen register
+        this.getPlayer().getDeckRegister().getDeck().set(register - 1, card);
+
         JSONMessage jsonMessage = new JSONMessage("SelectedCard", new SelectedCardBody(card, register));
         this.writer.println(JSONEncoder.serializeJSON(jsonMessage));
         this.writer.flush();
