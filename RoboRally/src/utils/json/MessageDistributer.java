@@ -516,7 +516,7 @@ public class MessageDistributer {
 
                 // Sends played card to all clients with id of the one playing it
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("<", new CardPlayedBody(playerID, playedCard));
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(playerID, playedCard));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
                 }
@@ -594,7 +594,18 @@ public class MessageDistributer {
                         }
                     }
                 }
+
+                }
+
             }
+
+        // determine next active player
+        int activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+
+        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+            JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+            clientWrapper.getWriter().flush();
         }
     }
 
@@ -917,6 +928,14 @@ public class MessageDistributer {
                         for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                             JSONMessage jsonMessageCurrentCards = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCardsObjects));
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
+                            clientWrapper.getWriter().flush();
+                        }
+
+                        // determine active player
+                        int activePlayerID =  server.getConnectedClients().get(0).getPlayer().getPlayerID();
+                        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                             clientWrapper.getWriter().flush();
                         }
                     }
@@ -1347,7 +1366,19 @@ public class MessageDistributer {
             currentPlayerBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentPlayer()" + ANSI_RESET);
 
+        int messagePlayerID = currentPlayerBody.getPlayerID();
+        int currentRound = client.getPlayer().getCurrentRound();
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (client.getPlayer().getPlayerID() == messagePlayerID) {
+            Card cardToPlay = client.getPlayer().getDeckRegister().getDeck().get(currentRound - 1);
+            client.sendPlayCard(cardToPlay);
+        }
         Platform.runLater(() -> {
             //Todo
         });
