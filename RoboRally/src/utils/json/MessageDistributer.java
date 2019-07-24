@@ -22,6 +22,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -603,21 +604,22 @@ public class MessageDistributer {
         server.setCardsPlayed(cardsPlayed);
 
         int activePlayerID;
-        // Round is finished
+        // Round is finished, everyone has played their register
         if (server.getCardsPlayed() == server.getPlayers().size()) {
-            // Reset the counter that observes the amount of player that have played their register
+            // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
 
             int currentRound = server.getActiveRound();
-            // 5 registers have been played, so set everything up for the next 5 registers
+            // If 5 registers have been played, set everything up for the next 5 registers
             if (currentRound == 5) {
+                server.setActiveRound(1);
+                server.setFirstAllRegistersFilled(false);
+
                 for (Server.ClientWrapper eachPlayer : server.getConnectedClients()) {
                     Player player = eachPlayer.getPlayer();
 
-                    // Reset the counter that observes the selected cards
+                    // Reset the counter that observes the selected cards of a player
                     player.setSelectedCards(0);
-                    server.setActiveRound(1);
-                    server.setFirstAllRegistersFilled(false);
 
                     for (Server.ClientWrapper client : server.getConnectedClients()){
                         JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(PROGRAMMING_PHASE));
@@ -625,6 +627,7 @@ public class MessageDistributer {
                         client.getWriter().flush();
                     }
 
+                    // Draw 9 cards from the draw pile and fill them into the hand
                     player.drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
 
                     ArrayList<Card> deckInHand = player.getDeckHand().getDeck();
@@ -643,7 +646,7 @@ public class MessageDistributer {
                     }
                 }
             } else {
-                // New round has begun
+                // New round has begun, but there are still registers that are about to be played
                 currentRound++;
                 server.setActiveRound(currentRound);
 
@@ -973,15 +976,11 @@ public class MessageDistributer {
                     ArrayList<CurrentCardsBody.ActiveCardsObject> activeCardsObjects = new ArrayList<>();
 
                     if (cardsYouGotNowIsSent) {
+
+                        // Activate the overall first round in the game
+                        server.setActiveRound(1);
+
                         int activeRound = server.getActiveRound();
-
-                        // If the round timer has hit the value 5, reset
-                        if (activeRound == REGISTER_FIVE) {
-                            server.setActiveRound(REGISTER_ONE);
-                        }
-
-                        activeRound++;
-                        server.setActiveRound(activeRound);
 
                         // Collect each players current card and wrap it into ActiveCard Object
                         for (Server.ClientWrapper clientToUpdate : server.getConnectedClients()) {
@@ -1443,16 +1442,23 @@ public class MessageDistributer {
         int messagePlayerID = currentPlayerBody.getPlayerID();
         int currentRound = client.getPlayer().getCurrentRound();
 
+
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        // Own player is current player
         if (client.getPlayer().getPlayerID() == messagePlayerID) {
             Card cardToPlay = client.getPlayer().getDeckRegister().getDeck().get(currentRound - 1);
+            // Play the card that is in the current register
             client.sendPlayCard(cardToPlay);
+
+            // After playing a card, mark it visusally as played inside the player mat
+            client.getPlayerMatController().getPlayerRegister().getChildren().get(currentRound - 1).setOpacity(0.7);
         }
+
         Platform.runLater(() -> {
             //Todo
         });
@@ -1566,6 +1572,11 @@ public class MessageDistributer {
 
         Platform.runLater(() -> {
             ((PlayerMatController) controllerMap.get("PlayerMat")).clearRegisterDeck();
+
+            for (Node node : ((PlayerMatController) controllerMap.get("PlayerMat")).getPlayerRegister().getChildren()) {
+                node.setOpacity(1);
+            }
+
             ArrayList<Card> deck = yourCardsBody.getCardsInHand();
             ((PlayerMatController) controllerMap.get("PlayerMat")).initializeCards(deck);
         });
@@ -1781,9 +1792,9 @@ public class MessageDistributer {
         //The current round is set which is important for implementing again
         int activeRegister = client.getPlayer().getCurrentRound();
 
-        if(activeRegister == 5){
+        if (activeRegister == 5){
             client.getPlayer().setCurrentRound(1);
-        }else {
+        } else {
             //after every card in the current register is shown, the register is updated
             activeRegister++;
             client.getPlayer().setCurrentRound(activeRegister);
