@@ -30,6 +30,7 @@ import javafx.util.Duration;
 import server.Server;
 import server.game.Card;
 import server.game.Player;
+import server.game.ProgrammingCards.Again;
 import server.game.Robot;
 import server.game.Tiles.*;
 import server.game.Tiles.Antenna;
@@ -494,6 +495,23 @@ public class MessageDistributer {
                 // Update the player of the server
                 playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
+
+                // In case a player plays Again
+                if (playedCard.getClass().equals(Again.class)) {
+                    // TODO: Remove this asap, only testing as if client plays Again in round 3
+                    server.setActiveRound(3);
+                    // Search for the first card in the players register that is not an Again card
+                    for (int i = server.getActiveRound() - 1; i >= 0; i--) {
+                        if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
+
+                            // Activate the found card
+                            client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
+
+                            // Stop, when found
+                            break;
+                        }
+                    }
+                }
 
                 // Sends played card to all clients with id of the one playing it
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
@@ -1271,44 +1289,9 @@ public class MessageDistributer {
                 client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(energyAmount));
 
             } else if (cardToActivateName.equals("Again")) {
-                int currentRegister = 2;
-                System.out.println(currentRegister);
-
-                if (client.getPlayer().getPlayerID() == messagePlayerID) {
-                    // Own player played Again
-                    Player ownPlayer = client.getPlayer();
-                    if (ownPlayer.getCurrentRound() == Parameter.REGISTER_ONE) {
-                        // Do nothing as there is no card to play again
-                    } else {
-                        System.out.println(ownPlayer.getDeckRegister().getDeck());
-
-                        for (int i = currentRegister; i <= 0; i--) {
-                            // Find the first card in already played cards that is no Again-Card
-                            if (!ownPlayer.getDeckRegister().getDeck().get(i).getCardName().equals("Again")) {
-                                // Activate the card
-                                Card cardToActivate = ownPlayer.getDeckRegister().getDeck().get(i);
-                                String currentPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
-                                cardToActivate.activateCard(ownPlayer, client.getMapController().getPitMap(),
-                                        client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
-
-                                logger.info(ANSI_GREEN + "CLIENT ACTIVATED AGAIN. ACTUAL CARD: " + cardToActivate.getCardName() + "!");
-
-                                // Update GUI
-                                if (cardToActivate.getCardName().equals("MoveI") || cardToActivate.getCardName().equals("MoveII") ||
-                                        cardToActivate.getCardName().equals("MoveIII") || cardToActivate.getCardName().equals("BackUp")) {
-
-                                    String newPos = ownPlayer.getPlayerRobot().getxPosition() + "-" + ownPlayer.getPlayerRobot().getyPosition();
-
-                                    // Only move a robot when it's not out going of the map
-                                    if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
-                                        client.getMapController().moveRobot(currentPos, newPos);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // TODO: Set register deck for client too, right now it is null null null null null
             }
+
         });
     }
 
