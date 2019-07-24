@@ -118,7 +118,7 @@ public class PlayerMatController implements IController {
     // Following FXMLs are related to PopupCards which represent the players' hand
 
     @FXML
-    HBox playerHand;
+    public HBox playerHand;
     @FXML
     ImageView dragImage1;
     @FXML
@@ -330,6 +330,7 @@ public class PlayerMatController implements IController {
      */
 
     public void initializeCards(ArrayList<Card> deck) {
+            this.playerHand.setVisible(true);
             playerHand.getStylesheets().add("/resources/css/main.css");
             this.cardsInHand = deck;
             loadCards(deck);

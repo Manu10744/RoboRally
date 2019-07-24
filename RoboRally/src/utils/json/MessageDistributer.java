@@ -594,49 +594,76 @@ public class MessageDistributer {
                         }
                     }
                 }
-
             }
-
         }
 
-        // a card has been played, so increment the counter
+        // A card has been played, so increment the counter
         int cardsPlayed = server.getCardsPlayed();
         cardsPlayed++;
         server.setCardsPlayed(cardsPlayed);
 
         int activePlayerID;
+        // Round is finished
         if (server.getCardsPlayed() == server.getPlayers().size()) {
-
+            // Reset the counter that observes the amount of player that have played their register
             server.setCardsPlayed(0);
 
-            // new round
             int currentRound = server.getActiveRound();
-            currentRound++;
-            server.setActiveRound(currentRound);
+            // 5 registers have been played, so set everything up for the next 5 registers
+            if (currentRound == 5) {
+                for (Server.ClientWrapper eachPlayer : server.getConnectedClients()) {
+                    Player player = eachPlayer.getPlayer();
 
-            ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
-            for(Server.ClientWrapper client: server.getConnectedClients()) {
-                Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
-                int playerID = client.getPlayer().getPlayerID();
-                CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, activeCard);
-                activeCards.add(activeCardsObject);
-            }
+                    // Reset the counter that observes the selected cards
+                    player.setSelectedCards(0);
 
-            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards));
-                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                clientWrapper.getWriter().flush();
-            }
+                    player.drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
 
-            activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
+                    ArrayList<Card> deckInHand = player.getDeckHand().getDeck();
+                    int cardsInPile = player.getDeckDraw().getDeck().size();
 
-            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                System.out.println("DECK OF " + clientWrapper.getPlayer().getName() + ": " + clientWrapper.getPlayer().getDeckRegister().getDeck());
-                JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
-                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                clientWrapper.getWriter().flush();
+                    for (Server.ClientWrapper client : server.getConnectedClients()) {
+                        if (client.getClientSocket().equals(eachPlayer.getClientSocket())) {
+                            JSONMessage jsonMessage = new JSONMessage("YourCards", new YourCardsBody(deckInHand, cardsInPile));
+                            client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            client.getWriter().flush();
+                        } else {
+                            JSONMessage jsonMessage = new JSONMessage("NotYourCards", new NotYourCardsBody(player.getPlayerID(), deckInHand.size(), cardsInPile));
+                            client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            client.getWriter().flush();
+                        }
+                    }
+                }
+            } else {
+                // New round has begun
+                currentRound++;
+                server.setActiveRound(currentRound);
+
+                ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
+                // Collect each players ID and card in current register
+                for (Server.ClientWrapper client: server.getConnectedClients()) {
+                    Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
+                    int playerID = client.getPlayer().getPlayerID();
+
+                    CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, activeCard);
+                    activeCards.add(activeCardsObject);
+                }
+
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+                activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
             }
         } else {
+            // Round is not finished yet
             // determine next active player
              activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
 
@@ -646,7 +673,6 @@ public class MessageDistributer {
                 clientWrapper.getWriter().flush();
             }
         }
-
     }
 
     /**
@@ -1692,7 +1718,7 @@ public class MessageDistributer {
             player.getDeckDiscard().getDeck().addAll(remainingCardsInHand);
 
             //Hand is emptied
-            playerMatController.emptyHand();
+            playerMatController.playerHand.setVisible(false);
 
         });
     }
