@@ -1,5 +1,6 @@
 package viewmodels;
 
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,7 +8,10 @@ import javafx.scene.Scene;
 import client.Client;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import utils.Parameter;
 import javafx.fxml.Initializable;
 import javafx.beans.property.*;
@@ -18,13 +22,18 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+
+import javafx.scene.media.Media;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
+
 
 
 
@@ -262,6 +271,10 @@ public class ChatController implements Initializable, IController {
         clientChatOutputProperty().addListener((observable -> {
             chatOutput.setScrollTop(Double.MAX_VALUE);
         }));
+
+        AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
+        audioClip.setCycleCount(AudioClip.INDEFINITE);
+        audioClip.play();
     }
 
     /**

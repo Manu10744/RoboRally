@@ -27,6 +27,7 @@ module RoboRally {
     requires java.desktop;
     requires gson;
     requires java.sql;
+    requires javafx.media;
 
     // opens all project packages
     opens client;
