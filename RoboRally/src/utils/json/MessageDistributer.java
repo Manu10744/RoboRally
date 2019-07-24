@@ -507,6 +507,7 @@ public class MessageDistributer {
                             // Activate the found card
                             client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), server.getPitMap(), server.getWallMap(), server.getPushPanelMap());
 
+                            logger.info(ANSI_GREEN + "( SERVER ): CASE AGAIN: ACTIVATED " + client.getPlayer().getDeckRegister().getDeck().get(i).getCardName() + ANSI_RESET);
                             // Stop, when found
                             break;
                         }
@@ -515,7 +516,7 @@ public class MessageDistributer {
 
                 // Sends played card to all clients with id of the one playing it
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(playerID, playedCard));
+                    JSONMessage jsonMessage = new JSONMessage("<", new CardPlayedBody(playerID, playedCard));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
                 }
@@ -1197,6 +1198,25 @@ public class MessageDistributer {
             currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
             playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
 
+            // In case own player plays Again
+            if (playedCard.getClass().equals(Again.class)) {
+                // TODO: Remove this asap, only testing as if client plays Again in round 3
+                client.getPlayer().setCurrentRound(3);
+                // Search for the first card in the players register that is not an Again card
+                for (int i = client.getPlayer().getCurrentRound() - 1; i >= 0; i--) {
+                    if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
+
+                        // Activate the found card
+                        client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+                        cardToActivateName = client.getPlayer().getDeckRegister().getDeck().get(i).getCardName();
+
+                        logger.info(ANSI_GREEN + "( CLIENT ): CASE AGAIN: ACTIVATED " + cardToActivateName + ANSI_RESET);
+
+                        // Stop, when found
+                        break;
+                    }
+                }
+            }
             // New position of own robot
             newPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
 
@@ -1213,25 +1233,45 @@ public class MessageDistributer {
             logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OWN ROBOT!" + ANSI_RESET);
         } else {
             // Update OtherPlayer robot
-            for (Player player : client.getOtherPlayers()) {
-                if (player.getPlayerID() == messagePlayerID) {
-                    int currentXPos = player.getPlayerRobot().getxPosition();
-                    int currentYPos = player.getPlayerRobot().getyPosition();
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    int currentXPos = otherPlayer.getPlayerRobot().getxPosition();
+                    int currentYPos = otherPlayer.getPlayerRobot().getyPosition();
 
-                    currentPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
-                    playedCard.activateCard(player, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+                    currentPosition = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
+                    playedCard.activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+
+                    // In case OtherPlayer plays Again
+                    if (playedCard.getClass().equals(Again.class)) {
+                        // TODO: Remove this asap, only testing as if client plays Again in round 3
+                        otherPlayer.setCurrentRound(3);
+                        // Search for the first card in the players register that is not an Again card
+                        for (int i = otherPlayer.getCurrentRound() - 1; i >= 0; i--) {
+                            if (!otherPlayer.getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
+
+                                // Activate the found card
+                                otherPlayer.getDeckRegister().getDeck().get(i).activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap());
+                                cardToActivateName = otherPlayer.getDeckRegister().getDeck().get(i).getCardName();
+
+                                logger.info(ANSI_GREEN + "( CLIENT ): CASE AGAIN: ACTIVATED " + cardToActivateName + ANSI_RESET);
+
+                                // Stop, when found
+                                break;
+                            }
+                        }
+                    }
 
                     // New position of OtherPlayer's robot
-                    newPosition = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
+                    newPosition = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
 
-                    newXPos = player.getPlayerRobot().getxPosition();
-                    newYPos = player.getPlayerRobot().getyPosition();
+                    newXPos = otherPlayer.getPlayerRobot().getxPosition();
+                    newYPos = otherPlayer.getPlayerRobot().getyPosition();
 
                     // Player fell of the map, so set the coordinates back to the old ones so no error occurs when moving player's robot image due to Reboot
                     if (newXPos < 0 || newYPos < 0 || newXPos >= client.getMapController().getMap().size() || newYPos >= client.getMapController().getMap().get(0).size()) {
                         logger.info(ANSI_GREEN + "RESET OF PLAYER COORDINATES BECAUSE PLAYER FELL OFF MAP!" + ANSI_RESET);
-                        player.getPlayerRobot().setxPosition(currentXPos);
-                        player.getPlayerRobot().setyPosition(currentYPos);
+                        otherPlayer.getPlayerRobot().setxPosition(currentXPos);
+                        otherPlayer.getPlayerRobot().setyPosition(currentYPos);
                     }
 
                     logger.info(ANSI_GREEN + "( HANDLECARDPLAYED ): CLIENT UPDATED OTHER ROBOT!" + ANSI_RESET);
@@ -1248,9 +1288,10 @@ public class MessageDistributer {
         int mapWidth = client.getMapController().getMap().size();
         int mapHeight = client.getMapController().getMap().get(0).size();
 
+        String finalCardToActivateName = cardToActivateName;
         Platform.runLater(() -> {
             // Update GUI
-            if (cardToActivateName.equals("MoveI") || cardToActivateName.equals("MoveII") || cardToActivateName.equals("MoveIII")) {
+            if (finalCardToActivateName.equals("MoveI") || finalCardToActivateName.equals("MoveII") || finalCardToActivateName.equals("MoveIII")) {
                 MapController mapController = client.getMapController();
 
                 // Only move a robot when it's not out going of the map
@@ -1258,7 +1299,7 @@ public class MessageDistributer {
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
-            } else if (cardToActivateName.equals("BackUp")) {
+            } else if (finalCardToActivateName.equals("BackUp")) {
                 MapController mapController = client.getMapController();
 
                 // Only move a robot when it's not going out of the map
@@ -1266,19 +1307,19 @@ public class MessageDistributer {
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
-            } else if (cardToActivateName.equals("TurnLeft")) {
+            } else if (finalCardToActivateName.equals("TurnLeft")) {
                 String turnDirection = "left";
 
                 MapController mapController = client.getMapController();
                 mapController.turnRobot(finalCurrentPosition, turnDirection);
 
-            } else if (cardToActivateName.equals("TurnRight")) {
+            } else if (finalCardToActivateName.equals("TurnRight")) {
                 String turnDirection = "right";
 
                 MapController mapController = client.getMapController();
                 mapController.turnRobot(finalCurrentPosition, turnDirection);
 
-            } else if (cardToActivateName.equals("UTurn")) {
+            } else if (finalCardToActivateName.equals("UTurn")) {
                 MapController mapController = client.getMapController();
                 for (int i = 0; i < 2; i++) {
                     mapController.turnRobot(finalCurrentPosition, "right");
@@ -1288,8 +1329,7 @@ public class MessageDistributer {
                 // update energy amount
                 client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(energyAmount));
 
-            } else if (cardToActivateName.equals("Again")) {
-                // TODO: Set register deck for client too, right now it is null null null null null
+            } else if (finalCardToActivateName.equals("Again")) {
             }
 
         });
