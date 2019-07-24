@@ -55,6 +55,7 @@ public class Server extends Application {
     private int setStartPoints = 0;
     private int numOfRegistersFilled = 0;
     private int activeRound;
+    private int cardsPlayed;
 
     private boolean firstAllRegistersFilled = false;
 
@@ -274,6 +275,15 @@ public class Server extends Application {
         return energySpaceMap;
     }
 
+
+    public int getCardsPlayed() {
+        return cardsPlayed;
+    }
+
+    public void setCardsPlayed(int cardsPlayed) {
+        this.cardsPlayed = cardsPlayed;
+    }
+
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
         private Server server;
@@ -426,7 +436,6 @@ public class Server extends Application {
         public void setPlayer(Player player) {
             this.player = player;
         }
-
 
     }
 }

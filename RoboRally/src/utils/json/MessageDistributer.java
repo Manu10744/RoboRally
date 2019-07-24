@@ -595,18 +595,53 @@ public class MessageDistributer {
                     }
                 }
 
-                }
-
             }
 
-        // determine next active player
-        int activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
-
-        for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-            JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
-            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-            clientWrapper.getWriter().flush();
         }
+
+        // a card has been played, so increment the counter
+        int cardsPlayed = server.getCardsPlayed();
+        cardsPlayed++;
+        server.setCardsPlayed(cardsPlayed);
+
+        if (server.getCardsPlayed() == server.getPlayers().size()) {
+            // new round
+            int currentRound = server.getActiveRound();
+            currentRound++;
+            server.setActiveRound(currentRound);
+
+            ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
+            for(Server.ClientWrapper client: server.getConnectedClients()) {
+                Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
+                int playerID = client.getPlayer().getPlayerID();
+                CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, activeCard);
+                activeCards.add(activeCardsObject);
+            }
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
+            }
+
+            int activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
+            }
+        } else {
+            // determine next active player
+            int activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
+            }
+        }
+
     }
 
     /**
@@ -932,7 +967,7 @@ public class MessageDistributer {
                         }
 
                         // determine active player
-                        int activePlayerID =  server.getConnectedClients().get(0).getPlayer().getPlayerID();
+                        int activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
                         for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                             JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -1370,7 +1405,7 @@ public class MessageDistributer {
         int currentRound = client.getPlayer().getCurrentRound();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -1706,12 +1741,14 @@ public class MessageDistributer {
         //The current round is set which is important for implementing again
         int activeRegister = client.getPlayer().getCurrentRound();
 
-        Platform.runLater(() -> {
-            //TODO write code here
-        });
         //after every card in the current register is shown, the register is updated
         activeRegister++;
         client.getPlayer().setCurrentRound(activeRegister);
+
+        Platform.runLater(() -> {
+            //TODO write code here
+        });
+
     }
 
     /**

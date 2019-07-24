@@ -13,6 +13,10 @@ import java.util.logging.Logger;
  * This class implements the Again card.
  *
  * @author Vincent Tafferner
+ * @author Manu Neumayer
+ * @author Jessica Gerlach
+ * @author Verena Sadtler
+ *
  */
 public class Again extends server.game.Card {
     public static final String ANSI_GREEN = "\u001B[32m";
