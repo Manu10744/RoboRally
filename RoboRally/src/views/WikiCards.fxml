@@ -283,7 +283,7 @@
                   </VBox>
                   <VBox layoutX="135.0" layoutY="24.0" minHeight="1536.0" minWidth="655.0" prefWidth="640.0" AnchorPane.leftAnchor="145.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <Label fx:id="headingWiki" maxHeight="30.0" prefHeight="30.0" text="Programming Cards">
+                        <Label fx:id="headingWiki" alignment="CENTER" maxHeight="30.0" prefHeight="30.0" prefWidth="440.0" text="Programming Cards">
                            <VBox.margin>
                               <Insets left="10.0" top="10.0" />
                            </VBox.margin>
@@ -435,7 +435,7 @@
                               <Insets left="15.0" />
                            </VBox.margin>
                         </Label>
-                        <Label font="${headingWiki.font}" text="Damage Cards">
+                        <Label alignment="CENTER" font="${headingWiki.font}" prefHeight="27.0" prefWidth="457.0" text="Damage Cards">
                            <VBox.margin>
                               <Insets left="25.0" top="45.0" />
                            </VBox.margin>
@@ -507,7 +507,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label font="${headingWiki.font}" text="Special Programming Cards">
+                        <Label alignment="CENTER" font="${headingWiki.font}" prefHeight="27.0" prefWidth="445.0" text="Special Programming Cards">
                            <VBox.margin>
                               <Insets left="25.0" top="60.0" />
                            </VBox.margin>
@@ -611,7 +611,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label font="${headingWiki.font}" text="Upgrade Cards">
+                        <Label alignment="CENTER" font="${headingWiki.font}" prefHeight="27.0" prefWidth="464.0" text="Upgrade Cards">
                            <VBox.margin>
                               <Insets left="15.0" top="60.0" />
                            </VBox.margin>
@@ -619,7 +619,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label font="${headingWiki.font}" text="Permanent Upgrades">
+                        <Label alignment="CENTER" font="${headingWiki.font}" prefHeight="20.0" prefWidth="459.0" text="Permanent Upgrades">
                            <VBox.margin>
                               <Insets left="15.0" top="50.0" />
                            </VBox.margin>
@@ -707,7 +707,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label font="${headingWiki.font}" text="Temporary Upgrades">
+                        <Label alignment="CENTER" font="${headingWiki.font}" prefHeight="20.0" prefWidth="492.0" text="Temporary Upgrades">
                            <VBox.margin>
                               <Insets left="15.0" top="80.0" />
                            </VBox.margin>
@@ -809,7 +809,7 @@
             <Button fx:id="buttonCard" mnemonicParsing="false" prefHeight="28.0" text="Cards" />
             <Button fx:id="buttonRobot" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Robots" />
             <Button fx:id="buttonRule" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Rules" />
-            <Button fx:id="buttonMap" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Maps" />
+            <Button fx:id="buttonCourse" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Courses" />
          </children>
       </HBox>
    </children>

@@ -1,8 +1,6 @@
 package viewmodels;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,14 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -43,7 +39,7 @@ public class WikiController extends Application {
     @FXML
     private Button buttonRules;
     @FXML
-    private Button buttonMaps;
+    private Button buttonCourses;
     @FXML
     private Button buttonCard;
     @FXML
@@ -51,7 +47,7 @@ public class WikiController extends Application {
     @FXML
     private Button buttonRule;
     @FXML
-    private Button buttonMap;
+    private Button buttonCourse;
     @FXML
     private ImageView imageCards;
     @FXML
@@ -86,7 +82,7 @@ public class WikiController extends Application {
             buttonRules.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
             buttonCards.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
             buttonRobots.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
-            buttonMaps.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+            buttonCourses.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
 
             robopedia.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 80));
 
@@ -96,7 +92,7 @@ public class WikiController extends Application {
             buttonRule.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"),14));
             buttonCard.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
             buttonRobot.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
-            buttonMap.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
+            buttonCourse.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
 
         }
 
@@ -165,9 +161,9 @@ public class WikiController extends Application {
             this.rootStage.setScene(scene);
             this.rootStage.show();
         }
-        if (event.getSource() == buttonMaps) {
-            this.rootStage = (Stage) buttonMaps.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/views/WikiMaps.fxml"));
+        if (event.getSource() == buttonCourses) {
+            this.rootStage = (Stage) buttonCourses.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiCourses.fxml"));
             Scene scene = new Scene(root);
             this.rootStage.setScene(scene);
             this.rootStage.show();
@@ -193,9 +189,9 @@ public class WikiController extends Application {
             this.rootStage.setScene(scene);
             this.rootStage.show();
         }
-        if (event.getSource() == buttonMap) {
-            this.rootStage = (Stage) buttonMap.getScene().getWindow();
-            root = FXMLLoader.load(getClass().getResource("/views/WikiMaps.fxml"));
+        if (event.getSource() == buttonCourse) {
+            this.rootStage = (Stage) buttonCourse.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiCourses.fxml"));
             Scene scene = new Scene(root);
             this.rootStage.setScene(scene);
             this.rootStage.show();
