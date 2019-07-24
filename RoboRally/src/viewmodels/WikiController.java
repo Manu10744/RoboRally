@@ -43,11 +43,15 @@ public class WikiController extends Application {
     @FXML
     private Button buttonRules;
     @FXML
+    private Button buttonMaps;
+    @FXML
     private Button buttonCard;
     @FXML
     private Button buttonRobot;
     @FXML
     private Button buttonRule;
+    @FXML
+    private Button buttonMap;
     @FXML
     private ImageView imageCards;
     @FXML
@@ -82,6 +86,8 @@ public class WikiController extends Application {
             buttonRules.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
             buttonCards.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
             buttonRobots.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+            buttonMaps.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 20));
+
             robopedia.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 80));
 
         }
@@ -90,6 +96,8 @@ public class WikiController extends Application {
             buttonRule.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"),14));
             buttonCard.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
             buttonRobot.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
+            buttonMap.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 14));
+
         }
 
         if (headingWiki != null && subheadingWiki != null && textWiki != null) {
@@ -157,6 +165,13 @@ public class WikiController extends Application {
             this.rootStage.setScene(scene);
             this.rootStage.show();
         }
+        if (event.getSource() == buttonMaps) {
+            this.rootStage = (Stage) buttonMaps.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiMaps.fxml"));
+            Scene scene = new Scene(root);
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
+        }
         if (event.getSource() == buttonCard) {
             this.rootStage = (Stage) buttonCard.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/views/WikiCards.fxml"));
@@ -174,6 +189,13 @@ public class WikiController extends Application {
         if (event.getSource() == buttonRule) {
             this.rootStage = (Stage) buttonRule.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("/views/WikiRules.fxml"));
+            Scene scene = new Scene(root);
+            this.rootStage.setScene(scene);
+            this.rootStage.show();
+        }
+        if (event.getSource() == buttonMap) {
+            this.rootStage = (Stage) buttonMap.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/views/WikiMaps.fxml"));
             Scene scene = new Scene(root);
             this.rootStage.setScene(scene);
             this.rootStage.show();

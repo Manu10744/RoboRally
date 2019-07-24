@@ -809,6 +809,7 @@
             <Button fx:id="buttonCard" mnemonicParsing="false" prefHeight="28.0" text="Cards" />
             <Button fx:id="buttonRobot" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Robots" />
             <Button fx:id="buttonRule" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Rules" />
+            <Button fx:id="buttonMap" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Maps" />
          </children>
       </HBox>
    </children>
