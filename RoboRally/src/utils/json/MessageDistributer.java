@@ -604,7 +604,11 @@ public class MessageDistributer {
         cardsPlayed++;
         server.setCardsPlayed(cardsPlayed);
 
+        int activePlayerID;
         if (server.getCardsPlayed() == server.getPlayers().size()) {
+
+            server.setCardsPlayed(0);
+
             // new round
             int currentRound = server.getActiveRound();
             currentRound++;
@@ -624,16 +628,17 @@ public class MessageDistributer {
                 clientWrapper.getWriter().flush();
             }
 
-            int activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
+            activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
 
             for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                System.out.println("DECK OF " + clientWrapper.getPlayer().getName() + ": " + clientWrapper.getPlayer().getDeckRegister().getDeck());
                 JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
                 clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                 clientWrapper.getWriter().flush();
             }
         } else {
             // determine next active player
-            int activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+             activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
 
             for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
@@ -914,7 +919,6 @@ public class MessageDistributer {
                                         // Remove the taken card from the draw pile
                                         notFinishedPlayer.getDeckDraw().getDeck().remove(notFinishedPlayer.getDeckDraw().getTopCard());
                                     }
-
                                     i++;
                                 }
 
@@ -1401,11 +1405,12 @@ public class MessageDistributer {
             currentPlayerBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCurrentPlayer()" + ANSI_RESET);
 
+        System.out.println("PLAYER ROUND: " + client.getPlayer().getCurrentRound());
         int messagePlayerID = currentPlayerBody.getPlayerID();
         int currentRound = client.getPlayer().getCurrentRound();
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
