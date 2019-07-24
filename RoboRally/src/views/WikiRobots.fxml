@@ -186,7 +186,7 @@
             <Button fx:id="buttonCard" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="25.0" text="Cards" />
             <Button fx:id="buttonRobot" mnemonicParsing="false" text="Robots" />
             <Button fx:id="buttonRule" mnemonicParsing="false" onAction="#buttonClicked" text="Rules" />
-            <Button fx:id="buttonMap" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Maps" />
+            <Button fx:id="buttonCourse" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Courses" />
          </children>
          <opaqueInsets>
             <Insets />
