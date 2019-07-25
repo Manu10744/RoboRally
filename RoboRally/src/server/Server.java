@@ -74,6 +74,8 @@ public class Server extends Application {
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -120,6 +122,69 @@ public class Server extends Application {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void activateGears() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING GEARS!" + ANSI_RESET);
+
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int xPos = player.getPlayerRobot().getxPosition();
+            int yPos = player.getPlayerRobot().getyPosition();
+
+            // Key for HashMap
+            String playerPosition = xPos + "-" + yPos;
+
+            // Landed on a gear
+            if (this.gearMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A GEAR!" + ANSI_RESET);
+                // Orientation of Gear
+                String turnDirection = this.gearMap.get(playerPosition).getOrientations().get(0);
+
+                // Update player data in server
+                if (turnDirection.equals("left")) {
+                    switch (player.getPlayerRobot().getLineOfSight()) {
+                        case "up":
+                            player.getPlayerRobot().setLineOfSight("left");
+                            break;
+                        case "left":
+                            player.getPlayerRobot().setLineOfSight("down");
+                            break;
+                        case "down":
+                            player.getPlayerRobot().setLineOfSight("right");
+                            break;
+                        case "right":
+                            player.getPlayerRobot().setLineOfSight("up");
+                    }
+                }
+
+                if (turnDirection.equals("right")) {
+                    switch (player.getPlayerRobot().getLineOfSight()) {
+                        case "up":
+                            player.getPlayerRobot().setLineOfSight("right");
+                            break;
+                        case "left":
+                            player.getPlayerRobot().setLineOfSight("up");
+                            break;
+                        case "down":
+                            player.getPlayerRobot().setLineOfSight("left");
+                            break;
+                        case "right":
+                            player.getPlayerRobot().setLineOfSight("down");
+                    }
+                }
+
+                System.out.println(player.getPlayerRobot().getLineOfSight());
+                // Clients update themselves
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, turnDirection));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+            }
         }
     }
 

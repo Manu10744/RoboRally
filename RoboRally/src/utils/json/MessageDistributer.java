@@ -554,50 +554,6 @@ public class MessageDistributer {
                     player.getPlayerRobot().setyPosition(rebootYPos);
                     player.getPlayerRobot().setLineOfSight("up");
                 }
-
-                if (server.getGearMap().get(playerPos) != null) {
-                    String gearOrientation = server.getGearMap().get(playerPos).getOrientations().get(0);
-
-                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, gearOrientation));
-                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                        clientWrapper.getWriter().flush();
-                    }
-
-                    String currLineOfSight = player.getPlayerRobot().getLineOfSight();
-
-                    if (gearOrientation.equals("left")) {
-                        switch (currLineOfSight) {
-                            case "up":
-                                player.getPlayerRobot().setLineOfSight("left");
-                                break;
-                            case "left":
-                                player.getPlayerRobot().setLineOfSight("down");
-                                break;
-                            case "down":
-                                player.getPlayerRobot().setLineOfSight("right");
-                                break;
-                            case "right":
-                                player.getPlayerRobot().setLineOfSight("up");
-                        }
-                    }
-
-                    if (gearOrientation.equals("right")) {
-                        switch (currLineOfSight) {
-                            case "up":
-                                player.getPlayerRobot().setLineOfSight("right");
-                                break;
-                            case "left":
-                                player.getPlayerRobot().setLineOfSight("up");
-                                break;
-                            case "down":
-                                player.getPlayerRobot().setLineOfSight("left");
-                                break;
-                            case "right":
-                                player.getPlayerRobot().setLineOfSight("down");
-                        }
-                    }
-                }
             }
         }
 
@@ -609,11 +565,14 @@ public class MessageDistributer {
         int activePlayerID;
         // Round is finished, everyone has played their register
         if (server.getCardsPlayed() == server.getPlayers().size()) {
+            // Activate the Gears
+            server.activateGears();
+
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
 
             int currentRound = server.getActiveRound();
-            // If 5 registers have been played, set everything up for the next 5 registers
+            // If 5 registers have been played, activate the map elements, then set everything up for the next 5 registers
             if (currentRound == 5) {
                 server.setActiveRound(1);
                 server.setFirstAllRegistersFilled(false);
