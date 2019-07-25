@@ -31,7 +31,6 @@ public class Again extends server.game.Card {
 
     @Override
     public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
-    //TODO
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'AGAIN' ..." + ANSI_RESET);
     }
 

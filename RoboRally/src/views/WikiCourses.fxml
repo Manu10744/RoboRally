@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane minHeight="600.0" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.WikiController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="800.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints maxHeight="25.0" minHeight="25.0" percentHeight="0.0" prefHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="0.0" prefHeight="618.0" valignment="CENTER" />
+  </rowConstraints>
+   <children>
+      <ImageView blendMode="MULTIPLY" fitHeight="671.0" fitWidth="800.0" GridPane.rowIndex="4">
+         <image>
+            <Image url="@../resources/images/others/HintergrundWikiUnterseite.png" />
+         </image>
+      </ImageView>
+      <ScrollPane blendMode="MULTIPLY" fitToWidth="true" hbarPolicy="ALWAYS" minViewportHeight="575.0" minViewportWidth="780.0" prefHeight="575.0" prefViewportHeight="575.0" prefViewportWidth="780.0" prefWidth="800.0" vbarPolicy="ALWAYS" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <content>
+          <AnchorPane minHeight="600.0" minWidth="800.0" prefWidth="800.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="800.0">
+                     <children>
+                        <Label fx:id="headingWiki" alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" prefHeight="27.0" prefWidth="832.0" text="The different Courses">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" font="${headingWiki.font}" maxHeight="30.0" prefHeight="27.0" prefWidth="826.0" text="Starter Course">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="292.0" prefWidth="769.0">
+                           <children>
+                              <ImageView fx:id="dizzyHighway" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/DizzyHighway.PNG" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label fx:id="subheadingWiki" alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="436.0" text="Dizzy Highway" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="textWiki" alignment="CENTER" contentDisplay="CENTER" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Short&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label alignment="CENTER" font="${headingWiki.font}" maxHeight="30.0" prefHeight="27.0" prefWidth="884.0" text="Beginner Courses">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Risky Crossing" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Short&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="riskyCrossing" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/RiskyCrossing.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="highOctane" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/HighOctane.PNG" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="High Octane" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Medium&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Sprint Cramp" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Short&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="sprintCramp" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/SprintCramp.PNG" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="corridorBlitz" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/CorridorBlitz.PNG" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Corridor Blitz" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Short&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Fractionation" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Medium&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="fractionation" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/Fractionation.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label alignment="CENTER" font="${headingWiki.font}" maxHeight="30.0" prefHeight="27.0" prefWidth="1023.0" text="Intermediate Courses">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="burnout" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/Burnout.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Burnout" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="153.0" prefWidth="365.0" text="Game Length: medium&#10;Special Rules:&#10;In this course you´ll place the reboot token on the start board.&#10;Any robots that reboot will reboot onto that reboot token." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Lost Bearings" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Medium&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="lostBearings" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/LostBearings.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="passingLane" fitHeight="253.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/PassingLane.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Passing Lane" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Medium&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Twister" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="192.0" prefWidth="389.0" text="Game Length: medium&#10;Special Rules:&#10;In this course you´ll place checkpoints on conveyor belts. &#10;During the activation phase,&#10;move the checkpoints as you would a robot.&#10;Robots sitting on the checkpoint when it moves will also move." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="twister" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/Twister.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label alignment="CENTER" font="${headingWiki.font}" maxHeight="30.0" prefHeight="27.0" prefWidth="892.0" text="Advanced Courses">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="dodgeThis" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/DodgeThis.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Dodge This" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Medium&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Chop Shop Challenge" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Long&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="chopShopChallenge" fitHeight="302.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/ChopShopChallenge.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="undertow" fitHeight="481.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/Undertow.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Undertow">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Long&#10;Special Rules: None" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Heavy Merge Area" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="150.0" prefWidth="377.0" text="Game Length: Long&#10;Special Rules:&#10;In this course you´ll place the reboot token on the start board.&#10;Any robots that reboot will reboot onto that reboot token." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="heavyMergeArea" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/HeavyMergeArea.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="deathTrap" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/DeathTrap.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Death Trap" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="130.0" prefWidth="376.0" text="Game Length: Long&#10;Special Rules:&#10;In this course you´ll place the reboot token on the start board.&#10;Any robots that reboot will reboot onto that reboot token." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label alignment="CENTER" font="${headingWiki.font}" maxHeight="30.0" prefHeight="27.0" prefWidth="892.0" text="Robots Must Die Courses">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox fillHeight="false" minHeight="270.0" prefHeight="400.0" prefWidth="800.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Pilgrimage" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" minHeight="250.0" prefHeight="250.0" prefWidth="242.0" text="Game Length: Long&#10;Special Rules:&#10;In this course you´ll place checkpoints on conveyor belts. During the activation phase, move the checkpoints as you would a robot. Robots sitting on the checkpoint when it moves will also move. If a checkpoint reaches a pit, it falls in. Immediately reset the checkpoint to its original position. Any robot that was on the checkpoint when it fell into the pit immediately reboots and may not count that checkpoint as complete." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="pilgrimage" fitHeight="282.0" fitWidth="558.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/Pilgrimage.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="dizzyHighway7" fitHeight="338.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/GearStripper.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="4.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Gear Stripper" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="311.0" prefWidth="250.0" text="Game Length: Long&#10;Special Rules:&#10;In this course you´ll place&#10;checkpoints on conveyor belts.&#10;During the activation phase,&#10;move the checkpoints as you would a robot. Robots sitting on the checkpoint when it moves will also move. If a checkpoint reaches a pit, it falls in. Immediately reset the checkpoint to its original position. Any robot that was on the checkpoint when it fell into the pit immediately reboots and may not count that checkpoint as complete." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Extra Crispy" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="114.0" prefWidth="389.0" text="Game Length: Short&#10;Special Rules:&#10;In this course you´ll place the reboot token on the start board.&#10;Any robots that reboot will reboot onto that reboot token." textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <ImageView fx:id="extraCrispy" fitHeight="292.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/ExtraCrispy.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="97.0" prefWidth="227.0">
+                           <children>
+                              <ImageView fx:id="burnRun" fitHeight="478.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/images/maps/BurnRun.png" />
+                                 </image>
+                              </ImageView>
+                              <VBox alignment="CENTER_LEFT" prefHeight="220.0" prefWidth="389.0">
+                                 <children>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${subheadingWiki.font}" prefHeight="27.0" prefWidth="436.0" text="Burn Run" textAlignment="CENTER">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" font="${textWiki.font}" lineSpacing="5.0" prefHeight="55.0" prefWidth="436.0" text="Game Length: Long&#10;Special Rules: None" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="50.0" left="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+         <GridPane.margin>
+            <Insets bottom="30.0" />
+         </GridPane.margin>
+      </ScrollPane>
+      <HBox blendMode="MULTIPLY" prefHeight="25.0" prefWidth="933.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+         <children>
+            <Button fx:id="buttonCard" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Cards" />
+            <Button fx:id="buttonRobot" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Robots" />
+            <Button fx:id="buttonRule" mnemonicParsing="false" onAction="#buttonClicked" prefHeight="28.0" text="Rules" />
+            <Button fx:id="buttonCourse" mnemonicParsing="false" prefHeight="28.0" text="Courses" />
+         </children>
+      </HBox>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</GridPane>
