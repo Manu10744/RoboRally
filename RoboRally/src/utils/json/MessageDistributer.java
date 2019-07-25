@@ -35,6 +35,7 @@ import server.game.Player;
 import server.game.ProgrammingCards.Again;
 import server.game.Robot;
 import server.game.Tiles.*;
+import server.game.Tiles.Belt;
 import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
@@ -392,7 +393,32 @@ public class MessageDistributer {
                                 EnergySpace energySpace = (EnergySpace) tile;
                                 server.getEnergySpaceMap().put(ID, energySpace);
                             }
-
+                            if (tile instanceof Belt) {
+                                if (tile.getSpeed() == 1) {
+                                    String ID = xPos + "-" + yPos;
+                                    Belt belt = (Belt) tile;
+                                    server.getGreenBeltMap().put(ID, belt);
+                                } else {
+                                    String ID = xPos + "-" + yPos;
+                                    Belt belt = (Belt) tile;
+                                    server.getBlueBeltMap().put(ID, belt);
+                                }
+                                server.getGreenBeltMap().size();
+                                server.getBlueBeltMap().size();
+                            }
+                            if (tile instanceof RotatingBelt) {
+                                if (tile.getSpeed() == 1) {
+                                    String ID = xPos + "-" + yPos;
+                                    RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                    server.getGreenRotatingBeltMap().put(ID, rotatingBelt);
+                                } else {
+                                    String ID = xPos + "-" + yPos;
+                                    RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                    server.getBlueRotatingBeltMap().put(ID, rotatingBelt);
+                                }
+                                server.getBlueRotatingBeltMap().size();
+                                server.getGreenRotatingBeltMap().size();
+                            }
 
                             if (tile instanceof Antenna) {
                                 server.setAntenna(tile);
@@ -500,6 +526,8 @@ public class MessageDistributer {
 
                 // In case a player plays Again
                 if (playedCard.getClass().equals(Again.class)) {
+                    // TODO: Remove this asap, only testing as if client plays Again in round 3
+                    server.setActiveRound(3);
                     // Search for the first card in the players register that is not an Again card
                     for (int i = server.getActiveRound() - 1; i >= 0; i--) {
                         if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
@@ -560,11 +588,14 @@ public class MessageDistributer {
         cardsPlayed++;
         server.setCardsPlayed(cardsPlayed);
 
-        int activePlayerID;
-        // Round is finished, everyone has played their register
-        if (server.getCardsPlayed() == server.getPlayers().size()) {
-            // Activate the Gears
-            server.activateGears();
+            int activePlayerID;
+            // Round is finished, everyone has played their register
+            if (server.getCardsPlayed() == server.getPlayers().size()) {
+
+                // Activate the Belts
+                server.activateBelts();
+                // Activate the Gears
+                server.activateGears();
 
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
@@ -1270,6 +1301,8 @@ public class MessageDistributer {
 
             // In case own player plays Again
             if (playedCard.getClass().equals(Again.class)) {
+                // TODO: Remove this asap, only testing as if client plays Again in round 3
+                client.getPlayer().setCurrentRound(3);
                 // Search for the first card in the players register that is not an Again card
                 for (int i = client.getPlayer().getCurrentRound() - 1; i >= 0; i--) {
                     if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
@@ -1311,8 +1344,10 @@ public class MessageDistributer {
 
                     // In case OtherPlayer plays Again
                     if (playedCard.getClass().equals(Again.class)) {
+                        // TODO: Remove this asap, only testing as if client plays Again in round 3
+                        otherPlayer.setCurrentRound(3);
                         // Search for the first card in the players register that is not an Again card
-                        for (int i = client.getPlayer().getCurrentRound() - 1; i >= 0; i--) {
+                        for (int i = otherPlayer.getCurrentRound() - 1; i >= 0; i--) {
                             if (!otherPlayer.getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                                 // Activate the found card
@@ -1767,28 +1802,13 @@ public class MessageDistributer {
         //The current round is set which is important for implementing again
         int activeRegister = client.getPlayer().getCurrentRound();
 
-        if (activeRegister == 5) {
+        if (activeRegister == 5){
             client.getPlayer().setCurrentRound(1);
         } else {
             //after every card in the current register is shown, the register is updated
             activeRegister++;
             client.getPlayer().setCurrentRound(activeRegister);
-
-            for (CurrentCardsBody.ActiveCardsObject activeCards : currentCardsBody.getActiveCards()) {
-                int playerID = activeCards.getPlayerID();
-                Card card = activeCards.getCard();
-
-                for (Player otherPlayer : client.getOtherPlayers()) {
-                    if (otherPlayer.getPlayerID() == playerID) {
-                        otherPlayer.getDeckRegister().getDeck().set(client.getPlayer().getCurrentRound() - 1, card);
-                        System.out.println(otherPlayer.getDeckRegister().getDeck());
-
-                        logger.info(ANSI_CYAN + "SET A " + card + " INTO REGISTER " + client.getPlayer().getCurrentRound() + " FROM " + otherPlayer.getName());
-                    }
-                }
-            }
         }
-
         Platform.runLater(() -> {
             //TODO write code here
         });
