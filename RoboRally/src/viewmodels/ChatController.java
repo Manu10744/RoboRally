@@ -268,7 +268,9 @@ public class ChatController implements Initializable, IController {
         AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
         audioClip.setCycleCount(AudioClip.INDEFINITE);
         audioClip.play();
+
     }
+
 
     /**
      * Check if IP String is a valid IP Address and contains IP and Port

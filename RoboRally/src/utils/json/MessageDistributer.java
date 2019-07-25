@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
@@ -525,6 +526,8 @@ public class MessageDistributer {
                 String playerPos = player.getPlayerRobot().getxPosition() + "-" + player.getPlayerRobot().getyPosition();
                 // Player fell into a pit or out of map
                 if (server.getPitMap().get(playerPos) != null || server.playerFellOffMap(player)) {
+                    AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/pit-scream.mp3").toExternalForm());
+                    audioClip.play();
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
