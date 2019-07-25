@@ -621,6 +621,14 @@ public class MessageDistributer {
                 for (Server.ClientWrapper eachPlayer : server.getConnectedClients()) {
                     Player player = eachPlayer.getPlayer();
 
+                    // Put the 5 played registers back into the discard pile
+                    player.getDeckDiscard().getDeck().addAll(player.getDeckRegister().getDeck());
+
+                    // Clear the register deck
+                    for (int i = 0; i < player.getDeckRegister().getDeck().size(); i++) {
+                        player.getDeckRegister().getDeck().set(i, null);
+                    }
+
                     // Reset the counter that observes the selected cards of a player
                     player.setSelectedCards(0);
 
@@ -632,6 +640,10 @@ public class MessageDistributer {
 
                     // Draw 9 cards from the draw pile and fill them into the hand
                     player.drawHandCards(player.getDeckHand(), player.getDeckDraw(), player.getDeckDiscard());
+
+                    System.out.println("HAND DECK SIZE 2nd ROUND OF " + player.getName() + ": " + player.getDeckHand().getDeck().size());
+                    System.out.println("DRAW DECK SIZE 2nd ROUND OF " + player.getName() + ": " + player.getDeckDraw().getDeck().size());
+                    System.out.println("DISCARD DECK SIZE 2nd ROUND OF " + player.getName() + ": " + player.getDeckDiscard().getDeck().size());
 
                     ArrayList<Card> deckInHand = player.getDeckHand().getDeck();
                     int cardsInPile = player.getDeckDraw().getDeck().size();
@@ -745,17 +757,16 @@ public class MessageDistributer {
                     client.getWriter().flush();
                 }
 
-                for (Server.ClientWrapper test : server.getConnectedClients()) {
-                    System.out.println(test.getPlayer().getPlayerRobot().getxPosition());
-                    System.out.println(test.getPlayer().getPlayerRobot().getyPosition());
-                }
-
                 for (Server.ClientWrapper client : server.getConnectedClients()) {
                     Player eachPlayer = client.getPlayer();
 
                     logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE BEFORE DRAWING CARDS: " + eachPlayer.getDeckDraw().getDeck().size() + ANSI_RESET);
                     client.getPlayer().drawHandCards(eachPlayer.getDeckHand(), eachPlayer.getDeckDraw(), eachPlayer.getDeckDiscard());
                     logger.info(ANSI_GREEN + "( HANDLESETSTARTINGPOINT ): SIZE OF DRAW PILE AFTER DRAWING CARDS: " + eachPlayer.getDeckDraw().getDeck().size() + ANSI_RESET);
+
+                    System.out.println("HAND DECK SIZE 1st ROUND OF " + player.getName() + ": " + player.getDeckHand().getDeck().size());
+                    System.out.println("DRAW DECK SIZE 1st ROUND OF " + player.getName() + ": " + player.getDeckDraw().getDeck().size());
+                    System.out.println("DISCARD DECK SIZE 1st ROUND OF " + player.getName() + ": " + player.getDeckDiscard().getDeck().size());
 
                     ArrayList<Card> cardsInHand = eachPlayer.getDeckHand().getDeck();
                     int cardsInPile = eachPlayer.getDeckDraw().getDeck().size();
@@ -806,7 +817,9 @@ public class MessageDistributer {
                     // If player puts a card back into the hand deck
                     if (selectedCard == null) {
                         player.getDeckRegister().getDeck().set(register - 1, null);
-                    } else if (handCard.getClass().equals(selectedCard.getClass())) {
+                        // Search for the selected card and put it into the player's register deck
+                        // If register already contains that object, search for the next one of same type and put that in
+                    } else if (handCard.getClass().equals(selectedCard.getClass()) && !player.getDeckRegister().getDeck().contains(handCard)) {
                         player.getDeckRegister().getDeck().set(register - 1, handCard);
 
                         // Break, so only 1 card of that type is added to the players register
@@ -902,18 +915,24 @@ public class MessageDistributer {
                     //Additionally the remaining cards in hand are added to the discard pile
                     if (timerEnded) {
                         for (Server.ClientWrapper clientToNotify : server.getConnectedClients()) {
+                            player = clientToNotify.getPlayer();
+
+                            // Remove register cards from hand
+                            player.getDeckHand().getDeck().removeAll(player.getDeckRegister().getDeck());
+
+                            logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): REMOVED CHOSEN REGISTER CARDS FROM HAND DECK" + ANSI_RESET);
+
+                            // Add remaining hand cards to discard pile
+                            player.getDeckDiscard().getDeck().addAll(player.getDeckHand().getDeck());
+
+                            // Empty the hand
+                            player.getDeckHand().getDeck().clear();
+
+                            logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): ADDED REMAINING HAND CARDS TO THE DISCARD PILE. DISCARD PILE SIZE: " + player.getDeckDiscard().getDeck().size() + ANSI_RESET);
+
+                            // For players that have not finished programming within countdown time
                             if (clientToNotify.getPlayer().getSelectedCards() < REGISTER_FIVE) {
                                 Player notFinishedPlayer = clientToNotify.getPlayer();
-
-                                // Remove register cards from hand
-                                notFinishedPlayer.getDeckHand().getDeck().removeAll(notFinishedPlayer.getDeckRegister().getDeck());
-
-                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): REMOVED CHOSEN REGISTER CARDS FROM HAND DECK" + ANSI_RESET);
-
-                                // Add remaining hand cards to discard pile
-                                notFinishedPlayer.getDeckDiscard().getDeck().addAll(notFinishedPlayer.getDeckHand().getDeck());
-
-                                logger.info(ANSI_GREEN + "( HANDLESELECTEDCARD ): ADDED REMAINING HAND CARDS TO THE DISCARD PILE. DISCARD PILE SIZE: " + notFinishedPlayer.getDeckDiscard().getDeck().size() + ANSI_RESET);
 
                                 // Now fill empty registers with rest cards of draw pile, if not enough, put discard on draw pile and reshuffle
                                 ArrayList<Card> playerRegister = notFinishedPlayer.getDeckRegister().getDeck();
