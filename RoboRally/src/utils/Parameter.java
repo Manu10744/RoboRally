@@ -72,6 +72,8 @@ public class Parameter {
     //Amount of usual imageViews in each PlayerMat hBox
     public static final int CARDS_WIDTH = 8;
     public static final int CARDS_WIDTH_PLAYERHAND = 16;
+    public static final double CARDS_REGISTER_SIZE_FACTOR = 0.96;
+
     //Tiles
        //Orientation
     public static final String ORIENTATION_RIGHT = "right";

@@ -171,7 +171,6 @@ public class PlayerMatController implements IController {
             ownEnergyCubes.fitWidthProperty().bind(playerIcons.widthProperty());
 
 
-
             for (Node card : playerHand.getChildren()) {
                 card.setOnDragDetected(new EventHandler<MouseEvent>() {
                     @Override
@@ -258,7 +257,7 @@ public class PlayerMatController implements IController {
                                 ((ImageView) register).setImage(db.getImage());
                                 ((ImageView) register).setPreserveRatio(true);
                                 ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                                ((ImageView) register).fitHeightProperty().bind(playerRegister.heightProperty());
+                                ((ImageView) register).fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                                 success = true;
                             }
 
