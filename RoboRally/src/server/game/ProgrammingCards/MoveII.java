@@ -32,7 +32,7 @@ public class MoveII extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'MOVE II' ...");
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
@@ -56,6 +56,12 @@ public class MoveII extends server.game.Card {
                         yPosition = yPosition + 1;
                         // Move was valid, update old position for algorithm for next iteration
                         oldPos = xPosition + "-" + yPosition;
+
+                        //update robot in robotMap
+                        robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                        robotMap.remove(xPosition +"-" + yPosition);
+                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -68,6 +74,12 @@ public class MoveII extends server.game.Card {
                         robot.setxPosition(xPosition + 1);
                         xPosition = xPosition + 1;
                         oldPos = xPosition + "-" + yPosition;
+
+                        //update robot in robotMap
+                        robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                        robotMap.remove(xPosition +"-" + yPosition);
+                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -80,6 +92,12 @@ public class MoveII extends server.game.Card {
                         robot.setyPosition(yPosition - 1);
                         yPosition = yPosition - 1;
                         oldPos = xPosition + "-" + yPosition;
+
+                        //update robot in robotMap
+                        robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                        robotMap.remove(xPosition +"-" + yPosition);
+                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -92,6 +110,12 @@ public class MoveII extends server.game.Card {
                         robot.setxPosition(xPosition - 1);
                         xPosition = xPosition - 1;
                         oldPos = xPosition + "-" + yPosition;
+
+                        //update robot in robotMap
+                        robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                        robotMap.remove(xPosition +"-" + yPosition);
+                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +

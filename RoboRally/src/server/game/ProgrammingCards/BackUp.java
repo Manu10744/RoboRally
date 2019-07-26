@@ -31,7 +31,7 @@ public class BackUp extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'BACKUP' ..." + ANSI_RESET);
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
@@ -48,6 +48,12 @@ public class BackUp extends server.game.Card {
                 newPos = xPosition + "-" + (yPosition - 1);
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "up", "down")) {
                     robot.setyPosition(yPosition - 1);
+
+                    //update robot Pos in robotMap
+                    robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                    robotMap.remove(xPosition +"-" + yPosition);
+                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -56,6 +62,13 @@ public class BackUp extends server.game.Card {
                 newPos = (xPosition - 1) + "-" + yPosition;
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "right", "left")) {
                     robot.setxPosition(xPosition - 1);
+
+                    //update robot in robotMap
+                    robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                    robotMap.remove(xPosition +"-" + yPosition);
+                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
+
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -64,6 +77,12 @@ public class BackUp extends server.game.Card {
                 newPos = xPosition + "-" + (yPosition + 1);
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "down", "up")) {
                     robot.setyPosition(yPosition + 1);
+
+                    //update robot in robotMap
+                    robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                    robotMap.remove(xPosition +"-" + yPosition);
+                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -72,6 +91,12 @@ public class BackUp extends server.game.Card {
                 newPos = (xPosition + 1) + "-" + yPosition;
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "left", "right")) {
                     robot.setxPosition(xPosition + 1);
+
+                    //update robot in robotMap
+                    robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
+                    robotMap.remove(xPosition +"-" + yPosition);
+                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);

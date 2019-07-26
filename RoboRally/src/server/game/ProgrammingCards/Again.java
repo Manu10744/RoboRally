@@ -1,6 +1,7 @@
 package server.game.ProgrammingCards;
 
 import server.game.Player;
+import server.game.Robot;
 import server.game.Tiles.Pit;
 import server.game.Tiles.PushPanel;
 import server.game.Tiles.Wall;
@@ -30,7 +31,7 @@ public class Again extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'AGAIN' ..." + ANSI_RESET);
     }
 

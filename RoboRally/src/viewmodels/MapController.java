@@ -234,7 +234,6 @@ public class MapController implements IController {
                         if (!tileArray.contains(null)) {
                             // Add a normal tile to each non-empty field to prevent whitespace
                             if (!containsInstance(tileArray, Empty.class)) {
-                                System.out.println("Doesnt contain empty, so i will add one!");
                                 tileArray.add(0, new Empty());
                             }
                         }
@@ -412,7 +411,14 @@ public class MapController implements IController {
             imageView.rotateProperty().setValue(270);
         }
 
+        //Robot imageView is added to map
         fieldMap.get(startingPoint).getChildren().add(imageView);
+        //Robot is saved in robotMap
+        robotMap.put(startingPoint, playerRobot);
+
+        logger.info(ANSI_GREEN + "( MAPCONTROLLER ): New player Robot " + playerRobot.getName() + " was added to robotMap at position " + startingPoint + ANSI_RESET);
+
+
     }
 
     /**
@@ -521,6 +527,14 @@ public class MapController implements IController {
 
     public Map<String, EnergySpace> getEnergySpaceMap() {
         return energySpaceMap;
+    }
+
+    public Map<String, Robot> getRobotMap() {
+        return robotMap;
+    }
+
+    public void setRobotMap(Map<String, Robot> robotMap) {
+        this.robotMap = robotMap;
     }
 }
 

@@ -30,7 +30,7 @@ public abstract class Card {
      * This is the method that is called, when the Card's effect is activated. <br>
      * It will be overwritten in each subclass.
      */
-    public abstract void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap);
+    public abstract void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap);
 
     /**
      * This method checks if there is a Pit, Wall or PushPanel in the robots way.

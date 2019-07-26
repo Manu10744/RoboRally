@@ -71,6 +71,7 @@ public class Server extends Application {
     private Map<String, RestartPoint> rebootMap = new HashMap<>();
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+    private Map<String, Robot> robotMap = new HashMap<>();
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
 
@@ -272,6 +273,14 @@ public class Server extends Application {
 
     public Map<String, EnergySpace> getEnergySpaceMap(){
         return energySpaceMap;
+    }
+
+    public Map<String, Robot> getRobotMap() {
+        return robotMap;
+    }
+
+    public void setRobotMap(Map<String, Robot> robotMap) {
+        this.robotMap = robotMap;
     }
 
     public class ServerReaderTask extends Thread {

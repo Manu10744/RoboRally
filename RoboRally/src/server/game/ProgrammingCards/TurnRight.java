@@ -30,7 +30,7 @@ public class TurnRight extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'TURNRIGHT' ...");
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
