@@ -591,7 +591,8 @@ public class MessageDistributer {
             if (server.getCardsPlayed() == server.getPlayers().size()) {
 
                 // Activate the Belts
-                //server.activateBelts();
+                server.activateBelts();
+
                 // Activate the Gears
                 server.activateGears();
 
@@ -1837,31 +1838,28 @@ public class MessageDistributer {
     public void handleMovement(Client client, Client.ClientReaderTask task, MovementBody movementBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleMovement()" + ANSI_RESET);
 
-        int rebootXPos = movementBody.getX();
-        int rebootYPos = movementBody.getY();
+        int newXPos = movementBody.getX();
+        int newYPos = movementBody.getY();
         int messagePlayerID = movementBody.getPlayerID();
 
         Platform.runLater(() -> {
-            // own robot has to reboot
+            // Own player is moving
             if (messagePlayerID == client.getPlayer().getPlayerID()) {
 
                 int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
                 int playerYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
-                int mapWidth = client.getMapController().getMap().size();
-                int mapHeight = client.getMapController().getMap().get(0).size();
                 Robot playerRobot = client.getPlayer().getPlayerRobot();
 
                 String oldPos = playerXPos + "-" + playerYPos;
 
                 // Update client player data due to Reboot
-                client.getPlayer().getPlayerRobot().setxPosition(rebootXPos);
-                client.getPlayer().getPlayerRobot().setyPosition(rebootYPos);
-                client.getPlayer().getPlayerRobot().setLineOfSight("up");
+                client.getPlayer().getPlayerRobot().setxPosition(newXPos);
+                client.getPlayer().getPlayerRobot().setyPosition(newYPos);
 
-                String newPos = rebootXPos + "-" + rebootYPos;
+                String newPos = newXPos + "-" + newYPos;
 
-                client.getMapController().rebootRobot(oldPos, newPos);
+                client.getMapController().moveRobot(oldPos, newPos);
 
             } else {
                 // other player's robot has to reboot
@@ -1870,21 +1868,17 @@ public class MessageDistributer {
                         int otherPlayerXPos = otherPlayer.getPlayerRobot().getxPosition();
                         int otherPlayerYPos = otherPlayer.getPlayerRobot().getyPosition();
 
-                        int mapWidth = client.getMapController().getMap().size();
-                        int mapHeight = client.getMapController().getMap().get(0).size();
                         Robot playerRobot = otherPlayer.getPlayerRobot();
 
                         String oldPos = otherPlayerXPos + "-" + otherPlayerYPos;
 
-                        otherPlayer.getPlayerRobot().setxPosition(rebootXPos);
-                        otherPlayer.getPlayerRobot().setyPosition(rebootYPos);
+                        // Update client OtherPlayer data due to reboot
+                        otherPlayer.getPlayerRobot().setxPosition(newXPos);
+                        otherPlayer.getPlayerRobot().setyPosition(newYPos);
 
-                        String newPos = rebootXPos + "-" + rebootYPos;
+                        String newPos = newXPos + "-" + newYPos;
 
-                        client.getMapController().rebootRobot(oldPos, newPos);
-
-                        // Set robot orientation to north
-                        otherPlayer.getPlayerRobot().setLineOfSight("up");
+                        client.getMapController().moveRobot(oldPos, newPos);
                     }
                 }
             }
@@ -1934,6 +1928,45 @@ public class MessageDistributer {
      */
     public void handleReboot(Client client, Client.ClientReaderTask task, RebootBody rebootBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleReboot()" + ANSI_RESET);
+
+        int messagePlayerID = rebootBody.getPlayerID();
+
+        // own robot has to reboot
+        if (messagePlayerID == client.getPlayer().getPlayerID()) {
+
+            Robot playerRobot = client.getPlayer().getPlayerRobot();
+
+            int currX = playerRobot.getxPosition();
+            int currY = playerRobot.getyPosition();
+
+            String pos = currX + "-" + currY;
+
+            playerRobot.setLineOfSight("up");
+
+            Platform.runLater(() -> {
+                // Align robot to north
+                ((MapController) controllerMap.get("Map")).rebootRobot(pos, pos);
+            });
+
+        } else {
+            // other player's robot has to reboot
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    Robot otherPlayerRobot = otherPlayer.getPlayerRobot();
+
+                    int currX = otherPlayerRobot.getxPosition();
+                    int currY = otherPlayerRobot.getyPosition();
+
+                    String pos = currX + "-" + currY;
+                    otherPlayerRobot.setLineOfSight("up");
+
+                    Platform.runLater(() -> {
+                        // Align robot to north
+                        ((MapController) controllerMap.get("Map")).rebootRobot(pos, pos);
+                    });
+                }
+            }
+        }
 
         Platform.runLater(() -> {
             //TODO write code here

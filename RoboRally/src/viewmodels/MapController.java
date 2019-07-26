@@ -488,6 +488,10 @@ public class MapController implements IController {
         this.antenna = antenna;
     }
 
+    public Map<String, Group> getFieldMap() {
+        return fieldMap;
+    }
+
     public Map<String, Wall> getWallMap() {
         return wallMap;
     }
