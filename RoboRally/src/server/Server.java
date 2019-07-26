@@ -265,6 +265,56 @@ public class Server extends Application {
         }
     }
 
+    /**
+     * This method performs the actions needed for a turn cheat. Only executed when cheats on server are activated.
+     * @param cheat The actual cheat (in this case 'turn') plus the desired direction the player wants his robot to be
+     *              turned.
+     * @param cheatingPlayer The player that activated this cheat.
+     */
+    public void execTurnCheat(String cheat, Player cheatingPlayer) {
+        String[] cheatArgs = cheat.split(" ");
+        String turnDirection = cheatArgs[1];
+        String playerLineOfSight = cheatingPlayer.getPlayerRobot().getLineOfSight();
+
+        // Update player data in server
+        if (turnDirection.equals("left")) {
+            switch (playerLineOfSight) {
+                case "up":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("left");
+                    break;
+                case "left":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("down");
+                    break;
+                case "down":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("right");
+                    break;
+                case "right":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("up");
+            }
+        } else if (turnDirection.equals("right")) {
+            switch (playerLineOfSight) {
+                case "up":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("right");
+                    break;
+                case "left":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("up");
+                    break;
+                case "down":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("left");
+                    break;
+                case "right":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("down");
+            }
+        }
+
+
+        for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+            JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(cheatingPlayer.getPlayerID(), turnDirection));
+            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+            clientWrapper.getWriter().flush();
+        }
+    }
+
     public void activateCheats() {
         this.cheatsActivated = true;
         logger.info("CHEATS HAVE BEEN ACTIVATED.");

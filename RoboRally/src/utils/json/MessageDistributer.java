@@ -484,6 +484,8 @@ public class MessageDistributer {
         // Build new string from client's name and message content, to show name in chat
         String messageContent = sendChatBody.getMessage();
         String content = senderName + " (@" + senderID + ") : " + messageContent;
+        messageContent = messageContent.replace("\t", "");
+        messageContent = messageContent.replace("\n", "");
 
         int to = sendChatBody.getTo();
 
@@ -499,6 +501,15 @@ public class MessageDistributer {
                 if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
                     cheatingPlayer = clientWrapper.getPlayer();
                     server.execMoveCheat(messageContent, cheatingPlayer);
+                }
+            }
+        } else if (messageContent.matches("turn (left|right)") && server.getCheatsActivated()) {
+            Player cheatingPlayer;
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    cheatingPlayer = clientWrapper.getPlayer();
+                    server.execTurnCheat(messageContent, cheatingPlayer);
                 }
             }
         }
@@ -1267,7 +1278,7 @@ public class MessageDistributer {
 
                 client.getChatController().nameSettingFinishedProperty().setValue(false);
                 client.getChatController().getFieldName().setDisable(false);
-                //TODO write code here for proper reaction
+                client.getChatController().getFieldName().requestFocus();
             }
             if (errorMessage.equals("Error: figure already exists")) {
                 logger.info(errorMessage);
@@ -1277,8 +1288,6 @@ public class MessageDistributer {
                 alert.setHeaderText("Figure already taken!");
                 alert.setContentText(errorMessage);
                 alert.show();
-
-                //TODO write code here for proper reaction
             }
             if (errorMessage.equals("Sorry, this StartingPoint is already taken!")) {
                 logger.info(errorMessage);
