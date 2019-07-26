@@ -526,8 +526,6 @@ public class MessageDistributer {
 
                 // In case a player plays Again
                 if (playedCard.getClass().equals(Again.class)) {
-                    // TODO: Remove this asap, only testing as if client plays Again in round 3
-                    server.setActiveRound(3);
                     // Search for the first card in the players register that is not an Again card
                     for (int i = server.getActiveRound() - 1; i >= 0; i--) {
                         if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
@@ -593,7 +591,7 @@ public class MessageDistributer {
             if (server.getCardsPlayed() == server.getPlayers().size()) {
 
                 // Activate the Belts
-                server.activateBelts();
+                //server.activateBelts();
                 // Activate the Gears
                 server.activateGears();
 
@@ -1301,8 +1299,6 @@ public class MessageDistributer {
 
             // In case own player plays Again
             if (playedCard.getClass().equals(Again.class)) {
-                // TODO: Remove this asap, only testing as if client plays Again in round 3
-                client.getPlayer().setCurrentRound(3);
                 // Search for the first card in the players register that is not an Again card
                 for (int i = client.getPlayer().getCurrentRound() - 1; i >= 0; i--) {
                     if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
@@ -1344,10 +1340,8 @@ public class MessageDistributer {
 
                     // In case OtherPlayer plays Again
                     if (playedCard.getClass().equals(Again.class)) {
-                        // TODO: Remove this asap, only testing as if client plays Again in round 3
-                        otherPlayer.setCurrentRound(3);
                         // Search for the first card in the players register that is not an Again card
-                        for (int i = otherPlayer.getCurrentRound() - 1; i >= 0; i--) {
+                        for (int i = client.getPlayer().getCurrentRound() - 1; i >= 0; i--) {
                             if (!otherPlayer.getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                                 // Activate the found card
@@ -1802,13 +1796,30 @@ public class MessageDistributer {
         //The current round is set which is important for implementing again
         int activeRegister = client.getPlayer().getCurrentRound();
 
-        if (activeRegister == 5){
+        // 5 registers have been played, so reset
+        if (activeRegister == 5) {
             client.getPlayer().setCurrentRound(1);
         } else {
             //after every card in the current register is shown, the register is updated
             activeRegister++;
             client.getPlayer().setCurrentRound(activeRegister);
+
+            // For each player, put the current card of each OtherPlayer into the OtherPlayer register
+            for (CurrentCardsBody.ActiveCardsObject activeCards : currentCardsBody.getActiveCards()) {
+                int playerID = activeCards.getPlayerID();
+                Card card = activeCards.getCard();
+
+                for (Player otherPlayer : client.getOtherPlayers()) {
+                    if (otherPlayer.getPlayerID() == playerID) {
+                        otherPlayer.getDeckRegister().getDeck().set(client.getPlayer().getCurrentRound() - 1, card);
+                        System.out.println(otherPlayer.getDeckRegister().getDeck());
+
+                        logger.info(ANSI_CYAN + "SET A " + card + " INTO REGISTER " + client.getPlayer().getCurrentRound() + " FROM " + otherPlayer.getName());
+                    }
+                }
+            }
         }
+
         Platform.runLater(() -> {
             //TODO write code here
         });
