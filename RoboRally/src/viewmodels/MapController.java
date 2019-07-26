@@ -443,23 +443,6 @@ public class MapController implements IController {
     }
 
     /**
-     * This method sets the robot onto the restartpoint and sets its orientation to north
-     * @param oldPosition The old position of the robot
-     * @param newPosition The position of the restartpoint, the robot is set onto
-     */
-    public void rebootRobot(String oldPosition, String newPosition ) {
-        System.out.println("(REBOOTROBOT): OLDPOSITION: " + oldPosition);
-        System.out.println("(REBOOTROBOT): NEWPOSITION: " + newPosition);
-        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
-        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
-
-        // set robot orientation to north
-        robotImageView.rotateProperty().setValue(0);
-        fieldMap.get(newPosition).getChildren().add(robotImageView);
-
-    }
-
-    /**
      * This method controls robotlaser in activation phase
      */
     public void robotLaser() {

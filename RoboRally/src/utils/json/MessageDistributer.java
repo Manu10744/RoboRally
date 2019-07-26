@@ -1843,7 +1843,7 @@ public class MessageDistributer {
         int messagePlayerID = movementBody.getPlayerID();
 
         Platform.runLater(() -> {
-            // Own player is moving
+            // Own player has to move
             if (messagePlayerID == client.getPlayer().getPlayerID()) {
 
                 int playerXPos = client.getPlayer().getPlayerRobot().getxPosition();
@@ -1862,7 +1862,7 @@ public class MessageDistributer {
                 client.getMapController().moveRobot(oldPos, newPos);
 
             } else {
-                // other player's robot has to reboot
+                // other player's robot has to move
                 for (Player otherPlayer : client.getOtherPlayers()) {
                     if (otherPlayer.getPlayerID() == messagePlayerID) {
                         int otherPlayerXPos = otherPlayer.getPlayerRobot().getxPosition();
@@ -1945,7 +1945,9 @@ public class MessageDistributer {
 
             Platform.runLater(() -> {
                 // Align robot to north
-                ((MapController) controllerMap.get("Map")).rebootRobot(pos, pos);
+                int groupImagesSize = ((MapController) controllerMap.get("Map")).getFieldMap().get(pos).getChildren().size();
+                // Last image is robot
+                ((MapController) controllerMap.get("Map")).getFieldMap().get(pos).getChildren().get(groupImagesSize - 1).rotateProperty().setValue(0);
             });
 
         } else {
@@ -1962,7 +1964,9 @@ public class MessageDistributer {
 
                     Platform.runLater(() -> {
                         // Align robot to north
-                        ((MapController) controllerMap.get("Map")).rebootRobot(pos, pos);
+                        int groupImagesSize = ((MapController) controllerMap.get("Map")).getFieldMap().get(pos).getChildren().size();
+                        // Last image is robot
+                        ((MapController) controllerMap.get("Map")).getFieldMap().get(pos).getChildren().get(groupImagesSize - 1).rotateProperty().setValue(0);
                     });
                 }
             }
