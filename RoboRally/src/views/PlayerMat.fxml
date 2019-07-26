@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Font?>
-<GridPane fx:id="playerMat" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="viewmodels.PlayerMatController">
+
+<GridPane fx:id="playerMat" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.PlayerMatController">
 
     <columnConstraints>
         <ColumnConstraints minWidth="0.0" percentWidth="47.7" />
@@ -25,12 +25,12 @@
         <ImageView fx:id="ownRobotIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
 
         <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <Label fx:id="ownEnergyCubesLabel" contentDisplay="TOP" graphicTextGap="-75.0" textAlignment="CENTER" text="5" visible="false">
+        <Label fx:id="ownEnergyCubesLabel" contentDisplay="TOP" graphicTextGap="-75.0" text="5" textAlignment="CENTER" visible="false">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>
             <graphic>
-                <ImageView fx:id="ownEnergyCubes" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" >
+                <ImageView fx:id="ownEnergyCubes" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                     <image>
                         <Image url="@../resources/images/others/energycube-playermat.png" />
                     </image>
@@ -86,7 +86,7 @@
         </ImageView>
     </HBox>
 
-    <HBox fx:id="playerRegister" minHeight="0.0" minWidth="0.0" style="-fx-background-color: red" GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <HBox fx:id="playerRegister" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <ImageView fx:id="register1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="register2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="register3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
