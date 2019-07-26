@@ -14,6 +14,9 @@ import java.util.logging.Logger;
  * This class implements the TurnLeft card.
  *
  * @author Vincent Tafferner
+ * @author Manu Neumayer
+ * @author Jessica Gerlach
+ * @author Verena Sadtler
  */
 public class TurnLeft extends server.game.Card {
     public static final String ANSI_GREEN = "\u001B[32m";

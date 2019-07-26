@@ -15,6 +15,8 @@ import java.util.logging.Logger;
  *
  * @author Vincent Tafferner
  * @author Verena Sadtler
+ * @author Manu Neumayer
+ * @author Jessica Gerlach
  */
 public class MoveI extends server.game.Card {
     public static final String ANSI_GREEN = "\u001B[32m";

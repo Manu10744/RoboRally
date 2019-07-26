@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
 import server.game.Tiles.*;
+import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
@@ -55,6 +56,7 @@ public class Server extends Application {
     private int setStartPoints = 0;
     private int numOfRegistersFilled = 0;
     private int activeRound;
+    private int cardsPlayed;
 
     private boolean firstAllRegistersFilled = false;
 
@@ -71,8 +73,14 @@ public class Server extends Application {
     private Map<String, RestartPoint> rebootMap = new HashMap<>();
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+    private Map<String, Belt> greenBeltMap = new HashMap<>();
+    private Map<String, Belt> blueBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> greenRotatingBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> blueRotatingBeltMap = new HashMap<>();
 
     private static final Logger logger = Logger.getLogger(Server.class.getName());
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_RESET = "\u001B[0m";
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -104,14 +112,14 @@ public class Server extends Application {
 
     }
 
-    public boolean playerFellOffMap(Player player){
+    public boolean playerFellOffMap(Player player) {
         int playerXPos = player.getPlayerRobot().getxPosition();
         int playerYPos = player.getPlayerRobot().getyPosition();
         int mapHeight = this.map.get(0).size();
         int mapWidth = this.map.size();
 
         // Player fell off the map border
-        if(playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight) {
+        if (playerXPos < 0 || playerYPos < 0 || playerXPos >= mapWidth || playerYPos >= mapHeight) {
             return true;
         }
         // Player fell into a gap
@@ -121,6 +129,115 @@ public class Server extends Application {
             return false;
         }
     }
+
+    public void activateGears() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING GEARS!" + ANSI_RESET);
+
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int xPos = player.getPlayerRobot().getxPosition();
+            int yPos = player.getPlayerRobot().getyPosition();
+
+            // Key for HashMap
+            String playerPosition = xPos + "-" + yPos;
+
+            // Landed on a gear
+            if (this.gearMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A GEAR!" + ANSI_RESET);
+                // Orientation of Gear
+                String turnDirection = this.gearMap.get(playerPosition).getOrientations().get(0);
+
+                // Update player data in server
+                if (turnDirection.equals("left")) {
+                    switch (player.getPlayerRobot().getLineOfSight()) {
+                        case "up":
+                            player.getPlayerRobot().setLineOfSight("left");
+                            break;
+                        case "left":
+                            player.getPlayerRobot().setLineOfSight("down");
+                            break;
+                        case "down":
+                            player.getPlayerRobot().setLineOfSight("right");
+                            break;
+                        case "right":
+                            player.getPlayerRobot().setLineOfSight("up");
+                    }
+                }
+
+                if (turnDirection.equals("right")) {
+                    switch (player.getPlayerRobot().getLineOfSight()) {
+                        case "up":
+                            player.getPlayerRobot().setLineOfSight("right");
+                            break;
+                        case "left":
+                            player.getPlayerRobot().setLineOfSight("up");
+                            break;
+                        case "down":
+                            player.getPlayerRobot().setLineOfSight("left");
+                            break;
+                        case "right":
+                            player.getPlayerRobot().setLineOfSight("down");
+                    }
+                }
+
+                System.out.println(player.getPlayerRobot().getLineOfSight());
+                // Clients update themselves
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, turnDirection));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+            }
+        }
+    }
+
+    public void activateBelts() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING BELTS!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+            if (this.greenBeltMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A GREEN BELT!" + ANSI_RESET);
+
+                // orientation of the belt
+                String moveDirection = this.greenBeltMap.get(playerPosition).getOrientations().get(0);
+
+                switch (moveDirection) {
+                    case "up":
+                        player.getPlayerRobot().setyPosition(currentYPos + 1);
+                        break;
+                    case "down":
+                        player.getPlayerRobot().setyPosition(currentYPos - 1);
+                        break;
+                    case "left":
+                        player.getPlayerRobot().setxPosition(currentXPos - 1);
+                        break;
+                    case "right":
+                        player.getPlayerRobot().setxPosition(currentXPos + 1);
+                        break;
+                }
+                int newXPos = player.getPlayerRobot().getxPosition();
+                int newYPos = player.getPlayerRobot().getyPosition();
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                        player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+            }
+        }
+    }
+
 
     public int getActiveRound() {
         return activeRound;
@@ -242,36 +359,61 @@ public class Server extends Application {
         this.antennaYPos = antennaYPos;
     }
 
-    public Map<String, Wall> getWallMap(){
+    public Map<String, Wall> getWallMap() {
         return wallMap;
     }
 
-    public Map<String, Pit> getPitMap(){
+    public Map<String, Pit> getPitMap() {
         return pitMap;
     }
 
-    public Map<String, Gear> getGearMap(){
+    public Map<String, Gear> getGearMap() {
         return gearMap;
     }
 
-    public Map<String, Laser> getLaserMap(){
-       return laserMap;
+    public Map<String, Laser> getLaserMap() {
+        return laserMap;
     }
 
-    public Map<String, PushPanel> getPushPanelMap(){
+    public Map<String, PushPanel> getPushPanelMap() {
         return pushPanelMap;
     }
 
-    public Map<String, RestartPoint> getRebootMap(){
+    public Map<String, RestartPoint> getRebootMap() {
         return rebootMap;
     }
 
-    public Map<String, CheckPoint> getCheckPointMap(){
+    public Map<String, CheckPoint> getCheckPointMap() {
         return checkPointMap;
     }
 
-    public Map<String, EnergySpace> getEnergySpaceMap(){
+    public Map<String, EnergySpace> getEnergySpaceMap() {
         return energySpaceMap;
+    }
+
+    public Map<String, Belt> getGreenBeltMap() {
+        return greenBeltMap;
+    }
+
+    public Map<String, Belt> getBlueBeltMap() {
+        return blueBeltMap;
+    }
+
+    public Map<String, RotatingBelt> getGreenRotatingBeltMap() {
+        return greenRotatingBeltMap;
+    }
+
+    public Map<String, RotatingBelt> getBlueRotatingBeltMap() {
+        return blueRotatingBeltMap;
+    }
+
+
+    public int getCardsPlayed() {
+        return cardsPlayed;
+    }
+
+    public void setCardsPlayed(int cardsPlayed) {
+        this.cardsPlayed = cardsPlayed;
     }
 
     public class ServerReaderTask extends Thread {
@@ -340,7 +482,6 @@ public class Server extends Application {
         public BufferedReader getReader() {
             return reader;
         }
-
 
 
     }
@@ -426,7 +567,6 @@ public class Server extends Application {
         public void setPlayer(Player player) {
             this.player = player;
         }
-
 
     }
 }
