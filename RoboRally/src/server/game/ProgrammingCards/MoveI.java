@@ -46,7 +46,7 @@ public class MoveI extends server.game.Card {
         switch (lineOfSight){
             case ("up"):
                 newPos = xPosition + "-" + (yPosition + 1);
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "down", "up")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "down", "up")) {
                     robot.setyPosition(yPosition + 1);
 
                     //Robot position is updated in robotMap
@@ -61,7 +61,7 @@ public class MoveI extends server.game.Card {
                 break;
             case ("right"):
                 newPos = (xPosition + 1) + "-" + yPosition;
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "left", "right")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "left", "right")) {
                     robot.setxPosition(xPosition + 1);
 
                     //Robot position is updated in robotMap
@@ -76,7 +76,7 @@ public class MoveI extends server.game.Card {
                 break;
             case ("down"):
                 newPos = xPosition + "-" + (yPosition - 1);
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "up", "down")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "up", "down")) {
                     robot.setyPosition(yPosition - 1);
 
                     //Robot position is updated in robotMap
@@ -91,7 +91,7 @@ public class MoveI extends server.game.Card {
                 break;
             case ("left"):
                 newPos = (xPosition - 1) + "-" + yPosition;
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, oldPos, newPos, "right", "left")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "right", "left")) {
                     robot.setxPosition(xPosition - 1);
 
                     //Robot position is updated in robotMap

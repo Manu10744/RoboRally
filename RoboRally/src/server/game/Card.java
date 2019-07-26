@@ -37,6 +37,7 @@ public abstract class Card {
      * @param pitMap hashmap with all the pits of the map
      * @param wallMap hashmap with all the walls of the map
      * @param pushPanelMap hashmap with all the pushPanels of the map
+     * @param robotMap
      * @param oldPos player position before moving
      * @param newPos player position after moving
      * @param oppositeOwnOrientation opposite players lineOfSight
@@ -44,7 +45,7 @@ public abstract class Card {
      * @return true if robot is allowed to move
      */
 
-    public boolean isValidMove(Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, String oldPos, String newPos, String oppositeOwnOrientation, String ownOrientation) {
+    public boolean isValidMove(Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, String oldPos, String newPos, String oppositeOwnOrientation, String ownOrientation) {
         Pit currentFieldPit = pitMap.get(oldPos);
         Wall currentFieldWall = wallMap.get(oldPos);
         PushPanel currentFieldPush = pushPanelMap.get(oldPos);

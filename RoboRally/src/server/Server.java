@@ -253,7 +253,7 @@ public class Server extends Application {
 
         logger.info("PLAYER CHEATED HIM ROBOT TO POSITION ( " + desiredXPos + " | " + desiredYPos + " )");
 
-        if (desiredXPos >= 0 && desiredYPos >= 0 && desiredXPos < this.getMapWidth() && desiredYPos < this.getMapHeight()) {
+        if (desiredXPos >= 0 && desiredYPos >= 0 && desiredXPos < this.mapWidth && desiredYPos < this.mapHeight) {
             // Set cheated position
             cheatingPlayer.getPlayerRobot().setxPosition(desiredXPos);
             cheatingPlayer.getPlayerRobot().setyPosition(desiredYPos);
@@ -274,6 +274,22 @@ public class Server extends Application {
     public void deactivateCheats() {
         this.cheatsActivated = false;
         logger.info("CHEATS HAVE BEEN DEACTIVATED.");
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
+    }
+
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
     }
 
     public int getActiveRound() {
@@ -615,6 +631,8 @@ public class Server extends Application {
         public void setPlayer(Player player) {
             this.player = player;
         }
+
+
 
 
     }
