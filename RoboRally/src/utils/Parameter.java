@@ -51,6 +51,9 @@ public class Parameter {
     public static final int SCROLL_FACTOR = 5;
     public static final int SCROLL_DEFAULT = 0;
 
+    //Other Map Parameters
+    public static final int MAP_Y_ARRAY = 0;
+
     //Game
     public static final int TIMER_LENGTH = 30;
     public static final int TIMER_DELAY = 1000; // This should be 1000 because a second has 1000 milliseconds.

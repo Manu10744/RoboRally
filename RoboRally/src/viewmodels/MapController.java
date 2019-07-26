@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+import static utils.Parameter.*;
+
 
 /**
  * The class MapController notifies the Server where each robot is positioned and and on which tile(type) it rests
@@ -61,6 +63,7 @@ public class MapController implements IController {
     private Map<String, RestartPoint> rebootMap = new HashMap<>();
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+    private Map<String, Robot> robotMap = new HashMap<>();
 
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private ArrayList<Group> startPointList;
@@ -187,30 +190,30 @@ public class MapController implements IController {
                 mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
                     logger.info("Pressed Key: " + e + mapPane.getTranslateY());
                     if (e.getCode() == KeyCode.PLUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() * Parameter.ZOOM_FACTOR);
-                        mapPane.setScaleY(mapPane.getScaleY() * Parameter.ZOOM_FACTOR);
+                        mapPane.setScaleX(mapPane.getScaleX() * ZOOM_FACTOR);
+                        mapPane.setScaleY(mapPane.getScaleY() * ZOOM_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.MINUS) {
-                        mapPane.setScaleX(mapPane.getScaleX() / Parameter.ZOOM_FACTOR);
-                        mapPane.setScaleY(mapPane.getScaleY() / Parameter.ZOOM_FACTOR);
+                        mapPane.setScaleX(mapPane.getScaleX() / ZOOM_FACTOR);
+                        mapPane.setScaleY(mapPane.getScaleY() / ZOOM_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.A) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() - Parameter.SCROLL_FACTOR);
+                        mapPane.setTranslateX(mapPane.getTranslateX() - SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.D) {
-                        mapPane.setTranslateX(mapPane.getTranslateX() + Parameter.SCROLL_FACTOR);
+                        mapPane.setTranslateX(mapPane.getTranslateX() + SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.W) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() - Parameter.SCROLL_FACTOR);
+                        mapPane.setTranslateY(mapPane.getTranslateY() - SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.S) {
-                        mapPane.setTranslateY(mapPane.getTranslateY() + Parameter.SCROLL_FACTOR);
+                        mapPane.setTranslateY(mapPane.getTranslateY() + SCROLL_FACTOR);
                         mapPane.requestFocus();
                     } else if (e.getCode() == KeyCode.Z) {
-                        mapPane.setScaleX(Parameter.ZOOM_DEFAULT);
-                        mapPane.setScaleY(Parameter.ZOOM_DEFAULT);
-                        mapPane.setTranslateX(Parameter.SCROLL_DEFAULT);
-                        mapPane.setTranslateY(Parameter.SCROLL_DEFAULT);
+                        mapPane.setScaleX(ZOOM_DEFAULT);
+                        mapPane.setScaleY(ZOOM_DEFAULT);
+                        mapPane.setTranslateX(SCROLL_DEFAULT);
+                        mapPane.setTranslateY(SCROLL_DEFAULT);
                         mapPane.requestFocus();
                     }
                 });
@@ -220,7 +223,7 @@ public class MapController implements IController {
                 ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
 
                 mapWidth = map.size();
-                mapHeight = map.get(0).size();
+                mapHeight = map.get(MAP_Y_ARRAY).size();
 
                 for (int xPos = mapWidth - 1; xPos >= 0; xPos--) {
                     for (int yPos = mapHeight - 1; yPos >= 0; yPos--) {
@@ -423,7 +426,7 @@ public class MapController implements IController {
         double currentOrientation = robotImageView.rotateProperty().getValue();
 
         //Here we turn it either to right or left side
-        if(turnDirection.equals(Parameter.ORIENTATION_LEFT)) {
+        if(turnDirection.equals(ORIENTATION_LEFT)) {
             robotImageView.rotateProperty().setValue(currentOrientation - 90);
         }else{
             robotImageView.rotateProperty().setValue(currentOrientation + 90);
