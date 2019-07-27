@@ -1,5 +1,6 @@
 package server;
 
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
@@ -314,6 +316,117 @@ public class Server extends Application {
             clientWrapper.getWriter().flush();
         }
     }
+
+    /**
+     * This method performs the actions needed for a play card cheat. Only executed when cheats on server are activated.
+     * @param cheat The actual cheat (in this case 'play') plus the desired card that the player wants to play.
+     * @param cheatingPlayer The player that activated this cheat.
+     */
+    public void execPlayCheat(String cheat, Player cheatingPlayer) {
+        String[] cheatArgs = cheat.split(" ");
+        String desiredCard = cheatArgs[1];
+
+        Robot cheatingPlayerRobot = cheatingPlayer.getPlayerRobot();
+        switch (desiredCard) {
+            case "move1":
+                new MoveI().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveI()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "move2":
+                new MoveII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveII()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "move3":
+                new MoveIII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveIII()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "backup":
+                new BackUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new BackUp()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "uturn":
+                new UTurn().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new UTurn()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "again":
+                new Again().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new Again()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "powerup":
+                new PowerUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new PowerUp()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "turnleft":
+                new TurnLeft().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnLeft()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+
+            case "turnright":
+                new TurnRight().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnRight()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+        }
+    }
+
+
+
+
+
+
+
+
 
     public void activateCheats() {
         this.cheatsActivated = true;

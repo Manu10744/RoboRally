@@ -458,7 +458,6 @@ public class MapController implements IController {
         ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
         fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
         fieldMap.get(newPosition).getChildren().add(robotImageView);
-
     }
 
     /**
