@@ -3,6 +3,7 @@ package main;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -91,6 +92,10 @@ public class Main extends Application {
 
                     // Set scene
                     Scene scene = new Scene(stageView);
+
+                    // Custom cursor
+                    Image cursorImage = new Image("/resources/images/others/Cursor.png");
+                    scene.setCursor(new ImageCursor(cursorImage));
 
                     // Set Stage boundaries to visible bounds of the main screen
                     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();

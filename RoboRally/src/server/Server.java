@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
 import server.game.Tiles.*;
-import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
 import server.game.decks.DeckHand;
@@ -57,7 +56,9 @@ public class Server extends Application {
     private int numOfRegistersFilled = 0;
     private int activeRound;
     private int cardsPlayed;
-
+    private int mapHeight;
+    private int mapWidth;
+    private boolean cheatsActivated = false;
     private boolean firstAllRegistersFilled = false;
 
     private MessageDistributer messageDistributer = new MessageDistributer();
@@ -347,6 +348,91 @@ public class Server extends Application {
         }
     }
 
+    /**
+     * This method performs the actions needed for a move cheat. Only executed when cheats on server are activated.
+     * @param cheat The actual cheat (in this case 'move') plus the corresponding x - and y - coordinate that the player
+     *              wants his robot to move to.
+     * @param cheatingPlayer The player that activated this cheat.
+     */
+    public void execMoveCheat(String cheat, Player cheatingPlayer) {
+        String[] cheatArgs = cheat.split(" ");
+        int desiredXPos = Integer.parseInt(cheatArgs[1]);
+        int desiredYPos = Integer.parseInt(cheatArgs[2]);
+
+        logger.info("PLAYER CHEATED HIM ROBOT TO POSITION ( " + desiredXPos + " | " + desiredYPos + " )");
+
+        if (desiredXPos >= 0 && desiredYPos >= 0 && desiredXPos < this.getMapWidth() && desiredYPos < this.getMapHeight()) {
+            // Set cheated position
+            cheatingPlayer.getPlayerRobot().setxPosition(desiredXPos);
+            cheatingPlayer.getPlayerRobot().setyPosition(desiredYPos);
+
+            for (ClientWrapper clientWrapper : this.connectedClients) {
+                JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(cheatingPlayer.getPlayerID(), desiredXPos, desiredYPos));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
+            }
+        }
+    }
+
+    /**
+     * This method performs the actions needed for a turn cheat. Only executed when cheats on server are activated.
+     * @param cheat The actual cheat (in this case 'turn') plus the desired direction the player wants his robot to be
+     *              turned.
+     * @param cheatingPlayer The player that activated this cheat.
+     */
+    public void execTurnCheat(String cheat, Player cheatingPlayer) {
+        String[] cheatArgs = cheat.split(" ");
+        String turnDirection = cheatArgs[1];
+        String playerLineOfSight = cheatingPlayer.getPlayerRobot().getLineOfSight();
+
+        // Update player data in server
+        if (turnDirection.equals("left")) {
+            switch (playerLineOfSight) {
+                case "up":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("left");
+                    break;
+                case "left":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("down");
+                    break;
+                case "down":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("right");
+                    break;
+                case "right":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("up");
+            }
+        } else if (turnDirection.equals("right")) {
+            switch (playerLineOfSight) {
+                case "up":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("right");
+                    break;
+                case "left":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("up");
+                    break;
+                case "down":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("left");
+                    break;
+                case "right":
+                    cheatingPlayer.getPlayerRobot().setLineOfSight("down");
+            }
+        }
+
+
+        for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+            JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(cheatingPlayer.getPlayerID(), turnDirection));
+            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+            clientWrapper.getWriter().flush();
+        }
+    }
+
+    public void activateCheats() {
+        this.cheatsActivated = true;
+        logger.info("CHEATS HAVE BEEN ACTIVATED.");
+    }
+
+    public void deactivateCheats() {
+        this.cheatsActivated = false;
+        logger.info("CHEATS HAVE BEEN DEACTIVATED.");
+    }
 
     public int getActiveRound() {
         return activeRound;
@@ -444,6 +530,14 @@ public class Server extends Application {
         this.map = map;
     }
 
+    public int getMapHeight() { return mapHeight; }
+
+    public void setMapHeight(int mapHeight) { this.mapHeight = mapHeight; }
+
+    public int getMapWidth() { return mapWidth; }
+
+    public void setMapWidth(int mapWidth) { this.mapWidth = mapWidth; }
+
     public Tile getAntenna() {
         return antenna;
     }
@@ -525,6 +619,8 @@ public class Server extends Application {
         this.cardsPlayed = cardsPlayed;
     }
 
+    public boolean getCheatsActivated() { return cheatsActivated; }
+
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
         private Server server;
@@ -591,6 +687,7 @@ public class Server extends Application {
         public BufferedReader getReader() {
             return reader;
         }
+
 
 
     }
@@ -676,6 +773,7 @@ public class Server extends Application {
         public void setPlayer(Player player) {
             this.player = player;
         }
+
 
     }
 }

@@ -21,7 +21,7 @@
         <RowConstraints minHeight="0.0" percentHeight="50.0" />
     </rowConstraints>
 
-    <HBox fx:id="playerIcons" minHeight="0.0" minWidth="0.0" style="-fx-background-color: whitesmoke;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <HBox fx:id="playerIcons" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <ImageView fx:id="ownRobotIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
 
         <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
@@ -44,7 +44,7 @@
         <ImageView fx:id="emptyIcon6" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
     </HBox>
 
-    <HBox fx:id="playerDrawDiscardCards" minHeight="0.0" minWidth="0.0" style="-fx-background-color: purple;" GridPane.columnIndex="0" GridPane.rowIndex="1">
+    <HBox fx:id="playerDrawDiscardCards" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <ImageView fx:id="emptyIcon0" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon01" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon02" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
@@ -55,7 +55,7 @@
         <ImageView fx:id="emptyIcon07" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
     </HBox>
 
-    <HBox fx:id="playerUpdates" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+    <HBox fx:id="playerUpdates" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <ImageView fx:id="permaUpdate1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="permaUpdate2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="permaUpdate3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
@@ -86,7 +86,9 @@
         </ImageView>
     </HBox>
 
-    <HBox fx:id="playerRegister" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <HBox fx:id="playerRegister" minHeight="0.0" minWidth="0.0"
+          style="-fx-background-color: dimgrey; -fx-border-style: solid inside; -fx-border-width: 2;
+          -fx-border-radius: 5; -fx-border-color: lightgreen;" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <ImageView fx:id="register1" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="register2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="register3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />

@@ -5,9 +5,18 @@
 * Maybe event for INFORMED_ABOUT_READYSTATUS_OF_ALREADY_CONNECTED_PLAYERS if needed
 * Shop needs to be implemented
 * AI needs to be implemented
-* SelectionFinished currently being sent for each player finished programming. Needs to be changed (Send it only once)
 * Timer before map starts needs to be implemented (10 secs)
-* Remaining moves need to be implemented (7/9)
+* Cheats need to be implemented
+* Board elements need to be activated (1/8)
+
+## Version [0.6.0]
+
+### New Features
+* All Moves have been implemented. - *(Verena, Mia, Manu)*
+* An ingame soundtrack has been added. - *(Jessie)*
+* Players are now rebooting after falling out of map or into pits. - *(Jessie, Manu)*
+* Gears are now activating after every player has played his current register. - *(Manu)*
+* RoboRally Wikipedia has been extended (Maps). - *(Verena)*
 
 ## Version [0.5.0]
 ### New Features
@@ -15,7 +24,7 @@
 * When setting a StartPoint, a robot is now always looking towards the map. - *(Manu)*
 * Implemented ability to play 'MoveI', 'MoveII', 'MoveIII', 'BackUp' and 'UTurn' - *(Verena, Manu)*
 * When a player finishes programming, a 30 second timer is started which determines the end of the programming phase. - *(Manu)*
-* Added an algorithm to check if moves are valid or if there is a pit, wall or pushPanel blocking the players way. - *(Verena, Manu)* 
+* Added an algorithm to check if moves are valid or if there is a pit, wall or PushPanel blocking the players way. - *(Verena, Manu)* 
 
 ### Changes
 

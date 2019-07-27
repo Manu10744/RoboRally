@@ -40,8 +40,6 @@ import server.game.Tiles.Antenna;
 import server.game.Tiles.Tile;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
-import server.game.decks.DeckHand;
-import server.game.decks.DeckRegister;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
@@ -344,10 +342,19 @@ public class MessageDistributer {
 
             try {
                 // Sets Map in server
-                String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
-                JSONMessage jsonMessage = JSONDecoder.deserializeJSON(map);
+                String mapJSON = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
+                JSONMessage jsonMessage = JSONDecoder.deserializeJSON(mapJSON);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
-                server.setMap(gameStartedBody.getXArray());
+
+                ArrayList<ArrayList<ArrayList<Tile>>> map = gameStartedBody.getXArray();
+                int mapWidth = map.size();
+                int mapHeight = map.get(0).size();
+
+                // Set map and map dimensions
+                server.setMap(map);
+                server.setMapHeight(mapHeight);
+                server.setMapWidth(mapWidth);
+
 
                 // Set Antenna in server
                 for (int xPos = 0; xPos < server.getMap().size(); xPos++) {
@@ -477,25 +484,55 @@ public class MessageDistributer {
         // Build new string from client's name and message content, to show name in chat
         String messageContent = sendChatBody.getMessage();
         String content = senderName + " (@" + senderID + ") : " + messageContent;
+        messageContent = messageContent.replace("\t", "");
+        messageContent = messageContent.replace("\n", "");
 
         int to = sendChatBody.getTo();
 
-        if (to == -1) {
-            // Send message to all clients:
-            for (Server.ClientWrapper client : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, false));
-                client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                client.getWriter().flush();
-                logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
+        // For turning cheats on / off
+        if (messageContent.equals("set cheat_mode 1")) {
+            server.activateCheats();
+        } else if (messageContent.equals("set cheat_mode 0")) {
+            server.deactivateCheats();
+        } else if (messageContent.matches("move [0-9]{1,2} [0-9]{1,2}") && server.getCheatsActivated()) {
+            Player cheatingPlayer;
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    cheatingPlayer = clientWrapper.getPlayer();
+                    server.execMoveCheat(messageContent, cheatingPlayer);
+                }
             }
-        } else {
-            // Send private message to client:
-            for (Server.ClientWrapper client : server.getConnectedClients()) {
-                if (client.getPlayerID() == to) {
-                    JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, true));
+        } else if (messageContent.matches("turn (left|right)") && server.getCheatsActivated()) {
+            Player cheatingPlayer;
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    cheatingPlayer = clientWrapper.getPlayer();
+                    server.execTurnCheat(messageContent, cheatingPlayer);
+                }
+            }
+        }
+
+        // For everything else
+        else {
+            if (to == -1) {
+                // Send message to all clients:
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, false));
                     client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     client.getWriter().flush();
-                    logger.info("SEND_PRIVATE_CHAT: Content of ReceivedChat: " + content + " " + senderID);
+                    logger.info("SEND_CHAT: Content of ReceivedChat: " + content + " " + senderID);
+                }
+            } else {
+                // Send private message to client:
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
+                    if (client.getPlayerID() == to) {
+                        JSONMessage jsonMessage = new JSONMessage("ReceivedChat", new ReceivedChatBody(content, senderID, true));
+                        client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        client.getWriter().flush();
+                        logger.info("SEND_PRIVATE_CHAT: Content of ReceivedChat: " + content + " " + senderID);
+                    }
                 }
             }
         }
@@ -1247,7 +1284,7 @@ public class MessageDistributer {
 
                 client.getChatController().nameSettingFinishedProperty().setValue(false);
                 client.getChatController().getFieldName().setDisable(false);
-                //TODO write code here for proper reaction
+                client.getChatController().getFieldName().requestFocus();
             }
             if (errorMessage.equals("Error: figure already exists")) {
                 logger.info(errorMessage);
@@ -1257,8 +1294,6 @@ public class MessageDistributer {
                 alert.setHeaderText("Figure already taken!");
                 alert.setContentText(errorMessage);
                 alert.show();
-
-                //TODO write code here for proper reaction
             }
             if (errorMessage.equals("Sorry, this StartingPoint is already taken!")) {
                 logger.info(errorMessage);

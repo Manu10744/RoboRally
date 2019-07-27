@@ -94,6 +94,14 @@ public class ChatController implements Initializable, IController {
         clientChatOutput = new SimpleStringProperty();
 
 
+        //Chat-Styles
+        buttonWiki.setStyle("-fx-background-color: transparent; -fx-border-color: lightgreen; -fx-cursor: hand;");
+        fieldName.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
+        fieldServer.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
+        chatInput.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
+        chatOutput.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
+
+
         //SERVERINPUT: Tooltip is shown while fieldServer is focused
         final Tooltip tooltipFieldServer = new Tooltip("Enter server and port as follows xxx.xxx.xxx.xxx:xxxx");
         fieldServer.setTooltip(tooltipFieldServer);
