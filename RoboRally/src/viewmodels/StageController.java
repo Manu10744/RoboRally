@@ -57,7 +57,7 @@ public class StageController implements Initializable, IController {
     @FXML
     private ChooseRobotController chooseRobotController;
     @FXML
-    private ScoreboardController scoreBoardController;
+    private ScoreboardController scoreboardController;
 
     // Hashmap for the controller references
     private Map<String, IController> controllerMap = new HashMap<>();
@@ -85,8 +85,8 @@ public class StageController implements Initializable, IController {
         if (playerMatController != null){
             controllerMap.put("PlayerMat", playerMatController.setPrimaryController(this));
         }
-        if (scoreBoardController != null) {
-            controllerMap.put("ScoreBoard", scoreBoardController.setPrimaryController(this));
+        if (scoreboardController != null) {
+            controllerMap.put("ScoreBoard", scoreboardController.setPrimaryController(this));
         }
 
         // Sends the HasMap to the MessageDistributer after adding all controllers
@@ -94,7 +94,6 @@ public class StageController implements Initializable, IController {
             MessageDistributer messageDistributer = new MessageDistributer();
             messageDistributer.setControllerMap(controllerMap);
         }
-
     }
 
     public Map<String, IController> getControllerMap() {

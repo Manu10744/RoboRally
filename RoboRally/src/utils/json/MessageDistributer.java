@@ -1,13 +1,12 @@
 package utils.json;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
@@ -26,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -43,10 +43,7 @@ import server.game.decks.DeckDraw;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
-import viewmodels.ChooseRobotController;
-import viewmodels.IController;
-import viewmodels.MapController;
-import viewmodels.PlayerMatController;
+import viewmodels.*;
 
 
 /**
@@ -1630,6 +1627,7 @@ public class MessageDistributer {
     public void handleYourCards(Client client, Client.ClientReaderTask task, YourCardsBody yourCardsBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
 
+
         Platform.runLater(() -> {
             ((PlayerMatController) controllerMap.get("PlayerMat")).clearRegisterDeck();
 
@@ -2186,7 +2184,20 @@ public class MessageDistributer {
             checkPointReachedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCheckPointReached()" + ANSI_RESET);
 
+        int messagePlayerID = checkPointReachedBody.getPlayerID();
+        int checkPointCount = checkPointReachedBody.getNumber();
+
+        if (client.getPlayer().getPlayerID() == messagePlayerID) {
+            client.getPlayer().setCheckPointCounter(checkPointCount);
+        } else {
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    otherPlayer.setCheckPointCounter(checkPointCount);
+                }
+            }
+        }
         Platform.runLater(() -> {
+
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("CHECKPOINT REACHED!");
             alert.setHeaderText("Congratulations!");
@@ -2206,11 +2217,42 @@ public class MessageDistributer {
     public void handleGameFinished(Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
 
+        int messagePlayerID = gameFinishedBody.getPlayerID();
+        ScoreboardController scoreboardController = client.getScoreBoardController();
+
         Platform.runLater(() -> {
             client.getStageController().getMap().setVisible(false);
             client.getStageController().getLobbyBackground().setVisible(false);
+
+            ArrayList<Player> allPlayers = new ArrayList<>();
+            allPlayers.addAll(client.getOtherPlayers());
+            allPlayers.add(client.getPlayer());
+
+            // Sorts the OtherPlayer array by checkpoint amount, descending order
+            Collections.sort(allPlayers, new Comparator<Player>() {
+                @Override
+                public int compare(Player o1, Player o2) {
+                    return o2.getCheckPointCounter() - o1.getCheckPointCounter();
+                }
+            });
+
+            ArrayList<ImageView> placeImageViews = new ArrayList<>();
+            placeImageViews.add(scoreboardController.getFirstPlace());
+            placeImageViews.add(scoreboardController.getSecondPlace());
+            placeImageViews.add(scoreboardController.getThirdPlace());
+            placeImageViews.add(scoreboardController.getFourthPlace());
+            placeImageViews.add(scoreboardController.getFifthPlace());
+            placeImageViews.add(scoreboardController.getSixthPlace());
+
+
+            // Fill Places
+            for (int i = 0; i < allPlayers.size(); i++) {
+                Image currentPlaceRobot = scoreboardController.getRobotImageforScore(allPlayers.get(i).getFigure());
+                placeImageViews.get(i).setImage(currentPlaceRobot);
+            }
+
+            // Display the scoreboard
             client.getStageController().getScoreBoard().setVisible(true);
-            //TODO write code here
         });
     }
 }
