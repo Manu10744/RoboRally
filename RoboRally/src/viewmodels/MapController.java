@@ -1,12 +1,10 @@
 package viewmodels;
 
 import client.Client;
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -16,7 +14,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.util.Duration;
 import server.game.Robot;
 import server.game.Tiles.*;
@@ -455,9 +455,68 @@ public class MapController implements IController {
      * @param newPosition The new Position of the robot
      */
     public void moveRobot(String oldPosition, String newPosition ){
+
+        // GRIDPANE CONSISTS OF CELLS, THERES A GROUP OF IMAGEVIEWS IN EACH CELL.
+        // GOAL: ANIMATE AN IMAGEVIEW FROM ONE GRIDPANE IN A WAY THAT IT MOVES TO THE DESTINATION GROUP, THEN,
+        // WHEN ANIMATION IS FINISHED, DELETE THE MOVED IMAGEVIEW FROM OLD GROUP AND PUT IT IN NEW GROUP
+        Group oldGroup = fieldMap.get(oldPosition);
+        Group newGroup = fieldMap.get(newPosition);
+
+        System.out.println("OLD GROUP: " + oldGroup + " ( " + oldPosition + " )");
+        System.out.println("NEW GROUP: " + newGroup + " ( " + newPosition + " )");
+
         ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
+
+        for (ColumnConstraints col : mapPane.getColumnConstraints()) {
+            col.setMaxWidth(robotImageView.getBoundsInParent().getWidth());
+        }
+
+        for (RowConstraints row : mapPane.getRowConstraints()) {
+            row.setMaxHeight(robotImageView.getBoundsInParent().getHeight());
+        }
+
+        System.out.println("IMAGE BEFORE: " + robotImageView.getLayoutX() + " | " + robotImageView.getLayoutY());
+        System.out.println("GROUP BEFORE: " + newGroup.getLayoutX() + " | " + newGroup.getLayoutY());
+
+        TranslateTransition transitionX = new TranslateTransition();
+        transitionX.setNode(robotImageView);
+        transitionX.setDuration(Duration.seconds(1));
+        transitionX.setToX(newGroup.getBoundsInParent().getMinX());
+        //transitionX.play();
+
         fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
         fieldMap.get(newPosition).getChildren().add(robotImageView);
+        transitionX.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                TranslateTransition transitionY = new TranslateTransition();
+                transitionY.setNode(robotImageView);
+                transitionY.setDuration(Duration.seconds(1));
+                transitionY.setToY(newGroup.getBoundsInParent().getMinY());
+                //transitionY.play();
+
+                transitionY.setOnFinished(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        robotImageView.setTranslateX(0);
+                        robotImageView.setTranslateY(0);
+
+                        robotImageView.setLayoutX(newGroup.getBoundsInParent().getMinX());
+                        robotImageView.setLayoutY(newGroup.getBoundsInParent().getMinY());
+
+                        System.out.println("IMAGE AFTER: " + robotImageView.getLayoutX() + " | " + robotImageView.getLayoutY());
+                        System.out.println("GROUP AFTER: " + newGroup.getLayoutX() + " | " + newGroup.getLayoutY());
+
+                        fieldMap.get(oldPosition).setOpacity(0.5);
+
+                        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
+                        fieldMap.get(newPosition).getChildren().add(robotImageView);
+                    }
+                });
+            }
+        });
+
     }
 
     /**
