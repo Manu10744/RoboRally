@@ -207,11 +207,30 @@ public class Server extends Application {
             int y = player.getPlayerRobot().getyPosition();
 
             String pos = x + "-" + y;
-
-            System.out.println(pos);
-            System.out.println(this.checkPointMap.get(pos));
             if (this.checkPointMap.get(pos) != null) {
-                logger.info(ANSI_GREEN + "LANDED ON A CHECKPOINT!!!" + ANSI_RESET);
+                if (this.checkPointMap.get(pos).getCount() == player.getCheckPointCounter() + 1) {
+
+                    // Increment player's checkpoint counter
+                    int checkPointCounter = player.getCheckPointCounter();
+                    checkPointCounter++;
+                    player.setCheckPointCounter(checkPointCounter);
+
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("CheckPointReached", new CheckPointReachedBody(playerID, player.getCheckPointCounter()));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Check if player has reached all CheckPoints
+                    if (player.getCheckPointCounter() == this.getCheckPointMap().size()) {
+                        for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("GameFinished", new GameFinishedBody(playerID));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+                    }
+                }
+
             }
         }
     }

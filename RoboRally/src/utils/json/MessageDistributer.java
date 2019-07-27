@@ -2184,7 +2184,11 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCheckPointReached()" + ANSI_RESET);
 
         Platform.runLater(() -> {
-            //TODO write code here
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("CHECKPOINT REACHED!");
+            alert.setHeaderText("Congratulations!");
+            alert.setContentText("You have reached a Checkpoint!");
+            alert.show();
         });
     }
 
