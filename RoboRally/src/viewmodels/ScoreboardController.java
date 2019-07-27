@@ -8,6 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import utils.Parameter;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
  * @author Jessica Gerlach
  */
 
-public class ScoreboardController implements Initializable {
+public class ScoreboardController implements Initializable, IController {
 
     @FXML
     GridPane scoreboard;
@@ -46,6 +47,8 @@ public class ScoreboardController implements Initializable {
     Label fifthPlace;
     @FXML
     Label sixthPlace;
+
+    private StageController stageController;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         background.fitWidthProperty().bind(scoreboard.widthProperty().divide(Parameter.SCOREBOARD_RATIO_WIDTH));
@@ -75,4 +78,9 @@ public class ScoreboardController implements Initializable {
         sixthPlace.setFont(Font.loadFont(getClass().getResourceAsStream("/resources/css/Roborally.ttf"), 30));
     }
 
+    @Override
+    public IController setPrimaryController(StageController stageController) {
+        this.stageController = stageController;
+        return this;
+    }
 }

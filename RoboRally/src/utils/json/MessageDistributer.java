@@ -632,21 +632,21 @@ public class MessageDistributer {
         cardsPlayed++;
         server.setCardsPlayed(cardsPlayed);
 
-            int activePlayerID;
-            // Round is finished, everyone has played their register
-            if (server.getCardsPlayed() == server.getPlayers().size()) {
+        int activePlayerID;
+        // Round is finished, everyone has played their register
+        if (server.getCardsPlayed() == server.getPlayers().size() && !server.isGameFinished()) {
 
-                // Activate the Belts
-                server.activateBelts();
+            // Activate the Belts
+            server.activateBelts();
 
-                // Activate the RotatingBelts
-                server.activateRotatingBelts();
+            // Activate the RotatingBelts
+            server.activateRotatingBelts();
 
-                // Activate the Gears
-                server.activateGears();
+            // Activate the Gears
+            server.activateGears();
 
-                // Activate CheckPoints
-                server.activateCheckPoints();
+            // Activate CheckPoints
+            server.activateCheckPoints();
 
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
@@ -671,7 +671,7 @@ public class MessageDistributer {
                     // Reset the counter that observes the selected cards of a player
                     player.setSelectedCards(0);
 
-                    for (Server.ClientWrapper client : server.getConnectedClients()){
+                    for (Server.ClientWrapper client : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(PROGRAMMING_PHASE));
                         client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         client.getWriter().flush();
@@ -706,7 +706,7 @@ public class MessageDistributer {
 
                 ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
                 // Collect each players ID and card in current register
-                for (Server.ClientWrapper client: server.getConnectedClients()) {
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
                     Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
                     int playerID = client.getPlayer().getPlayerID();
 
@@ -728,14 +728,16 @@ public class MessageDistributer {
                 }
             }
         } else {
-            // Round is not finished yet
-            // determine next active player
-             activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+            if (!server.isGameFinished()) {
+                // Round is not finished yet
+                // determine next active player
+                activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
 
-            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
-                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                clientWrapper.getWriter().flush();
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
             }
         }
     }
@@ -1132,6 +1134,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayedAdded()" + ANSI_RESET);
 
         Platform.runLater(() -> {
+
             client.getActiveClientsProperty().add(String.valueOf(playerAddedBody.getPlayerID()));
             Client.OtherPlayer newPlayer = client.new OtherPlayer(playerAddedBody.getPlayerID());
             client.getOtherActivePlayers().add(client.getOtherActivePlayers().size(), newPlayer);
@@ -2204,6 +2207,9 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
 
         Platform.runLater(() -> {
+            client.getStageController().getMap().setVisible(false);
+            client.getStageController().getLobbyBackground().setVisible(false);
+            client.getStageController().getScoreBoard().setVisible(true);
             //TODO write code here
         });
     }

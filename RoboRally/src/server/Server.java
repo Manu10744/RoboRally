@@ -62,6 +62,7 @@ public class Server extends Application {
     private int mapWidth;
     private boolean cheatsActivated = false;
     private boolean firstAllRegistersFilled = false;
+    private boolean gameFinished = false;
 
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
@@ -223,6 +224,8 @@ public class Server extends Application {
 
                     // Check if player has reached all CheckPoints
                     if (player.getCheckPointCounter() == this.getCheckPointMap().size()) {
+                        this.setGameFinished(true);
+
                         for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                             JSONMessage jsonMessage = new JSONMessage("GameFinished", new GameFinishedBody(playerID));
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -892,6 +895,10 @@ public class Server extends Application {
     public boolean getCheatsActivated() {
         return cheatsActivated;
     }
+
+    public boolean isGameFinished() { return gameFinished; }
+
+    public void setGameFinished(boolean gameFinished) { this.gameFinished = gameFinished; }
 
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;

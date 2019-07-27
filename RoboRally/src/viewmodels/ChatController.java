@@ -139,12 +139,14 @@ public class ChatController implements Initializable, IController {
             ChooseRobotController chooseRobotController = (ChooseRobotController) this.stageController.getControllerMap().get("ChooseRobot");
             PlayerMatController playerMatController = (PlayerMatController) this.stageController.getControllerMap().get("PlayerMat");
             OpponentMatController opponentMatController = (OpponentMatController) this.stageController.getControllerMap().get("OpponentMat");
+            ScoreboardController scoreBoardController = (ScoreboardController) this.stageController.getControllerMap().get("ScoreBoard");
             client.setChatController(this);
             client.setMapController(mapController);
             client.setStageController(this.stageController);
             client.setChooseRobotController(chooseRobotController);
             client.setPlayerMatController(playerMatController);
             client.setOpponentMatController(opponentMatController);
+            client.setScoreBoardController(scoreBoardController);
 
             // Connect the client to the server
             client.connectClient();
