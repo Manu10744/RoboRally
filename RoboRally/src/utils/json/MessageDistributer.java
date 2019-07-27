@@ -435,7 +435,7 @@ public class MessageDistributer {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 try {
-                    String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
+                    String map = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
                     client.getWriter().println(map);
                     client.getWriter().flush();
                 } catch (IOException e) {
@@ -592,6 +592,9 @@ public class MessageDistributer {
 
                 // Activate the Belts
                 server.activateBelts();
+
+                // Activate the RotatingBelts
+                server.activateRotatingBelts();
 
                 // Activate the Gears
                 server.activateGears();
