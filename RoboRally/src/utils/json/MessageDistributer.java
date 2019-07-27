@@ -596,6 +596,9 @@ public class MessageDistributer {
                 // Activate the Gears
                 server.activateGears();
 
+                // Activate CheckPoints
+                server.activateCheckPoints();
+
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
 

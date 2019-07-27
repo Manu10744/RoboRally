@@ -193,6 +193,25 @@ public class Server extends Application {
         }
     }
 
+    public void activateCheckPoints() {
+        logger.info(ANSI_GREEN + "ACTIVATING CHECKPOINTS" + ANSI_RESET);
+
+        for (ClientWrapper client: this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int x = player.getPlayerRobot().getxPosition();
+            int y = player.getPlayerRobot().getyPosition();
+
+            String pos = x + "-" + y;
+
+            System.out.println(pos);
+            System.out.println(this.checkPointMap.get(pos));
+            if (this.checkPointMap.get(pos) != null) {
+                logger.info(ANSI_GREEN + "LANDED ON A CHECKPOINT!!!" + ANSI_RESET);
+            }
+        }
+    }
     public void activateBelts() {
         logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING BELTS!" + ANSI_RESET);
         for (ClientWrapper client : this.getConnectedClients()) {
