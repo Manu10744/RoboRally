@@ -52,7 +52,6 @@ public abstract class Card {
         Pit currentFieldPit = pitMap.get(oldPos);
         Wall currentFieldWall = wallMap.get(oldPos);
         PushPanel currentFieldPush = pushPanelMap.get(oldPos);
-        //No current robot is needed, as the robot to move inhabits the 'oldPos'
 
         Pit nextFieldPit = pitMap.get(newPos);
         Wall nextFieldWall = wallMap.get(newPos);
@@ -60,8 +59,14 @@ public abstract class Card {
         Robot nextFieldRobot = robotMap.get(newPos);
         Antenna nextFieldAntenna = antennaMap.get(newPos);
 
+        System.out.println("Old Pos = " + oldPos + " new Pos = + " + newPos);
         // Current field is Pit
         if (currentFieldPit != null) {
+            return false;
+        }
+
+        if(nextFieldAntenna != null){
+            System.out.println("Is antenna in next field?" + (nextFieldAntenna != null));
             return false;
         }
 

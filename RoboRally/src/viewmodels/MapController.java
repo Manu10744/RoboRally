@@ -345,6 +345,8 @@ public class MapController implements IController {
                                     String ID = xPos + "-" + yPos;
                                     Antenna antenna = new Antenna();
                                     antennaMap.put(ID, antenna);
+
+                                    logger.info(ANSI_GREEN + "ANTENNA IN Client antennaMap HAS BEEN SET! COORDINATES: " + "( " + xPos + " | " + yPos + " )" + ANSI_RESET);
                                 }
 
                                 // Necessary for making map fields responsive

@@ -61,8 +61,8 @@ public class MoveII extends server.game.Card {
                         oldPos = xPosition + "-" + yPosition;
 
                         //update robot in robotMap
-                        robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
                         robotMap.remove(xPosition +"-" + yPosition);
+                        robotMap.put(newPos, robotMap.get(xPosition +"-" + yPosition));
                         logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
                                 robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
