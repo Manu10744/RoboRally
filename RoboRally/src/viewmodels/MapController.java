@@ -195,6 +195,14 @@ public class MapController implements IController {
                     }
                 });
 
+                mapPane.setOnZoom(new EventHandler<ZoomEvent>() {
+                    @Override public void handle(ZoomEvent event) {
+                        mapPane.setScaleX(mapPane.getScaleX() * event.getZoomFactor());
+                        mapPane.setScaleY(mapPane.getScaleY() * event.getZoomFactor());
+                        event.consume();
+                    }
+                });
+
                 mapPane.addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent e) -> {
                     logger.info("Pressed Key: " + e + mapPane.getTranslateY());
                     if (e.getCode() == KeyCode.PLUS) {
