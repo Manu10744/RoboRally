@@ -1148,6 +1148,9 @@ public class MessageDistributer {
                 otherPlayer.initRobotByFigure(messageFigure);
 
                 client.getOtherPlayers().add(otherPlayer);
+                //Here the icon for other players is set
+                System.out.println("Wahahah");
+                client.getOpponentMatController().initOtherPlayerIcon(client.getOtherPlayers(), otherPlayer.getPlayerRobot());
 
                 if (client.getPlayer().getName() == "") {
                     logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET - " + ANSI_RESET
