@@ -6,6 +6,7 @@ import server.game.Tiles.Antenna;
 import server.game.Tiles.Pit;
 import server.game.Tiles.PushPanel;
 import server.game.Tiles.Wall;
+import utils.Parameter;
 
 import java.util.Map;
 
@@ -65,8 +66,8 @@ public abstract class Card {
             return false;
         }
 
-        if(nextFieldAntenna != null){
-            System.out.println("Is antenna in next field?" + (nextFieldAntenna != null));
+        if (nextFieldAntenna != null) {
+            //next field is an antenna
             return false;
         }
 
@@ -166,23 +167,62 @@ public abstract class Card {
             }
         }
 
-        //New Field has Antenna
-        if(nextFieldAntenna != null){
-            return false;
+        //robot and wall in next field
+        if (nextFieldRobot != null && nextFieldWall != null) {
+            //Next field has robot and after robot comes a wall in the that hinders wandering
+            if (nextFieldWall != null && nextFieldWall.getOrientations().contains(ownOrientation)) {
+                System.out.println("Bist du in Wand gepusht worden? " + false);
+                return false;
+            } else {
+                System.out.println("Bist du in Wand gepusht worden? " + true);
+                return true;
+            }
+        } else if (nextFieldRobot != null && !(nextFieldWall.getOrientations().contains(ownOrientation))) {
+            return true;
         }
 
-        //Next field has robot
-        if (nextFieldRobot != null) {
-            if (nextFieldWall != null && nextFieldWall.getOrientations().contains(ownOrientation)) {
 
-            } else {
+        //when there are more than two robots and one standing in newPos
+        boolean movingPossible = true;
+        if (robotMap.size() > Parameter.MIN_PLAYERSIZE) {
+            //for robot is checked if nextField contains a robot
+            if (nextFieldRobot != null) {
+                for (int i = 0; i < robotMap.size(); i++) {
+                    int xPos = nextFieldRobot.getxPosition();
+                    int yPos = nextFieldRobot.getyPosition();
 
+                    //determining the newPos of possible robot in field after newPos (for chain pushing
+                    switch (ownOrientation) {
+                        case Parameter.ORIENTATION_DOWN: {
+                            newPos = xPos + "-" + (yPos - 1);
+                            break;
+                        }
+                        case Parameter.ORIENTATION_UP: {
+                            newPos = xPos + "-" + (yPos + 1);
+                            break;
+                        }
+                        case Parameter.ORIENTATION_RIGHT: {
+                            newPos = (xPos + 1) + "-" + yPos;
+                            break;
+                        }
+                        case Parameter.ORIENTATION_LEFT: {
+                            newPos = (xPos - 1) + "-" + yPos;
+                            break;
+                        }
+                    }
+
+                    //when there is another robot on the field a robot moves into
+                    if (nextFieldRobot != null) {
+                        //testing for every robot if move is possible when a further robot is seated in position afterwards
+                        movingPossible = movingPossible && (isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, oppositeOwnOrientation, ownOrientation));
+                        System.out.println("Kannst du dich bewegen? " + movingPossible);
+                    }
+                }
             }
-            //Todo Mia: in wand-Fall testen und in ohne wand testen
+            return movingPossible;
         }
         return true;
     }
-
 
     /**
      * This method simply returns the name of the card.

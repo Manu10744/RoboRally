@@ -17,6 +17,10 @@ public class Robot {
     private int yPosition;
     private String name;
 
+    public Robot(){
+
+    }
+
     public Robot(String name, Image robotImage, String lineOfSight, int xPosition, int yPosition) {
         this.name = name;
         this.robotImage = robotImage;
