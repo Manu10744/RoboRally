@@ -342,7 +342,7 @@ public class MessageDistributer {
 
             try {
                 // Sets Map in server
-                String mapJSON = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
+                String mapJSON = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(mapJSON);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
 
@@ -640,7 +640,7 @@ public class MessageDistributer {
                 server.activateBelts();
 
                 // Activate the RotatingBelts
-                server.activateRotatingBelts();
+                //server.activateRotatingBelts();
 
                 // Activate the Gears
                 server.activateGears();
@@ -1442,6 +1442,8 @@ public class MessageDistributer {
 
                 // Only move a robot when it's not out going of the map
                 if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                    System.out.println(finalNewXPos);
+                    System.out.println(finalNewYPos);
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
