@@ -512,6 +512,15 @@ public class MessageDistributer {
                     server.execTurnCheat(messageContent, cheatingPlayer);
                 }
             }
+        } else if (messageContent.matches(("play (move1|move2|move3|backup|uturn|powerup|again|turnleft|turnright)")) && server.getCheatsActivated()) {
+            Player cheatingPlayer;
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    cheatingPlayer = clientWrapper.getPlayer();
+                    server.execPlayCheat(messageContent, cheatingPlayer);
+                }
+            }
         }
 
         // For everything else
