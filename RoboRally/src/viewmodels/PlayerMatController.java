@@ -17,6 +17,10 @@ import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import server.game.Card;
@@ -170,8 +174,17 @@ public class PlayerMatController implements IController {
             ownEnergyCubes.fitHeightProperty().bind(playerIcons.heightProperty());
             ownEnergyCubes.fitWidthProperty().bind(playerIcons.widthProperty());
 
+            //Create hint text where to do programming
+            Text textForRegister = new Text();
+            textForRegister.setFont(Font.font("Consolas",20));
+            textForRegister.setFill(Color.rgb(51, 255, 0));
+            textForRegister.setTextAlignment(TextAlignment.RIGHT);
+            textForRegister.setText("PROGRAMMING ➤➤➤ ");
+            playerDrawDiscardCards.getChildren().add(textForRegister);
+            playerDrawDiscardCards.setAlignment(Pos.CENTER_RIGHT);
 
-            for (Node card : playerHand.getChildren()) {
+
+        for (Node card : playerHand.getChildren()) {
                 card.setOnDragDetected(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
