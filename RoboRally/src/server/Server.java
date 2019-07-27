@@ -243,16 +243,106 @@ public class Server extends Application {
                         player.getPlayerRobot().setxPosition(currentXPos + 1);
                         break;
                 }
-                int newXPos = player.getPlayerRobot().getxPosition();
-                int newYPos = player.getPlayerRobot().getyPosition();
-                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
-                        player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+            }
+            if (this.blueBeltMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A BLUE BELT!" + ANSI_RESET);
 
-                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
-                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                    clientWrapper.getWriter().flush();
+                // orientation of the belt
+                String moveDirection = this.blueBeltMap.get(playerPosition).getOrientations().get(0);
+
+                switch (moveDirection) {
+                    case "up":
+                        player.getPlayerRobot().setyPosition(currentYPos + 2);
+                        break;
+                    case "down":
+                        player.getPlayerRobot().setyPosition(currentYPos - 2);
+                        break;
+                    case "left":
+                        player.getPlayerRobot().setxPosition(currentXPos - 2);
+                        break;
+                    case "right":
+                        player.getPlayerRobot().setxPosition(currentXPos + 2);
+                        break;
                 }
+            }
+            int newXPos = player.getPlayerRobot().getxPosition();
+            int newYPos = player.getPlayerRobot().getyPosition();
+            logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                    player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+            for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
+            }
+
+        }
+    }
+
+    public void activateRotatingBelts() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING ROTATINGBELTS!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+            if (this.greenRotatingBeltMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A GREEN ROTATINGBELT!" + ANSI_RESET);
+
+                // orientation of the belt
+                String firstOrientation = this.greenRotatingBeltMap.get(playerPosition).getOrientations().get(0);
+                String secondOrientation = this.greenRotatingBeltMap.get(playerPosition).getOrientations().get(1);
+
+                if (this.greenRotatingBeltMap.get(playerPosition).getCrossing() == false) {
+                    switch (firstOrientation) {
+                        case "up":
+                            if (secondOrientation == "right") {
+                                player.getPlayerRobot().setxPosition(currentXPos + 1);
+                                player.getPlayerRobot().setLineOfSight("right");
+                            } else {
+                                player.getPlayerRobot().setxPosition(currentXPos - 1);
+                                player.getPlayerRobot().setLineOfSight("left");
+                            }
+                        case "down":
+                            if (secondOrientation == "right") {
+                                player.getPlayerRobot().setxPosition(currentXPos + 1);
+                                player.getPlayerRobot().setLineOfSight("right");
+                            } else {
+                                player.getPlayerRobot().setxPosition(currentXPos - 1);
+                                player.getPlayerRobot().setLineOfSight("left");
+                            }
+                        case "left":
+                            if (secondOrientation == "up") {
+                                player.getPlayerRobot().setyPosition(currentYPos + 1);
+                                player.getPlayerRobot().setLineOfSight("up");
+                            } else {
+                                player.getPlayerRobot().setyPosition(currentYPos - 1);
+                                player.getPlayerRobot().setLineOfSight("down");
+                            }
+                        case "right":
+                            if (secondOrientation == "up") {
+                                player.getPlayerRobot().setyPosition(currentYPos + 1);
+                                player.getPlayerRobot().setLineOfSight("up");
+                            } else {
+                                player.getPlayerRobot().setyPosition(currentYPos - 1);
+                                player.getPlayerRobot().setLineOfSight("down");
+                            }
+                    }
+                }
+            }
+            int newXPos = player.getPlayerRobot().getxPosition();
+            int newYPos = player.getPlayerRobot().getyPosition();
+            logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                    player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+            for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
             }
         }
     }
