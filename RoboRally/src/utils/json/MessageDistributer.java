@@ -640,7 +640,7 @@ public class MessageDistributer {
                 server.activateBelts();
 
                 // Activate the RotatingBelts
-                //server.activateRotatingBelts();
+                server.activateRotatingBelts();
 
                 // Activate the Gears
                 server.activateGears();

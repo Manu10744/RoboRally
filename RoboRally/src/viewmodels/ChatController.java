@@ -273,9 +273,9 @@ public class ChatController implements Initializable, IController {
             chatOutput.setScrollTop(Double.MAX_VALUE);
         }));
 
-        AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
-        audioClip.setCycleCount(AudioClip.INDEFINITE);
-        audioClip.play();
+        //AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
+        //audioClip.setCycleCount(AudioClip.INDEFINITE);
+        //audioClip.play();
 
     }
 
