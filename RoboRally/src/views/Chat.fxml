@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="chat" style="-fx-background-color: whitesmoke;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ChatController">
+<GridPane fx:id="chat" style="-fx-background-color: dimgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ChatController">
 
    <columnConstraints>
       <ColumnConstraints minWidth="0.0" percentWidth="100.0" />
@@ -45,7 +45,7 @@
       </HBox>
 
             <HBox prefHeight="52.0" prefWidth="340.0">
-           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name...">
+           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name..." >
             <HBox.margin>
                <Insets bottom="20.0" left="20.0" right="20.0" />
             </HBox.margin>
@@ -53,7 +53,7 @@
       </HBox>
 
             <VBox prefHeight="918.0" prefWidth="340.0">
-         <TextArea fx:id="chatOutput" editable="false" focusTraversable="false" mouseTransparent="true" prefHeight="646.0" prefWidth="300.0" wrapText="true">
+         <TextArea fx:id="chatOutput" editable="false" focusTraversable="false" mouseTransparent="false" prefHeight="646.0" prefWidth="300.0" wrapText="true">
             <VBox.margin>
                <Insets bottom="20.0" left="20.0" right="20.0" />
             </VBox.margin>

@@ -6,7 +6,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.StartScreenController">
+<GridPane fx:id="startScreen" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.StartScreenController" style="-fx-background-color: dimgrey;">
 
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" minWidth="0.0" />

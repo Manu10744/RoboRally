@@ -1,6 +1,10 @@
 package viewmodels;
 
 import client.Client;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
@@ -13,15 +17,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 import server.game.Robot;
 import server.game.Tiles.*;
 import utils.Parameter;
+import utils.json.MessageDistributer;
 import utils.json.protocol.GameStartedBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static utils.Parameter.*;
@@ -110,7 +113,7 @@ public class MapController implements IController {
 
     /**
      * This method fills the GridPane that's responsible for displaying the map. It is triggered inside of the
-     * {@link utils.json.MessageDistributer#handleGameStarted(Client, Client.ClientReaderTask, GameStartedBody)} method.
+     * {@link MessageDistributer#handleGameStarted(Client, Client.ClientReaderTask, GameStartedBody)} method.
      *
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
@@ -170,6 +173,14 @@ public class MapController implements IController {
                 mapPane.setGridLinesVisible(true);
                 mapPane.autosize();
 
+                //Fade in effect for map
+                FadeTransition ftMap = new FadeTransition(Duration.millis(4000), mapPane);
+                ftMap.setFromValue(0.0);
+                ftMap.setToValue(1.0);
+                ftMap.setCycleCount(0);
+                ftMap.play();
+
+                //Scroll and zoom map
                 mapPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent mouseEvent) {
                         mapPane.requestFocus();
@@ -183,6 +194,14 @@ public class MapController implements IController {
                             mapPane.setTranslateX(mapPane.getTranslateX() + event.getDeltaX());
                             mapPane.setTranslateY(mapPane.getTranslateY() + event.getDeltaY());
                         }
+                        event.consume();
+                    }
+                });
+
+                mapPane.setOnZoom(new EventHandler<ZoomEvent>() {
+                    @Override public void handle(ZoomEvent event) {
+                        mapPane.setScaleX(mapPane.getScaleX() * event.getZoomFactor());
+                        mapPane.setScaleY(mapPane.getScaleY() * event.getZoomFactor());
                         event.consume();
                     }
                 });

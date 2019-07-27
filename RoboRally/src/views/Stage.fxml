@@ -41,7 +41,7 @@
       </rowConstraints>
 
       <ImageView fx:id="lobbyBackground" fitHeight="-Infinity" fitWidth="-Infinity" pickOnBounds="true" preserveRatio="false" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <Image url="@../resources/images/others/background-lobby.png" />
+            <Image url="@../resources/images/others/background-all-grey.png" />
       </ImageView>
 
 

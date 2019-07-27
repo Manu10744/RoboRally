@@ -171,7 +171,6 @@ public class PlayerMatController implements IController {
             ownEnergyCubes.fitWidthProperty().bind(playerIcons.widthProperty());
 
 
-
             for (Node card : playerHand.getChildren()) {
                 card.setOnDragDetected(new EventHandler<MouseEvent>() {
                     @Override
@@ -258,7 +257,7 @@ public class PlayerMatController implements IController {
                                 ((ImageView) register).setImage(db.getImage());
                                 ((ImageView) register).setPreserveRatio(true);
                                 ((ImageView) register).fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                                ((ImageView) register).fitHeightProperty().bind(playerRegister.heightProperty());
+                                ((ImageView) register).fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                                 success = true;
                             }
 
@@ -387,35 +386,35 @@ public class PlayerMatController implements IController {
                 register1.setImage(cardImage);
                 register1.setPreserveRatio(true);
                 register1.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                register1.fitHeightProperty().bind(playerRegister.heightProperty());
+                register1.fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                 break;
             }
             case 2: {
                 register2.setImage(cardImage);
                 register2.setPreserveRatio(true);
                 register2.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                register2.fitHeightProperty().bind(playerRegister.heightProperty());
+                register2.fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                 break;
             }
             case 3: {
                 register3.setImage(cardImage);
                 register3.setPreserveRatio(true);
                 register3.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                register3.fitHeightProperty().bind(playerRegister.heightProperty());
+                register3.fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                 break;
             }
             case 4: {
                 register4.setImage(cardImage);
                 register4.setPreserveRatio(true);
                 register4.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                register4.fitHeightProperty().bind(playerRegister.heightProperty());
+                register4.fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                 break;
             }
             case 5: {
                 register5.setImage(cardImage);
                 register5.setPreserveRatio(true);
                 register5.fitWidthProperty().bind(playerRegister.widthProperty().divide(Parameter.CARDS_WIDTH));
-                register5.fitHeightProperty().bind(playerRegister.heightProperty());
+                register5.fitHeightProperty().bind(playerRegister.heightProperty().multiply(Parameter.CARDS_REGISTER_SIZE_FACTOR));
                 break;
             }
         }
