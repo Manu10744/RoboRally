@@ -431,6 +431,10 @@ public class MessageDistributer {
                                 server.setAntenna(tile);
                                 server.setAntennaXPos(xPos);
                                 server.setAntennaYPos(yPos);
+
+                                //Antenna is added to antennaMap
+                                Antenna antenna = new Antenna();
+                                server.getAntennaMap().put(xPos + "-" + yPos, antenna);
                                 logger.info(ANSI_GREEN + "ANTENNA IN SERVER HAS BEEN SET! COORDINATES: " + "( " + xPos + " | " + yPos + " )" + ANSI_RESET);
                             }
                         }
