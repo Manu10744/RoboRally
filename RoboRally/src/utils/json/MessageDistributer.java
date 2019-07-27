@@ -1145,6 +1145,7 @@ public class MessageDistributer {
                 // PlayerAdded message due to own player has been added
                 client.getPlayer().setName(messageName);
                 client.getPlayer().initRobotByFigure(messageFigure);
+                client.getPlayer().setFigure(messageFigure);
 
                 logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET + " UPDATED HIS OWN PLAYER. UPDATES: "
                         + "FIGURE: " + messageFigure + ", ROBOT: " + client.getPlayer().getPlayerRobot() + ", NAME: " + messageName);
@@ -1154,6 +1155,7 @@ public class MessageDistributer {
                 otherPlayer.setPlayerID(messagePlayerID);
                 otherPlayer.setName(messageName);
                 otherPlayer.initRobotByFigure(messageFigure);
+                otherPlayer.setFigure(messageFigure);
 
                 client.getOtherPlayers().add(otherPlayer);
 
@@ -2247,6 +2249,7 @@ public class MessageDistributer {
 
             // Fill Places
             for (int i = 0; i < allPlayers.size(); i++) {
+                System.out.println("FIGURE: " + allPlayers.get(i).getFigure());
                 Image currentPlaceRobot = scoreboardController.getRobotImageforScore(allPlayers.get(i).getFigure());
                 placeImageViews.get(i).setImage(currentPlaceRobot);
             }
