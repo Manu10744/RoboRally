@@ -2,6 +2,7 @@ package server.game.DamageCards;
 
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.Antenna;
 import server.game.Tiles.Pit;
 import server.game.Tiles.PushPanel;
 import server.game.Tiles.Wall;
@@ -27,7 +28,7 @@ public class Spam extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
         //TODO
     }
 

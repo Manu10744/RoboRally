@@ -68,6 +68,7 @@ public class Server extends Application {
 
     private Map<String, Wall> wallMap = new HashMap<>();
     private Map<String, Pit> pitMap = new HashMap<>();
+    private Map<String, Antenna> antennaMap = new HashMap<>();
     private Map<String, Gear> gearMap = new HashMap<>();
     private Map<String, Laser> laserMap = new HashMap<>();
     private Map<String, PushPanel> pushPanelMap = new HashMap<>();
@@ -468,6 +469,14 @@ public class Server extends Application {
 
     public Map<String, Pit> getPitMap() {
         return pitMap;
+    }
+
+    public Map<String, Antenna> getAntennaMap() {
+        return antennaMap;
+    }
+
+    public void setAntennaMap(Map<String, Antenna> antennaMap) {
+        this.antennaMap = antennaMap;
     }
 
     public Map<String, Gear> getGearMap() {

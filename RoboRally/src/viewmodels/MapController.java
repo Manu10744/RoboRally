@@ -67,6 +67,7 @@ public class MapController implements IController {
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
     private Map<String, Robot> robotMap = new HashMap<>();
+    private Map<String, Antenna> antennaMap = new HashMap<>();
 
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private ArrayList<Group> startPointList;
@@ -339,6 +340,11 @@ public class MapController implements IController {
 
                                 if (tile instanceof Antenna) {
                                     setAntenna(tile);
+
+                                    //Antenna is added with position to antennaMap
+                                    String ID = xPos + "-" + yPos;
+                                    Antenna antenna = new Antenna();
+                                    antennaMap.put(ID, antenna);
                                 }
 
                                 // Necessary for making map fields responsive
@@ -537,6 +543,10 @@ public class MapController implements IController {
 
     public Map<String, Robot> getRobotMap() {
         return robotMap;
+    }
+
+    public Map<String, Antenna> getAntennaMap() {
+        return antennaMap;
     }
 
     public void setRobotMap(Map<String, Robot> robotMap) {

@@ -2,6 +2,7 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
+import server.game.Tiles.Antenna;
 import server.game.Tiles.Pit;
 import server.game.Tiles.PushPanel;
 import server.game.Tiles.Wall;
@@ -34,7 +35,7 @@ public class BackUp extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'BACKUP' ..." + ANSI_RESET);
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
@@ -49,7 +50,7 @@ public class BackUp extends server.game.Card {
         switch (lineOfSight){
             case ("up"):
                 newPos = xPosition + "-" + (yPosition - 1);
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "up", "down")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "up", "down")) {
                     robot.setyPosition(yPosition - 1);
 
                     //update robot Pos in robotMap
@@ -63,7 +64,7 @@ public class BackUp extends server.game.Card {
                 break;
             case ("right"):
                 newPos = (xPosition - 1) + "-" + yPosition;
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "right", "left")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "right", "left")) {
                     robot.setxPosition(xPosition - 1);
 
                     //update robot in robotMap
@@ -78,7 +79,7 @@ public class BackUp extends server.game.Card {
                 break;
             case ("down"):
                 newPos = xPosition + "-" + (yPosition + 1);
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "down", "up")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "down", "up")) {
                     robot.setyPosition(yPosition + 1);
 
                     //update robot in robotMap
@@ -92,7 +93,7 @@ public class BackUp extends server.game.Card {
                 break;
             case ("left"):
                 newPos = (xPosition + 1) + "-" + yPosition;
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, oldPos, newPos, "left", "right")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "left", "right")) {
                     robot.setxPosition(xPosition + 1);
 
                     //update robot in robotMap

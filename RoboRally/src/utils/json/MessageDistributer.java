@@ -558,7 +558,7 @@ public class MessageDistributer {
                 int playerID = player.getPlayerID();
 
                 // Update the player of the server
-                playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap());
+                playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
 
                 // In case a player plays Again
@@ -568,7 +568,7 @@ public class MessageDistributer {
                         if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                             // Activate the found card
-                            client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap());
+                            client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap());
 
                             logger.info(ANSI_GREEN + "( SERVER ): CASE AGAIN: ACTIVATED " + client.getPlayer().getDeckRegister().getDeck().get(i).getCardName() + ANSI_RESET);
                             // Stop, when found
@@ -1333,7 +1333,7 @@ public class MessageDistributer {
             int currentYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
             currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-            playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap());
+            playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
 
             // In case own player plays Again
             if (playedCard.getClass().equals(Again.class)) {
@@ -1342,7 +1342,7 @@ public class MessageDistributer {
                     if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                         // Activate the found card
-                        client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap());
+                        client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
                         cardToActivateName = client.getPlayer().getDeckRegister().getDeck().get(i).getCardName();
 
                         logger.info(ANSI_GREEN + "( CLIENT ): CASE AGAIN: ACTIVATED " + cardToActivateName + ANSI_RESET);
@@ -1374,7 +1374,7 @@ public class MessageDistributer {
                     int currentYPos = otherPlayer.getPlayerRobot().getyPosition();
 
                     currentPosition = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
-                    playedCard.activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap());
+                    playedCard.activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
 
                     // In case OtherPlayer plays Again
                     if (playedCard.getClass().equals(Again.class)) {
@@ -1383,7 +1383,7 @@ public class MessageDistributer {
                             if (!otherPlayer.getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                                 // Activate the found card
-                                otherPlayer.getDeckRegister().getDeck().get(i).activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap() );
+                                otherPlayer.getDeckRegister().getDeck().get(i).activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
                                 cardToActivateName = otherPlayer.getDeckRegister().getDeck().get(i).getCardName();
 
                                 logger.info(ANSI_GREEN + "( CLIENT ): CASE AGAIN: ACTIVATED " + cardToActivateName + ANSI_RESET);
