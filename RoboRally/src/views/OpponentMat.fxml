@@ -23,7 +23,7 @@
          <RowConstraints minHeight="0.0" percentHeight="50.0"/>
     </rowConstraints>
 
-    <HBox fx:id="player1Register" GridPane.columnIndex="0" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: blue;">
+    <HBox fx:id="player1Register" GridPane.columnIndex="0" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player1Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
         <ImageView fx:id="player1Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
         <ImageView fx:id="player1Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
@@ -32,7 +32,7 @@
         <ImageView fx:id="player1Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
     </HBox>
 
-    <HBox fx:id="player2Register" GridPane.columnIndex="1" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: green;">
+    <HBox fx:id="player2Register" GridPane.columnIndex="1" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player2Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
         <ImageView fx:id="player2Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
         <ImageView fx:id="player2Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
@@ -41,7 +41,7 @@
         <ImageView fx:id="player2Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
     </HBox>
 
-    <HBox fx:id="player3Register" GridPane.columnIndex="2" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: red;">
+    <HBox fx:id="player3Register" GridPane.columnIndex="2" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player3Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player3Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player3Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -50,7 +50,7 @@
         <ImageView fx:id="player3Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player4Register" GridPane.columnIndex="3" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: yellow;">
+    <HBox fx:id="player4Register" GridPane.columnIndex="3" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player4Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player4Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player4Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -59,7 +59,7 @@
         <ImageView fx:id="player4Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player5Register" GridPane.columnIndex="4" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: orange;">
+    <HBox fx:id="player5Register" GridPane.columnIndex="4" GridPane.rowIndex="0" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player5Icon" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player5Reg1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player5Reg2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -68,7 +68,7 @@
         <ImageView fx:id="player5Reg5" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player1Updates" GridPane.columnIndex="0" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: black;">
+    <HBox fx:id="player1Updates" GridPane.columnIndex="0" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player1TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player1TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player1TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -77,7 +77,7 @@
         <ImageView fx:id="player1PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player2Updates" GridPane.columnIndex="1" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: purple;">
+    <HBox fx:id="player2Updates" GridPane.columnIndex="1" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player2TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player2TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player2TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -86,7 +86,7 @@
         <ImageView fx:id="player2PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player3Updates" GridPane.columnIndex="2" GridPane.rowIndex="1"  minHeight="0.0" minWidth="0.0" style="-fx-background-color: grey;">
+    <HBox fx:id="player3Updates" GridPane.columnIndex="2" GridPane.rowIndex="1"  minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player3TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player3TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player3TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -95,7 +95,7 @@
         <ImageView fx:id="player3PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player4Updates" GridPane.columnIndex="3" GridPane.rowIndex="1"  minHeight="0.0" minWidth="0.0" style="-fx-background-color: pink;">
+    <HBox fx:id="player4Updates" GridPane.columnIndex="3" GridPane.rowIndex="1"  minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player4TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player4TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player4TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
@@ -104,7 +104,7 @@
         <ImageView fx:id="player4PermUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
     </HBox>
 
-    <HBox fx:id="player5Updates" GridPane.columnIndex="4" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: brown;">
+    <HBox fx:id="player5Updates" GridPane.columnIndex="4" GridPane.rowIndex="1" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;">
         <ImageView fx:id="player5TempUpdates1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player5TempUpdates2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="player5TempUpdates3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
