@@ -21,6 +21,7 @@ import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
 import utils.json.protocol.*;
+import viewmodels.PlayerMatController;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -225,6 +226,8 @@ public class Server extends Application {
             int y = player.getPlayerRobot().getyPosition();
 
             String pos = x + "-" + y;
+            PlayerMatController playerMatController = new PlayerMatController();
+
             if (this.checkPointMap.get(pos) != null) {
                 if (this.checkPointMap.get(pos).getCount() == player.getCheckPointCounter() + 1) {
 
@@ -232,6 +235,8 @@ public class Server extends Application {
                     int checkPointCounter = player.getCheckPointCounter();
                     checkPointCounter++;
                     player.setCheckPointCounter(checkPointCounter);
+
+                    //playerMatController.getOwnVictoryTilesLabel().setText(Integer.toString(checkPointCounter));
 
                     for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("CheckPointReached", new CheckPointReachedBody(playerID, player.getCheckPointCounter()));

@@ -2202,8 +2202,11 @@ public class MessageDistributer {
         int messagePlayerID = checkPointReachedBody.getPlayerID();
         int checkPointCount = checkPointReachedBody.getNumber();
 
+        Platform.runLater(() -> {
         if (client.getPlayer().getPlayerID() == messagePlayerID) {
             client.getPlayer().setCheckPointCounter(checkPointCount);
+            client.getPlayerMatController().getOwnVictoryTilesLabel().setText(Integer.toString(checkPointCount));
+
         } else {
             for (Player otherPlayer : client.getOtherPlayers()) {
                 if (otherPlayer.getPlayerID() == messagePlayerID) {
@@ -2211,13 +2214,14 @@ public class MessageDistributer {
                 }
             }
         }
-        Platform.runLater(() -> {
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
+
+           /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("CHECKPOINT REACHED!");
             alert.setHeaderText("Congratulations!");
             alert.setContentText("You have reached a Checkpoint!");
-            alert.show();
+            alert.show();*/
         });
     }
 

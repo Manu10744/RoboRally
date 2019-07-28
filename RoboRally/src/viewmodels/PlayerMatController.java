@@ -179,6 +179,10 @@ public class PlayerMatController implements IController {
             ownEnergyCubes.fitHeightProperty().bind(playerIcons.heightProperty());
             ownEnergyCubes.fitWidthProperty().bind(playerIcons.widthProperty());
 
+            ownVictoryTiles.setPreserveRatio(true);
+            ownVictoryTiles.fitHeightProperty().bind(playerIcons.heightProperty());
+            ownVictoryTiles.fitWidthProperty().bind(playerIcons.widthProperty());
+
             //Create hint text where to do programming
             Text textForRegister = new Text();
             textForRegister.setFont(Font.font("Consolas",20));
@@ -744,8 +748,17 @@ public class PlayerMatController implements IController {
         return ownEnergyCubesLabel;
     }
 
+    public void setOwnEnergyCubesLabel(Label ownEnergyCubesLabel) {
+        this.ownEnergyCubesLabel = ownEnergyCubesLabel;
+    }
+
     public Label getOwnVictoryTilesLabel() {
         return ownVictoryTilesLabel;
+    }
+
+
+    public void setOwnVictoryTiles(Label ownVictoryTilesLabel) {
+        this.ownVictoryTilesLabel = ownVictoryTilesLabel;
     }
 
 
