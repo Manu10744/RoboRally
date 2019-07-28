@@ -1,13 +1,15 @@
 RoboRally Documentation - AstreineBarsche
 
+
 - start the game by executing the main class.
-- (start the game by clicking on the jar file)
+
 
 First Steps:
 1. Connect via the IP-adress in the top right corner. By default this is set to your own PC. Press "ENTER" to summit the chosen IP.
 2. Choose a Robot icon by simply clicking on any available icon.
 3. You can now choose a Player name in the field below the Ip-adress.
 4. In the bottom right corner you can chat with others. Press "ENTER" to send a message.
+
 
 Start a game:
 Click on the ready Button, green means you are ready.
@@ -16,8 +18,17 @@ In Game:
 - Choose Startpoint    :::  click on Startpoint.
 - Program your Robot   :::  drag and drop the programming cards on the bottom of your screen.
 - Map (zoom, move ...) :::  W","A","S","D"  to move the map.
-                            "+ , "-"        to zoom in and out.
+                            "+" , "-"       to zoom in and out.
                             "Z"             to reset the map position.
 
 Exit the Game:
 - click top right "X" Button.
+
+
+Cheats: (type in chat)
+- Enable:   set cheat_mode 1
+- Disable:  set cheat_mode 0
+
+- Teleport: move "x" "y"
+- Cards:    play "card_name"
+- Turn      turn "left" || "right"
