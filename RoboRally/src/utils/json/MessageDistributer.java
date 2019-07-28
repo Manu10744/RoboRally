@@ -649,6 +649,9 @@ public class MessageDistributer {
             // Activate EnergySpaces
             server.activateEnergySpaces();
 
+            // Activate Laser
+            server.activateLaser();
+
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
 
@@ -1972,6 +1975,37 @@ public class MessageDistributer {
     public void handleDrawDamage(Client client, Client.ClientReaderTask task, DrawDamageBody drawDamageBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleDrawDamage()" + ANSI_RESET);
 
+        int messagePlayerID = drawDamageBody.getPlayerID();
+        ArrayList<Card> spamCard = drawDamageBody.getCards();
+
+
+        if (messagePlayerID == client.getPlayer().getPlayerID()) {
+            if (spamCard.size() == 1) {
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(0));
+            } else if (spamCard.size() == 2) {
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(0));
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(1));
+            } else if (spamCard.size() == 3) {
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(0));
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(1));
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(2));
+            }
+    } else {
+        for (Player otherPlayer : client.getOtherPlayers()) {
+            if (otherPlayer.getPlayerID() == messagePlayerID) {
+                if (spamCard.size() == 1) {
+                   otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(0));
+                } else if (spamCard.size() == 2) {
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(1));
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(2));
+                } else if (spamCard.size() == 3) {
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(0));
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(1));
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(3));
+                }
+            }
+        }
+    }
         Platform.runLater(() -> {
             //TODO write code here
         });

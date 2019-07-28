@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.DamageCards.Spam;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import server.game.decks.*;
@@ -338,6 +339,58 @@ public class Server extends Application {
 
 
             }
+        }
+    }
+
+    public void activateLaser() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING LASER!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+            if (this.laserMap.get(playerPosition) != null) {
+                int count = this.laserMap.get(playerPosition).getCount();
+                Card spamCard = getDeckSpam().getTopCard();
+                ArrayList<Card> drawnCards = new ArrayList<>();
+
+                        switch (count) {
+                            case 1 :
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                break;
+                            case 2 :
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                break;
+                            case 3 :
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                break;
+                        }
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("DrawDamage", new DrawDamageBody(playerID, drawnCards));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+            }
+            // TODO robot laser
         }
     }
 
