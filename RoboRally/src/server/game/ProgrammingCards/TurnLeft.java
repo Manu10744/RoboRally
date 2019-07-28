@@ -68,4 +68,9 @@ public class TurnLeft extends server.game.Card {
         logger.info(ANSI_GREEN + "NEW ROBOT ORIENTATION IN ROBOTMAP: ( " + robotMap.get(currentPos).getLineOfSight() +  ")" + ANSI_RESET);
     }
 
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
+
 }

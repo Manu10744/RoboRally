@@ -40,4 +40,9 @@ public class Again extends server.game.Card {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'AGAIN' ..." + ANSI_RESET);
     }
 
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
+
 }

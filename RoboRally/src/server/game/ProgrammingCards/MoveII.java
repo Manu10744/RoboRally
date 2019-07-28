@@ -112,4 +112,9 @@ public class MoveII extends server.game.Card {
         logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
                 robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
 }

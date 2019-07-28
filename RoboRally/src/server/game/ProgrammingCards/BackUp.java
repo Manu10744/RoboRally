@@ -52,7 +52,6 @@ public class BackUp extends server.game.Card {
                 newPos = xPosition + "-" + (yPosition - 1);
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "up", "down")) {
                     robot.setyPosition(yPosition - 1);
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -61,7 +60,6 @@ public class BackUp extends server.game.Card {
                 newPos = (xPosition - 1) + "-" + yPosition;
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "right", "left")) {
                     robot.setxPosition(xPosition - 1);
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -70,7 +68,6 @@ public class BackUp extends server.game.Card {
                 newPos = xPosition + "-" + (yPosition + 1);
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "down", "up")) {
                     robot.setyPosition(yPosition + 1);
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -79,7 +76,6 @@ public class BackUp extends server.game.Card {
                 newPos = (xPosition + 1) + "-" + yPosition;
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "left", "right")) {
                     robot.setxPosition(xPosition + 1);
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -95,4 +91,10 @@ public class BackUp extends server.game.Card {
         logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
                 robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
+
 }

@@ -12,11 +12,16 @@
 ## Version [0.6.0]
 
 ### New Features
+* Antenna determines next Player - *(Ivan)*
+* Multitouch map-zoom enabled - *(Ivan)*
 * All Moves have been implemented. - *(Verena, Mia, Manu)*
 * An ingame soundtrack has been added. - *(Jessie)*
 * Players are now rebooting after falling out of map or into pits. - *(Jessie, Manu)*
 * Gears are now activating after every player has played his current register. - *(Manu)*
 * RoboRally Wikipedia has been extended (Maps). - *(Verena)*
+
+### Changes
+* Visualisation adjusted to a uniform and classical green screen theme - *(Ivan)*
 
 ## Version [0.5.0]
 ### New Features

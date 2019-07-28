@@ -30,4 +30,9 @@ public class Virus extends server.game.Card {
     public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
         //TODO
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return true;
+    }
 }

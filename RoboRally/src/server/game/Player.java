@@ -1,10 +1,7 @@
 package server.game;
 
 import javafx.scene.image.Image;
-import server.game.decks.DeckDiscard;
-import server.game.decks.DeckDraw;
-import server.game.decks.DeckHand;
-import server.game.decks.DeckRegister;
+import server.game.decks.*;
 
 import java.io.Serializable;
 
@@ -36,13 +33,18 @@ public class Player implements Serializable {
     private DeckHand deckHand;
     private DeckRegister deckRegister;
 
+    private DeckSpam deckSpam;
+    private DeckWorm deckWorm;
+    private DeckTrojan deckTrojan;
+    private DeckVirus deckVirus;
+
     private int currentRound;
 
     public Player() {
         this.name = "Findus";
         this.energy = 5;
 
-        // Create decks, initialize draw deck
+        // Create decks
         this.deckDraw = new DeckDraw();
         deckDraw.initializeDeck();
         deckDraw.shuffleDeck();
@@ -53,8 +55,20 @@ public class Player implements Serializable {
         deckHand.initializeDeck();
         this.deckRegister = new DeckRegister();
         deckRegister.initializeDeck();
-        this.selectedCards = 0;
 
+        deckSpam = new DeckSpam();
+        deckSpam.initializeDeck();
+
+        deckWorm = new DeckWorm();
+        deckWorm.initializeDeck();
+
+        deckTrojan = new DeckTrojan();
+        deckTrojan.initializeDeck();
+
+        deckVirus = new DeckVirus();
+        deckVirus.initializeDeck();
+
+        this.selectedCards = 0;
     }
 
     public int getFigure() {
@@ -301,6 +315,22 @@ public class Player implements Serializable {
 
     public void setDeckHand(DeckHand deckHand) {
         this.deckHand = deckHand;
+    }
+
+    public DeckSpam getDeckSpam() {
+        return deckSpam;
+    }
+
+    public DeckWorm getDeckWorm() {
+        return deckWorm;
+    }
+
+    public DeckTrojan getDeckTrojan() {
+        return deckTrojan;
+    }
+
+    public DeckVirus getDeckVirus() {
+        return deckVirus;
     }
 
     public void addCardToRegister(Card card) {
