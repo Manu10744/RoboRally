@@ -2,10 +2,7 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Pit;
-import server.game.Tiles.PushPanel;
-import server.game.Tiles.Wall;
+import server.game.Tiles.*;
 import utils.json.MessageDistributer;
 
 import java.util.Map;
@@ -35,7 +32,7 @@ public class MoveII extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, Map<String, Belt> beltMap, Map<String, RotatingBelt> rotatingBeltMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'MOVE II' ...");
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
@@ -52,8 +49,8 @@ public class MoveII extends server.game.Card {
                 for (int i = 0; i < 2; i++) {
                     //update new position for algorithm to check
                     newPos = xPosition + "-" + (yPosition + 1);
-                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "down", "up")) {
-                        // Update robots y-position
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "down", "up")) {
+                        // Update robots y-positionbeltMap
                         robot.setyPosition(yPosition + 1);
                         // Update the local y-Position for the algorithm
                         yPosition = yPosition + 1;
@@ -67,7 +64,7 @@ public class MoveII extends server.game.Card {
             case ("right"):
                 for (int i = 0; i < 2; i++) {
                     newPos = (xPosition + 1) + "-" + yPosition;
-                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "left", "right")) {
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap,rotatingBeltMap, beltMap, oldPos, newPos, "left", "right")) {
                         robot.setxPosition(xPosition + 1);
                         xPosition = xPosition + 1;
                         oldPos = xPosition + "-" + yPosition;
@@ -79,7 +76,7 @@ public class MoveII extends server.game.Card {
             case ("down"):
                 for (int i = 0; i < 2; i++) {
                     newPos = xPosition + "-" + (yPosition - 1);
-                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "up", "down")) {
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "up", "down")) {
                         robot.setyPosition(yPosition - 1);
                         yPosition = yPosition - 1;
                         oldPos = xPosition + "-" + yPosition;
@@ -91,7 +88,7 @@ public class MoveII extends server.game.Card {
             case ("left"):
                 for (int i = 0; i < 2; i++) {
                     newPos = (xPosition - 1) + "-" + yPosition;
-                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "right", "left")) {
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "right", "left")) {
                         robot.setxPosition(xPosition - 1);
                         xPosition = xPosition - 1;
                         oldPos = xPosition + "-" + yPosition;

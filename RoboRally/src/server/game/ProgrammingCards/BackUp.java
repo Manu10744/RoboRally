@@ -2,10 +2,7 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Pit;
-import server.game.Tiles.PushPanel;
-import server.game.Tiles.Wall;
+import server.game.Tiles.*;
 import utils.json.MessageDistributer;
 
 import java.util.Map;
@@ -35,7 +32,7 @@ public class BackUp extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, Map<String, Belt> beltMap, Map<String, RotatingBelt> rotatingBeltMap) {
         logger.info(ANSI_GREEN + "ACTIVATING CARD 'BACKUP' ..." + ANSI_RESET);
 
         String lineOfSight = player.getPlayerRobot().getLineOfSight();
@@ -50,7 +47,7 @@ public class BackUp extends server.game.Card {
         switch (lineOfSight) {
             case ("up"):
                 newPos = xPosition + "-" + (yPosition - 1);
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "up", "down")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "up", "down")) {
                     robot.setyPosition(yPosition - 1);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -58,7 +55,7 @@ public class BackUp extends server.game.Card {
                 break;
             case ("right"):
                 newPos = (xPosition - 1) + "-" + yPosition;
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "right", "left")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "right", "left")) {
                     robot.setxPosition(xPosition - 1);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -66,7 +63,7 @@ public class BackUp extends server.game.Card {
                 break;
             case ("down"):
                 newPos = xPosition + "-" + (yPosition + 1);
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "down", "up")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap,rotatingBeltMap , beltMap, oldPos, newPos, "down", "up")) {
                     robot.setyPosition(yPosition + 1);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -74,7 +71,7 @@ public class BackUp extends server.game.Card {
                 break;
             case ("left"):
                 newPos = (xPosition + 1) + "-" + yPosition;
-                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "left", "right")) {
+                if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "left", "right")) {
                     robot.setxPosition(xPosition + 1);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +

@@ -1,13 +1,9 @@
 package server.game.DamageCards;
 
 import server.game.Card;
-import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Pit;
-import server.game.Tiles.PushPanel;
-import server.game.Tiles.Wall;
+import server.game.Tiles.*;
 
 import java.util.Map;
 
@@ -30,7 +26,7 @@ public class Spam extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, Map<String, Belt> beltMap, Map<String, RotatingBelt> rotatingBeltMap) {
         // Put the spam card back to the spam deck
         player.getDeckSpam().getDeck().add(this);
 
@@ -49,7 +45,7 @@ public class Spam extends server.game.Card {
         }
 
         // Play the taken card
-        player.getDeckDraw().getTopCard().activateCard(player, pitMap, wallMap, pushPanelMap, robotMap, antennaMap);
+        player.getDeckDraw().getTopCard().activateCard(player, pitMap, wallMap, pushPanelMap, robotMap, antennaMap, beltMap,rotatingBeltMap );
     }
 
 

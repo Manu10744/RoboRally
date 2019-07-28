@@ -2,13 +2,12 @@ package server.game;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Pit;
-import server.game.Tiles.PushPanel;
-import server.game.Tiles.Wall;
-import utils.Parameter;
+import server.game.Tiles.*;
 
 import java.util.Map;
+
+import static utils.Parameter.*;
+import static utils.Parameter.ORIENTATION_LEFT;
 
 /**
  * This class defines what a card shall be in the game. <br>
@@ -32,7 +31,7 @@ public abstract class Card {
      * This is the method that is called, when the Card's effect is activated. <br>
      * It will be overwritten in each subclass.
      */
-    public abstract void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap);
+    public abstract void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, Map<String, Belt> beltMap, Map<String, RotatingBelt> rotatingBeltMap);
 
     public abstract boolean isDamageCard();
     /**
@@ -43,6 +42,8 @@ public abstract class Card {
      * @param pushPanelMap           hashmap with all the pushPanels of the map
      * @param robotMap
      * @param antennaMap
+     * @param rotatingBeltMap
+     * @param beltMap
      * @param oldPos                 player position before moving
      * @param newPos                 player position after moving
      * @param oppositeOwnOrientation opposite players lineOfSight
@@ -50,10 +51,11 @@ public abstract class Card {
      * @return true if robot is allowed to move
      */
 
-    public boolean isValidMove(Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, String oldPos, String newPos, String oppositeOwnOrientation, String ownOrientation) {
+    public boolean isValidMove(Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, Map<String, RotatingBelt> rotatingBeltMap, Map<String, Belt> beltMap, String oldPos, String newPos, String oppositeOwnOrientation, String ownOrientation) {
         Pit currentFieldPit = pitMap.get(oldPos);
         Wall currentFieldWall = wallMap.get(oldPos);
         PushPanel currentFieldPush = pushPanelMap.get(oldPos);
+        Robot ownRobot = robotMap.get(oldPos);
 
         Pit nextFieldPit = pitMap.get(newPos);
         Wall nextFieldWall = wallMap.get(newPos);
@@ -161,7 +163,47 @@ public abstract class Card {
                             return true;
                         }
 
-                    } else {
+                    } else if(nextFieldRobot != null){  // If there is robot, we first find the new position of it, were it moved
+                        int xPosOwnRobot = ownRobot.getxPosition();
+                        int yPosOwnRobot = ownRobot.getyPosition();
+
+                        String otherRobotNewPos = new String();
+
+                        //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
+                        switch (ownRobot.getLineOfSight()) {
+                            case ORIENTATION_DOWN: {
+                                otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot - 1);
+                                break;
+                            }
+                            case ORIENTATION_UP: {
+                                otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot + 1);
+                                break;
+                            }
+                            case ORIENTATION_RIGHT: {
+                                otherRobotNewPos = (xPosOwnRobot + 1) + "-" + yPosOwnRobot;
+                                break;
+                            }
+                            case ORIENTATION_LEFT: {
+                                otherRobotNewPos = (xPosOwnRobot - 1) + "-" + yPosOwnRobot;
+                                break;
+                            }
+                        }
+
+                        RotatingBelt robotonRotatingBelt = rotatingBeltMap.get(nextFieldRobot);
+                        RotatingBelt robotAfterRotatingBelt = rotatingBeltMap.get(otherRobotNewPos);
+
+                        Belt robotBelt = beltMap.get(nextFieldRobot);
+                        Belt robotAfterBelt = beltMap.get(nextFieldRobot);
+
+                        //Check if in new other robot position there is opposing Wall, do not allow move
+                        Wall wallInFuturePlaceOfOtherRobot = wallMap.get(otherRobotNewPos);
+                        if (wallInFuturePlaceOfOtherRobot != null && wallInFuturePlaceOfOtherRobot.getOrientations().contains(oppositeOwnOrientation)) {
+                            return false;
+                        }
+                        //check if robot would be pushed from conveyorBelt, then do not allow move (rules)
+                        else if(robotonRotatingBelt != null && robotAfterRotatingBelt == null || robotBelt != null && robotAfterBelt == null){
+                            return false;
+                        }
                         return true;
                     }
                 }

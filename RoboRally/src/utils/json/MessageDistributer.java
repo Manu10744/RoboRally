@@ -1,7 +1,6 @@
 package utils.json;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,10 +31,6 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
 import server.game.Card;
-import server.game.DamageCards.Spam;
-import server.game.DamageCards.Trojan;
-import server.game.DamageCards.Virus;
-import server.game.DamageCards.Worm;
 import server.game.Player;
 import server.game.ProgrammingCards.Again;
 import server.game.Robot;
@@ -407,10 +402,12 @@ public class MessageDistributer {
                                     String ID = xPos + "-" + yPos;
                                     Belt belt = (Belt) tile;
                                     server.getGreenBeltMap().put(ID, belt);
+                                    server.getAllBeltMap().put(ID, belt);
                                 } else {
                                     String ID = xPos + "-" + yPos;
                                     Belt belt = (Belt) tile;
                                     server.getBlueBeltMap().put(ID, belt);
+                                    server.getAllBeltMap().put(ID, belt);
                                 }
                                 server.getGreenBeltMap().size();
                                 server.getBlueBeltMap().size();
@@ -420,10 +417,12 @@ public class MessageDistributer {
                                     String ID = xPos + "-" + yPos;
                                     RotatingBelt rotatingBelt = (RotatingBelt) tile;
                                     server.getGreenRotatingBeltMap().put(ID, rotatingBelt);
+                                    server.getAllRotatingBeltMap().put(ID, rotatingBelt);
                                 } else {
                                     String ID = xPos + "-" + yPos;
                                     RotatingBelt rotatingBelt = (RotatingBelt) tile;
                                     server.getBlueRotatingBeltMap().put(ID, rotatingBelt);
+                                    server.getAllRotatingBeltMap().put(ID, rotatingBelt);
                                 }
                                 server.getBlueRotatingBeltMap().size();
                                 server.getGreenRotatingBeltMap().size();
@@ -575,7 +574,7 @@ public class MessageDistributer {
 
                 System.out.println("Waht card do you play? " + playedCard);
                 // Update the player of the server
-                playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap());
+                playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap(), server.getAllBeltMap(), server.getAllRotatingBeltMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
 
                 // In case a player plays Again
@@ -585,7 +584,7 @@ public class MessageDistributer {
                         if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                             // Activate the found card
-                            client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap());
+                            client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap(),server.getAllBeltMap(), server.getAllRotatingBeltMap() );
 
                             logger.info(ANSI_GREEN + "( SERVER ): CASE AGAIN: ACTIVATED " + client.getPlayer().getDeckRegister().getDeck().get(i).getCardName() + ANSI_RESET);
                             // Stop, when found
@@ -1381,7 +1380,7 @@ public class MessageDistributer {
             int currentYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
             currentPosition = client.getPlayer().getPlayerRobot().getxPosition() + "-" + client.getPlayer().getPlayerRobot().getyPosition();
-            playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
+            playedCard.activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap(),client.getMapController().getAllBeltMap(), client.getMapController().getAllRotatingBeltMap());
 
             // In case own player plays Again
             if (playedCard.getClass().equals(Again.class)) {
@@ -1390,7 +1389,7 @@ public class MessageDistributer {
                     if (!client.getPlayer().getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                         // Activate the found card
-                        client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
+                        client.getPlayer().getDeckRegister().getDeck().get(i).activateCard(client.getPlayer(), client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap(), client.getMapController().getAllBeltMap(), client.getMapController().getAllRotatingBeltMap());
                         cardToActivateName = client.getPlayer().getDeckRegister().getDeck().get(i).getCardName();
 
                         logger.info(ANSI_GREEN + "( CLIENT ): CASE AGAIN: ACTIVATED " + cardToActivateName + ANSI_RESET);
@@ -1422,7 +1421,7 @@ public class MessageDistributer {
                     int currentYPos = otherPlayer.getPlayerRobot().getyPosition();
 
                     currentPosition = otherPlayer.getPlayerRobot().getxPosition() + "-" + otherPlayer.getPlayerRobot().getyPosition();
-                    playedCard.activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
+                    playedCard.activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap(),client.getMapController().getAllBeltMap(), client.getMapController().getAllRotatingBeltMap());
 
                     // In case OtherPlayer plays Again
                     if (playedCard.getClass().equals(Again.class)) {
@@ -1431,7 +1430,7 @@ public class MessageDistributer {
                             if (!otherPlayer.getDeckRegister().getDeck().get(i).getClass().equals(Again.class)) {
 
                                 // Activate the found card
-                                otherPlayer.getDeckRegister().getDeck().get(i).activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap());
+                                otherPlayer.getDeckRegister().getDeck().get(i).activateCard(otherPlayer, client.getMapController().getPitMap(), client.getMapController().getWallMap(), client.getMapController().getPushPanelMap(), client.getMapController().getRobotMap(), client.getMapController().getAntennaMap(),client.getMapController().getAllBeltMap(), client.getMapController().getAllRotatingBeltMap());
                                 cardToActivateName = otherPlayer.getDeckRegister().getDeck().get(i).getCardName();
 
                                 logger.info(ANSI_GREEN + "( CLIENT ): CASE AGAIN: ACTIVATED " + cardToActivateName + ANSI_RESET);

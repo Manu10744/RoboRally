@@ -1,23 +1,11 @@
 package server;
 
-import com.google.gson.Gson;
 import javafx.application.Application;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
-import server.game.DamageCards.Spam;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import server.game.decks.*;
-import utils.Parameter;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
@@ -85,6 +73,8 @@ public class Server extends Application {
     private Map<String, Robot> robotMap = new HashMap<>();
     private Map<String, Belt> greenBeltMap = new HashMap<>();
     private Map<String, Belt> blueBeltMap = new HashMap<>();
+    private Map<String, Belt> allBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> allRotatingBeltMap = new HashMap<>();
     private Map<String, RotatingBelt> greenRotatingBeltMap = new HashMap<>();
     private Map<String, RotatingBelt> blueRotatingBeltMap = new HashMap<>();
 
@@ -332,7 +322,7 @@ public class Server extends Application {
                         player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos ));
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
 
@@ -359,32 +349,32 @@ public class Server extends Application {
                 Card spamCard = getDeckSpam().getTopCard();
                 ArrayList<Card> drawnCards = new ArrayList<>();
 
-                        switch (count) {
-                            case 1 :
-                                player.getDeckDiscard().getDeck().add(spamCard);
-                                getDeckSpam().removeTopCard(deckSpam.getDeck());
-                                drawnCards.add(spamCard);
-                                break;
-                            case 2 :
-                                player.getDeckDiscard().getDeck().add(spamCard);
-                                getDeckSpam().removeTopCard(deckSpam.getDeck());
-                                drawnCards.add(spamCard);
-                                player.getDeckDiscard().getDeck().add(spamCard);
-                                getDeckSpam().removeTopCard(deckSpam.getDeck());
-                                drawnCards.add(spamCard);
-                                break;
-                            case 3 :
-                                player.getDeckDiscard().getDeck().add(spamCard);
-                                getDeckSpam().removeTopCard(deckSpam.getDeck());
-                                drawnCards.add(spamCard);
-                                player.getDeckDiscard().getDeck().add(spamCard);
-                                getDeckSpam().removeTopCard(deckSpam.getDeck());
-                                drawnCards.add(spamCard);
-                                player.getDeckDiscard().getDeck().add(spamCard);
-                                getDeckSpam().removeTopCard(deckSpam.getDeck());
-                                drawnCards.add(spamCard);
-                                break;
-                        }
+                switch (count) {
+                    case 1:
+                        player.getDeckDiscard().getDeck().add(spamCard);
+                        getDeckSpam().removeTopCard(deckSpam.getDeck());
+                        drawnCards.add(spamCard);
+                        break;
+                    case 2:
+                        player.getDeckDiscard().getDeck().add(spamCard);
+                        getDeckSpam().removeTopCard(deckSpam.getDeck());
+                        drawnCards.add(spamCard);
+                        player.getDeckDiscard().getDeck().add(spamCard);
+                        getDeckSpam().removeTopCard(deckSpam.getDeck());
+                        drawnCards.add(spamCard);
+                        break;
+                    case 3:
+                        player.getDeckDiscard().getDeck().add(spamCard);
+                        getDeckSpam().removeTopCard(deckSpam.getDeck());
+                        drawnCards.add(spamCard);
+                        player.getDeckDiscard().getDeck().add(spamCard);
+                        getDeckSpam().removeTopCard(deckSpam.getDeck());
+                        drawnCards.add(spamCard);
+                        player.getDeckDiscard().getDeck().add(spamCard);
+                        getDeckSpam().removeTopCard(deckSpam.getDeck());
+                        drawnCards.add(spamCard);
+                        break;
+                }
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("DrawDamage", new DrawDamageBody(playerID, drawnCards));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -754,7 +744,7 @@ public class Server extends Application {
         Robot cheatingPlayerRobot = cheatingPlayer.getPlayerRobot();
         switch (desiredCard) {
             case "move1":
-                new MoveI().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new MoveI().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveI()));
@@ -764,7 +754,7 @@ public class Server extends Application {
                 break;
 
             case "move2":
-                new MoveII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new MoveII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveII()));
@@ -774,7 +764,7 @@ public class Server extends Application {
                 break;
 
             case "move3":
-                new MoveIII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new MoveIII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveIII()));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -783,7 +773,7 @@ public class Server extends Application {
                 break;
 
             case "backup":
-                new BackUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new BackUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new BackUp()));
@@ -793,7 +783,7 @@ public class Server extends Application {
                 break;
 
             case "uturn":
-                new UTurn().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new UTurn().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new UTurn()));
@@ -803,7 +793,7 @@ public class Server extends Application {
                 break;
 
             case "again":
-                new Again().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new Again().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new Again()));
@@ -813,7 +803,7 @@ public class Server extends Application {
                 break;
 
             case "powerup":
-                new PowerUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new PowerUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new PowerUp()));
@@ -823,7 +813,7 @@ public class Server extends Application {
                 break;
 
             case "turnleft":
-                new TurnLeft().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new TurnLeft().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnLeft()));
@@ -834,7 +824,7 @@ public class Server extends Application {
 
 
             case "turnright":
-                new TurnRight().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
+                new TurnRight().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap, allBeltMap, allRotatingBeltMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnRight()));
@@ -1024,11 +1014,11 @@ public class Server extends Application {
         return rebootMap;
     }
 
-    public Map<String, CheckPoint> getCheckPointMap(){
+    public Map<String, CheckPoint> getCheckPointMap() {
         return checkPointMap;
     }
 
-    public Map<String, EnergySpace> getEnergySpaceMap(){
+    public Map<String, EnergySpace> getEnergySpaceMap() {
         return energySpaceMap;
     }
 
@@ -1056,6 +1046,14 @@ public class Server extends Application {
         return blueRotatingBeltMap;
     }
 
+    public Map<String, Belt> getAllBeltMap() {
+        return allBeltMap;
+    }
+
+    public Map<String, RotatingBelt> getAllRotatingBeltMap() {
+        return allRotatingBeltMap;
+    }
+
     public int getCardsPlayed() {
         return cardsPlayed;
     }
@@ -1068,9 +1066,13 @@ public class Server extends Application {
         return cheatsActivated;
     }
 
-    public boolean isGameFinished() { return gameFinished; }
+    public boolean isGameFinished() {
+        return gameFinished;
+    }
 
-    public void setGameFinished(boolean gameFinished) { this.gameFinished = gameFinished; }
+    public void setGameFinished(boolean gameFinished) {
+        this.gameFinished = gameFinished;
+    }
 
     public DeckSpam getDeckSpam() {
         return deckSpam;
@@ -1154,7 +1156,6 @@ public class Server extends Application {
         public BufferedReader getReader() {
             return reader;
         }
-
 
 
     }

@@ -2,10 +2,7 @@ package server.game.ProgrammingCards;
 
 import server.game.Player;
 import server.game.Robot;
-import server.game.Tiles.Antenna;
-import server.game.Tiles.Pit;
-import server.game.Tiles.PushPanel;
-import server.game.Tiles.Wall;
+import server.game.Tiles.*;
 import utils.json.MessageDistributer;
 
 import java.util.Map;
@@ -34,7 +31,7 @@ public class TurnLeft extends server.game.Card {
      */
 
     @Override
-    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap) {
+    public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap, Map<String, Robot> robotMap, Map<String, Antenna> antennaMap, Map<String, Belt> beltMap, Map<String, RotatingBelt> rotatingBeltMap) {
        logger.info(ANSI_GREEN + "ACTIVATING CARD 'TURNLEFT' ...");
 
     String lineOfSight = player.getPlayerRobot().getLineOfSight();

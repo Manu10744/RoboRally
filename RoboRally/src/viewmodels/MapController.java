@@ -68,6 +68,8 @@ public class MapController implements IController {
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
     private Map<String, Robot> robotMap = new HashMap<>();
     private Map<String, Antenna> antennaMap = new HashMap<>();
+    private Map<String, RotatingBelt> allRotatingBeltMap = new HashMap<>();
+    private Map<String, Belt> allBeltMap = new HashMap<>();
 
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private ArrayList<Group> startPointList;
@@ -102,14 +104,13 @@ public class MapController implements IController {
 
                     mapController.initEventsOnStartpoints();
                     logger.info("Initialized MouseClick Events on all StartPoints");
-                    
+
                     // Popup of 9 playerHand to choose from
-                   // ((PlayerMatController) stageController.getControllerMap().get("PlayerMat")).initializeCards(null); //handleYourCards
+                    // ((PlayerMatController) stageController.getControllerMap().get("PlayerMat")).initializeCards(null); //handleYourCards
                 }
             }
         });
     }
-
 
 
     /**
@@ -119,7 +120,7 @@ public class MapController implements IController {
      */
     public void fillGridPaneWithMap(GameStartedBody gameStartedBody) {
 
-       startPointList = new ArrayList<>();
+        startPointList = new ArrayList<>();
 
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
@@ -158,7 +159,8 @@ public class MapController implements IController {
                 });
 
                 mapPane.setOnZoom(new EventHandler<ZoomEvent>() {
-                    @Override public void handle(ZoomEvent event) {
+                    @Override
+                    public void handle(ZoomEvent event) {
                         mapPane.setScaleX(mapPane.getScaleX() * event.getZoomFactor());
                         mapPane.setScaleY(mapPane.getScaleY() * event.getZoomFactor());
                         event.consume();
@@ -289,7 +291,7 @@ public class MapController implements IController {
                                     energySpaceMap.put(ID, energySpace);
                                 }
 
-                                if (tile instanceof StartPoint){
+                                if (tile instanceof StartPoint) {
                                     String ID = xPos + "-" + yPos;
                                     imageGroup.setId(ID);
                                     imageGroup.setStyle("-fx-cursor: hand;");
@@ -307,12 +309,25 @@ public class MapController implements IController {
                                     logger.info(ANSI_GREEN + "ANTENNA IN Client antennaMap HAS BEEN SET! COORDINATES: " + "( " + xPos + " | " + yPos + " )" + ANSI_RESET);
                                 }
 
+                                if (tile instanceof RotatingBelt){
+                                    String ID = xPos + "-" + yPos;
+                                    RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                    allRotatingBeltMap.put(ID, rotatingBelt);
+                                }
+
+                                if(tile instanceof  Belt){
+                                    String ID = xPos + "-" + yPos;
+                                    Belt belt = (Belt) tile;
+                                    allBeltMap.put(ID, belt);
+                                }
+
                                 // Necessary for making map fields responsive
                                 imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
                                 imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
                                 imageView.setPreserveRatio(true);
 
-                                imageGroup.getChildren().add(imageView);}
+                                imageGroup.getChildren().add(imageView);
+                            }
 
                         }
 
@@ -333,8 +348,9 @@ public class MapController implements IController {
 
     /**
      * This method checks if an ArrayList<Tile> contains an element which is an instance of a given class.
+     *
      * @param listToCheck The ArrayList that gets iterated and checked.
-     * @param target The class of the desired object that is searched inside the ArrayList
+     * @param target      The class of the desired object that is searched inside the ArrayList
      * @return <code>true</code> if that ArrayList contains an object of the given class
      */
     public boolean containsInstance(ArrayList<Tile> listToCheck, Class<?> target) {
@@ -374,7 +390,8 @@ public class MapController implements IController {
 
     /**
      * This method sets the robot onto the chosen startingpoint.
-     * @param playerRobot The players chosen robot
+     *
+     * @param playerRobot   The players chosen robot
      * @param startingPoint The startingpoint the player has chosen to set his robot on.
      */
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
@@ -408,33 +425,81 @@ public class MapController implements IController {
 
     /**
      * This method turns the robot according to turn card either left or right
+     *
      * @param robotPosition
      * @param turnDirection
      */
-    public void turnRobot (String robotPosition, String  turnDirection){
+    public void turnRobot(String robotPosition, String turnDirection) {
         //Here we get the robot imageView
-        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size()-1);
+        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size() -1);
         double currentOrientation = robotImageView.rotateProperty().getValue();
 
         //Here we turn it either to right or left side
-        if(turnDirection.equals(ORIENTATION_LEFT)) {
+        if (turnDirection.equals(ORIENTATION_LEFT)) {
             robotImageView.rotateProperty().setValue(currentOrientation - 90);
-        }else{
+        } else {
             robotImageView.rotateProperty().setValue(currentOrientation + 90);
         }
     }
 
     /**
      * This method removes the robot from its old position and sets it onto the new position
+     *
      * @param oldPosition The old Position of the robot
      * @param newPosition The new Position of the robot
      */
-    public void moveRobot(String oldPosition, String newPosition ){
-        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
-        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
-        fieldMap.get(newPosition).getChildren().add(robotImageView);
+    public void moveRobot(String oldPosition, String newPosition) {
+        Robot otherRobot = robotMap.get(newPosition);
+        Robot ownRobot = robotMap.get(oldPosition);
+        String otherRobotNewPos = new String();
 
-        //Todo: beim bewegen muss nur der bewegte roboter geuptdated werden, der alte ist es schon, den muss man nur noch visuell an die richtige stelle setzten
+        String lineOfSight = ownRobot.getLineOfSight();
+
+        //When there is no robot, move as before
+        if (otherRobot == null) {
+            ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
+            fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
+            fieldMap.get(newPosition).getChildren().add(robotImageView);
+        } else {
+            // If there is robot, we first find the new position of it, were it moved
+            int xPosOwnRobot = ownRobot.getxPosition();
+            int yPosOwnRobot = ownRobot.getyPosition();
+
+            //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
+            switch (ownRobot.getLineOfSight()) {
+                case ORIENTATION_DOWN: {
+                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot - 1);
+                    break;
+                }
+                case ORIENTATION_UP: {
+                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot + 1);
+                    break;
+                }
+                case ORIENTATION_RIGHT: {
+                    otherRobotNewPos = (xPosOwnRobot + 1) + "-" + yPosOwnRobot;
+                    break;
+                }
+                case ORIENTATION_LEFT: {
+                    otherRobotNewPos = (xPosOwnRobot - 1) + "-" + yPosOwnRobot;
+                    break;
+                }
+            }
+
+                //remove other robot and put on new place
+                ImageView otherRobotImageView = (ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
+                fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
+                fieldMap.get(otherRobotNewPos).getChildren().add(otherRobotImageView);
+
+                //remove own robot and put on new place
+                ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
+                fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
+                fieldMap.get(newPosition).getChildren().add(robotImageView);
+
+                // update other robot (own has already been updated
+                robotMap.put(otherRobotNewPos, otherRobot);
+                //Todo: update server!
+
+            }
     }
 
     /**
@@ -444,7 +509,9 @@ public class MapController implements IController {
 
     }
 
-    public ArrayList<ArrayList<ArrayList<Tile>>> getMap() { return map; }
+    public ArrayList<ArrayList<ArrayList<Tile>>> getMap() {
+        return map;
+    }
 
     public boolean isAllowedToSetStart() {
         return allowSetStart;
@@ -508,6 +575,14 @@ public class MapController implements IController {
 
     public Map<String, Antenna> getAntennaMap() {
         return antennaMap;
+    }
+
+    public Map<String, RotatingBelt> getAllRotatingBeltMap() {
+        return allRotatingBeltMap;
+    }
+
+    public Map<String, Belt> getAllBeltMap() {
+        return allBeltMap;
     }
 
     public void setRobotMap(Map<String, Robot> robotMap) {
