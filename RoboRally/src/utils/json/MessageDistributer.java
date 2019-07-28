@@ -1877,10 +1877,16 @@ public class MessageDistributer {
                         otherPlayer.getDeckRegister().getDeck().set(client.getPlayer().getCurrentRound() - 1, card);
                         System.out.println(otherPlayer.getDeckRegister().getDeck());
 
+                        client.getOpponentMatController().showCurrentOpponentRegisters(otherPlayer, card, activeRegister);
 
                         logger.info(ANSI_CYAN + "SET A " + card + " INTO REGISTER " + client.getPlayer().getCurrentRound() + " FROM " + otherPlayer.getName());
                     }
                 }
+            }
+
+            //when last card was shown, empty registers
+            if (activeRegister == REGISTER_FIVE){
+                client.getOpponentMatController().emptyRegisters(client.getOtherPlayers());
             }
         }
 

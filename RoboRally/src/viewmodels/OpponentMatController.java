@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  *
  * @author Jessica Gerlach
  * @author Ivan Dovecar
+ * @author Mia
  */
 
 public class OpponentMatController implements IController {
@@ -267,7 +268,6 @@ public class OpponentMatController implements IController {
                         case "Twonky": {
                             Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
                             playerIcon.setImage(avatar);
-                            player1Reg1.setImage(new Image("/resources/images/cards/card-back50x50.png"));
                             break;
                         }
                         case "ZoomBot": {
@@ -299,7 +299,14 @@ public class OpponentMatController implements IController {
                  */
 
                 //Check if there is already a card in register - if so, delete
-                if (((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() != null) {
+                if (((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() != null &&
+                        ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() == cardBackImage) {
+                    /*during selection phase when there is an image it is always the back of a card
+                     * so when a a new card wants to be placed at this register, it always has to be emptied
+                     * first.
+                     *
+                     * If there is a picture therein
+                     */
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setImage(null);
                 } else {
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setImage(cardBackImage);
@@ -318,72 +325,108 @@ public class OpponentMatController implements IController {
     public ArrayList<Integer> getEmptyRegisterNumbersFromOpponents(Player opponentPlayer) {
         ArrayList<Integer> emptyOpponentRegisters = new ArrayList();
 
-            for (int register = Parameter.REGISTER_ONE; register <= Parameter.REGISTER_FIVE; register++) {
-                if (((ImageView) registerMap.get(opponentPlayer.getPlayerID()).getChildren().get(register)).getImage() == null) {
-                    emptyOpponentRegisters.add(register);
+        for (int register = Parameter.REGISTER_ONE; register <= Parameter.REGISTER_FIVE; register++) {
+            if (((ImageView) registerMap.get(opponentPlayer.getPlayerID()).getChildren().get(register)).getImage() == null) {
+                emptyOpponentRegisters.add(register);
 
-                    logger.info("OPPONENTPLAYERMAT: NEW EMPTY REGISTER " + register + " HAS BEEN ADDED TO EMPTY REGISTERS " + emptyOpponentRegisters);
-                }
+                logger.info("OPPONENTPLAYERMAT: NEW EMPTY REGISTER " + register + " HAS BEEN ADDED TO EMPTY REGISTERS " + emptyOpponentRegisters);
             }
+        }
 
         return emptyOpponentRegisters;
     }
 
     /**
      * This method shows the current register during the active phase. It is used in handleCurrentCards
-     * @param opponnetPlayer
-     * @param  card
-     * @param  activeRound
+     *     * @param opponentPlayer
+     * @param card
+     * @param activeRegister
      */
-    public void showCurrentOpponentRegisters(Player opponnetPlayer, Card card, int activeRound){
-        Image cardImage = new Image("");
-        String color = opponnetPlayer.getColor();
+    public void showCurrentOpponentRegisters(Player opponentPlayer, Card card, int activeRegister) {
+        Image cardImage;
+        String color = opponentPlayer.getColor();
         String cardName = card.getCardName();
 
-        int playerID = opponnetPlayer.getPlayerID();
+        int playerID = opponentPlayer.getPlayerID();
+        System.out.println("Register of other player is " + registerMap.get(playerID));
 
-        //Todo langer switch case mit KartenName und farbe dann plus
-        switch(cardName){
+        //The right image and color for card to be displayed are chosen
+        switch (cardName) {
             case "Again": {
                 cardImage = new Image("/resources/images/cards/again-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "BackUp": {
                 cardImage = new Image("/resources/images/cards/moveback-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "MoveI": {
                 cardImage = new Image("/resources/images/cards/move1-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "MoveII": {
                 cardImage = new Image("/resources/images/cards/move2-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "MoveIII": {
                 cardImage = new Image("/resources/images/cards/move3-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "PowerUp": {
-                cardImage = new Image("/resources/images/cards/energy-routine-" + color + "50x50.png");
+                cardImage = new Image("/resources/images/cards/powerup-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "TurnLeft": {
                 cardImage = new Image("/resources/images/cards/leftturn-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "TurnRight": {
                 cardImage = new Image("/resources/images/cards/rightturn-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
             case "UTurn": {
                 cardImage = new Image("/resources/images/cards/uturn-" + color + "50x50.png");
+                //image of current register is shown in right color
+                ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setImage(cardImage);
                 break;
             }
         }
+        //making current cards responsive
+        ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).setPreserveRatio(true);
+        ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).fitWidthProperty().bind(player1Register.widthProperty());
+        ((ImageView) registerMap.get(playerID).getChildren().get(activeRegister)).fitHeightProperty().bind(player1Register.heightProperty());
 
-        ((ImageView) opponentPlayerRegisters.get(playerID).getChildren().get(activeRound)).setImage(cardImage);
+    }
 
+    /**
+     * This method empties the register of all opponent players. It is used by handle currentcard
+     * @param opponentPlayers
+     */
+    public void emptyRegisters(ArrayList<Player> opponentPlayers){
+        //when the last round has been played, registers are emptoed
+        for (Player opponentPlayer : opponentPlayers) {
+            int i = 1;
+            while (i <= Parameter.REGISTER_FIVE) {
+                ((ImageView) registerMap.get(opponentPlayer.getPlayerID()).getChildren().get(i)).setImage(null);
+                i++;
+            }
+        }
     }
 
 
