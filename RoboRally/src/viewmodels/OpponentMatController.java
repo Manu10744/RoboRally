@@ -338,7 +338,8 @@ public class OpponentMatController implements IController {
 
     /**
      * This method shows the current register during the active phase. It is used in handleCurrentCards
-     *     * @param opponentPlayer
+     * * @param opponentPlayer
+     *
      * @param card
      * @param activeRegister
      */
@@ -416,9 +417,10 @@ public class OpponentMatController implements IController {
 
     /**
      * This method empties the register of all opponent players. It is used by handle currentcard
+     *
      * @param opponentPlayers
      */
-    public void emptyRegisters(ArrayList<Player> opponentPlayers){
+    public void emptyRegisters(ArrayList<Player> opponentPlayers) {
         //when the last round has been played, registers are emptoed
         for (Player opponentPlayer : opponentPlayers) {
             int i = 1;

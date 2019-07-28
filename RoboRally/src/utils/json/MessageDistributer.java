@@ -1500,11 +1500,13 @@ public class MessageDistributer {
 
         // Own player is current player
         if (client.getPlayer().getPlayerID() == messagePlayerID) {
+            System.out.println("Current round is " + currentRound);
             Card cardToPlay = client.getPlayer().getDeckRegister().getDeck().get(currentRound - 1);
+
             // Play the card that is in the current register
             client.sendPlayCard(cardToPlay);
 
-            // After playing a card, mark it visusally as played inside the player mat
+            // After playing a card, mark it visually as played inside the player mat
             client.getPlayerMatController().getPlayerRegister().getChildren().get(currentRound - 1).setOpacity(0.7);
         }
 
@@ -1545,7 +1547,7 @@ public class MessageDistributer {
         }
         // Activation phase
         else if (activePhase == ACTIVATION_PHASE) {
-            client.getPlayer().setCurrentRound(REGISTER_ONE);
+            client.getPlayer().setActiveRegister(REGISTER_ONE);
             client.getChatHistoryProperty().set("Your robot has been activated, may it survive!");
             client.getChatHistoryProperty().set("Register ONE controls now your fate!");
         }
@@ -1861,11 +1863,15 @@ public class MessageDistributer {
 
         // 5 registers have been played, so reset
         if (activeRegister == 5) {
-            client.getPlayer().setCurrentRound(1);
+            client.getPlayer().setActiveRegister(1);
         } else {
             //after every card in the current register is shown, the register is updated
             activeRegister++;
-            client.getPlayer().setCurrentRound(activeRegister);
+        }
+
+        System.out.println("Was ist die currentround? " + activeRegister);
+
+            client.getPlayer().setActiveRegister(activeRegister);
 
             // For each player, put the current card of each OtherPlayer into the OtherPlayer register
             for (CurrentCardsBody.ActiveCardsObject activeCards : currentCardsBody.getActiveCards()) {
@@ -1882,13 +1888,12 @@ public class MessageDistributer {
                         logger.info(ANSI_CYAN + "SET A " + card + " INTO REGISTER " + client.getPlayer().getCurrentRound() + " FROM " + otherPlayer.getName());
                     }
                 }
-            }
 
-            //when last card was shown, empty registers
-            if (activeRegister == REGISTER_FIVE){
-                client.getOpponentMatController().emptyRegisters(client.getOtherPlayers());
+                //when last card was shown, empty registers
+                if (activeRegister == REGISTER_FIVE) {
+                    client.getOpponentMatController().emptyRegisters(client.getOtherPlayers());
+                }
             }
-        }
 
         Platform.runLater(() -> {
             //TODO write code here

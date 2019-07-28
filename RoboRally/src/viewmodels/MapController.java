@@ -471,10 +471,10 @@ public class MapController implements IController {
      * @param oldPosition The old Position of the robot
      * @param newPosition The new Position of the robot
      */
-    public void moveRobot(String oldPosition, String newPosition ){
+    public void moveRobot(String oldPosition, String newPosition){
         //Get ImageView of own robot
         System.out.println("OldPosition = " + oldPosition);
-        Robot ownRobot = robotMap.get(oldPosition);
+        Robot ownRobot = robotMap.get(newPosition);
         System.out.println("Roboter der zu bewegen ist: " + ownRobot);
 
         ImageView ownRobotImageView = new ImageView(ownRobot.getRobotImage());
@@ -488,7 +488,7 @@ public class MapController implements IController {
         fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
 
         //When there is no robot in next position
-        if(robotMap.get(newPosition) == null) {
+       // if(robotMap.get(newPosition) == null) {
             System.out.println("Bist du hier? Kein Roboter?");
             //update board
             fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
@@ -497,7 +497,8 @@ public class MapController implements IController {
             robotMap.put(newPosition, ownRobot);
             robotMap.remove(oldPosition);
 
-        }else{
+        //}else{
+            /*
             //when there is a robot in next position
             System.out.println("Bist du hier? Roboter!");
             Robot otherRobot = robotMap.get(newPosition);
@@ -539,9 +540,11 @@ public class MapController implements IController {
             //add ImageView of own robot
             fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
 
+
+             */
         }
 
-    }
+
 
     /**
      * This method controls robotlaser in activation phase

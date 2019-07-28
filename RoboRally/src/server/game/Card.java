@@ -182,7 +182,7 @@ public abstract class Card {
             return true;
         }
 
-         */
+
 
 
         //when there are more than two robots and one standing in newPos
@@ -223,7 +223,10 @@ public abstract class Card {
                 }
             }
             return movingPossible;
-        }
+
+         }
+
+         */
         return true;
     }
 

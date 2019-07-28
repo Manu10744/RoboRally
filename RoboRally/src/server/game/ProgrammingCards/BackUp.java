@@ -53,11 +53,6 @@ public class BackUp extends server.game.Card {
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "up", "down")) {
                     robot.setyPosition(yPosition - 1);
 
-                    //update robot Pos in robotMap
-                    robotMap.put(newPos, robotMap.get(oldPos));
-                    robotMap.remove(oldPos);
-                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -66,12 +61,6 @@ public class BackUp extends server.game.Card {
                 newPos = (xPosition - 1) + "-" + yPosition;
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "right", "left")) {
                     robot.setxPosition(xPosition - 1);
-
-                    //update robot in robotMap
-                    robotMap.put(newPos, robotMap.get(oldPos));
-                    robotMap.remove(oldPos);
-                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
 
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -82,11 +71,6 @@ public class BackUp extends server.game.Card {
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "down", "up")) {
                     robot.setyPosition(yPosition + 1);
 
-                    //update robot in robotMap
-                    robotMap.put(newPos, robotMap.get(oldPos));
-                    robotMap.remove(oldPos);
-                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -96,11 +80,6 @@ public class BackUp extends server.game.Card {
                 if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "left", "right")) {
                     robot.setxPosition(xPosition + 1);
 
-                    //update robot in robotMap
-                    robotMap.put(newPos, robotMap.get(oldPos));
-                    robotMap.remove(oldPos);
-                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);

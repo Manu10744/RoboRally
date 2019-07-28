@@ -149,7 +149,7 @@ public class Player implements Serializable {
         return currentRound;
     }
 
-    public void setCurrentRound(int currentRound) {
+    public void setActiveRegister(int currentRound) {
         this.currentRound = currentRound;
     }
 
