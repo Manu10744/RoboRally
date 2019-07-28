@@ -656,8 +656,8 @@ public class MessageDistributer {
             // Activate EnergySpaces
             server.activateEnergySpaces();
 
-            // Activate Laser
-            server.activateLaser();
+            // Activate Laser (Commented out as damage cards don't work)
+            //server.activateLaser();
 
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
