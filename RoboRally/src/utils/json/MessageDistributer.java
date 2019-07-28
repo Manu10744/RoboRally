@@ -569,6 +569,7 @@ public class MessageDistributer {
                 Player player = client.getPlayer();
                 int playerID = player.getPlayerID();
 
+                System.out.println("Waht card do you play? " + playedCard);
                 // Update the player of the server
                 playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
@@ -1536,6 +1537,7 @@ public class MessageDistributer {
             Card cardToPlay = client.getPlayer().getDeckRegister().getDeck().get(currentRound - 1);
 
             // Play the card that is in the current register
+            System.out.println("Client played card + " + cardToPlay);
             client.sendPlayCard(cardToPlay);
 
             // After playing a card, mark it visually as played inside the player mat

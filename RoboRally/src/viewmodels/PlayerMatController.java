@@ -554,6 +554,7 @@ public class PlayerMatController implements IController {
         } else {
             return null;
         }
+
     }
 
     public HBox getPlayerIcons() {

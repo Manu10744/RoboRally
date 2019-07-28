@@ -621,7 +621,7 @@ public class Server extends Application {
         Robot cheatingPlayerRobot = cheatingPlayer.getPlayerRobot();
         switch (desiredCard) {
             case "move1":
-                new MoveI().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new MoveI().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveI()));
@@ -631,7 +631,7 @@ public class Server extends Application {
                 break;
 
             case "move2":
-                new MoveII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new MoveII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveII()));
@@ -641,7 +641,7 @@ public class Server extends Application {
                 break;
 
             case "move3":
-                new MoveIII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new MoveIII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveIII()));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
@@ -650,7 +650,7 @@ public class Server extends Application {
                 break;
 
             case "backup":
-                new BackUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new BackUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new BackUp()));
@@ -660,7 +660,7 @@ public class Server extends Application {
                 break;
 
             case "uturn":
-                new UTurn().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new UTurn().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new UTurn()));
@@ -670,7 +670,7 @@ public class Server extends Application {
                 break;
 
             case "again":
-                new Again().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new Again().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new Again()));
@@ -680,7 +680,7 @@ public class Server extends Application {
                 break;
 
             case "powerup":
-                new PowerUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new PowerUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new PowerUp()));
@@ -690,7 +690,7 @@ public class Server extends Application {
                 break;
 
             case "turnleft":
-                new TurnLeft().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new TurnLeft().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnLeft()));
@@ -701,7 +701,7 @@ public class Server extends Application {
 
 
             case "turnright":
-                new TurnRight().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                new TurnRight().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap(), robotMap, antennaMap);
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnRight()));
