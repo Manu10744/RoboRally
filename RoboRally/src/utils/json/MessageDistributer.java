@@ -1729,6 +1729,7 @@ public class MessageDistributer {
 
             for (Player opponentPlayer : client.getOtherPlayers()) {
                 if (playerID == opponentPlayer.getPlayerID()) {
+                    System.out.println("Bist du da mama?");
                     client.getOpponentMatController().updateOpponentRegister(client.getOtherPlayers(), register, opponentPlayer);
                 }
             }

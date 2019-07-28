@@ -305,8 +305,6 @@ public class Server extends Application {
             int currentXPos = player.getPlayerRobot().getxPosition();
             int currentYPos = player.getPlayerRobot().getyPosition();
 
-
-
             // Key for HashMap
             String playerPosition = currentXPos + "-" + currentYPos;
 
@@ -337,6 +335,7 @@ public class Server extends Application {
                     JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos ));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
+
                 }
 
 

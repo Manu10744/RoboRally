@@ -313,32 +313,6 @@ public class PlayerMatController implements IController {
                     }
                 });
             }
-
-            // FOR TESTING MOVES
-            register1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new MoveI());
-                }
-            });
-            register2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new MoveII());
-                }
-            });
-            register3.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new PowerUp());
-                }
-            });
-            register4.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    chatController.getClient().sendPlayCard(new Again());
-                }
-            });
         }
 
     }

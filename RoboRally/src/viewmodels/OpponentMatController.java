@@ -287,27 +287,20 @@ public class OpponentMatController implements IController {
         //updating imageView
 
         //Making the imageView responsive
-        int i = 0;
-        while (i < opponentPlayers.size()) {
-            if (playerID == (opponentPlayers.get(i).getPlayerID())) {
+        for (Player player : opponentPlayers) {
+            if (playerID == player.getPlayerID()) {
                 HBox opponentPlayerRegister = registerMap.get(playerID);
-                logger.info("( OPPONENTMAPCONTROLLER ): OPPONENT PLAYER SELECTED CARD INTO REGISTER " + opponentPlayerRegister.getId());
 
                 /*
                 In the following we do not have to decrement the registerID even though it is an index,
-                because there are six imageViews in register HBox: 1 for the icon, and 5 for the registers
+                because there are six imageViews in register HBox: 1 for the icon, and 5 for the registers, so we start at 1 with register 1 (0 would be the icon)
                  */
 
                 //Check if there is already a card in register - if so, delete
-                if (((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() != null &&
-                        ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() == cardBackImage) {
-                    /*during selection phase when there is an image it is always the back of a card
-                     * so when a a new card wants to be placed at this register, it always has to be emptied
-                     * first.
-                     *
-                     * If there is a picture therein
-                     */
+                if (((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() != null) {
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setImage(null);
+                    logger.info("(OPPONENTCONTROLLERMAP): OPPONENT PLAYER " + playerID + " RETURNED CARD FROM REGISTER " + opponentPlayerRegister.getId());
+
                 } else {
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setImage(cardBackImage);
 
@@ -315,9 +308,9 @@ public class OpponentMatController implements IController {
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setPreserveRatio(true);
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).fitWidthProperty().bind(player1Register.widthProperty());
                     ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).fitHeightProperty().bind(player1Register.heightProperty());
+                    logger.info("( OPPONENTMAPCONTROLLER ): OPPONENT PLAYER " + playerID + " SELECTED CARD INTO REGISTER " + opponentPlayerRegister.getId());
                 }
             }
-            i++;
         }
 
     }
