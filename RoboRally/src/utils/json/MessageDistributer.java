@@ -1475,6 +1475,7 @@ public class MessageDistributer {
                 if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
                     System.out.println(finalNewXPos);
                     System.out.println(finalNewYPos);
+                    System.out.println("Bist du hier auch?");
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
@@ -1986,6 +1987,7 @@ public class MessageDistributer {
 
                         String newPos = newXPos + "-" + newYPos;
 
+                        System.out.println("Wie oft bist du hier??? ");
                         client.getMapController().moveRobot(oldPos, newPos);
                     }
                 }

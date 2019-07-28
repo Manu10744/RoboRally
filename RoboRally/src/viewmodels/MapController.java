@@ -24,6 +24,7 @@ import utils.Parameter;
 import utils.json.MessageDistributer;
 import utils.json.protocol.GameStartedBody;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -49,6 +50,8 @@ import static utils.Parameter.*;
 public class MapController implements IController {
     @FXML
     private GridPane mapPane;
+
+    private boolean move = true;
 
     private boolean allowSetStart;
     public int mapChangeCounter;
@@ -424,7 +427,8 @@ public class MapController implements IController {
 
     /**
      * This method sets the robot onto the chosen startingpoint.
-     * @param playerRobot The players chosen robot
+     *
+     * @param playerRobot   The players chosen robot
      * @param startingPoint The startingpoint the player has chosen to set his robot on.
      */
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
@@ -458,46 +462,64 @@ public class MapController implements IController {
 
     /**
      * This method turns the robot according to turn card either left or right
+     *
      * @param robotPosition
      * @param turnDirection
      */
-    public void turnRobot (String robotPosition, String  turnDirection){
+    public void turnRobot(String robotPosition, String turnDirection) {
         //Here we get the robot imageView
-        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size()-1);
+        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size() - 1);
         double currentOrientation = robotImageView.rotateProperty().getValue();
 
         //Here we turn it either to right or left side
-        if(turnDirection.equals(Parameter.ORIENTATION_LEFT)) {
+        if (turnDirection.equals(Parameter.ORIENTATION_LEFT)) {
             robotImageView.rotateProperty().setValue(currentOrientation - 90);
-        }else{
+        } else {
             robotImageView.rotateProperty().setValue(currentOrientation + 90);
         }
     }
 
     /**
      * This method removes the robot from its old position and sets it onto the new position
+     *
      * @param oldPosition The old Position of the robot
      * @param newPosition The new Position of the robot
      */
-    public void moveRobot(String oldPosition, String newPosition) {
-        Robot otherRobot = robotMap.get(newPosition);
+    public synchronized void moveRobot(String oldPosition, String newPosition) {
         Robot ownRobot = robotMap.get(oldPosition);
         String otherRobotNewPos = new String();
-
+/*
         String lineOfSight = ownRobot.getLineOfSight();
+        ImageView otherImageView = ((ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(newPosition).getChildren().size() - 1));
+        boolean robotInFront = otherImageView.getImage().getUrl().contains("Hulk") || otherImageView.getImage().getUrl().contains("Hammer") || otherImageView.getImage().getUrl().contains("Smash")
+                || otherImageView.getImage().getUrl().contains("Spin") || otherImageView.getImage().getUrl().contains("Twonky") || otherImageView.getImage().getUrl().contains("ZoomBot");
 
-        //When there is no robot, move as before
-        if (otherRobot == null) {
-            ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
-            fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
-            fieldMap.get(newPosition).getChildren().add(robotImageView);
+
+ */
+        //System.out.println("Robot in Fron? " + robotInFront);
+        // if (!robotInFront) {
+        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
+        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
+        fieldMap.get(newPosition).getChildren().add(robotImageView);
+       /*
         } else {
-            // If there is robot, we first find the new position of it, were it moved
-            int xPosOtherRobot = otherRobot.getxPosition();
-            int yPosOtherRobot = otherRobot.getyPosition();
+            System.out.println("Was für tiles sind in fieldMap an der Stelle vor removen da? " + fieldMap.get(newPosition).getChildren());
+
+            //Get imageView from other robot
+            ImageView otherRobotImageView = (ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(newPosition).getChildren().size() - 1);
+
+            // delete other robot from newPos
+            fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
+
+            //get imageView from own robot
+            ImageView ownRobotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
 
             //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
-            switch (ownRobot.getLineOfSight()) {
+            String[] xYPos = newPosition.split("-");
+            int xPosOtherRobot = Integer.parseInt(xYPos[0]);
+            int yPosOtherRobot = Integer.parseInt(xYPos[1]);
+
+            switch (lineOfSight) {
                 case ORIENTATION_DOWN: {
                     otherRobotNewPos = xPosOtherRobot + "-" + (yPosOtherRobot - 1);
                     break;
@@ -516,20 +538,20 @@ public class MapController implements IController {
                 }
             }
 
-            logger.info("Robot on new");
-                //remove other robot and put on new place
-                ImageView otherRobotImageView = (ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
-                fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
-                fieldMap.get(otherRobotNewPos).getChildren().add(otherRobotImageView);
+            //add imageview from other robot at newField +1
+            fieldMap.get(otherRobotNewPos).getChildren().add(otherRobotImageView);
 
-                //remove own robot and put on new place
-                ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
-                fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
-                fieldMap.get(newPosition).getChildren().add(robotImageView);
+            //delete own robot from old pos
+            fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
 
-                // update other robot (own has already been updated
-                robotMap.put(otherRobotNewPos, otherRobot);
-            }
+            //add imageView from own robot at new pos
+            fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
+
+            oldPosition = newPosition;
+        }
+
+        */
+
     }
 
     /**

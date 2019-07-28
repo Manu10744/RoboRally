@@ -44,6 +44,8 @@ public class MoveII extends server.game.Card {
         String newPos;
         Robot robot = player.getPlayerRobot();
 
+        robotMap.remove(oldPos);
+
         switch (lineOfSight) {
             case ("up"):
                 for (int i = 0; i < 2; i++) {
@@ -104,7 +106,6 @@ public class MoveII extends server.game.Card {
 
         //update robot in robotMap
         String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
-        robotMap.remove(currentPos);
         robotMap.put(currentPos, robot);
         logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
                 robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);

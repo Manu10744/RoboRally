@@ -83,7 +83,7 @@ public class BackUp extends server.game.Card {
 
         //Update robot in robotMap
         String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
-        robotMap.remove(currentPos);
+        robotMap.remove(oldPos);
         robotMap.put(currentPos, robot);
         logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
                 robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
