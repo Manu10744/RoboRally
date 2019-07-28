@@ -147,6 +147,11 @@ public class PlayerMatController implements IController {
     @FXML
     ImageView ownEnergyCubes;
 
+    @FXML
+    Label ownVictoryTilesLabel;
+    @FXML
+    ImageView ownVictoryTiles;
+
     private Stage rootStage;
     private StageController stageController;
 
@@ -732,6 +737,12 @@ public class PlayerMatController implements IController {
     public Label getOwnEnergyCubesLabel() {
         return ownEnergyCubesLabel;
     }
+
+    public Label getOwnVictoryTilesLabel() {
+        return ownVictoryTilesLabel;
+    }
+
+
 
     public ArrayList<Card> getCardsInHand(){
         return cardsInHand;

@@ -62,6 +62,7 @@ public class Server extends Application {
     private int mapWidth;
     private boolean cheatsActivated = false;
     private boolean firstAllRegistersFilled = false;
+    private boolean gameFinished = false;
 
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
@@ -196,6 +197,47 @@ public class Server extends Application {
         }
     }
 
+    public void activateCheckPoints() {
+        logger.info(ANSI_GREEN + "ACTIVATING CHECKPOINTS" + ANSI_RESET);
+
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int x = player.getPlayerRobot().getxPosition();
+            int y = player.getPlayerRobot().getyPosition();
+
+            String pos = x + "-" + y;
+            if (this.checkPointMap.get(pos) != null) {
+                if (this.checkPointMap.get(pos).getCount() == player.getCheckPointCounter() + 1) {
+
+                    // Increment player's checkpoint counter
+                    int checkPointCounter = player.getCheckPointCounter();
+                    checkPointCounter++;
+                    player.setCheckPointCounter(checkPointCounter);
+
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("CheckPointReached", new CheckPointReachedBody(playerID, player.getCheckPointCounter()));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Check if player has reached all CheckPoints
+                    if (player.getCheckPointCounter() == this.getCheckPointMap().size()) {
+                        this.setGameFinished(true);
+
+                        for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("GameFinished", new GameFinishedBody(playerID));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     public void activateBelts() {
         logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING BELTS!" + ANSI_RESET);
         for (ClientWrapper client : this.getConnectedClients()) {
@@ -227,10 +269,233 @@ public class Server extends Application {
                         player.getPlayerRobot().setxPosition(currentXPos + 1);
                         break;
                 }
+            }
+            if (this.blueBeltMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A BLUE BELT!" + ANSI_RESET);
+
+                // orientation of the belt
+                String moveDirection = this.blueBeltMap.get(playerPosition).getOrientations().get(0);
+
+                switch (moveDirection) {
+                    case "up":
+                        player.getPlayerRobot().setyPosition(currentYPos + 2);
+                        break;
+                    case "down":
+                        player.getPlayerRobot().setyPosition(currentYPos - 2);
+                        break;
+                    case "left":
+                        player.getPlayerRobot().setxPosition(currentXPos - 2);
+                        break;
+                    case "right":
+                        player.getPlayerRobot().setxPosition(currentXPos + 2);
+                        break;
+                }
+            }
+            int newXPos = player.getPlayerRobot().getxPosition();
+            int newYPos = player.getPlayerRobot().getyPosition();
+            logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                    player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+            for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                clientWrapper.getWriter().flush();
+            }
+
+        }
+    }
+
+    public void activateRotatingBelts() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING ROTATINGBELTS!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+            String turnDirection = null;
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+            if (this.greenRotatingBeltMap.get(playerPosition) != null) {
+                logger.info(ANSI_GREEN + "PLAYER " + player.getName() + " LANDED ON A GREEN ROTATINGBELT!" + ANSI_RESET);
+
+                // orientation of the belt
+                String firstOrientation = this.greenRotatingBeltMap.get(playerPosition).getOrientations().get(0);
+                String secondOrientation = this.greenRotatingBeltMap.get(playerPosition).getOrientations().get(1);
+
+                System.out.println("FIRST DIR: " + firstOrientation);
+                System.out.println("SECOND DIR: " + secondOrientation);
+                if (this.greenRotatingBeltMap.get(playerPosition).getCrossing() == false) {
+                    switch (firstOrientation) {
+                        case "up":
+                            if (secondOrientation.equals("right")) {
+                                player.getPlayerRobot().setxPosition(currentXPos + 1);
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("left")) {
+                                player.getPlayerRobot().setxPosition(currentXPos - 1);
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
+                            }
+                            break;
+                        case "down":
+                            if (secondOrientation.equals("right")) {
+                                player.getPlayerRobot().setxPosition(currentXPos + 1);
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("left")) {
+                                player.getPlayerRobot().setxPosition(currentXPos - 1);
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
+                            }
+                            break;
+                        case "left":
+                            if (secondOrientation.equals("up")) {
+                                player.getPlayerRobot().setyPosition(currentYPos + 1);
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("down")) {
+                                player.getPlayerRobot().setyPosition(currentYPos - 1);
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
+                            }
+                            break;
+                        case "right":
+                            if (secondOrientation.equals("up")) {
+                                player.getPlayerRobot().setyPosition(currentYPos + 1);
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("down")) {
+                                player.getPlayerRobot().setyPosition(currentYPos - 1);
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                }
+
                 int newXPos = player.getPlayerRobot().getxPosition();
                 int newYPos = player.getPlayerRobot().getyPosition();
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
                         player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, turnDirection));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
 
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
@@ -243,8 +508,9 @@ public class Server extends Application {
 
     /**
      * This method performs the actions needed for a move cheat. Only executed when cheats on server are activated.
-     * @param cheat The actual cheat (in this case 'move') plus the corresponding x - and y - coordinate that the player
-     *              wants his robot to move to.
+     *
+     * @param cheat          The actual cheat (in this case 'move') plus the corresponding x - and y - coordinate that the player
+     *                       wants his robot to move to.
      * @param cheatingPlayer The player that activated this cheat.
      */
     public void execMoveCheat(String cheat, Player cheatingPlayer) {
@@ -269,8 +535,9 @@ public class Server extends Application {
 
     /**
      * This method performs the actions needed for a turn cheat. Only executed when cheats on server are activated.
-     * @param cheat The actual cheat (in this case 'turn') plus the desired direction the player wants his robot to be
-     *              turned.
+     *
+     * @param cheat          The actual cheat (in this case 'turn') plus the desired direction the player wants his robot to be
+     *                       turned.
      * @param cheatingPlayer The player that activated this cheat.
      */
     public void execTurnCheat(String cheat, Player cheatingPlayer) {
@@ -319,7 +586,8 @@ public class Server extends Application {
 
     /**
      * This method performs the actions needed for a play card cheat. Only executed when cheats on server are activated.
-     * @param cheat The actual cheat (in this case 'play') plus the desired card that the player wants to play.
+     *
+     * @param cheat          The actual cheat (in this case 'play') plus the desired card that the player wants to play.
      * @param cheatingPlayer The player that activated this cheat.
      */
     public void execPlayCheat(String cheat, Player cheatingPlayer) {
@@ -419,13 +687,6 @@ public class Server extends Application {
                 break;
         }
     }
-
-
-
-
-
-
-
 
 
     public void activateCheats() {
@@ -534,13 +795,21 @@ public class Server extends Application {
         this.map = map;
     }
 
-    public int getMapHeight() { return mapHeight; }
+    public int getMapHeight() {
+        return mapHeight;
+    }
 
-    public void setMapHeight(int mapHeight) { this.mapHeight = mapHeight; }
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
+    }
 
-    public int getMapWidth() { return mapWidth; }
+    public int getMapWidth() {
+        return mapWidth;
+    }
 
-    public void setMapWidth(int mapWidth) { this.mapWidth = mapWidth; }
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
+    }
 
     public Tile getAntenna() {
         return antenna;
@@ -623,7 +892,13 @@ public class Server extends Application {
         this.cardsPlayed = cardsPlayed;
     }
 
-    public boolean getCheatsActivated() { return cheatsActivated; }
+    public boolean getCheatsActivated() {
+        return cheatsActivated;
+    }
+
+    public boolean isGameFinished() { return gameFinished; }
+
+    public void setGameFinished(boolean gameFinished) { this.gameFinished = gameFinished; }
 
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
@@ -691,7 +966,6 @@ public class Server extends Application {
         public BufferedReader getReader() {
             return reader;
         }
-
 
 
     }

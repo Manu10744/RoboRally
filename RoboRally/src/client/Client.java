@@ -55,6 +55,7 @@ public class Client {
     private PlayerMatController playerMatController;
     private OpponentMatController opponentMatController;
     private ChooseRobotController chooseRobotController;
+    private ScoreboardController scoreBoardController;
 
     public MessageDistributer getMessageDistributer() {
         return messageDistributer;
@@ -121,6 +122,12 @@ public class Client {
 
     public void setChooseRobotController(ChooseRobotController chooseRobotController) {
         this.chooseRobotController = chooseRobotController;
+    }
+
+    public ScoreboardController getScoreBoardController() { return scoreBoardController; }
+
+    public void setScoreBoardController(ScoreboardController scoreBoardController) {
+        this.scoreBoardController = scoreBoardController;
     }
 
     public Player getPlayer() {

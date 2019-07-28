@@ -40,6 +40,8 @@ public class StageController implements Initializable, IController {
     @FXML
     private GridPane chat;
     @FXML
+    private GridPane scoreboard;
+    @FXML
     private ImageView lobbyBackground;
 
     @FXML
@@ -54,6 +56,8 @@ public class StageController implements Initializable, IController {
     private WikiController wikiController;
     @FXML
     private ChooseRobotController chooseRobotController;
+    @FXML
+    private ScoreboardController scoreboardController;
 
     // Hashmap for the controller references
     private Map<String, IController> controllerMap = new HashMap<>();
@@ -81,13 +85,15 @@ public class StageController implements Initializable, IController {
         if (playerMatController != null){
             controllerMap.put("PlayerMat", playerMatController.setPrimaryController(this));
         }
+        if (scoreboardController != null) {
+            controllerMap.put("ScoreBoard", scoreboardController.setPrimaryController(this));
+        }
 
         // Sends the HasMap to the MessageDistributer after adding all controllers
         if (playerMatController != null && mapController != null && chatController != null && opponentMatController != null) {
             MessageDistributer messageDistributer = new MessageDistributer();
             messageDistributer.setControllerMap(controllerMap);
         }
-
     }
 
     public Map<String, IController> getControllerMap() {
@@ -119,6 +125,10 @@ public class StageController implements Initializable, IController {
     }
 
     public GridPane getStage() { return stage; }
+
+    public GridPane getScoreBoard() { return scoreboard; }
+
+    public ImageView getLobbyBackground() { return lobbyBackground; }
 
     @Override
     public IController setPrimaryController(StageController stageController) {
