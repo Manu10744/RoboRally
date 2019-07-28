@@ -21,6 +21,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -723,6 +724,10 @@ public class MessageDistributer {
                     clientWrapper.getWriter().flush();
                 }
 
+                // Antenna determining next player
+                Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
+                int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+
                 activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
@@ -735,6 +740,10 @@ public class MessageDistributer {
                 // Round is not finished yet
                 // determine next active player
                 activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+
+                // Antenna determining next player
+                Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
+                int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
@@ -1068,6 +1077,10 @@ public class MessageDistributer {
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessageCurrentCards));
                             clientWrapper.getWriter().flush();
                         }
+
+                        // Antenna determining next player
+                        Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
+                        int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
                         // determine active player
                         int activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
