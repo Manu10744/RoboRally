@@ -20,6 +20,8 @@
 * Players are now rebooting after falling out of map or into pits. - *(Jessie, Manu)*
 * Gears are now activating after every player has played his current register. - *(Manu)*
 * RoboRally Wikipedia has been extended (Maps). - *(Verena)*
+* A documentation has been added. - *(Vincent)*
+* Javadoc created. - *(Vincent)*
 
 ### Changes
 * Visualisation adjusted to a uniform and classical green screen theme - *(Ivan)*
