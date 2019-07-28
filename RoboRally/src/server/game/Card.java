@@ -172,7 +172,7 @@ public abstract class Card {
             }
         }
 
-        /*
+
         //Next Field has robot
         if (nextFieldRobot != null) {  // If there is robot, we first find the new position of it, were it moved
             int xPosOwnRobot = ownRobot.getxPosition();
@@ -204,7 +204,7 @@ public abstract class Card {
             RotatingBelt robotAfterRotatingBelt = rotatingBeltMap.get(otherRobotNewPos);
 
             Belt robotBelt = beltMap.get(nextFieldRobot);
-            Belt robotAfterBelt = beltMap.get(nextFieldRobot);
+            Belt robotAfterBelt = beltMap.get(otherRobotNewPos);
 
             //Check if in new other robot position there is opposing Wall, do not allow move
             Wall wallInFuturePlaceOfOtherRobot = wallMap.get(otherRobotNewPos);
@@ -215,10 +215,8 @@ public abstract class Card {
             else if (robotonRotatingBelt != null && robotAfterRotatingBelt == null || robotBelt != null && robotAfterBelt == null) {
                 return false;
             }
-
         }
 
-         */
         return true;
     }
 
