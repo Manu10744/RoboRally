@@ -13,6 +13,7 @@
 
 ### New Features
 * Antenna determines next Player - *(Ivan)*
+* Multitouch map-zoom enabled - *(Ivan)*
 * All Moves have been implemented. - *(Verena, Mia, Manu)*
 * An ingame soundtrack has been added. - *(Jessie)*
 * Players are now rebooting after falling out of map or into pits. - *(Jessie, Manu)*
