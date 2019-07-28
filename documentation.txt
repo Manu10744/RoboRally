@@ -23,3 +23,12 @@ In Game:
 
 Exit the Game:
 - click top right "X" Button.
+
+
+Cheats: (type in chat)
+- Enable:   set cheat_mode 1
+- Disable:  set cheat_mode 0
+
+- Teleport: move "x" "y"
+- Cards:    play "card_name"
+- Turn      turn "left" || "right"
