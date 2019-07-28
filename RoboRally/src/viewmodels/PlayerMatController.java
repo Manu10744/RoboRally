@@ -402,7 +402,6 @@ public class PlayerMatController implements IController {
     public void putImageInRegister(int registerNumber, Image cardImage){
         //Making the cards responsive
 
-
         switch (registerNumber){
             case 1: {
                 register1.setImage(cardImage);

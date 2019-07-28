@@ -1564,10 +1564,6 @@ public class MessageDistributer {
 
         // Construction phase
         if (activePhase == BUILD_UP_PHASE) {
-            ArrayList<Card> deck = client.getPlayer().getDeckDraw().getDeck();
-            client.getPlayer().getDeckDraw().shuffleDeck();
-            System.out.println(client.getPlayer().getDeckDraw().getDeck());
-
             client.getChatHistoryProperty().set("The game has commenced - choose a STARTING POINT while you still can, muhahaha!");
 
         }
@@ -1721,10 +1717,9 @@ public class MessageDistributer {
             int register = cardSelectedBody.getRegister();
             int playerID = cardSelectedBody.getPlayerID();
 
-            for (Player player : client.getOtherPlayers()) {
-                if (playerID == player.getPlayerID()) {
-                    client.getOpponentMatController().updateOpponentRegister(client.getOtherPlayers(), register, player);
-
+            for (Player opponentPlayer : client.getOtherPlayers()) {
+                if (playerID == opponentPlayer.getPlayerID()) {
+                    client.getOpponentMatController().updateOpponentRegister(client.getOtherPlayers(), register, opponentPlayer);
                 }
             }
 
@@ -1893,14 +1888,15 @@ public class MessageDistributer {
         int activeRegister = client.getPlayer().getCurrentRound();
 
         // 5 registers have been played, so reset
-        if (activeRegister == 5) {
-            client.getPlayer().setActiveRegister(1);
+        if (activeRegister == REGISTER_FIVE) {
+            client.getPlayer().setActiveRegister(REGISTER_ONE);
+            activeRegister = 1;
         } else {
             //after every card in the current register is shown, the register is updated
             activeRegister++;
         }
 
-        System.out.println("Was ist die currentround? " + activeRegister);
+        System.out.println("CurrentRound" + activeRegister);
 
             client.getPlayer().setActiveRegister(activeRegister);
 
@@ -1921,7 +1917,7 @@ public class MessageDistributer {
                 }
 
                 //when last card was shown, empty registers
-                if (activeRegister == REGISTER_FIVE) {
+                if (activeRegister == REGISTER_FIVE) { //Todo wait for too long
                     client.getOpponentMatController().emptyRegisters(client.getOtherPlayers());
                 }
             }
