@@ -20,7 +20,6 @@ public class Antenna extends Tile {
     private String type;
     @Expose
     private ArrayList<String> orientations;
-    private Server server;
 
     /**
      * This is the constructor for the default antenna that is used in any of the predefined maps. Because all values are fixed,

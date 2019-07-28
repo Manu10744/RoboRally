@@ -15,10 +15,7 @@ import javafx.stage.Stage;
 import server.game.*;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
-import server.game.decks.DeckDiscard;
-import server.game.decks.DeckDraw;
-import server.game.decks.DeckHand;
-import server.game.decks.DeckRegister;
+import server.game.decks.*;
 import utils.Parameter;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
@@ -64,6 +61,11 @@ public class Server extends Application {
     private boolean firstAllRegistersFilled = false;
     private boolean gameFinished = false;
 
+    private DeckSpam deckSpam;
+    private DeckTrojan deckTrojan;
+    private DeckVirus deckVirus;
+    private DeckWorm deckWorm;
+
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
@@ -85,6 +87,21 @@ public class Server extends Application {
     private static final Logger logger = Logger.getLogger(Server.class.getName());
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
+
+    public Server() {
+        // Initialize the decks containing the damage cards
+        this.deckSpam = new DeckSpam();
+        this.deckSpam.initializeDeck();
+
+        this.deckTrojan = new DeckTrojan();
+        this.deckTrojan.initializeDeck();
+
+        this.deckVirus = new DeckVirus();
+        this.deckVirus.initializeDeck();
+
+        this.deckWorm = new DeckWorm();
+        this.deckWorm.initializeDeck();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -883,7 +900,6 @@ public class Server extends Application {
         return blueRotatingBeltMap;
     }
 
-
     public int getCardsPlayed() {
         return cardsPlayed;
     }
@@ -899,6 +915,22 @@ public class Server extends Application {
     public boolean isGameFinished() { return gameFinished; }
 
     public void setGameFinished(boolean gameFinished) { this.gameFinished = gameFinished; }
+
+    public DeckSpam getDeckSpam() {
+        return deckSpam;
+    }
+
+    public DeckTrojan getDeckTrojan() {
+        return deckTrojan;
+    }
+
+    public DeckVirus getDeckVirus() {
+        return deckVirus;
+    }
+
+    public DeckWorm getDeckWorm() {
+        return deckWorm;
+    }
 
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;

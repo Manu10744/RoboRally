@@ -511,39 +511,45 @@ public class PlayerMatController implements IController {
         if (card.getCardName().equals("Again")) {
             image = new Image("/resources/images/cards/again-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("BackUp")) {
+        } else if (card.getCardName().equals("BackUp")) {
             image = new Image("/resources/images/cards/moveback-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("MoveI")) {
+        } else if (card.getCardName().equals("MoveI")) {
             image = new Image("/resources/images/cards/move1-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("MoveII")) {
+        } else if (card.getCardName().equals("MoveII")) {
             image = new Image("/resources/images/cards/move2-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("MoveIII")) {
+        } else if (card.getCardName().equals("MoveIII")) {
             image = new Image("/resources/images/cards/move3-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("PowerUp")) {
+        } else if (card.getCardName().equals("PowerUp")) {
             image = new Image("/resources/images/cards/powerup-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("TurnLeft")) {
+        } else if (card.getCardName().equals("TurnLeft")) {
             image = new Image("/resources/images/cards/leftturn-" + color + "100x100.png");
             return image;
-        }
-        if (card.getCardName().equals("TurnRight")) {
+        } else if (card.getCardName().equals("TurnRight")) {
             image = new Image("/resources/images/cards/rightturn-" + color + "100x100.png");
             return image;
-        } else {
+        } else if (card.getCardName().equals("UTurn")) {
             image = new Image("/resources/images/cards/uturn-" + color + "100x100.png");
             return image;
+        } else if (card.getCardName().equals("Spam")) {
+            image = new Image("/resources/images/cards/spam-100x100.png");
+            return image;
+        } else if (card.getCardName().equals("Trojan")) {
+            image = new Image("/resources/images/cards/trojanhorse-100x100.png");
+            return image;
+        } else if (card.getCardName().equals("Virus")) {
+            image = new Image("/resources/images/cards/virus-100x100.png");
+            return image;
+        } else if (card.getCardName().equals("Worm")) {
+            image = new Image("/resources/images/cards/worm-100x100.png");
+            return image;
+        } else {
+            return null;
         }
-
     }
 
     public HBox getPlayerIcons() {
