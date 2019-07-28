@@ -344,7 +344,7 @@ public class MessageDistributer {
 
             try {
                 // Sets Map in server
-                String mapJSON = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
+                String mapJSON = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(mapJSON);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
 
@@ -441,7 +441,7 @@ public class MessageDistributer {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 try {
-                    String map = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
+                    String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                     client.getWriter().println(map);
                     client.getWriter().flush();
                 } catch (IOException e) {
