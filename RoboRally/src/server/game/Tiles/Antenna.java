@@ -78,27 +78,30 @@ public class Antenna extends Tile {
     // This method determines next player to play by call and returns next players' playerID
     public int determineNextPlayer(Point2D antennaPoint, ArrayList<Server.ClientWrapper> connectedClients) {
 
-        // Fill list nextToPlay with objects which contain name and distance as values
-        int i = 0;
-        while (i < connectedClients.size()) {
-            // Point is generated with robot x and y position
-            Point2D robotPoint = new Point2D(
-                    connectedClients.get(i).getPlayer().getPlayerRobot().getxPosition(),
-                    connectedClients.get(i).getPlayer().getPlayerRobot().getyPosition());
+        // Fill ArrayList at the beginning of the round
+        if (nextToPlay.size() == 0) {
+            // Fill list nextToPlay with objects which contain name and distance as values
+            int i = 0;
+            while (i < connectedClients.size()) {
+                // Point is generated with robot x and y position
+                Point2D robotPoint = new Point2D(
+                        connectedClients.get(i).getPlayer().getPlayerRobot().getxPosition(),
+                        connectedClients.get(i).getPlayer().getPlayerRobot().getyPosition());
 
-            // determine playerID
-            int playerID = connectedClients.get(i).getPlayerID();
+                // determine playerID
+                int playerID = connectedClients.get(i).getPlayerID();
 
-            // determine name
-            String name = connectedClients.get(i).getName();
+                // determine name
+                String name = connectedClients.get(i).getName();
 
-            // determine distance to antenna
-            double distance = distanceCalculatorByFields(antennaPoint, robotPoint);
+                // determine distance to antenna
+                double distance = distanceCalculatorByFields(antennaPoint, robotPoint);
 
-            // safe object with determine info in nextToPlay
-            nextToPlay.add(new DistanceAndName(playerID, name, distance));
+                // safe object with determine info in nextToPlay
+                nextToPlay.add(new DistanceAndName(playerID, name, distance));
 
-            i++;
+                i++;
+            }
         }
 
         // sort DistanceAndName by distance
@@ -114,11 +117,16 @@ public class Antenna extends Tile {
         double nextPlayerDistance = nextToPlay.get(k).getDistance();
         k++;
 
-        if (nextPlayerDistance != nextToPlay.get(k).getDistance()) {
+        if (nextToPlay.size() == 1) {
+            nextToPlay.remove(0);
+            return nextPlayerID;
+        } else if (nextPlayerDistance != nextToPlay.get(k).getDistance()) {
+            nextToPlay.remove(0);
             return nextPlayerID;
         } else {
             //TODO place here code for selection by antenna beam. By now if there more than one robot to choose from
             // it simply takes the first in list to avoid the game to stuck
+            nextToPlay.remove(0);
             return nextPlayerID;
         }
     }
