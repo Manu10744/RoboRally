@@ -6,10 +6,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.ImageView;
+import server.game.Card;
 import server.game.Player;
 import server.game.Robot;
+import utils.Parameter;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * This class has full control over the opponentMat views.
@@ -176,6 +181,9 @@ public class OpponentMatController implements IController {
     @FXML
     private ImageView player5PermUpdates3;
 
+    private ArrayList<HBox> opponentPlayerRegisters = new ArrayList<>();
+
+    private HashMap<Integer, HBox> registerMap = new HashMap<>();
 
 
     /* TODO
@@ -194,37 +202,19 @@ public class OpponentMatController implements IController {
             return player1Icon;
          }
      */
+    private static final Logger logger = Logger.getLogger(viewmodels.OpponentMatController.class.getName());
 
-    /**
-     * This method shows that an opponent player with the player id playerID has laid a card (backside visible) into the register register
-     *
-     * @param register
-     * @param playerID
-     */
-    public void updateOpponentRegister(int register, int playerID) {
-        //Todo show cards laid down on opponent map
-        ArrayList<HBox> hBoxes = new ArrayList<>();
-        hBoxes.add(player1Register);
-        hBoxes.add(player2Register);
-        hBoxes.add(player3Register);
-        hBoxes.add(player4Register);
-        hBoxes.add(player5Register);
-
-
-        for (HBox hbox : hBoxes) {
-
-            hbox.getId();
-        }
-    }
 
     /**
      * This method gets a robot from an opposing player and the list with all otherPlayres
      * and sets for them their icon, it is not already taken
      *
      * @param otherPlayers
-     * @param opponentPlayerRobot
+     * @param opponentPlayer
      */
-    public void initOtherPlayerIcon(ArrayList<Player> otherPlayers, Robot opponentPlayerRobot) {
+    public void initOtherPlayerIcon(ArrayList<Player> otherPlayers, Player opponentPlayer) {
+
+        //eventually this part in initialise
         ArrayList<ImageView> opponentPlayerIcons = new ArrayList<>();
         opponentPlayerIcons.add(player1Icon);
         opponentPlayerIcons.add(player2Icon);
@@ -233,51 +223,169 @@ public class OpponentMatController implements IController {
         opponentPlayerIcons.add(player5Icon);
 
 
+        opponentPlayerRegisters.add(player1Register);
+        opponentPlayerRegisters.add(player2Register);
+        opponentPlayerRegisters.add(player3Register);
+        opponentPlayerRegisters.add(player4Register);
+        opponentPlayerRegisters.add(player5Register);
+
+
+        // player1Register.getChildren().setAll(player1Reg1, player1Reg2, player1Reg3, player1Reg4, player1Reg5);
+
         for (int i = 0; i < otherPlayers.size(); i++) {
-            System.out.println("Hast du das icon geupdated");
             ImageView playerIcon = opponentPlayerIcons.get(i);
             playerIcon.setPreserveRatio(true);
             playerIcon.fitWidthProperty().bind(player1Register.widthProperty());
             playerIcon.fitHeightProperty().bind(player1Register.heightProperty());
 
             if (playerIcon.getImage() == null) {
+                {
+                    registerMap.put(opponentPlayer.getPlayerID(), opponentPlayerRegisters.get(i));
+                    logger.info("OPPONENTMATCONTROLLER: REGISTER " + opponentPlayerRegisters.get(i).getId() + " HAS BEEN ADDED TO REGISTERMAP FOR PLAYER WITH ID" + opponentPlayer.getPlayerID());
 
-                switch (opponentPlayerRobot.getName()) {
-                    case "HammerBot": {
-                        Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
-                        playerIcon.setImage(avatar);
-                        break;
-                    }
-                    case "HulkX90": {
-                        Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
-                        playerIcon.setImage(avatar);
-                        break;
-                    }
-                    case "SmashBot": {
-                        Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
-                        playerIcon.setImage(avatar);
-                        break;
-                    }
-                    case "SpinBot": {
-                        Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
-                        playerIcon.setImage(avatar);
-                        break;
-                    }
-                    case "Twonky": {
-                        Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
-                        playerIcon.setImage(avatar);
-                        break;
-                    }
-                    case "ZoomBot": {
-                        Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
-                        playerIcon.setImage(avatar);
-                        break;
+                    switch (opponentPlayer.getPlayerRobot().getName()) {
+                        case "HammerBot": {
+                            Image avatar = new Image("/resources/images/robots/choose-robot-hammerbot.png");
+                            playerIcon.setImage(avatar);
+                            break;
+                        }
+                        case "HulkX90": {
+                            Image avatar = new Image("/resources/images/robots/choose-robot-hulkX90.png");
+                            playerIcon.setImage(avatar);
+                            break;
+                        }
+                        case "SmashBot": {
+                            Image avatar = new Image("/resources/images/robots/choose-robot-smashbot.png");
+                            playerIcon.setImage(avatar);
+                            break;
+                        }
+                        case "SpinBot": {
+                            Image avatar = new Image("/resources/images/robots/choose-robot-spinbot.png");
+                            playerIcon.setImage(avatar);
+                            break;
+                        }
+                        case "Twonky": {
+                            Image avatar = new Image("/resources/images/robots/choose-robot-twonky.png");
+                            playerIcon.setImage(avatar);
+                            player1Reg1.setImage(new Image("/resources/images/cards/card-back50x50.png"));
+                            break;
+                        }
+                        case "ZoomBot": {
+                            Image avatar = new Image("/resources/images/robots/choose-robot-zoombot.png");
+                            playerIcon.setImage(avatar);
+                            break;
+                        }
                     }
                 }
-
             }
         }
     }
+
+    public void updateOpponentRegister(ArrayList<Player> opponentPlayers, int registerID, Player opponentPlayer) {
+        Image cardBackImage = new Image("/resources/images/cards/card-back50x50.png");
+        int playerID = opponentPlayer.getPlayerID();
+        //updating imageView
+
+        //Making the imageView responsive
+        int i = 0;
+        while (i < opponentPlayers.size()) {
+            if (playerID == (opponentPlayers.get(i).getPlayerID())) {
+                HBox opponentPlayerRegister = registerMap.get(playerID);
+                logger.info("( OPPONENTMAPCONTROLLER ): OPPONENT PLAYER SELECTED CARD INTO REGISTER " + opponentPlayerRegister.getId());
+
+                /*
+                In the following we do not have to decrement the registerID even though it is an index,
+                because there are six imageViews in register HBox: 1 for the icon, and 5 for the registers
+                 */
+
+                //Check if there is already a card in register - if so, delete
+                if (((ImageView) opponentPlayerRegister.getChildren().get(registerID)).getImage() != null) {
+                    ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setImage(null);
+                } else {
+                    ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setImage(cardBackImage);
+
+                    //make imageViews responsive
+                    ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).setPreserveRatio(true);
+                    ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).fitWidthProperty().bind(player1Register.widthProperty());
+                    ((ImageView) opponentPlayerRegister.getChildren().get(registerID)).fitHeightProperty().bind(player1Register.heightProperty());
+                }
+            }
+            i++;
+        }
+
+    }
+
+    public ArrayList<Integer> getEmptyRegisterNumbersFromOpponents(Player opponentPlayer) {
+        ArrayList<Integer> emptyOpponentRegisters = new ArrayList();
+
+            for (int register = Parameter.REGISTER_ONE; register <= Parameter.REGISTER_FIVE; register++) {
+                if (((ImageView) registerMap.get(opponentPlayer.getPlayerID()).getChildren().get(register)).getImage() == null) {
+                    emptyOpponentRegisters.add(register);
+
+                    logger.info("OPPONENTPLAYERMAT: NEW EMPTY REGISTER " + register + " HAS BEEN ADDED TO EMPTY REGISTERS " + emptyOpponentRegisters);
+                }
+            }
+
+        return emptyOpponentRegisters;
+    }
+
+    /**
+     * This method shows the current register during the active phase. It is used in handleCurrentCards
+     * @param opponnetPlayer
+     * @param  card
+     * @param  activeRound
+     */
+    public void showCurrentOpponentRegisters(Player opponnetPlayer, Card card, int activeRound){
+        Image cardImage = new Image("");
+        String color = opponnetPlayer.getColor();
+        String cardName = card.getCardName();
+
+        int playerID = opponnetPlayer.getPlayerID();
+
+        //Todo langer switch case mit KartenName und farbe dann plus
+        switch(cardName){
+            case "Again": {
+                cardImage = new Image("/resources/images/cards/again-" + color + "50x50.png");
+                break;
+            }
+            case "BackUp": {
+                cardImage = new Image("/resources/images/cards/moveback-" + color + "50x50.png");
+                break;
+            }
+            case "MoveI": {
+                cardImage = new Image("/resources/images/cards/move1-" + color + "50x50.png");
+                break;
+            }
+            case "MoveII": {
+                cardImage = new Image("/resources/images/cards/move2-" + color + "50x50.png");
+                break;
+            }
+            case "MoveIII": {
+                cardImage = new Image("/resources/images/cards/move3-" + color + "50x50.png");
+                break;
+            }
+            case "PowerUp": {
+                cardImage = new Image("/resources/images/cards/energy-routine-" + color + "50x50.png");
+                break;
+            }
+            case "TurnLeft": {
+                cardImage = new Image("/resources/images/cards/leftturn-" + color + "50x50.png");
+                break;
+            }
+            case "TurnRight": {
+                cardImage = new Image("/resources/images/cards/rightturn-" + color + "50x50.png");
+                break;
+            }
+            case "UTurn": {
+                cardImage = new Image("/resources/images/cards/uturn-" + color + "50x50.png");
+                break;
+            }
+        }
+
+        ((ImageView) opponentPlayerRegisters.get(playerID).getChildren().get(activeRound)).setImage(cardImage);
+
+    }
+
 
     public HBox getPlayer1Register() {
         return player1Register;

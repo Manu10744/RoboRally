@@ -58,13 +58,7 @@ public class MoveII extends server.game.Card {
                         // Update the local y-Position for the algorithm
                         yPosition = yPosition + 1;
                         // Move was valid, update old position for algorithm for next iteration
-                        robotMap.remove(oldPos);
                         oldPos = xPosition + "-" + yPosition;
-
-                        //update robot in robotMap
-                        robotMap.put(newPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -76,13 +70,7 @@ public class MoveII extends server.game.Card {
                     if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "left", "right")) {
                         robot.setxPosition(xPosition + 1);
                         xPosition = xPosition + 1;
-                        robotMap.remove(oldPos);
                         oldPos = xPosition + "-" + yPosition;
-
-                        //update robot in robotMap
-                        robotMap.put(newPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -94,14 +82,7 @@ public class MoveII extends server.game.Card {
                     if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "up", "down")) {
                         robot.setyPosition(yPosition - 1);
                         yPosition = yPosition - 1;
-                        robotMap.remove(oldPos);
                         oldPos = xPosition + "-" + yPosition;
-
-                        //update robot in robotMap
-                        robotMap.put(newPos, robot);
-                        System.out.println("Roboter??? " + robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos) + " | " +
-                                robotMap.get(newPos) + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -113,13 +94,8 @@ public class MoveII extends server.game.Card {
                     if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, oldPos, newPos, "right", "left")) {
                         robot.setxPosition(xPosition - 1);
                         xPosition = xPosition - 1;
-                        robotMap.remove(oldPos);
                         oldPos = xPosition + "-" + yPosition;
 
-                        //update robot in robotMap
-                        robotMap.put(newPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION in ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
-                                robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -129,5 +105,11 @@ public class MoveII extends server.game.Card {
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
 
+        //update robot in robotMap
+        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
+        robotMap.remove(currentPos);
+        robotMap.put(currentPos, robot);
+        logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
+                robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
     }
 }

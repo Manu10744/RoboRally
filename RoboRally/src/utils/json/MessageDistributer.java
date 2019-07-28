@@ -628,15 +628,15 @@ public class MessageDistributer {
         cardsPlayed++;
         server.setCardsPlayed(cardsPlayed);
 
-            int activePlayerID;
-            // Round is finished, everyone has played their register
-            if (server.getCardsPlayed() == server.getPlayers().size()) {
+        int activePlayerID;
+        // Round is finished, everyone has played their register
+        if (server.getCardsPlayed() == server.getPlayers().size()) {
 
-                // Activate the Belts
-                server.activateBelts();
+            // Activate the Belts
+            server.activateBelts();
 
-                // Activate the Gears
-                server.activateGears();
+            // Activate the Gears
+            server.activateGears();
 
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
@@ -661,7 +661,7 @@ public class MessageDistributer {
                     // Reset the counter that observes the selected cards of a player
                     player.setSelectedCards(0);
 
-                    for (Server.ClientWrapper client : server.getConnectedClients()){
+                    for (Server.ClientWrapper client : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(PROGRAMMING_PHASE));
                         client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         client.getWriter().flush();
@@ -696,7 +696,7 @@ public class MessageDistributer {
 
                 ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
                 // Collect each players ID and card in current register
-                for (Server.ClientWrapper client: server.getConnectedClients()) {
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
                     Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
                     int playerID = client.getPlayer().getPlayerID();
 
@@ -720,7 +720,7 @@ public class MessageDistributer {
         } else {
             // Round is not finished yet
             // determine next active player
-             activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+            activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
 
             for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                 JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
@@ -1149,8 +1149,7 @@ public class MessageDistributer {
 
                 client.getOtherPlayers().add(otherPlayer);
                 //Here the icon for other players is set
-                System.out.println("Wahahah");
-                client.getOpponentMatController().initOtherPlayerIcon(client.getOtherPlayers(), otherPlayer.getPlayerRobot());
+                client.getOpponentMatController().initOtherPlayerIcon(client.getOtherPlayers(), otherPlayer);
 
                 if (client.getPlayer().getName() == "") {
                     logger.info("CLIENT " + ANSI_GREEN + "- NO NAME YET - " + ANSI_RESET
@@ -1685,7 +1684,14 @@ public class MessageDistributer {
         Platform.runLater(() -> {
             int register = cardSelectedBody.getRegister();
             int playerID = cardSelectedBody.getPlayerID();
-            client.getOpponentMatController().updateOpponentRegister(register, playerID);
+
+            for (Player player : client.getOtherPlayers()) {
+                if (playerID == player.getPlayerID()) {
+                    client.getOpponentMatController().updateOpponentRegister(client.getOtherPlayers(), register, player);
+
+                }
+            }
+
         });
     }
 
@@ -1778,10 +1784,8 @@ public class MessageDistributer {
         PlayerMatController playerMatController = client.getPlayerMatController();
 
         Platform.runLater(() -> {
-            //No differentiation bewteen too slow players and finished players necessary, as all remaining cards in hand
+            //No differentiation between too slow players and finished players necessary, as all remaining cards in hand
             //are put on discard pile as follows:
-
-            //Remove register cards from hand
 
             //Remaining cards in hand are added to discard pile
             ArrayList<Card> remainingCardsInHand = player.getDeckHand().getDeck();
@@ -1789,6 +1793,16 @@ public class MessageDistributer {
 
             //Hand is emptied
             playerMatController.playerHand.setVisible(false);
+
+            //Update gui registers of opponent players
+            for (Player opponentPlayer : client.getOtherPlayers()) {
+                ArrayList<Integer> emptyRegisterNumbers = client.getOpponentMatController().getEmptyRegisterNumbersFromOpponents(opponentPlayer);
+                int i = 0;
+                while (i < emptyRegisterNumbers.size()) {
+                    client.getOpponentMatController().updateOpponentRegister(client.getOtherPlayers(), emptyRegisterNumbers.get(i), opponentPlayer);
+                    i++;
+                }
+            }
 
         });
     }
@@ -1808,6 +1822,7 @@ public class MessageDistributer {
         PlayerMatController playerMatController = client.getPlayerMatController();
         Player player = client.getPlayer();
 
+
         Platform.runLater(() -> {
             ArrayList<Integer> emptyRegisterNumbers = playerMatController.getEmptyRegisterNumbers();
 
@@ -1819,9 +1834,11 @@ public class MessageDistributer {
                     player.getDeckRegister().getDeck().set(emptyRegisterNumbers.get(i) - 1, card);
 
                     // GUI is updated
-                    Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
-                    playerMatController.putImageInRegister(emptyRegisterNumbers.get(i), cardImage);
-
+                    //update own player
+                    if (player.getPlayerID() == client.getPlayer().getPlayerID()) {
+                        Image cardImage = playerMatController.getCardImage(card, client.getPlayer().getColor());
+                        playerMatController.putImageInRegister(emptyRegisterNumbers.get(i), cardImage);
+                    }
                     i++;
                 }
             }
@@ -1859,6 +1876,7 @@ public class MessageDistributer {
                     if (otherPlayer.getPlayerID() == playerID) {
                         otherPlayer.getDeckRegister().getDeck().set(client.getPlayer().getCurrentRound() - 1, card);
                         System.out.println(otherPlayer.getDeckRegister().getDeck());
+
 
                         logger.info(ANSI_CYAN + "SET A " + card + " INTO REGISTER " + client.getPlayer().getCurrentRound() + " FROM " + otherPlayer.getName());
                     }

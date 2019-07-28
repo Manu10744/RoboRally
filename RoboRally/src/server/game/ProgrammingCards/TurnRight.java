@@ -43,24 +43,31 @@ public class TurnRight extends server.game.Card {
         switch (lineOfSight) {
             case ("up"):
                 robot.setLineOfSight("right");
-                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: "+ robot.getLineOfSight() + ANSI_RESET);
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: " + robot.getLineOfSight() + ANSI_RESET);
                 break;
             case ("right"):
                 robot.setLineOfSight("down");
-                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: "+ robot.getLineOfSight() + ANSI_RESET);
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: " + robot.getLineOfSight() + ANSI_RESET);
                 break;
             case ("down"):
                 robot.setLineOfSight("left");
-                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: "+ robot.getLineOfSight() + ANSI_RESET);
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: " + robot.getLineOfSight() + ANSI_RESET);
                 break;
             case ("left"):
                 robot.setLineOfSight("up");
-                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: "+ robot.getLineOfSight() + ANSI_RESET);
+                logger.info(ANSI_GREEN + "NEW LINE OF SIGHT: " + robot.getLineOfSight() + ANSI_RESET);
                 break;
             default:
                 System.out.println("There is a Problem with the lineOfSight variable.");
         }
 
+        //update Robot in robotMap
+        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
+        robotMap.remove(currentPos);
+        robotMap.put(currentPos, robot);
+        logger.info(ANSI_GREEN + "NEW ROBOT ORIENTATION IN ROBOTMAP: ( " + robotMap.get(currentPos).getLineOfSight() +  ")" + ANSI_RESET);
     }
-
 }
+
+
+

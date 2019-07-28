@@ -168,6 +168,7 @@ public abstract class Card {
         }
 
         //robot and wall in next field
+        /*
         if (nextFieldRobot != null && nextFieldWall != null) {
             //Next field has robot and after robot comes a wall in the that hinders wandering
             if (nextFieldWall != null && nextFieldWall.getOrientations().contains(ownOrientation)) {
@@ -180,6 +181,8 @@ public abstract class Card {
         } else if (nextFieldRobot != null && !(nextFieldWall.getOrientations().contains(ownOrientation))) {
             return true;
         }
+
+         */
 
 
         //when there are more than two robots and one standing in newPos

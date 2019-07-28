@@ -61,6 +61,11 @@ public class TurnLeft extends server.game.Card {
                 System.out.println("There is a Problem with the lineOfSight variable.");
         }
 
+        //Update robot in robotMap
+        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
+        robotMap.remove(currentPos);
+        robotMap.put(currentPos, robot);
+        logger.info(ANSI_GREEN + "NEW ROBOT ORIENTATION IN ROBOTMAP: ( " + robotMap.get(currentPos).getLineOfSight() +  ")" + ANSI_RESET);
     }
 
 }

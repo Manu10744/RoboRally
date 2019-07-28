@@ -472,9 +472,74 @@ public class MapController implements IController {
      * @param newPosition The new Position of the robot
      */
     public void moveRobot(String oldPosition, String newPosition ){
-        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
-        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
-        fieldMap.get(newPosition).getChildren().add(robotImageView);
+        //Get ImageView of own robot
+        System.out.println("OldPosition = " + oldPosition);
+        Robot ownRobot = robotMap.get(oldPosition);
+        System.out.println("Roboter der zu bewegen ist: " + ownRobot);
+
+        ImageView ownRobotImageView = new ImageView(ownRobot.getRobotImage());
+
+        //Making it resposnive as it is not so saved in the RobotMap
+        ownRobotImageView.setPreserveRatio(true);
+        ownRobotImageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
+        ownRobotImageView.fitHeightProperty().bind(mapPane.widthProperty().divide(mapHeight));
+
+        //remove imageView of ownRobot  - happens at this place as it has to be done either if another robot is in the way or if it is not
+        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
+
+        //When there is no robot in next position
+        if(robotMap.get(newPosition) == null) {
+            System.out.println("Bist du hier? Kein Roboter?");
+            //update board
+            fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
+
+            //update robotMap
+            robotMap.put(newPosition, ownRobot);
+            robotMap.remove(oldPosition);
+
+        }else{
+            //when there is a robot in next position
+            System.out.println("Bist du hier? Roboter!");
+            Robot otherRobot = robotMap.get(newPosition);
+            ImageView otherRobotImageView = new ImageView(otherRobot.getRobotImage());
+            otherRobotImageView.setPreserveRatio(true);
+
+            otherRobotImageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
+            otherRobotImageView.fitHeightProperty().bind(mapPane.widthProperty().divide(mapHeight));
+            String otherRobotNewPos = "";
+
+            int xPosOwnRobot = ownRobot.getxPosition();
+            int yPosOwnRobot = ownRobot.getyPosition();
+
+            //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
+            switch (ownRobot.getLineOfSight()) {
+                case ORIENTATION_DOWN: {
+                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot - 1);
+                    break;
+                }
+                case ORIENTATION_UP: {
+                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot + 1);
+                    break;
+                }
+                case ORIENTATION_RIGHT: {
+                    otherRobotNewPos = (xPosOwnRobot + 1) + "-" + yPosOwnRobot;
+                    break;
+                }
+                case ORIENTATION_LEFT: {
+                    otherRobotNewPos = (xPosOwnRobot - 1) + "-" + yPosOwnRobot;
+                    break;
+                }
+            }
+
+            //remove imageView of other robot
+            fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
+            //place moved robot at new otherRobotPosition in board
+            fieldMap.get(otherRobotNewPos).getChildren().add(otherRobotImageView);
+
+            //add ImageView of own robot
+            fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
+
+        }
 
     }
 

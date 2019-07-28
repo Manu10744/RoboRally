@@ -40,6 +40,7 @@ public class PowerUp extends server.game.Card {
 
         int currentEnergy = player.getEnergy();
         player.setEnergy(currentEnergy + 1);
+
     }
 
 }
