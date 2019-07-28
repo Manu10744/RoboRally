@@ -66,6 +66,10 @@ public class MapController implements IController {
     private Map<String, RestartPoint> rebootMap = new HashMap<>();
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+    private Map<String, Belt> greenBeltMap = new HashMap<>();
+    private Map<String, Belt> blueBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> greenRotatingBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> blueRotatingBeltMap = new HashMap<>();
     private Map<String, Robot> robotMap = new HashMap<>();
     private Map<String, Antenna> antennaMap = new HashMap<>();
     private Map<String, RotatingBelt> allRotatingBeltMap = new HashMap<>();
@@ -214,6 +218,7 @@ public class MapController implements IController {
                         if (!tileArray.contains(null)) {
                             // Add a normal tile to each non-empty field to prevent whitespace
                             if (!containsInstance(tileArray, Empty.class)) {
+                                System.out.println("Doesnt contain empty, so i will add one!");
                                 tileArray.add(0, new Empty());
                             }
                         }
@@ -297,10 +302,40 @@ public class MapController implements IController {
                                     imageGroup.setStyle("-fx-cursor: hand;");
                                     startPointList.add(imageGroup);
                                 }
+                                if (tile instanceof Belt) {
+                                    if (tile.getSpeed() == 1) {
+                                        String ID = xPos + "-" + yPos;
+                                        Belt belt = (Belt) tile;
+                                        greenBeltMap.put(ID, belt);
+                                        allBeltMap.put(ID, belt);
+
+                                    } else {
+                                        String ID = xPos + "-" + yPos;
+                                        Belt belt = (Belt) tile;
+                                        blueBeltMap.put(ID, belt);
+                                        allBeltMap.put(ID, belt);
+
+                                    }
+
+                                }
+                                if (tile instanceof RotatingBelt) {
+                                    if (tile.getSpeed() == 1) {
+                                        String ID = xPos + "-" + yPos;
+                                        RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                        greenRotatingBeltMap.put(ID, rotatingBelt);
+                                        allRotatingBeltMap.put(ID, rotatingBelt);
+
+                                    } else {
+                                        String ID = xPos + "-" + yPos;
+                                        RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                        blueRotatingBeltMap.put(ID, rotatingBelt);
+                                        allRotatingBeltMap.put(ID, rotatingBelt);
+
+                                    }
+                                }
 
                                 if (tile instanceof Antenna) {
                                     setAntenna(tile);
-
                                     //Antenna is added with position to antennaMap
                                     String ID = xPos + "-" + yPos;
                                     Antenna antenna = new Antenna();
@@ -309,26 +344,25 @@ public class MapController implements IController {
                                     logger.info(ANSI_GREEN + "ANTENNA IN Client antennaMap HAS BEEN SET! COORDINATES: " + "( " + xPos + " | " + yPos + " )" + ANSI_RESET);
                                 }
 
-                                if (tile instanceof RotatingBelt){
-                                    String ID = xPos + "-" + yPos;
-                                    RotatingBelt rotatingBelt = (RotatingBelt) tile;
-                                    allRotatingBeltMap.put(ID, rotatingBelt);
-                                }
-
-                                if(tile instanceof  Belt){
-                                    String ID = xPos + "-" + yPos;
-                                    Belt belt = (Belt) tile;
-                                    allBeltMap.put(ID, belt);
-                                }
-
                                 // Necessary for making map fields responsive
                                 imageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
                                 imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
                                 imageView.setPreserveRatio(true);
 
                                 imageGroup.getChildren().add(imageView);
-                            }
 
+                                // For energy cubes
+                                if (tile instanceof EnergySpace) {
+                                    ImageView energyCube = new ImageView("/resources/images/mapelements/energycube.png");
+
+                                    // Necessary for making map fields responsive
+                                    energyCube.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
+                                    energyCube.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
+                                    energyCube.setPreserveRatio(true);
+
+                                    imageGroup.getChildren().add(energyCube);
+                                }
+                            }
                         }
 
                         // Groups are added to HashMap
@@ -390,8 +424,7 @@ public class MapController implements IController {
 
     /**
      * This method sets the robot onto the chosen startingpoint.
-     *
-     * @param playerRobot   The players chosen robot
+     * @param playerRobot The players chosen robot
      * @param startingPoint The startingpoint the player has chosen to set his robot on.
      */
     public void setStartingPoint(Robot playerRobot, String startingPoint) {
@@ -425,26 +458,24 @@ public class MapController implements IController {
 
     /**
      * This method turns the robot according to turn card either left or right
-     *
      * @param robotPosition
      * @param turnDirection
      */
-    public void turnRobot(String robotPosition, String turnDirection) {
+    public void turnRobot (String robotPosition, String  turnDirection){
         //Here we get the robot imageView
-        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size() -1);
+        ImageView robotImageView = (ImageView) fieldMap.get(robotPosition).getChildren().get(fieldMap.get(robotPosition).getChildren().size()-1);
         double currentOrientation = robotImageView.rotateProperty().getValue();
 
         //Here we turn it either to right or left side
-        if (turnDirection.equals(ORIENTATION_LEFT)) {
+        if(turnDirection.equals(Parameter.ORIENTATION_LEFT)) {
             robotImageView.rotateProperty().setValue(currentOrientation - 90);
-        } else {
+        }else{
             robotImageView.rotateProperty().setValue(currentOrientation + 90);
         }
     }
 
     /**
      * This method removes the robot from its old position and sets it onto the new position
-     *
      * @param oldPosition The old Position of the robot
      * @param newPosition The new Position of the robot
      */

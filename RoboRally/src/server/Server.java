@@ -1,15 +1,29 @@
 package server;
 
+import com.google.gson.Gson;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.DamageCards.Spam;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import server.game.decks.*;
+import utils.Parameter;
 import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
 import utils.json.protocol.*;
+import viewmodels.MapController;
 import viewmodels.PlayerMatController;
 
 import java.io.*;
@@ -19,6 +33,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import static utils.Parameter.*;
@@ -197,7 +212,6 @@ public class Server extends Application {
                     }
                 }
 
-                System.out.println(player.getPlayerRobot().getLineOfSight());
                 // Clients update themselves
                 for (ClientWrapper clientWrapper : this.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, turnDirection));
@@ -321,14 +335,50 @@ public class Server extends Application {
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
                         player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
 
-                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
-                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                    clientWrapper.getWriter().flush();
+                // Player fell of the map, so set the coordinates back to the old ones so no error occurs when moving player's robot image due to Reboot
+                if (this.playerFellOffMap(player) || this.getPitMap().get(newXPos + "-" + newYPos) != null) {
+                    logger.info(ANSI_GREEN + "RESET OF PLAYER COORDINATES BECAUSE PLAYER FELL OFF MAP!" + ANSI_RESET);
+                    client.getPlayer().getPlayerRobot().setxPosition(currentXPos);
+                    client.getPlayer().getPlayerRobot().setyPosition(currentYPos);
 
+                    for (Server.ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Choose a random restartPoint
+                    Random random = new Random();
+                    int randomVal = random.nextInt(this.getRebootMap().size());
+
+                    // Get the random restartPoint's coordinates
+                    String rebootPos = ((String) this.getRebootMap().keySet().toArray()[randomVal]);
+                    int rebootXPos = Integer.parseInt(rebootPos.split("-")[0]);
+                    int rebootYPos = Integer.parseInt(rebootPos.split("-")[1]);
+
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    for (Server.ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, rebootXPos, rebootYPos));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Update server data of that player due to Reboot
+                    player.getPlayerRobot().setxPosition(rebootXPos);
+                    player.getPlayerRobot().setyPosition(rebootYPos);
+                    player.getPlayerRobot().setLineOfSight("up");
+                } else {
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos ));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
                 }
-
-
             }
         }
     }
@@ -438,17 +488,57 @@ public class Server extends Application {
                         break;
                 }
             }
+
             int newXPos = player.getPlayerRobot().getxPosition();
             int newYPos = player.getPlayerRobot().getyPosition();
             logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
                     player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
 
-            for (ClientWrapper clientWrapper : this.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
-                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                clientWrapper.getWriter().flush();
-            }
+            // Player fell of the map, so set the coordinates back to the old ones so no error occurs when moving player's robot image due to Reboot
+            if (newXPos < 0 || newYPos < 0 || newXPos >= this.getMapWidth() || newYPos >= this.getMapHeight()) {
+                logger.info(ANSI_GREEN + "RESET OF PLAYER COORDINATES BECAUSE PLAYER FELL OFF MAP!" + ANSI_RESET);
+                client.getPlayer().getPlayerRobot().setxPosition(currentXPos);
+                client.getPlayer().getPlayerRobot().setyPosition(currentYPos);
 
+                for (Server.ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+                // Choose a random restartPoint
+                Random random = new Random();
+                int randomVal = random.nextInt(this.getRebootMap().size());
+
+                // Get the random restartPoint's coordinates
+                String rebootPos = ((String) this.getRebootMap().keySet().toArray()[randomVal]);
+                int rebootXPos = Integer.parseInt(rebootPos.split("-")[0]);
+                int rebootYPos = Integer.parseInt(rebootPos.split("-")[1]);
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Reboot", new RebootBody(playerID));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+                for (Server.ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, rebootXPos, rebootYPos));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+                // Update server data of that player due to Reboot
+                player.getPlayerRobot().setxPosition(rebootXPos);
+                player.getPlayerRobot().setyPosition(rebootYPos);
+                player.getPlayerRobot().setLineOfSight("up");
+            } else {
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+            }
         }
     }
 

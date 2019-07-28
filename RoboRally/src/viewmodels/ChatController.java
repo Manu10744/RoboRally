@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import client.Client;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
 import javafx.fxml.Initializable;
 import javafx.beans.property.*;
@@ -53,6 +54,10 @@ public class ChatController implements Initializable, IController {
     private Button buttonWiki;
     @FXML
     private Button buttonReady;
+    @FXML
+    private Button musicButton;
+    @FXML
+    private ImageView musicIcon;
 
     private String tempString;
     private String serverIP;
@@ -77,6 +82,8 @@ public class ChatController implements Initializable, IController {
     private StringProperty clientChatOutput;
     private static final Logger logger = Logger.getLogger( ChatController.class.getName() );
 
+    AudioClip audioClip;
+
     /**
      * Initialize supervises all chat elements for action, checks user input on syntax failures and controls the
      * elements' visibility.
@@ -100,7 +107,7 @@ public class ChatController implements Initializable, IController {
         fieldServer.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
         chatInput.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
         chatOutput.setStyle("-fx-control-inner-background:#282828; -fx-focus-color: lightgreen; -fx-font-family: Consolas; -fx-text-fill: #33FF00; -fx-display-caret:true;");
-
+        musicButton.setStyle("-fx-background-color: transparent; -fx-border-color: lightgreen; -fx-cursor: hand;");
 
         //SERVERINPUT: Tooltip is shown while fieldServer is focused
         final Tooltip tooltipFieldServer = new Tooltip("Enter server and port as follows xxx.xxx.xxx.xxx:xxxx");
@@ -275,10 +282,25 @@ public class ChatController implements Initializable, IController {
             chatOutput.setScrollTop(Double.MAX_VALUE);
         }));
 
-        //AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
-        //audioClip.setCycleCount(AudioClip.INDEFINITE);
-        //audioClip.play();
+        audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
+        audioClip.setCycleCount(AudioClip.INDEFINITE);
+        audioClip.play();
 
+
+
+    }
+
+    @FXML
+    void musicOff(ActionEvent event) throws IOException {
+        if (event.getSource() == musicButton && audioClip.isPlaying()) {
+            audioClip.stop();
+            Image image = new Image("/resources/images/others/music off-icon-2.png");
+            musicIcon.setImage(image);
+        } else if (event.getSource() == musicButton && !audioClip.isPlaying()) {
+            audioClip.play();
+            Image image = new Image("/resources/images/others/music-icon.png");
+            musicIcon.setImage(image);
+        }
     }
 
 

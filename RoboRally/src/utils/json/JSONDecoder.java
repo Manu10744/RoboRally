@@ -3,6 +3,10 @@ package utils.json;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import server.game.Card;
+import server.game.DamageCards.Spam;
+import server.game.DamageCards.Trojan;
+import server.game.DamageCards.Virus;
+import server.game.DamageCards.Worm;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import utils.json.protocol.*;
@@ -535,6 +539,18 @@ public class JSONDecoder {
             return result;
         } else if (cardName.equals("Again")) {
             Again result = gson.fromJson(jsonMessageBody, Again.class);
+            return result;
+        } else if (cardName.equals("Spam")) {
+            Spam result = gson.fromJson(jsonMessageBody, Spam.class);
+            return result;
+        } else if (cardName.equals("Trojan")) {
+            Trojan result = gson.fromJson(jsonMessageBody, Trojan.class);
+            return result;
+        } else if (cardName.equals("Virus")) {
+            Virus result = gson.fromJson(jsonMessageBody, Virus.class);
+            return result;
+        } else if (cardName.equals("Worm")) {
+            Worm result = gson.fromJson(jsonMessageBody, Worm.class);
             return result;
         }
         return null; // Error
