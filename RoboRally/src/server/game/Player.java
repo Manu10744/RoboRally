@@ -26,6 +26,7 @@ public class Player implements Serializable {
     private int energy;
     private int playerID;
     private int figure;
+    private int checkPointCounter = 0;
     private boolean isReady;
     private Robot playerRobot;
     private String color;
@@ -34,7 +35,6 @@ public class Player implements Serializable {
     private DeckDiscard deckDiscard;
     private DeckHand deckHand;
     private DeckRegister deckRegister;
-
 
     private int currentRound;
 
@@ -321,6 +321,12 @@ public class Player implements Serializable {
 
     public String getColor() {
         return color;
+    }
+
+    public int getCheckPointCounter() { return checkPointCounter; }
+
+    public void setCheckPointCounter(int counter) {
+        this.checkPointCounter = counter;
     }
 
 }

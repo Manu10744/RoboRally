@@ -101,6 +101,7 @@ public class ChooseRobotController implements Initializable,IController{
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
         playerMatController.ownEnergyCubesLabel.setVisible(true);
+        playerMatController.ownVictoryTilesLabel.setVisible(true);
     }
 
     public void hulkX90Clicked() {
@@ -114,6 +115,8 @@ public class ChooseRobotController implements Initializable,IController{
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
         playerMatController.ownEnergyCubesLabel.setVisible(true);
+        playerMatController.ownVictoryTilesLabel.setVisible(true);
+
     }
 
     public void smashBotClicked() {
@@ -127,6 +130,8 @@ public class ChooseRobotController implements Initializable,IController{
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
         playerMatController.ownEnergyCubesLabel.setVisible(true);
+        playerMatController.ownVictoryTilesLabel.setVisible(true);
+
     }
 
     public void spinBotClicked() {
@@ -140,6 +145,8 @@ public class ChooseRobotController implements Initializable,IController{
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
         playerMatController.ownEnergyCubesLabel.setVisible(true);
+        playerMatController.ownVictoryTilesLabel.setVisible(true);
+
     }
 
     public void twonkyClicked() {
@@ -153,6 +160,8 @@ public class ChooseRobotController implements Initializable,IController{
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
         playerMatController.ownEnergyCubesLabel.setVisible(true);
+        playerMatController.ownVictoryTilesLabel.setVisible(true);
+
     }
 
     public void zoomBotClicked() {
@@ -166,6 +175,8 @@ public class ChooseRobotController implements Initializable,IController{
         playerMatController.getOwnRobotIcon().setImage(avatar);
         chooseRobot.setVisible(false);
         playerMatController.ownEnergyCubesLabel.setVisible(true);
+        playerMatController.ownVictoryTilesLabel.setVisible(true);
+
     }
 
     public ImageView getHammerBot() {

@@ -114,7 +114,6 @@ public class MapController implements IController {
 
     /**
      * This method fills the GridPane that's responsible for displaying the map. It is triggered inside of the
-     * {@link MessageDistributer#handleGameStarted(Client, Client.ClientReaderTask, GameStartedBody)} method.
      *
      * @param gameStartedBody MessageBody of the 'GameStarted' protocol message containing the map information.
      */
@@ -124,47 +123,6 @@ public class MapController implements IController {
 
         // Set map so the Listener on the map can determine the size of map after it has been completely loaded
         this.map = gameStartedBody.getXArray();
-
-
-        // Popup for performing actions on robot
-        /*    Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Robot Actions");
-                    alert.setContentText("Make your robot perform actions!");
-                    alert.setResizable(true);
-
-                    ButtonType moveI = new ButtonType("MoveI");
-                    ButtonType moveII = new ButtonType("MoveII");
-                    ButtonType moveIII = new ButtonType("MoveII");
-                    ButtonType turnRight = new ButtonType("TurnRight");
-                    ButtonType turnLeft = new ButtonType("TurnLeft");
-                    ButtonType backup = new ButtonType("Backup");
-                    ButtonType uTurn = new ButtonType("UTurn");
-                    ButtonType again = new ButtonType("Again");
-
-                    alert.getButtonTypes().addAll(moveI, moveII, moveIII, turnRight, turnLeft, backup, uTurn, again);
-
-                    while (true) {
-                        Optional<ButtonType> result = alert.showAndWait();
-
-                        if (result.get() == moveI) {  }
-                        if (result.get() == moveII) {  }
-                        if (result.get() == moveIII) {  }
-                        if (result.get() == turnRight) {  }
-                        if (result.get() == turnLeft) {  }
-                        if (result.get() == backup) {  }
-                        if (result.get() == uTurn) {  }
-                        if (result.get() == again) {  }
-                    }
-                }
-            });
-
-         */
-
-
-
 
 
         // Scrolling, zooming and filling of Map
@@ -471,80 +429,11 @@ public class MapController implements IController {
      * @param oldPosition The old Position of the robot
      * @param newPosition The new Position of the robot
      */
-    public void moveRobot(String oldPosition, String newPosition){
-        //Get ImageView of own robot
-        System.out.println("OldPosition = " + oldPosition);
-        Robot ownRobot = robotMap.get(newPosition);
-        System.out.println("Roboter der zu bewegen ist: " + ownRobot);
-
-        ImageView ownRobotImageView = new ImageView(ownRobot.getRobotImage());
-
-        //Making it resposnive as it is not so saved in the RobotMap
-        ownRobotImageView.setPreserveRatio(true);
-        ownRobotImageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
-        ownRobotImageView.fitHeightProperty().bind(mapPane.widthProperty().divide(mapHeight));
-
-        //remove imageView of ownRobot  - happens at this place as it has to be done either if another robot is in the way or if it is not
-        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
-
-        //When there is no robot in next position
-       // if(robotMap.get(newPosition) == null) {
-            System.out.println("Bist du hier? Kein Roboter?");
-            //update board
-            fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
-
-            //update robotMap
-            robotMap.put(newPosition, ownRobot);
-            robotMap.remove(oldPosition);
-
-        //}else{
-            /*
-            //when there is a robot in next position
-            System.out.println("Bist du hier? Roboter!");
-            Robot otherRobot = robotMap.get(newPosition);
-            ImageView otherRobotImageView = new ImageView(otherRobot.getRobotImage());
-            otherRobotImageView.setPreserveRatio(true);
-
-            otherRobotImageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
-            otherRobotImageView.fitHeightProperty().bind(mapPane.widthProperty().divide(mapHeight));
-            String otherRobotNewPos = "";
-
-            int xPosOwnRobot = ownRobot.getxPosition();
-            int yPosOwnRobot = ownRobot.getyPosition();
-
-            //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
-            switch (ownRobot.getLineOfSight()) {
-                case ORIENTATION_DOWN: {
-                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot - 1);
-                    break;
-                }
-                case ORIENTATION_UP: {
-                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot + 1);
-                    break;
-                }
-                case ORIENTATION_RIGHT: {
-                    otherRobotNewPos = (xPosOwnRobot + 1) + "-" + yPosOwnRobot;
-                    break;
-                }
-                case ORIENTATION_LEFT: {
-                    otherRobotNewPos = (xPosOwnRobot - 1) + "-" + yPosOwnRobot;
-                    break;
-                }
-            }
-
-            //remove imageView of other robot
-            fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
-            //place moved robot at new otherRobotPosition in board
-            fieldMap.get(otherRobotNewPos).getChildren().add(otherRobotImageView);
-
-            //add ImageView of own robot
-            fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
-
-
-             */
-        }
-
-
+    public void moveRobot(String oldPosition, String newPosition ){
+        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size()-1);
+        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size()-1);
+        fieldMap.get(newPosition).getChildren().add(robotImageView);
+    }
 
     /**
      * This method controls robotlaser in activation phase

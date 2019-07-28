@@ -23,9 +23,9 @@
 
     <HBox fx:id="playerIcons" minHeight="0.0" minWidth="0.0" style="-fx-background-color: dimgrey;" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <ImageView fx:id="ownRobotIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-
         <ImageView fx:id="clockIcon" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <Label fx:id="ownEnergyCubesLabel" contentDisplay="TOP" graphicTextGap="-75.0" text="5" textAlignment="CENTER" visible="false">
+        
+        <Label fx:id="ownEnergyCubesLabel" contentDisplay="CENTER" graphicTextGap="-75.0" prefHeight="100.0" prefWidth="100.0" text="5" textAlignment="CENTER" visible="false">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>
@@ -37,8 +37,18 @@
                 </ImageView>
             </graphic>
         </Label>
-        <ImageView fx:id="emptyIcon2" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
-        <ImageView fx:id="emptyIcon3" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
+      <Label fx:id="ownVictoryTilesLabel" contentDisplay="CENTER" graphicTextGap="-75.0" prefHeight="100.0" prefWidth="100.0" text="0" textFill="#61ff01" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="System Bold" size="38.0" />
+         </font>
+         <graphic>
+            <ImageView fx:id="ownVictoryTiles" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <image>
+                  <Image url="@../resources/images/mapelements/victory-counter.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Label>
         <ImageView fx:id="emptyIcon4" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon5" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
         <ImageView fx:id="emptyIcon6" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS" />
