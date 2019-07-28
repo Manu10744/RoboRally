@@ -344,7 +344,7 @@ public class MessageDistributer {
 
             try {
                 // Sets Map in server
-                String mapJSON = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
+                String mapJSON = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(mapJSON);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
 
@@ -449,7 +449,7 @@ public class MessageDistributer {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 try {
-                    String map = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
+                    String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                     client.getWriter().println(map);
                     client.getWriter().flush();
                 } catch (IOException e) {
@@ -657,10 +657,19 @@ public class MessageDistributer {
             // Activate CheckPoints
             server.activateCheckPoints();
 
+            // Activate EnergySpaces
+            server.activateEnergySpaces();
+
+            // Activate Laser
+            server.activateLaser();
+
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
 
             int currentRound = server.getActiveRound();
+            // Activate PushPanels
+            server.activatePushPanels(currentRound);
+
             // If 5 registers have been played, activate the map elements, then set everything up for the next 5 registers
             if (currentRound == 5) {
                 server.setActiveRound(1);
@@ -1998,6 +2007,37 @@ public class MessageDistributer {
     public void handleDrawDamage(Client client, Client.ClientReaderTask task, DrawDamageBody drawDamageBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleDrawDamage()" + ANSI_RESET);
 
+        int messagePlayerID = drawDamageBody.getPlayerID();
+        ArrayList<Card> spamCard = drawDamageBody.getCards();
+
+
+        if (messagePlayerID == client.getPlayer().getPlayerID()) {
+            if (spamCard.size() == 1) {
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(0));
+            } else if (spamCard.size() == 2) {
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(0));
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(1));
+            } else if (spamCard.size() == 3) {
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(0));
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(1));
+                client.getPlayer().getDeckDiscard().getDeck().add(spamCard.get(2));
+            }
+    } else {
+        for (Player otherPlayer : client.getOtherPlayers()) {
+            if (otherPlayer.getPlayerID() == messagePlayerID) {
+                if (spamCard.size() == 1) {
+                   otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(0));
+                } else if (spamCard.size() == 2) {
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(1));
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(2));
+                } else if (spamCard.size() == 3) {
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(0));
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(1));
+                    otherPlayer.getDeckDiscard().getDeck().add(spamCard.get(3));
+                }
+            }
+        }
+    }
         Platform.runLater(() -> {
             //TODO write code here
         });
@@ -2216,8 +2256,25 @@ public class MessageDistributer {
     public void handleEnergy(Client client, Client.ClientReaderTask task, EnergyBody energyBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleEnergy()" + ANSI_RESET);
 
+        int messagePlayerID = energyBody.getPlayerID();
+
+
         Platform.runLater(() -> {
-            //TODO write code here
+            if(messagePlayerID == client.getPlayer().getPlayerID()) {
+                int currentOwnEnergy = client.getPlayer().getEnergy();
+                currentOwnEnergy++;
+                client.getPlayer().setEnergy(currentOwnEnergy);
+
+                client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(client.getPlayer().getEnergy()));
+            } else {
+                for (Player otherPlayer : client.getOtherPlayers()) {
+                    if (otherPlayer.getPlayerID() == messagePlayerID) {
+                        int currentOtherPlayerEnergy = otherPlayer.getEnergy();
+                        currentOtherPlayerEnergy++;
+                        otherPlayer.setEnergy(currentOtherPlayerEnergy);
+                    }
+                }
+            }
         });
     }
 
