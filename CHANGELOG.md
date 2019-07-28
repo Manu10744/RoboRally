@@ -10,8 +10,21 @@
 * Board elements need to be activated (1/8)
 * Antenna can't handle special case when two robots have same distance to antenna by the official rules
 
-## Version [0.6.0]
 
+## Version [1.0.0]
+### New Features
+* EnergySpaces, PushPanels, Belts and CheckPoints are now activating after every player has played his current register. - *(Jessie, Manu)*
+* After a player reaches all checkpoints, the scoreboard is loaded. - *(Manu)*
+* Every players opponent mat is now updated which gives each player an overview of the other players and their cards. - *(Mia)*
+
+## Changes
+* Music can now be turned on and off by a button. - *(Jessie, Verena)*
+
+## Bugfixes
+* Fixed error that occured when Belts pushed a player off the map. - *(Manu)*
+
+
+## Version [0.6.0]
 ### New Features
 * Antenna determines next Player - *(Ivan)*
 * Multitouch map-zoom enabled - *(Ivan)*
