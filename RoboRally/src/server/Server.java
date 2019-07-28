@@ -272,6 +272,54 @@ public class Server extends Application {
         }
     }
 
+    public void activatePushPanels(int currentRound) {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING PUSHPANELS!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+
+
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+
+            if (this.pushPanelMap.get(playerPosition) != null && this.pushPanelMap.get(playerPosition).getRegisters().contains(currentRound)) {
+                String pushDirection = pushPanelMap.get(playerPosition).getOrientations().get(0);
+
+                switch (pushDirection) {
+                    case "up":
+                        player.getPlayerRobot().setyPosition(currentYPos + 1);
+                        break;
+                    case "down":
+                        player.getPlayerRobot().setyPosition(currentYPos - 1);
+                        break;
+                    case "right":
+                        player.getPlayerRobot().setxPosition(currentXPos + 1);
+                        break;
+                    case "left":
+                        player.getPlayerRobot().setxPosition(currentXPos - 1);
+                        break;
+                }
+
+                int newXPos = player.getPlayerRobot().getxPosition();
+                int newYPos = player.getPlayerRobot().getyPosition();
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                        player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos ));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+
+            }
+        }
+    }
+
     public void activateBelts() {
         logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING BELTS!" + ANSI_RESET);
         for (ClientWrapper client : this.getConnectedClients()) {

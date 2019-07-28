@@ -339,7 +339,7 @@ public class MessageDistributer {
 
             try {
                 // Sets Map in server
-                String mapJSON = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
+                String mapJSON = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(mapJSON);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
 
@@ -439,7 +439,7 @@ public class MessageDistributer {
 
             for (Server.ClientWrapper client : server.getConnectedClients()) {
                 try {
-                    String map = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
+                    String map = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
                     client.getWriter().println(map);
                     client.getWriter().flush();
                 } catch (IOException e) {
@@ -652,6 +652,9 @@ public class MessageDistributer {
             server.setCardsPlayed(0);
 
             int currentRound = server.getActiveRound();
+            // Activate PushPanels
+            server.activatePushPanels(currentRound);
+
             // If 5 registers have been played, activate the map elements, then set everything up for the next 5 registers
             if (currentRound == 5) {
                 server.setActiveRound(1);
