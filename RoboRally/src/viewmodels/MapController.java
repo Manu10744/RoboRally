@@ -64,6 +64,10 @@ public class MapController implements IController {
     private Map<String, RestartPoint> rebootMap = new HashMap<>();
     private Map<String, CheckPoint> checkPointMap = new HashMap<>();
     private Map<String, EnergySpace> energySpaceMap = new HashMap<>();
+    private Map<String, Belt> greenBeltMap = new HashMap<>();
+    private Map<String, Belt> blueBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> greenRotatingBeltMap = new HashMap<>();
+    private Map<String, RotatingBelt> blueRotatingBeltMap = new HashMap<>();
 
     private ArrayList<ArrayList<ArrayList<Tile>>> map;
     private ArrayList<Group> startPointList;
@@ -334,6 +338,29 @@ public class MapController implements IController {
                                     imageGroup.setStyle("-fx-cursor: hand;");
                                     startPointList.add(imageGroup);
                                 }
+                                if (tile instanceof Belt) {
+                                    if (tile.getSpeed() == 1) {
+                                        String ID = xPos + "-" + yPos;
+                                        Belt belt = (Belt) tile;
+                                        greenBeltMap.put(ID, belt);
+                                    } else {
+                                        String ID = xPos + "-" + yPos;
+                                        Belt belt = (Belt) tile;
+                                        blueBeltMap.put(ID, belt);
+                                    }
+
+                                }
+                                if (tile instanceof RotatingBelt) {
+                                    if (tile.getSpeed() == 1) {
+                                        String ID = xPos + "-" + yPos;
+                                        RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                        greenRotatingBeltMap.put(ID, rotatingBelt);
+                                    } else {
+                                        String ID = xPos + "-" + yPos;
+                                        RotatingBelt rotatingBelt = (RotatingBelt) tile;
+                                        blueRotatingBeltMap.put(ID, rotatingBelt);
+                                    }
+                                }
 
                                 if (tile instanceof Antenna) {
                                     setAntenna(tile);
@@ -344,8 +371,20 @@ public class MapController implements IController {
                                 imageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
                                 imageView.setPreserveRatio(true);
 
-                                imageGroup.getChildren().add(imageView);}
+                                imageGroup.getChildren().add(imageView);
 
+                                // For energy cubes
+                                if (tile instanceof EnergySpace) {
+                                    ImageView energyCube = new ImageView("/resources/images/mapelements/energycube.png");
+
+                                    // Necessary for making map fields responsive
+                                    energyCube.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
+                                    energyCube.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
+                                    energyCube.setPreserveRatio(true);
+
+                                    imageGroup.getChildren().add(energyCube);
+                                }
+                            }
                         }
 
                         // Groups are added to HashMap
@@ -524,5 +563,7 @@ public class MapController implements IController {
     public Map<String, EnergySpace> getEnergySpaceMap() {
         return energySpaceMap;
     }
+
+
 }
 

@@ -412,8 +412,6 @@ public class MessageDistributer {
                                     Belt belt = (Belt) tile;
                                     server.getBlueBeltMap().put(ID, belt);
                                 }
-                                server.getGreenBeltMap().size();
-                                server.getBlueBeltMap().size();
                             }
                             if (tile instanceof RotatingBelt) {
                                 if (tile.getSpeed() == 1) {
@@ -425,8 +423,7 @@ public class MessageDistributer {
                                     RotatingBelt rotatingBelt = (RotatingBelt) tile;
                                     server.getBlueRotatingBeltMap().put(ID, rotatingBelt);
                                 }
-                                server.getBlueRotatingBeltMap().size();
-                                server.getGreenRotatingBeltMap().size();
+
                             }
 
                             if (tile instanceof Antenna) {
@@ -2232,6 +2229,10 @@ public class MessageDistributer {
                 currentOwnEnergy++;
                 client.getPlayer().setEnergy(currentOwnEnergy);
 
+                int xPos = client.getPlayer().getPlayerRobot().getxPosition();
+                int yPos = client.getPlayer().getPlayerRobot().getyPosition();
+                String pos = xPos + "-" + yPos;
+                client.getMapController().getFieldMap().get(pos).getChildren().remove(2);
                 client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(client.getPlayer().getEnergy()));
             } else {
                 for (Player otherPlayer : client.getOtherPlayers()) {

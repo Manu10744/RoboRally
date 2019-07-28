@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -22,6 +23,7 @@ import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
 import utils.json.protocol.*;
+import viewmodels.MapController;
 import viewmodels.PlayerMatController;
 
 import java.io.*;
