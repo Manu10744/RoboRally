@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <GridPane fx:id="chat" style="-fx-background-color: dimgrey;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodels.ChatController">
 
@@ -25,7 +26,7 @@
          <VBox>
 
             <HBox prefHeight="52.0" prefWidth="340.0">
-         <Button fx:id="buttonWiki" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#openWiki">
+         <Button fx:id="buttonWiki" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#openWiki" prefWidth="25.0">
             <HBox.margin>
                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </HBox.margin>
@@ -37,7 +38,22 @@
                </ImageView>
             </graphic>
          </Button>
-         <TextField fx:id="fieldServer" prefHeight="25.0" prefWidth="1000" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
+         <Button fx:id="musicButton" style="-fx-background-color: dimgrey;" minHeight="25.0" minWidth="25.0" mnemonicParsing="false" onAction="#musicOff" prefHeight="25.0" prefWidth="25.0">
+            <HBox.margin>
+               <Insets right="20.0" top="20.0" />
+            </HBox.margin>
+            <font>
+               <Font size="10.0" />
+            </font>
+            <graphic>
+               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/images/others/music-icon.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </Button>
+         <TextField fx:id="fieldServer" prefHeight="25.0" prefWidth="950.0" promptText="127.0.0.1:9998" text="127.0.0.1:9998">
             <HBox.margin>
                <Insets bottom="20.0" right="20.0" top="20.0" />
             </HBox.margin>
@@ -45,7 +61,7 @@
       </HBox>
 
             <HBox prefHeight="52.0" prefWidth="340.0">
-           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name..." >
+           <TextField fx:id="fieldName" disable="true" prefHeight="30.0" prefWidth="1000" promptText="Enter name...">
             <HBox.margin>
                <Insets bottom="20.0" left="20.0" right="20.0" />
             </HBox.margin>

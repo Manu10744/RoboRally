@@ -53,6 +53,8 @@ public class ChatController implements Initializable, IController {
     private Button buttonWiki;
     @FXML
     private Button buttonReady;
+    @FXML
+    private Button musicButton;
 
     private String tempString;
     private String serverIP;
@@ -76,6 +78,8 @@ public class ChatController implements Initializable, IController {
     private StringProperty message;
     private StringProperty clientChatOutput;
     private static final Logger logger = Logger.getLogger( ChatController.class.getName() );
+
+    AudioClip audioClip;
 
     /**
      * Initialize supervises all chat elements for action, checks user input on syntax failures and controls the
@@ -275,10 +279,21 @@ public class ChatController implements Initializable, IController {
             chatOutput.setScrollTop(Double.MAX_VALUE);
         }));
 
-        //AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
-        //audioClip.setCycleCount(AudioClip.INDEFINITE);
-        //audioClip.play();
+        audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/robotDance.mp3").toExternalForm());
+        audioClip.setCycleCount(AudioClip.INDEFINITE);
+        audioClip.play();
 
+
+
+    }
+
+    @FXML
+    void musicOff(ActionEvent event) throws IOException {
+        if (event.getSource() == musicButton && audioClip.isPlaying()) {
+            audioClip.stop();
+        } else if (event.getSource() == musicButton && !audioClip.isPlaying()) {
+            audioClip.play();
+        }
     }
 
 
