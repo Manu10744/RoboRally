@@ -13,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.DamageCards.Spam;
 import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import server.game.decks.*;
@@ -257,6 +258,139 @@ public class Server extends Application {
                 }
 
             }
+        }
+    }
+
+    public void activateEnergySpaces() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING ENERGYSPACES!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+            String playerPosition = currentXPos + "-" + currentYPos;
+
+            if (this.energySpaceMap.get(playerPosition) != null) {
+
+                int count = this.energySpaceMap.get(playerPosition).getCount();
+                String source = "field";
+                if (count == 1) {
+                    int energyAmount = player.getEnergy();
+                    energyAmount++;
+                    player.setEnergy(energyAmount);
+
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Energy", new EnergyBody(playerID, count, source));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Set to 0 so energy is given only once per EnergySpace
+                    this.energySpaceMap.get(playerPosition).setCount(count - 1);
+                }
+            }
+        }
+    }
+
+    public void activatePushPanels(int currentRound) {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING PUSHPANELS!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+
+
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+
+            if (this.pushPanelMap.get(playerPosition) != null && this.pushPanelMap.get(playerPosition).getRegisters().contains(currentRound)) {
+                String pushDirection = pushPanelMap.get(playerPosition).getOrientations().get(0);
+
+                switch (pushDirection) {
+                    case "up":
+                        player.getPlayerRobot().setyPosition(currentYPos + 1);
+                        break;
+                    case "down":
+                        player.getPlayerRobot().setyPosition(currentYPos - 1);
+                        break;
+                    case "right":
+                        player.getPlayerRobot().setxPosition(currentXPos + 1);
+                        break;
+                    case "left":
+                        player.getPlayerRobot().setxPosition(currentXPos - 1);
+                        break;
+                }
+
+                int newXPos = player.getPlayerRobot().getxPosition();
+                int newYPos = player.getPlayerRobot().getyPosition();
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                        player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos ));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+
+            }
+        }
+    }
+
+    public void activateLaser() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING LASER!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+            // Key for HashMap
+            String playerPosition = currentXPos + "-" + currentYPos;
+            if (this.laserMap.get(playerPosition) != null) {
+                int count = this.laserMap.get(playerPosition).getCount();
+                Card spamCard = getDeckSpam().getTopCard();
+                ArrayList<Card> drawnCards = new ArrayList<>();
+
+                        switch (count) {
+                            case 1 :
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                break;
+                            case 2 :
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                break;
+                            case 3 :
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                player.getDeckDiscard().getDeck().add(spamCard);
+                                getDeckSpam().removeTopCard(deckSpam.getDeck());
+                                drawnCards.add(spamCard);
+                                break;
+                        }
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("DrawDamage", new DrawDamageBody(playerID, drawnCards));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+            }
+            // TODO robot laser
         }
     }
 
