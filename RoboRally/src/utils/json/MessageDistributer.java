@@ -636,7 +636,6 @@ public class MessageDistributer {
             server.setCardsPlayed(cardsPlayed);
         }
 
-        int activePlayerID;
         // Round is finished, everyone has played their register
         if (server.getCardsPlayed() == server.getPlayers().size() && !server.isGameFinished()) {
 
@@ -727,11 +726,10 @@ public class MessageDistributer {
 
                     // Antenna determining next player
                     Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
-                    //int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+                    int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
-                    activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
                     for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                        JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                        JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(nextPlayerID));
                         clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         clientWrapper.getWriter().flush();
                     }
@@ -740,15 +738,12 @@ public class MessageDistributer {
         } else {
             if (!server.isGameFinished() && !playedCard.isDamageCard()) {
                 // Round is not finished yet
-                // determine next active player
-                activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
-
                 // Antenna determining next player
                 Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
-                //int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+                int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                    JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(nextPlayerID));
                     clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                     clientWrapper.getWriter().flush();
                 }
@@ -1082,12 +1077,10 @@ public class MessageDistributer {
 
                         // Antenna determining next player
                         Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
-                        //int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+                        int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
-                        // determine active player
-                        int activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
                         for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                            JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                            JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(nextPlayerID));
                             clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                             clientWrapper.getWriter().flush();
                         }
