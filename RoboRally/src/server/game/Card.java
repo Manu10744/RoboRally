@@ -32,6 +32,7 @@ public abstract class Card {
      */
     public abstract void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap);
 
+    public abstract boolean isDamageCard();
     /**
      * This method checks if there is a Pit, Wall or PushPanel in the robots way.
      * @param pitMap hashmap with all the pits of the map

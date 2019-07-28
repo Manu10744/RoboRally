@@ -62,4 +62,9 @@ public class TurnLeft extends server.game.Card {
 
     }
 
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
+
 }

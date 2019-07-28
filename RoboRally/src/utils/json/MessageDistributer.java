@@ -32,6 +32,10 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import server.Server;
 import server.game.Card;
+import server.game.DamageCards.Spam;
+import server.game.DamageCards.Trojan;
+import server.game.DamageCards.Virus;
+import server.game.DamageCards.Worm;
 import server.game.Player;
 import server.game.ProgrammingCards.Again;
 import server.game.Robot;
@@ -625,10 +629,12 @@ public class MessageDistributer {
             }
         }
 
-        // A card has been played, so increment the counter
-        int cardsPlayed = server.getCardsPlayed();
-        cardsPlayed++;
-        server.setCardsPlayed(cardsPlayed);
+        if (!playedCard.isDamageCard()) {
+            // A card has been played, so increment the counter
+            int cardsPlayed = server.getCardsPlayed();
+            cardsPlayed++;
+            server.setCardsPlayed(cardsPlayed);
+        }
 
         int activePlayerID;
         // Round is finished, everyone has played their register
@@ -732,7 +738,7 @@ public class MessageDistributer {
                 }
             }
         } else {
-            if (!server.isGameFinished()) {
+            if (!server.isGameFinished() && !playedCard.isDamageCard()) {
                 // Round is not finished yet
                 // determine next active player
                 activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();

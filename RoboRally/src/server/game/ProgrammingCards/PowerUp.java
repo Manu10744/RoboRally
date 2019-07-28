@@ -40,4 +40,9 @@ public class PowerUp extends server.game.Card {
         player.setEnergy(currentEnergy + 1);
     }
 
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
+
 }

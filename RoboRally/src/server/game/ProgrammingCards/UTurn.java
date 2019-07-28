@@ -60,4 +60,9 @@ public class UTurn extends server.game.Card {
         }
 
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
 }
