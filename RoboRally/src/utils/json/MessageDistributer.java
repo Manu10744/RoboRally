@@ -1,13 +1,12 @@
 package utils.json;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
@@ -26,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -43,10 +43,7 @@ import server.game.decks.DeckDraw;
 import utils.Countdown;
 import utils.Parameter;
 import utils.json.protocol.*;
-import viewmodels.ChooseRobotController;
-import viewmodels.IController;
-import viewmodels.MapController;
-import viewmodels.PlayerMatController;
+import viewmodels.*;
 
 
 /**
@@ -342,7 +339,7 @@ public class MessageDistributer {
 
             try {
                 // Sets Map in server
-                String mapJSON = Files.readString(chopShopChallenge, StandardCharsets.UTF_8);
+                String mapJSON = Files.readString(riskyCrossing, StandardCharsets.UTF_8);
                 JSONMessage jsonMessage = JSONDecoder.deserializeJSON(mapJSON);
                 GameStartedBody gameStartedBody = ((GameStartedBody) jsonMessage.getMessageBody());
 
@@ -512,6 +509,15 @@ public class MessageDistributer {
                     server.execTurnCheat(messageContent, cheatingPlayer);
                 }
             }
+        } else if (messageContent.matches(("play (move1|move2|move3|backup|uturn|powerup|again|turnleft|turnright)")) && server.getCheatsActivated()) {
+            Player cheatingPlayer;
+
+            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                if (clientWrapper.getClientSocket().equals(task.getClientSocket())) {
+                    cheatingPlayer = clientWrapper.getPlayer();
+                    server.execPlayCheat(messageContent, cheatingPlayer);
+                }
+            }
         }
 
         // For everything else
@@ -623,21 +629,21 @@ public class MessageDistributer {
         cardsPlayed++;
         server.setCardsPlayed(cardsPlayed);
 
-            int activePlayerID;
-            // Round is finished, everyone has played their register
-            if (server.getCardsPlayed() == server.getPlayers().size()) {
+        int activePlayerID;
+        // Round is finished, everyone has played their register
+        if (server.getCardsPlayed() == server.getPlayers().size() && !server.isGameFinished()) {
 
-                // Activate the Belts
-                server.activateBelts();
+            // Activate the Belts
+            server.activateBelts();
 
-                // Activate the RotatingBelts
-                server.activateRotatingBelts();
+            // Activate the RotatingBelts
+            server.activateRotatingBelts();
 
-                // Activate the Gears
-                server.activateGears();
+            // Activate the Gears
+            server.activateGears();
 
-                // Activate CheckPoints
-                server.activateCheckPoints();
+            // Activate CheckPoints
+            server.activateCheckPoints();
 
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
@@ -662,7 +668,7 @@ public class MessageDistributer {
                     // Reset the counter that observes the selected cards of a player
                     player.setSelectedCards(0);
 
-                    for (Server.ClientWrapper client : server.getConnectedClients()){
+                    for (Server.ClientWrapper client : server.getConnectedClients()) {
                         JSONMessage jsonMessage = new JSONMessage("ActivePhase", new ActivePhaseBody(PROGRAMMING_PHASE));
                         client.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
                         client.getWriter().flush();
@@ -697,7 +703,7 @@ public class MessageDistributer {
 
                 ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
                 // Collect each players ID and card in current register
-                for (Server.ClientWrapper client: server.getConnectedClients()) {
+                for (Server.ClientWrapper client : server.getConnectedClients()) {
                     Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
                     int playerID = client.getPlayer().getPlayerID();
 
@@ -719,14 +725,16 @@ public class MessageDistributer {
                 }
             }
         } else {
-            // Round is not finished yet
-            // determine next active player
-             activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
+            if (!server.isGameFinished()) {
+                // Round is not finished yet
+                // determine next active player
+                activePlayerID = server.getConnectedClients().get(1).getPlayer().getPlayerID();
 
-            for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
-                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                clientWrapper.getWriter().flush();
+                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
             }
         }
     }
@@ -1123,6 +1131,7 @@ public class MessageDistributer {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handlePlayedAdded()" + ANSI_RESET);
 
         Platform.runLater(() -> {
+
             client.getActiveClientsProperty().add(String.valueOf(playerAddedBody.getPlayerID()));
             Client.OtherPlayer newPlayer = client.new OtherPlayer(playerAddedBody.getPlayerID());
             client.getOtherActivePlayers().add(client.getOtherActivePlayers().size(), newPlayer);
@@ -1136,6 +1145,7 @@ public class MessageDistributer {
                 // PlayerAdded message due to own player has been added
                 client.getPlayer().setName(messageName);
                 client.getPlayer().initRobotByFigure(messageFigure);
+                client.getPlayer().setFigure(messageFigure);
 
                 logger.info("CLIENT " + ANSI_GREEN + client.getPlayer().getName() + ANSI_RESET + " UPDATED HIS OWN PLAYER. UPDATES: "
                         + "FIGURE: " + messageFigure + ", ROBOT: " + client.getPlayer().getPlayerRobot() + ", NAME: " + messageName);
@@ -1145,6 +1155,7 @@ public class MessageDistributer {
                 otherPlayer.setPlayerID(messagePlayerID);
                 otherPlayer.setName(messageName);
                 otherPlayer.initRobotByFigure(messageFigure);
+                otherPlayer.setFigure(messageFigure);
 
                 client.getOtherPlayers().add(otherPlayer);
 
@@ -1433,6 +1444,8 @@ public class MessageDistributer {
 
                 // Only move a robot when it's not out going of the map
                 if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
+                    System.out.println(finalNewXPos);
+                    System.out.println(finalNewYPos);
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
@@ -1615,6 +1628,7 @@ public class MessageDistributer {
      */
     public void handleYourCards(Client client, Client.ClientReaderTask task, YourCardsBody yourCardsBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleYourCards()" + ANSI_RESET);
+
 
         Platform.runLater(() -> {
             ((PlayerMatController) controllerMap.get("PlayerMat")).clearRegisterDeck();
@@ -2172,8 +2186,25 @@ public class MessageDistributer {
             checkPointReachedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleCheckPointReached()" + ANSI_RESET);
 
+        int messagePlayerID = checkPointReachedBody.getPlayerID();
+        int checkPointCount = checkPointReachedBody.getNumber();
+
+        if (client.getPlayer().getPlayerID() == messagePlayerID) {
+            client.getPlayer().setCheckPointCounter(checkPointCount);
+        } else {
+            for (Player otherPlayer : client.getOtherPlayers()) {
+                if (otherPlayer.getPlayerID() == messagePlayerID) {
+                    otherPlayer.setCheckPointCounter(checkPointCount);
+                }
+            }
+        }
         Platform.runLater(() -> {
-            //TODO write code here
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("CHECKPOINT REACHED!");
+            alert.setHeaderText("Congratulations!");
+            alert.setContentText("You have reached a Checkpoint!");
+            alert.show();
         });
     }
 
@@ -2188,8 +2219,43 @@ public class MessageDistributer {
     public void handleGameFinished(Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
 
+        int messagePlayerID = gameFinishedBody.getPlayerID();
+        ScoreboardController scoreboardController = client.getScoreBoardController();
+
         Platform.runLater(() -> {
-            //TODO write code here
+            client.getStageController().getMap().setVisible(false);
+            client.getStageController().getLobbyBackground().setVisible(false);
+
+            ArrayList<Player> allPlayers = new ArrayList<>();
+            allPlayers.addAll(client.getOtherPlayers());
+            allPlayers.add(client.getPlayer());
+
+            // Sorts the OtherPlayer array by checkpoint amount, descending order
+            Collections.sort(allPlayers, new Comparator<Player>() {
+                @Override
+                public int compare(Player o1, Player o2) {
+                    return o2.getCheckPointCounter() - o1.getCheckPointCounter();
+                }
+            });
+
+            ArrayList<ImageView> placeImageViews = new ArrayList<>();
+            placeImageViews.add(scoreboardController.getFirstPlace());
+            placeImageViews.add(scoreboardController.getSecondPlace());
+            placeImageViews.add(scoreboardController.getThirdPlace());
+            placeImageViews.add(scoreboardController.getFourthPlace());
+            placeImageViews.add(scoreboardController.getFifthPlace());
+            placeImageViews.add(scoreboardController.getSixthPlace());
+
+
+            // Fill Places
+            for (int i = 0; i < allPlayers.size(); i++) {
+                System.out.println("FIGURE: " + allPlayers.get(i).getFigure());
+                Image currentPlaceRobot = scoreboardController.getRobotImageforScore(allPlayers.get(i).getFigure());
+                placeImageViews.get(i).setImage(currentPlaceRobot);
+            }
+
+            // Display the scoreboard
+            client.getStageController().getScoreBoard().setVisible(true);
         });
     }
 }

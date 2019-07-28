@@ -2,8 +2,11 @@ package server.game.Tiles;
 
 import com.google.gson.annotations.Expose;
 import javafx.geometry.Point2D;
+import server.*;
 import utils.Parameter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import static java.lang.Math.abs;
 
 /**
@@ -17,6 +20,7 @@ public class Antenna extends Tile {
     private String type;
     @Expose
     private ArrayList<String> orientations;
+    private Server server;
 
     /**
      * This is the constructor for the default antenna that is used in any of the predefined maps. Because all values are fixed,
@@ -42,7 +46,87 @@ public class Antenna extends Tile {
 
         this.type = "CustomAntenna";
         this.orientations.add(orientation);
+    }
 
+    /**
+     * This class contains a constructor getter and setter to handle robots by distance from antenna
+     */
+    public class DistanceAndName {
+        private int playerID;
+        private String name;
+        private double distance;
+
+        // Safe playerID, name and calculated distance in this object
+        public DistanceAndName(int playerID, String name, double distance) {
+            this.playerID = playerID;
+            this.name = name;
+            this.distance = distance;
+        }
+
+        public int getPlayerID() { return playerID; }
+        public void setPlayerID() { this.playerID = playerID; }
+
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+
+        public double getDistance() { return distance; }
+        public void setDistance() { this.distance = distance; }
+    }
+
+    // List which contains information to determine next active player
+    ArrayList<DistanceAndName> nextToPlay = new ArrayList<>();
+
+    // This method determines next player to play by call and returns next players' playerID
+    public int determineNextPlayer() {
+        server = new Server();
+        ArrayList<Server.ClientWrapper> connectedClients = server.getConnectedClients();
+
+        // TODO this dummy coordinates have to be replaced by real ones dependet on chosen map!
+        Point2D antennaPoint = new Point2D(0.0, 6.0);
+
+        // Fill list nextToPlay with objects which contain name and distance as values
+        int i = 0;
+        while (i < connectedClients.size()) {
+            // Point is generated with robot x and y position
+            Point2D robotPoint = new Point2D(
+                    connectedClients.get(i).getPlayer().getPlayerRobot().getxPosition(),
+                    connectedClients.get(i).getPlayer().getPlayerRobot().getyPosition());
+
+            // determine playerID
+            int playerID = connectedClients.get(i).getPlayerID();
+
+            // determine name
+            String name = connectedClients.get(i).getName();
+
+            // determine distance to antenna
+            double distance = distanceCalculatorByFields(antennaPoint, robotPoint);
+
+            // safe object with determine info in nextToPlay
+            nextToPlay.add(new DistanceAndName(playerID, name, distance));
+
+            i++;
+        }
+
+        // sort DistanceAndName by distance
+        Collections.sort(nextToPlay, Comparator.comparingDouble(DistanceAndName::getDistance));
+
+        // nextToPlay is now sorted
+        // if distance from first object is unique, first player in list is currentPlayer
+        // if distance from first object occurs multiple times, make list of these players and select the one who is
+        // hit by antenna beam first (line of sight "beam" which rotates clockwise)
+
+        int k = 0;
+        int nextPlayerID = nextToPlay.get(k).getPlayerID();
+        double nextPlayerDistance = nextToPlay.get(k).getDistance();
+        k++;
+
+        if (nextPlayerDistance != nextToPlay.get(k).getDistance()) {
+            return nextPlayerID;
+        } else {
+            //TODO place here code for selection by antenna beam. By now if there more than one robot to choose from
+            // it simply takes the first in list to avoid the game to stuck
+            return nextPlayerID;
+        }
     }
 
     /**

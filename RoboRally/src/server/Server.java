@@ -1,5 +1,6 @@
 package server;
 
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import server.game.*;
+import server.game.ProgrammingCards.*;
 import server.game.Tiles.*;
 import server.game.decks.DeckDiscard;
 import server.game.decks.DeckDraw;
@@ -60,6 +62,7 @@ public class Server extends Application {
     private int mapWidth;
     private boolean cheatsActivated = false;
     private boolean firstAllRegistersFilled = false;
+    private boolean gameFinished = false;
 
     private MessageDistributer messageDistributer = new MessageDistributer();
     private String gamePhase;
@@ -197,7 +200,7 @@ public class Server extends Application {
     public void activateCheckPoints() {
         logger.info(ANSI_GREEN + "ACTIVATING CHECKPOINTS" + ANSI_RESET);
 
-        for (ClientWrapper client: this.getConnectedClients()) {
+        for (ClientWrapper client : this.getConnectedClients()) {
             Player player = client.getPlayer();
             int playerID = player.getPlayerID();
 
@@ -205,14 +208,36 @@ public class Server extends Application {
             int y = player.getPlayerRobot().getyPosition();
 
             String pos = x + "-" + y;
-
-            System.out.println(pos);
-            System.out.println(this.checkPointMap.get(pos));
             if (this.checkPointMap.get(pos) != null) {
-                logger.info(ANSI_GREEN + "LANDED ON A CHECKPOINT!!!" + ANSI_RESET);
+                if (this.checkPointMap.get(pos).getCount() == player.getCheckPointCounter() + 1) {
+
+                    // Increment player's checkpoint counter
+                    int checkPointCounter = player.getCheckPointCounter();
+                    checkPointCounter++;
+                    player.setCheckPointCounter(checkPointCounter);
+
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("CheckPointReached", new CheckPointReachedBody(playerID, player.getCheckPointCounter()));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Check if player has reached all CheckPoints
+                    if (player.getCheckPointCounter() == this.getCheckPointMap().size()) {
+                        this.setGameFinished(true);
+
+                        for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                            JSONMessage jsonMessage = new JSONMessage("GameFinished", new GameFinishedBody(playerID));
+                            clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                            clientWrapper.getWriter().flush();
+                        }
+                    }
+                }
+
             }
         }
     }
+
     public void activateBelts() {
         logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING BELTS!" + ANSI_RESET);
         for (ClientWrapper client : this.getConnectedClients()) {
@@ -288,7 +313,7 @@ public class Server extends Application {
 
             int currentXPos = player.getPlayerRobot().getxPosition();
             int currentYPos = player.getPlayerRobot().getyPosition();
-
+            String turnDirection = null;
             // Key for HashMap
             String playerPosition = currentXPos + "-" + currentYPos;
             if (this.greenRotatingBeltMap.get(playerPosition) != null) {
@@ -298,60 +323,194 @@ public class Server extends Application {
                 String firstOrientation = this.greenRotatingBeltMap.get(playerPosition).getOrientations().get(0);
                 String secondOrientation = this.greenRotatingBeltMap.get(playerPosition).getOrientations().get(1);
 
+                System.out.println("FIRST DIR: " + firstOrientation);
+                System.out.println("SECOND DIR: " + secondOrientation);
                 if (this.greenRotatingBeltMap.get(playerPosition).getCrossing() == false) {
                     switch (firstOrientation) {
                         case "up":
-                            if (secondOrientation == "right") {
+                            if (secondOrientation.equals("right")) {
                                 player.getPlayerRobot().setxPosition(currentXPos + 1);
-                                player.getPlayerRobot().setLineOfSight("right");
-                            } else {
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("left")) {
                                 player.getPlayerRobot().setxPosition(currentXPos - 1);
-                                player.getPlayerRobot().setLineOfSight("left");
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
                             }
+                            break;
                         case "down":
-                            if (secondOrientation == "right") {
+                            if (secondOrientation.equals("right")) {
                                 player.getPlayerRobot().setxPosition(currentXPos + 1);
-                                player.getPlayerRobot().setLineOfSight("right");
-                            } else {
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("left")) {
                                 player.getPlayerRobot().setxPosition(currentXPos - 1);
-                                player.getPlayerRobot().setLineOfSight("left");
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
                             }
+                            break;
                         case "left":
-                            if (secondOrientation == "up") {
+                            if (secondOrientation.equals("up")) {
                                 player.getPlayerRobot().setyPosition(currentYPos + 1);
-                                player.getPlayerRobot().setLineOfSight("up");
-                            } else {
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("down")) {
                                 player.getPlayerRobot().setyPosition(currentYPos - 1);
-                                player.getPlayerRobot().setLineOfSight("down");
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
                             }
+                            break;
                         case "right":
-                            if (secondOrientation == "up") {
+                            if (secondOrientation.equals("up")) {
                                 player.getPlayerRobot().setyPosition(currentYPos + 1);
-                                player.getPlayerRobot().setLineOfSight("up");
-                            } else {
+                                turnDirection = "left";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                }
+                            } else if (secondOrientation.equals("down")) {
                                 player.getPlayerRobot().setyPosition(currentYPos - 1);
-                                player.getPlayerRobot().setLineOfSight("down");
+                                turnDirection = "right";
+
+                                switch (player.getPlayerRobot().getLineOfSight()) {
+                                    case "up":
+                                        player.getPlayerRobot().setLineOfSight("right");
+                                        break;
+                                    case "right":
+                                        player.getPlayerRobot().setLineOfSight("down");
+                                        break;
+                                    case "down":
+                                        player.getPlayerRobot().setLineOfSight("left");
+                                        break;
+                                    case "left":
+                                        player.getPlayerRobot().setLineOfSight("up");
+                                        break;
+                                }
                             }
+                            break;
                     }
                 }
-            }
-            int newXPos = player.getPlayerRobot().getxPosition();
-            int newYPos = player.getPlayerRobot().getyPosition();
-            logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
-                    player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
 
-            for (ClientWrapper clientWrapper : this.getConnectedClients()) {
-                JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
-                clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                clientWrapper.getWriter().flush();
+                int newXPos = player.getPlayerRobot().getxPosition();
+                int newYPos = player.getPlayerRobot().getyPosition();
+                logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + player.getPlayerRobot().getxPosition() + " | " +
+                        player.getPlayerRobot().getyPosition() + " )" + ANSI_RESET);
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("PlayerTurning", new PlayerTurningBody(playerID, turnDirection));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("Movement", new MovementBody(playerID, newXPos, newYPos));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
             }
         }
     }
 
     /**
      * This method performs the actions needed for a move cheat. Only executed when cheats on server are activated.
-     * @param cheat The actual cheat (in this case 'move') plus the corresponding x - and y - coordinate that the player
-     *              wants his robot to move to.
+     *
+     * @param cheat          The actual cheat (in this case 'move') plus the corresponding x - and y - coordinate that the player
+     *                       wants his robot to move to.
      * @param cheatingPlayer The player that activated this cheat.
      */
     public void execMoveCheat(String cheat, Player cheatingPlayer) {
@@ -376,8 +535,9 @@ public class Server extends Application {
 
     /**
      * This method performs the actions needed for a turn cheat. Only executed when cheats on server are activated.
-     * @param cheat The actual cheat (in this case 'turn') plus the desired direction the player wants his robot to be
-     *              turned.
+     *
+     * @param cheat          The actual cheat (in this case 'turn') plus the desired direction the player wants his robot to be
+     *                       turned.
      * @param cheatingPlayer The player that activated this cheat.
      */
     public void execTurnCheat(String cheat, Player cheatingPlayer) {
@@ -423,6 +583,111 @@ public class Server extends Application {
             clientWrapper.getWriter().flush();
         }
     }
+
+    /**
+     * This method performs the actions needed for a play card cheat. Only executed when cheats on server are activated.
+     *
+     * @param cheat          The actual cheat (in this case 'play') plus the desired card that the player wants to play.
+     * @param cheatingPlayer The player that activated this cheat.
+     */
+    public void execPlayCheat(String cheat, Player cheatingPlayer) {
+        String[] cheatArgs = cheat.split(" ");
+        String desiredCard = cheatArgs[1];
+
+        Robot cheatingPlayerRobot = cheatingPlayer.getPlayerRobot();
+        switch (desiredCard) {
+            case "move1":
+                new MoveI().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveI()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "move2":
+                new MoveII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveII()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "move3":
+                new MoveIII().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new MoveIII()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "backup":
+                new BackUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new BackUp()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "uturn":
+                new UTurn().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new UTurn()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "again":
+                new Again().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new Again()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "powerup":
+                new PowerUp().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new PowerUp()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+            case "turnleft":
+                new TurnLeft().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnLeft()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+
+
+            case "turnright":
+                new TurnRight().activateCard(cheatingPlayer, this.getPitMap(), this.getWallMap(), this.getPushPanelMap());
+
+                for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                    JSONMessage jsonMessage = new JSONMessage("CardPlayed", new CardPlayedBody(cheatingPlayer.getPlayerID(), new TurnRight()));
+                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                    clientWrapper.getWriter().flush();
+                }
+                break;
+        }
+    }
+
 
     public void activateCheats() {
         this.cheatsActivated = true;
@@ -530,13 +795,21 @@ public class Server extends Application {
         this.map = map;
     }
 
-    public int getMapHeight() { return mapHeight; }
+    public int getMapHeight() {
+        return mapHeight;
+    }
 
-    public void setMapHeight(int mapHeight) { this.mapHeight = mapHeight; }
+    public void setMapHeight(int mapHeight) {
+        this.mapHeight = mapHeight;
+    }
 
-    public int getMapWidth() { return mapWidth; }
+    public int getMapWidth() {
+        return mapWidth;
+    }
 
-    public void setMapWidth(int mapWidth) { this.mapWidth = mapWidth; }
+    public void setMapWidth(int mapWidth) {
+        this.mapWidth = mapWidth;
+    }
 
     public Tile getAntenna() {
         return antenna;
@@ -619,7 +892,13 @@ public class Server extends Application {
         this.cardsPlayed = cardsPlayed;
     }
 
-    public boolean getCheatsActivated() { return cheatsActivated; }
+    public boolean getCheatsActivated() {
+        return cheatsActivated;
+    }
+
+    public boolean isGameFinished() { return gameFinished; }
+
+    public void setGameFinished(boolean gameFinished) { this.gameFinished = gameFinished; }
 
     public class ServerReaderTask extends Thread {
         private Socket clientSocket;
@@ -687,7 +966,6 @@ public class Server extends Application {
         public BufferedReader getReader() {
             return reader;
         }
-
 
 
     }
