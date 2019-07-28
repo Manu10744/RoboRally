@@ -77,12 +77,7 @@ public class Antenna extends Tile {
     ArrayList<DistanceAndName> nextToPlay = new ArrayList<>();
 
     // This method determines next player to play by call and returns next players' playerID
-    public int determineNextPlayer() {
-        server = new Server();
-        ArrayList<Server.ClientWrapper> connectedClients = server.getConnectedClients();
-
-        // TODO this dummy coordinates have to be replaced by real ones dependet on chosen map!
-        Point2D antennaPoint = new Point2D(0.0, 6.0);
+    public int determineNextPlayer(Point2D antennaPoint, ArrayList<Server.ClientWrapper> connectedClients) {
 
         // Fill list nextToPlay with objects which contain name and distance as values
         int i = 0;
