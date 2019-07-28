@@ -24,4 +24,8 @@ public class EnergySpace extends Tile {
     public Integer getCount() {
         return count;
     }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }

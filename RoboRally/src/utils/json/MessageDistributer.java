@@ -645,6 +645,9 @@ public class MessageDistributer {
             // Activate CheckPoints
             server.activateCheckPoints();
 
+            // Activate EnergySpaces
+            server.activateEnergySpaces();
+
             // Reset the counter that observes the amount of players that have played their register
             server.setCardsPlayed(0);
 
@@ -2169,8 +2172,25 @@ public class MessageDistributer {
     public void handleEnergy(Client client, Client.ClientReaderTask task, EnergyBody energyBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleEnergy()" + ANSI_RESET);
 
+        int messagePlayerID = energyBody.getPlayerID();
+
+
         Platform.runLater(() -> {
-            //TODO write code here
+            if(messagePlayerID == client.getPlayer().getPlayerID()) {
+                int currentOwnEnergy = client.getPlayer().getEnergy();
+                currentOwnEnergy++;
+                client.getPlayer().setEnergy(currentOwnEnergy);
+
+                client.getPlayerMatController().getOwnEnergyCubesLabel().setText(Integer.toString(client.getPlayer().getEnergy()));
+            } else {
+                for (Player otherPlayer : client.getOtherPlayers()) {
+                    if (otherPlayer.getPlayerID() == messagePlayerID) {
+                        int currentOtherPlayerEnergy = otherPlayer.getEnergy();
+                        currentOtherPlayerEnergy++;
+                        otherPlayer.setEnergy(currentOtherPlayerEnergy);
+                    }
+                }
+            }
         });
     }
 

@@ -24,6 +24,7 @@ import utils.json.JSONDecoder;
 import utils.json.JSONEncoder;
 import utils.json.MessageDistributer;
 import utils.json.protocol.*;
+import viewmodels.PlayerMatController;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -234,6 +235,39 @@ public class Server extends Application {
                     }
                 }
 
+            }
+        }
+    }
+
+    public void activateEnergySpaces() {
+        logger.info(ANSI_GREEN + "( SERVER ): ACTIVATING ENERGYSPACES!" + ANSI_RESET);
+        for (ClientWrapper client : this.getConnectedClients()) {
+            Player player = client.getPlayer();
+            int playerID = player.getPlayerID();
+
+            int currentXPos = player.getPlayerRobot().getxPosition();
+            int currentYPos = player.getPlayerRobot().getyPosition();
+
+            String playerPosition = currentXPos + "-" + currentYPos;
+
+            if (this.energySpaceMap.get(playerPosition) != null) {
+
+                int count = this.energySpaceMap.get(playerPosition).getCount();
+                String source = "field";
+                if (count == 1) {
+                    int energyAmount = player.getEnergy();
+                    energyAmount++;
+                    player.setEnergy(energyAmount);
+
+                    for (ClientWrapper clientWrapper : this.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("Energy", new EnergyBody(playerID, count, source));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
+
+                    // Set to 0 so energy is given only once per EnergySpace
+                    this.energySpaceMap.get(playerPosition).setCount(count - 1);
+                }
             }
         }
     }
