@@ -27,7 +27,18 @@ public class Spam extends server.game.Card {
 
     @Override
     public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
-        //TODO
+        // Put the spam card back to the spam deck
+        player.getDeckSpam().getDeck().add(this);
+
+        // Remove so its not passed into the discard pile again
+        player.getDeckRegister().getDeck().remove(this);
+
+        // Play the top card of the draw deck
+        player.getDeckDraw().getTopCard().activateCard(player, pitMap, wallMap, pushPanelMap);
     }
 
+    @Override
+    public boolean isDamageCard() {
+        return true;
+    }
 }

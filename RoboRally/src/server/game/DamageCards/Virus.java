@@ -28,4 +28,9 @@ public class Virus extends server.game.Card {
     public void activateCard(Player player, Map<String, Pit> pitMap, Map<String, Wall> wallMap, Map<String, PushPanel> pushPanelMap) {
         //TODO
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return true;
+    }
 }

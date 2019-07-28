@@ -84,6 +84,11 @@ public class MoveI extends server.game.Card {
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return false;
     }
+}
 
 

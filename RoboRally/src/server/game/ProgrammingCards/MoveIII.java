@@ -104,4 +104,9 @@ public class MoveIII extends server.game.Card {
         }
 
     }
+
+    @Override
+    public boolean isDamageCard() {
+        return false;
+    }
 }
