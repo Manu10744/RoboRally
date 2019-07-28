@@ -462,29 +462,30 @@ public class MapController implements IController {
             fieldMap.get(newPosition).getChildren().add(robotImageView);
         } else {
             // If there is robot, we first find the new position of it, were it moved
-            int xPosOwnRobot = ownRobot.getxPosition();
-            int yPosOwnRobot = ownRobot.getyPosition();
+            int xPosOtherRobot = otherRobot.getxPosition();
+            int yPosOtherRobot = otherRobot.getyPosition();
 
             //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
             switch (ownRobot.getLineOfSight()) {
                 case ORIENTATION_DOWN: {
-                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot - 1);
+                    otherRobotNewPos = xPosOtherRobot + "-" + (yPosOtherRobot - 1);
                     break;
                 }
                 case ORIENTATION_UP: {
-                    otherRobotNewPos = xPosOwnRobot + "-" + (yPosOwnRobot + 1);
+                    otherRobotNewPos = xPosOtherRobot + "-" + (yPosOtherRobot + 1);
                     break;
                 }
                 case ORIENTATION_RIGHT: {
-                    otherRobotNewPos = (xPosOwnRobot + 1) + "-" + yPosOwnRobot;
+                    otherRobotNewPos = (xPosOtherRobot + 1) + "-" + yPosOtherRobot;
                     break;
                 }
                 case ORIENTATION_LEFT: {
-                    otherRobotNewPos = (xPosOwnRobot - 1) + "-" + yPosOwnRobot;
+                    otherRobotNewPos = (xPosOtherRobot - 1) + "-" + yPosOtherRobot;
                     break;
                 }
             }
 
+            logger.info("Robot on new");
                 //remove other robot and put on new place
                 ImageView otherRobotImageView = (ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
                 fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
@@ -497,8 +498,6 @@ public class MapController implements IController {
 
                 // update other robot (own has already been updated
                 robotMap.put(otherRobotNewPos, otherRobot);
-                //Todo: update server!
-
             }
     }
 
