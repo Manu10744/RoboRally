@@ -2234,6 +2234,8 @@ public class MessageDistributer {
      * @param gameFinishedBody The message body of the message which is of type {@link GameFinishedBody}.
      */
     public void handleGameFinished(Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody) {
+        AudioClip audioClip = new AudioClip(this.getClass().getResource("/resources/soundtrack/scoreboard-sound.mp3").toExternalForm());
+        audioClip.play();
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
 
         int messagePlayerID = gameFinishedBody.getPlayerID();
