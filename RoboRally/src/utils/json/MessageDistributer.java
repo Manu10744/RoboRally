@@ -704,35 +704,37 @@ public class MessageDistributer {
                     }
                 }
             } else {
-                // New round has begun, but there are still registers that are about to be played
-                currentRound++;
-                server.setActiveRound(currentRound);
+                if (!server.isGameFinished()) {
+                    // New round has begun, but there are still registers that are about to be played
+                    currentRound++;
+                    server.setActiveRound(currentRound);
 
-                ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
-                // Collect each players ID and card in current register
-                for (Server.ClientWrapper client : server.getConnectedClients()) {
-                    Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
-                    int playerID = client.getPlayer().getPlayerID();
+                    ArrayList<CurrentCardsBody.ActiveCardsObject> activeCards = new ArrayList<>();
+                    // Collect each players ID and card in current register
+                    for (Server.ClientWrapper client : server.getConnectedClients()) {
+                        Card activeCard = client.getPlayer().getDeckRegister().getDeck().get(server.getActiveRound() - 1);
+                        int playerID = client.getPlayer().getPlayerID();
 
-                    CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, activeCard);
-                    activeCards.add(activeCardsObject);
-                }
+                        CurrentCardsBody.ActiveCardsObject activeCardsObject = new CurrentCardsBody.ActiveCardsObject(playerID, activeCard);
+                        activeCards.add(activeCardsObject);
+                    }
 
-                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards));
-                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                    clientWrapper.getWriter().flush();
-                }
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("CurrentCards", new CurrentCardsBody(activeCards));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
 
-                // Antenna determining next player
-                Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
-                int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+                    // Antenna determining next player
+                    Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
+                    //int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
-                activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
-                for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
-                    JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
-                    clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
-                    clientWrapper.getWriter().flush();
+                    activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
+                    for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
+                        JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
+                        clientWrapper.getWriter().println(JSONEncoder.serializeJSON(jsonMessage));
+                        clientWrapper.getWriter().flush();
+                    }
                 }
             }
         } else {
@@ -743,7 +745,7 @@ public class MessageDistributer {
 
                 // Antenna determining next player
                 Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
-                int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+                //int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
                 for (Server.ClientWrapper clientWrapper : server.getConnectedClients()) {
                     JSONMessage jsonMessage = new JSONMessage("CurrentPlayer", new CurrentPlayerBody(activePlayerID));
@@ -1080,7 +1082,7 @@ public class MessageDistributer {
 
                         // Antenna determining next player
                         Point2D antennaPoint = new Point2D(server.getAntennaXPos(), server.getAntennaYPos());
-                        int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
+                        //int nextPlayerID = ((Antenna) server.getAntenna()).determineNextPlayer(antennaPoint, server.getConnectedClients());
 
                         // determine active player
                         int activePlayerID = server.getConnectedClients().get(0).getPlayer().getPlayerID();
@@ -2225,8 +2227,11 @@ public class MessageDistributer {
         int messagePlayerID = checkPointReachedBody.getPlayerID();
         int checkPointCount = checkPointReachedBody.getNumber();
 
+        Platform.runLater(() -> {
         if (client.getPlayer().getPlayerID() == messagePlayerID) {
             client.getPlayer().setCheckPointCounter(checkPointCount);
+            client.getPlayerMatController().getOwnVictoryTilesLabel().setText(Integer.toString(checkPointCount));
+
         } else {
             for (Player otherPlayer : client.getOtherPlayers()) {
                 if (otherPlayer.getPlayerID() == messagePlayerID) {
@@ -2234,13 +2239,11 @@ public class MessageDistributer {
                 }
             }
         }
-        Platform.runLater(() -> {
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+           /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("CHECKPOINT REACHED!");
             alert.setHeaderText("Congratulations!");
             alert.setContentText("You have reached a Checkpoint!");
-            alert.show();
+            alert.show();*/
         });
     }
 
@@ -2255,12 +2258,16 @@ public class MessageDistributer {
     public void handleGameFinished(Client client, Client.ClientReaderTask task, GameFinishedBody gameFinishedBody) {
         System.out.println(ANSI_CYAN + "( MESSAGEDISTRIBUTER ): Entered handleGameFinished()" + ANSI_RESET);
 
+        client.getStageController().getMap().setVisible(false);
+        client.getStageController().getLobbyBackground().setVisible(false);
+
+        // Display the scoreboard
+        client.getStageController().getScoreBoard().setVisible(true);
+
         int messagePlayerID = gameFinishedBody.getPlayerID();
         ScoreboardController scoreboardController = client.getScoreBoardController();
 
         Platform.runLater(() -> {
-            client.getStageController().getMap().setVisible(false);
-            client.getStageController().getLobbyBackground().setVisible(false);
 
             ArrayList<Player> allPlayers = new ArrayList<>();
             allPlayers.addAll(client.getOtherPlayers());
@@ -2285,13 +2292,29 @@ public class MessageDistributer {
 
             // Fill Places
             for (int i = 0; i < allPlayers.size(); i++) {
-                System.out.println("FIGURE: " + allPlayers.get(i).getFigure());
                 Image currentPlaceRobot = scoreboardController.getRobotImageforScore(allPlayers.get(i).getFigure());
                 placeImageViews.get(i).setImage(currentPlaceRobot);
-            }
 
-            // Display the scoreboard
-            client.getStageController().getScoreBoard().setVisible(true);
+                if (i == 0) {
+                    ScaleTransition transition = new ScaleTransition(Duration.millis(1000), placeImageViews.get(i));
+                    transition.setFromX(2.0f);
+                    transition.setFromY(2.0f);
+                    transition.setByX(-1.0f);
+                    transition.setByY(-1.0f);
+                    transition.setCycleCount(2);
+                    transition.setAutoReverse(true);
+                    transition.play();
+                } else {
+                    ScaleTransition transition = new ScaleTransition(Duration.millis(1000), placeImageViews.get(i));
+                    transition.setFromX(1.0f);
+                    transition.setFromY(1.0f);
+                    transition.setByX(-0.5f);
+                    transition.setByY(-0.5f);
+                    transition.setCycleCount(2);
+                    transition.setAutoReverse(true);
+                    transition.play();
+                }
+            }
         });
     }
 }
