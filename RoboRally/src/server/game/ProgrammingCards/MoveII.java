@@ -44,6 +44,8 @@ public class MoveII extends server.game.Card {
         String newPos;
         Robot robot = player.getPlayerRobot();
 
+        robotMap.remove(oldPos);
+
         switch (lineOfSight) {
             case ("up"):
                 for (int i = 0; i < 2; i++) {
@@ -56,24 +58,6 @@ public class MoveII extends server.game.Card {
                         yPosition = yPosition + 1;
                         // Move was valid, update old position for algorithm for next iteration
                         oldPos = xPosition + "-" + yPosition;
-
-                        Robot robotInFront = robotMap.get(robot.getxPosition() + "-" + robot.getyPosition());
-                        //test if you move robot other one is also moved
-                        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
-
-                        if (robotInFront != null) {
-                            //update other robot robot in robotMap
-                            robotMap.put(xPosition + "-" + (yPosition + 2), robotMap.get(currentPos));
-                            robotMap.remove(currentPos); //remove current robot
-
-                            logger.info(ANSI_GREEN + "NEW OTHER ROBOT IN ROBOTMAP: ( " + robotMap.get(xPosition + "-" + (yPosition + 2)).getxPosition() + " | " +
-                                    robotMap.get(xPosition + "-" + (yPosition + 2)).getyPosition() + " )" + ANSI_RESET);
-                        }
-                        //update robot in robotMap
-                        robotMap.remove(oldPos);
-                        robotMap.put(currentPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
-                                robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
                     }
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
@@ -82,30 +66,11 @@ public class MoveII extends server.game.Card {
             case ("right"):
                 for (int i = 0; i < 2; i++) {
                     newPos = (xPosition + 1) + "-" + yPosition;
-                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap, rotatingBeltMap, beltMap, oldPos, newPos, "left", "right")) {
+                    if (this.isValidMove(pitMap, wallMap, pushPanelMap, robotMap, antennaMap,rotatingBeltMap, beltMap, oldPos, newPos, "left", "right")) {
                         robot.setxPosition(xPosition + 1);
                         xPosition = xPosition + 1;
                         oldPos = xPosition + "-" + yPosition;
-
-                        Robot robotInFront = robotMap.get(robot.getxPosition() + "-" + robot.getyPosition());
-                        //test if you move robot other one is also moved
-                        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
-
-                        if (robotInFront != null) {
-                            //update other robot robot in robotMap
-                            robotMap.put(xPosition + 2 + "-" + yPosition, robotMap.get(currentPos));
-                            robotMap.remove(currentPos); //remove current robot
-
-                            logger.info(ANSI_GREEN + "NEW OTHER ROBOT IN ROBOTMAP: ( " + robotMap.get(xPosition + 2 + "-" + yPosition).getxPosition() + " | " +
-                                    robotMap.get(xPosition + 2 + "-" + yPosition).getyPosition() + " )" + ANSI_RESET);
-                        }
-                        //update robot in robotMap
-                        robotMap.remove(oldPos);
-                        robotMap.put(currentPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
-                                robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
                     }
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -117,26 +82,7 @@ public class MoveII extends server.game.Card {
                         robot.setyPosition(yPosition - 1);
                         yPosition = yPosition - 1;
                         oldPos = xPosition + "-" + yPosition;
-
-                        Robot robotInFront = robotMap.get(robot.getxPosition() + "-" + robot.getyPosition());
-                        //test if you move robot other one is also moved
-                        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
-
-                        if (robotInFront != null) {
-                            //update other robot robot in robotMap
-                            robotMap.put(xPosition + "-" + (yPosition - 2), robotMap.get(currentPos));
-                            robotMap.remove(currentPos); //remove current robot
-
-                            logger.info(ANSI_GREEN + "NEW OTHER ROBOT IN ROBOTMAP: ( " + robotMap.get(xPosition + "-" + (yPosition - 2)).getxPosition() + " | " +
-                                    robotMap.get(xPosition + "-" + (yPosition - 2)).getyPosition() + " )" + ANSI_RESET);
-                        }
-                        //update robot in robotMap
-                        robotMap.remove(oldPos);
-                        robotMap.put(currentPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
-                                robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
                     }
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -148,25 +94,8 @@ public class MoveII extends server.game.Card {
                         robot.setxPosition(xPosition - 1);
                         xPosition = xPosition - 1;
                         oldPos = xPosition + "-" + yPosition;
-                        Robot robotInFront = robotMap.get(robot.getxPosition() + "-" + robot.getyPosition());
-                        //test if you move robot other one is also moved
-                        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
 
-                        if (robotInFront != null) {
-                            //update other robot robot in robotMap
-                            robotMap.put(xPosition - 2 + "-" + yPosition, robotMap.get(currentPos));
-                            robotMap.remove(currentPos); //remove current robot
-
-                            logger.info(ANSI_GREEN + "NEW OTHER ROBOT IN ROBOTMAP: ( " + robotMap.get(xPosition - 2 + "-" + yPosition).getxPosition() + " | " +
-                                    robotMap.get(xPosition - 2 + "-" + yPosition).getyPosition() + " )" + ANSI_RESET);
-                        }
-                        //update robot in robotMap
-                        robotMap.remove(oldPos);
-                        robotMap.put(currentPos, robot);
-                        logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
-                                robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
                     }
-
                 }
                 logger.info(ANSI_GREEN + "NEW ROBOT POSITION: ( " + robot.getxPosition() + " | " +
                         robot.getyPosition() + " )" + ANSI_RESET);
@@ -175,6 +104,11 @@ public class MoveII extends server.game.Card {
                 System.out.println("There was a problem with the lineOfSight variable.");
         }
 
+        //update robot in robotMap
+        String currentPos = robot.getxPosition() + "-" + robot.getyPosition();
+        robotMap.put(currentPos, robot);
+        logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
+                robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
     }
 
     @Override

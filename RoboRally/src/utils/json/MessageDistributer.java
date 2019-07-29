@@ -569,7 +569,7 @@ public class MessageDistributer {
                 Player player = client.getPlayer();
                 int playerID = player.getPlayerID();
 
-                System.out.println("What card do you play? " + playedCard);
+                System.out.println("Waht card do you play? " + playedCard);
                 // Update the player of the server
                 playedCard.activateCard(player, server.getPitMap(), server.getWallMap(), server.getPushPanelMap(), server.getRobotMap(), server.getAntennaMap(), server.getAllBeltMap(), server.getAllRotatingBeltMap());
                 logger.info(ANSI_GREEN + "SERVER UPDATING FINISHED" + ANSI_RESET);
@@ -1372,6 +1372,7 @@ public class MessageDistributer {
 
         if (messagePlayerID == client.getPlayer().getPlayerID()) {
             // Update own robot
+
             int currentXPos = client.getPlayer().getPlayerRobot().getxPosition();
             int currentYPos = client.getPlayer().getPlayerRobot().getyPosition();
 
@@ -1474,6 +1475,7 @@ public class MessageDistributer {
                 if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
                     System.out.println(finalNewXPos);
                     System.out.println(finalNewYPos);
+                    System.out.println("Bist du hier auch?");
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
@@ -1482,8 +1484,6 @@ public class MessageDistributer {
 
                 // Only move a robot when it's not going out of the map
                 if (finalNewXPos >= 0 && finalNewYPos >= 0 && finalNewXPos < mapWidth && finalNewYPos < mapHeight) {
-                    System.out.println(finalNewXPos);
-                    System.out.println(finalNewYPos);
                     mapController.moveRobot(finalCurrentPosition, finalNewPosition);
                 }
 
@@ -1726,6 +1726,7 @@ public class MessageDistributer {
 
             for (Player opponentPlayer : client.getOtherPlayers()) {
                 if (playerID == opponentPlayer.getPlayerID()) {
+                    System.out.println("Bist du da mama?");
                     client.getOpponentMatController().updateOpponentRegister(client.getOtherPlayers(), register, opponentPlayer);
                 }
             }
@@ -1985,6 +1986,8 @@ public class MessageDistributer {
                         otherPlayer.getPlayerRobot().setyPosition(newYPos);
 
                         String newPos = newXPos + "-" + newYPos;
+
+                        System.out.println("Wie oft bist du hier??? ");
                         client.getMapController().moveRobot(oldPos, newPos);
                     }
                 }

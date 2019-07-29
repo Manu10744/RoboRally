@@ -221,6 +221,7 @@ public class MapController implements IController {
                         if (!tileArray.contains(null)) {
                             // Add a normal tile to each non-empty field to prevent whitespace
                             if (!containsInstance(tileArray, Empty.class)) {
+                                System.out.println("Doesnt contain empty, so i will add one!");
                                 tileArray.add(0, new Empty());
                             }
                         }
@@ -485,43 +486,33 @@ public class MapController implements IController {
      * @param newPosition The new Position of the robot
      */
     public synchronized void moveRobot(String oldPosition, String newPosition) {
-        Robot ownRobot = robotMap.get(newPosition); //we have to look on new position as it has already been updated on robotMap
-        //get imageView of own robot
-        ImageView ownRobotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
-        //make own robot imageview responsive
-        ownRobotImageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
-        ownRobotImageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
-        ownRobotImageView.setPreserveRatio(true);
-
+        Robot ownRobot = robotMap.get(oldPosition);
         String otherRobotNewPos = new String();
-        System.out.println("Own Robot " + ownRobot.getName());
-        System.out.println("Oldposition = " + oldPosition);
-        System.out.println("NewPos = " + newPosition);
-
-        System.out.println("Current xPos " + ownRobot.getxPosition());
-        System.out.println("Current yPos " + ownRobot.getyPosition());
-
+/*
         String lineOfSight = ownRobot.getLineOfSight();
-        //Get other robot imageView
-        ImageView otherRobotImageView = ((ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(newPosition).getChildren().size() - 1));
-        boolean robotInFront = otherRobotImageView.getImage().getUrl().contains("Hulk") || otherRobotImageView.getImage().getUrl().contains("Hammer") || otherRobotImageView.getImage().getUrl().contains("Smash")
-                || otherRobotImageView.getImage().getUrl().contains("Spin") || otherRobotImageView.getImage().getUrl().contains("Twonky") || otherRobotImageView.getImage().getUrl().contains("ZoomBot");
-        System.out.println("Is there a robot in front? " + robotInFront);
+        ImageView otherImageView = ((ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(newPosition).getChildren().size() - 1));
+        boolean robotInFront = otherImageView.getImage().getUrl().contains("Hulk") || otherImageView.getImage().getUrl().contains("Hammer") || otherImageView.getImage().getUrl().contains("Smash")
+                || otherImageView.getImage().getUrl().contains("Spin") || otherImageView.getImage().getUrl().contains("Twonky") || otherImageView.getImage().getUrl().contains("ZoomBot");
 
-        if (oldPosition.equals(newPosition)) {
-            //do nothing
-            System.out.println("HIER 1");
-        } else if (!robotInFront) {
-            System.out.println("HIER 2");
-            fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
-            fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
+
+ */
+        //System.out.println("Robot in Fron? " + robotInFront);
+        // if (!robotInFront) {
+        ImageView robotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
+        fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
+        fieldMap.get(newPosition).getChildren().add(robotImageView);
+       /*
         } else {
-            System.out.println("HIER 3");
+            System.out.println("Was für tiles sind in fieldMap an der Stelle vor removen da? " + fieldMap.get(newPosition).getChildren());
 
-            //make other robot imageView from above responsive
-            otherRobotImageView.fitWidthProperty().bind(mapPane.widthProperty().divide(mapWidth));
-            otherRobotImageView.fitHeightProperty().bind(mapPane.heightProperty().divide(mapHeight));
-            otherRobotImageView.setPreserveRatio(true);
+            //Get imageView from other robot
+            ImageView otherRobotImageView = (ImageView) fieldMap.get(newPosition).getChildren().get(fieldMap.get(newPosition).getChildren().size() - 1);
+
+            // delete other robot from newPos
+            fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
+
+            //get imageView from own robot
+            ImageView ownRobotImageView = (ImageView) fieldMap.get(oldPosition).getChildren().get(fieldMap.get(oldPosition).getChildren().size() - 1);
 
             //find newPosition of new Robot -> is newPosition plus 1 in the direction the own robot is moving
             String[] xYPos = newPosition.split("-");
@@ -547,11 +538,8 @@ public class MapController implements IController {
                 }
             }
 
-            //add imageView from other robot at newField +1
+            //add imageview from other robot at newField +1
             fieldMap.get(otherRobotNewPos).getChildren().add(otherRobotImageView);
-
-            // delete other robot from newPos
-            fieldMap.get(newPosition).getChildren().remove(fieldMap.get(newPosition).getChildren().size() - 1);
 
             //delete own robot from old pos
             fieldMap.get(oldPosition).getChildren().remove(fieldMap.get(oldPosition).getChildren().size() - 1);
@@ -559,7 +547,10 @@ public class MapController implements IController {
             //add imageView from own robot at new pos
             fieldMap.get(newPosition).getChildren().add(ownRobotImageView);
 
+            oldPosition = newPosition;
         }
+
+        */
 
     }
 
