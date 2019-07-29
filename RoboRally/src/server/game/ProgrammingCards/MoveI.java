@@ -53,6 +53,7 @@ public class MoveI extends server.game.Card {
 
                     if (robotInFront != null) {
                         //update other robot robot in robotMap
+                        robotMap.get(newPos).setyPosition(yPosition+2);
                         robotMap.put(xPosition + "-" + (yPosition + 2), robotMap.get(currentPos));
                         robotMap.remove(currentPos); //remove current robot
 
@@ -61,9 +62,9 @@ public class MoveI extends server.game.Card {
                     }
                     //update robot in robotMap
                     robotMap.remove(oldPos);
-                    robotMap.put(currentPos, robot);
-                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
-                            robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
+                    robotMap.put(newPos, robot);
+                    logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(newPos).getxPosition() + " | " +
+                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 break;
             case ("right"):
@@ -77,6 +78,7 @@ public class MoveI extends server.game.Card {
 
                     if (robotInFront != null) {
                         //update other robot robot in robotMap
+                        robotMap.get(newPos).setxPosition(xPosition+2);
                         robotMap.put(xPosition + 2 + "-" + yPosition, robotMap.get(currentPos));
                         robotMap.remove(currentPos); //remove current robot
 
@@ -85,7 +87,7 @@ public class MoveI extends server.game.Card {
                     }
                     //update robot in robotMap
                     robotMap.remove(oldPos);
-                    robotMap.put(currentPos, robot);
+                    robotMap.put(newPos, robot);
                     logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
                             robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
                 }
@@ -100,6 +102,7 @@ public class MoveI extends server.game.Card {
 
                     if (robotInFront != null) {
                         //update other robot in robotMap
+                        robotMap.get(newPos).setyPosition(yPosition-2);
                         robotMap.put(xPosition + "-" + (yPosition - 2), robotMap.get(currentPos));
                         robotMap.remove(currentPos); //remove current robot
 
@@ -108,7 +111,7 @@ public class MoveI extends server.game.Card {
                     }
                     //update robot in robotMap
                     robotMap.remove(oldPos);
-                    robotMap.put(currentPos, robot);
+                    robotMap.put(newPos, robot);
                     logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
                             robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
                 }
@@ -125,6 +128,7 @@ public class MoveI extends server.game.Card {
 
                     if (robotInFront != null) {
                         //update other robot robot in robotMap
+                        robotMap.get(newPos).setxPosition(xPosition-2);
                         robotMap.put(xPosition - 2 + "-" + yPosition, robotMap.get(currentPos));
                         robotMap.remove(currentPos); //remove current robot
 
@@ -133,9 +137,9 @@ public class MoveI extends server.game.Card {
                     }
                     //update robot in robotMap
                     robotMap.remove(oldPos);
-                    robotMap.put(currentPos, robot);
+                    robotMap.put(newPos, robot);
                     logger.info(ANSI_GREEN + "NEW ROBOT POSITION IN ROBOTMAP: ( " + robotMap.get(currentPos).getxPosition() + " | " +
-                            robotMap.get(currentPos).getyPosition() + " )" + ANSI_RESET);
+                            robotMap.get(newPos).getyPosition() + " )" + ANSI_RESET);
                 }
                 break;
             default:

@@ -63,6 +63,7 @@ public class MoveIII extends server.game.Card {
 
                         if (robotInFront != null) {
                             //update other robot robot in robotMap
+                            robotMap.get(newPos).setyPosition(yPosition+2);
                             robotMap.put(xPosition+ "-" + (yPosition+2), robotMap.get(currentPos));
                             robotMap.remove(currentPos); //remove current robot
 
@@ -91,6 +92,7 @@ public class MoveIII extends server.game.Card {
 
                         if (robotInFront != null) {
                             //update other robot robot in robotMap
+                            robotMap.get(newPos).setxPosition(xPosition+2);
                             robotMap.put(xPosition + 2 + "-" + yPosition, robotMap.get(currentPos));
                             robotMap.remove(currentPos); //remove current robot
 
@@ -119,6 +121,7 @@ public class MoveIII extends server.game.Card {
 
                         if (robotInFront != null) {
                             //update other robot robot in robotMap
+                            robotMap.get(newPos).setyPosition(yPosition-2);
                             robotMap.put(xPosition + "-" + (yPosition - 2), robotMap.get(currentPos));
                             robotMap.remove(currentPos); //remove current robot
 
@@ -149,6 +152,7 @@ public class MoveIII extends server.game.Card {
 
                         if (robotInFront != null) {
                             //update other robot robot in robotMap
+                            robotMap.get(newPos).setxPosition(xPosition-2);
                             robotMap.put(xPosition - 2 + "-" + yPosition, robotMap.get(currentPos));
                             robotMap.remove(currentPos); //remove current robot
 
