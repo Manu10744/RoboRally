@@ -6,6 +6,8 @@
 * Shop needs to be implemented
 * AI needs to be implemented
 * Timer before map starts needs to be implemented (10 secs)
+* Cheats need to be implemented
+* Board elements need to be activated (1/8)
 * Antenna can't handle special case when two robots have same distance to antenna by the official rules
 
 
