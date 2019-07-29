@@ -313,7 +313,6 @@ public class Server extends Application {
             String playerPosition = currentXPos + "-" + currentYPos;
 
             if (this.pushPanelMap.get(playerPosition) != null && this.pushPanelMap.get(playerPosition).getRegisters().contains(currentRound)) {
-                System.out.println("Are you in here? " + this.pushPanelMap.get(playerPosition) != null);
                 String pushDirection = pushPanelMap.get(playerPosition).getOrientations().get(0);
 
                 switch (pushDirection) {
