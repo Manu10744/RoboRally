@@ -2269,13 +2269,9 @@ public class MessageDistributer {
             } else {
                 for (Player otherPlayer : client.getOtherPlayers()) {
                     if (otherPlayer.getPlayerID() == messagePlayerID) {
-                        int otherPlayerXPos = otherPlayer.getPlayerRobot().getxPosition();
-                        int otherPlayerYPos = otherPlayer.getPlayerRobot().getyPosition();
-                        String otherPlayerPos = otherPlayerXPos + "-" + otherPlayerYPos;
                         int currentOtherPlayerEnergy = otherPlayer.getEnergy();
                         currentOtherPlayerEnergy++;
                         otherPlayer.setEnergy(currentOtherPlayerEnergy);
-                        client.getMapController().getFieldMap().get(otherPlayerPos).getChildren().remove(2);
                     }
                 }
             }
